@@ -1,0 +1,248 @@
+/*==========  Desktop First Method  ==========*/
+@media only screen and (max-width : 2000px) {
+	.wrapper-block__logo {
+		position: absolute;
+	}
+	.wrapper-lofo {
+		max-width: 2000px;
+		margin: 0 auto;
+		padding-left: 68px;
+		padding-right: 76px;
+	}
+}
+@media only screen and (max-width : 1800px) {
+	.wrapper-lofo {
+		padding-left: 40px;
+		padding-right: 70px;
+	}
+}
+@media only screen and (max-width : 1750px) {
+	.wrapper-block__logo {
+		max-width: 1232px;
+		position: relative;
+		top: 0;
+		margin: 30px auto 0;
+	}
+	.wrapper-lofo {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	.wrapper-header {
+		margin: 35px auto 0;
+	}
+	header {
+		padding-bottom: 40px;
+	}
+}
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1199px) {
+	.wrapper_main {
+		padding: 0 10px;
+	}
+	.main-top-menu li a {
+		font-size: 19px;
+		padding: 0 20px;
+	}
+	.top-baner h2 {
+		font-size: 56px;
+	}
+	.top-baner span {
+		font-size: 15px;
+	}
+	.style-botton {
+		padding: 0 25px;
+		line-height: 56px;
+	}
+	.top-baner__text {
+		max-width: 645px;
+		margin: 58px auto 0;
+	}
+}
+@media only screen and (max-width : 1110px) {
+	.switch-span {
+		font-size: 15px;
+	}
+}
+@media only screen and (max-width : 1024px){
+	.registration button {
+		font-size: 16px;
+	}
+}
+
+@media only screen and (max-width : 1016px){
+	.switch-span {
+		font-size: 14px;
+	}
+	.registration input,
+	.log-in {
+		margin-right: 4px;
+	}
+}
+@media only screen and (max-width : 991px){
+	.wrapper_main {
+		background-attachment: fixed;
+	}
+	.switch-span {
+		font-size: 17px;
+	}
+	.registration {
+		margin-top: 20px;
+	}
+	.wrapper-block__logo,
+	.wrapper-header {
+		margin: 20px auto 0;
+	}
+	header {
+		padding-bottom: 24px;
+	}
+	.date {
+		margin-top: 5px;
+	}
+	.main-top-menu li a {
+		font-size: 14px;
+		padding: 0 17px;
+	}
+	.category-menu li a {
+		padding: 0 8px;
+	}
+	.search-games {
+		padding-top: 1px;
+	}
+	.item-games img {
+		width: 100%;
+	}
+	.footer-menu li a {
+		font-size: 11px;
+		padding: 10px 8px;
+	}
+}
+/* Small Devices, Tablets */
+@media only screen and (max-width : 767px) {
+	.registration {
+		margin-top: 40px;
+	}
+}
+@media only screen and (max-width : 758px) {
+	.registration {
+		margin-top: 40px;
+	}
+	.mobile-menu .main-top-menu li a {
+		font-size: 19px;
+		padding: 0 !important;
+	}
+	.search-games,
+	.main-top-menu {
+		display: none;
+	}
+	.open-menu {
+		display: inline-block;
+	}
+	.mobile-menu 	.main-top-menu {
+		display: block;
+	}
+	.registration {
+		display: none;
+	}
+	.wrapper-content {
+		padding-top: 15px;
+	}
+	header {
+		padding-bottom: 10px;
+	}
+	.footer-menu {
+		display: none;
+	}
+}
+@media only screen and (max-width : 678px){
+	.top-baner__text-cont {
+		float: none;
+	}
+	.top-baner__text {
+		max-width: 340px;
+		margin: 15px auto 0;
+		text-align: center;
+	}
+	.style-botton {
+		padding: 0 25px;
+		line-height: 56px;
+		margin: 10px auto 0;
+		display: block;
+	}
+}
+@media only screen and (max-width : 640px){
+	.top-baner span {
+		font-size: 11px;
+	}
+	.top-baner h2 {
+		font-size: 45px;
+	}
+}
+@media only screen and (max-width : 584px){
+	.category-menu {
+		display: none;
+		padding: 0 0 10px;
+	}
+	.category-menu ul li {
+		display: block;
+		float: none;
+		padding: 2px 0;
+	}
+	.category-menu li a {
+		padding: 0 8px !important;
+	}
+	.cat-menu {
+		display: inline-block;
+	}
+	.top-baner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		margin-bottom: 15px;
+	}
+}
+@media only screen and (max-width : 480px){
+	.category-block .col-md-3 {
+		width: 100% !important;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 479px) {
+	.col-xs-5,
+	.col-xs-7 {
+		width: 100%;
+	}
+	.date {
+		display: none;
+	}
+	.open-menu {
+		margin-top: 0;
+		position: relative;
+		top: -17px;
+	}
+	.footer-open-menu .open-menu {
+		margin-top: 10px;
+		position: relative;
+		top: 0px;
+	}
+}
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 400px) {
+	.table-result table tr {
+		padding: 0 4px;
+	}
+	.table-result table tr td:nth-of-type(1) {
+		min-width: 130px;
+	}
+	.table-result table {
+		font-size: 11px;
+	}
+}
+@media only screen and (max-width : 360px) {
+	.online {
+		display: none;
+	}
+}

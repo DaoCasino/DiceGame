@@ -1,1 +1,420 @@
-sdfsdfsfd
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+
+	<title>DAO.CASINO</title>
+	<meta content="" name="description" />
+
+	<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="img/favicon/apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="img/favicon/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="img/favicon/apple-touch-icon-76x76.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="img/favicon/apple-touch-icon-114x114.png" />
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/main.min.css" />
+	<link rel="stylesheet" href="css/fonts.css" />
+	<link rel="stylesheet" href="css/media.min.css" />
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
+	<script type="text/javascript">
+		function showTime()
+		{
+			var dat = new Date();
+			var H = '' + dat.getHours();
+			H = H.length<2 ? '0' + H:H;
+			var M = '' + dat.getMinutes();
+			M = M.length<2 ? '0' + M:M;
+			var S = '' + dat.getSeconds();
+			S =S.length<2 ? '0' + S:S;
+			var clock = H + ' : ' + M ;
+			document
+			.getElementById('time_div')
+			.innerHTML=clock;
+  setTimeout(showTime,1000);  // перерисовать 1 раз в сек.
+}
+</script>
+</head>
+<body>
+	<!-- WRAPPER -->
+	<div class="wrapper_main">
+
+		<div class="mobile-menu-overlay"></div>
+
+		<div class="mobile-menu mCustomScrollbar" data-mcs-theme="minimal-dark">
+			<a class="closed-mnu">x</a>
+			<div class="registration">
+				<form action="">
+					<div class="clearfix">
+						<input type="text" placeholder="USERNAME">
+						<input type="text" class="mobile-input" placeholder="PASSWORD">
+					</div>
+					<div class="button-block clearfix">
+						<button class="log-in-mobile">login</button>
+						<button class="registr-now">join now</button>
+					</div>
+				</form>
+			</div>
+
+			<nav class="main-top-menu">
+				<ul class="clearfix">
+					<li><a href="#">ROULETTE</a></li>
+					<li><a href="#">DICE</a></li>
+					<li><a href="#">BLACKJACK</a></li>
+					<li><a href="#">ROULETTE</a></li>
+					<li><a href="#">POKER GAMES</a></li>
+					<li><a href="#">PROMOTIONS</a></li>
+					<li><a href="#">EXCHANGE</a></li>
+				</ul>
+			</nav>
+
+			<div class="search-games">
+				<form action="">
+					<input type="text" placeholder="search  games">
+					<button class="search-games__button"></button>
+				</form>
+			</div>
+
+			<nav class="footer-menu">
+				<h3>Footer menu</h3>
+				<ul>
+					<li><a href="#">About Us</a></li>
+					<li><a href="#">Provably Fair</a></li>
+					<li><a href="#">Terms and Conditions</a></li>
+					<li><a href="#">Responsible</a></li>
+					<li><a href="#">Gambling Rules</a></li>
+					<li><a href="#">Complaints</a></li>
+					<li><a href="#">Contact Us</a></li>
+				</ul>
+			</nav>
+
+		</div>
+		<!-- HEADER -->
+		<header>
+			<div class="wrapper-block__logo">
+				<div class="wrapper-lofo clearfix">
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="logo">
+								<a href="#">
+									<img src="img/logo.png" alt="Logo images">
+								</a>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="online">
+								<span class="online-text">Online: </span>
+								<span class="online-number">168</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="wrapper-header clearfix">
+				<div class="row">
+					<div class="col-md-3 col-sm-6 col-xs-5">
+						<div class="date">
+							<span id="time_div" class="time-style"></span>
+							<span>
+								<script type="text/javascript">
+									var date = new Date();
+									var values = [ date.getDate(), date.getMonth() + 1 ];
+									for( var id in values ) {
+										values[ id ] = values[ id ].toString().replace( /^([0-9])$/, '0$1' );
+									}
+									document.write(+values[ 0 ]+' / '+values[ 1 ]+' / '+date.getFullYear() );
+								</script>
+							</span>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6 col-xs-7">
+						<div class="switch-block clearfix">
+							<form action="">
+								<span class="real-money switch-span">real money</span>
+								<span class="toggle-bg">
+									<input type="radio" id="checked-off" name="toggle" value="off">
+									<input type="radio" id="checked-on" name="toggle" value="on"> 
+									<span class="switch"></span>
+								</span>
+								<span class="free-money switch-span">free spin</span>
+							</form>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-12">
+						<div>
+							<a class="open-menu">
+								<span></span>
+								<span></span>
+								<span></span>
+							</a>
+						</div>
+						<div class="registration">
+							<form action="">
+								<input type="text" placeholder="USERNAME">
+								<input type="text" placeholder="PASSWORD">
+								<button class="log-in">login</button>
+								<button class="registr-now">join now</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- HEADER AND -->
+		<!-- MAIN -->
+		<main clsaa="main">
+			<div class="wrapper-content">
+				<div class="container">
+					<nav class="main-top-menu">
+						<ul class="clearfix">
+							<li><a href="#">ROULETTE</a></li>
+							<li><a href="#">DICE</a></li>
+							<li><a href="#">BLACKJACK</a></li>
+							<li><a href="#">ROULETTE</a></li>
+							<li><a href="#">POKER GAMES</a></li>
+							<li><a href="#">PROMOTIONS</a></li>
+							<li><a href="#">EXCHANGE</a></li>
+						</ul>
+					</nav>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-9">
+							<img src="img/baner-top-min.jpg" class="baner-top-img" width="100%" alt="">
+							<div class="top-baner">
+								<div class="top-baner__text clearfix">
+									<div class="top-baner__text-cont">
+										<h2>
+											luckyjack
+										</h2>
+										<span>
+											Welcome to trust casino
+										</span>
+									</div>
+									<button class="style-botton">START GAME NOW</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="jackpot">
+								<h3>jackpot</h3>
+								<div class="jackpot-txt">
+									<span class="jackpot-txt__name">
+										total jackpots
+									</span>
+									<span class="jackpot-txt__namber">
+										328.07850804 BTC
+									</span>
+								</div>
+								<div class="jackpot-txt">
+									<span class="jackpot-txt__name">
+										TOTAL WAGERED
+									</span>
+									<span class="jackpot-txt__namber">
+										753,569.21 BTC
+									</span>
+								</div>
+								<div class="jackpot-txt">
+									<span class="jackpot-txt__name">
+										NUMBER OF BETS
+									</span>
+									<span class="jackpot-txt__namber">
+										8,101,963,764
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<a class="cat-menu">Category</a>
+					<nav class="category-menu">
+						<ul class="clearfix">
+							<li><a href="#">popular</a></li>
+							<li><a href="#">tournaments</a></li>
+							<li><a href="#">featured</a></li>
+							<li><a href="#">ROULETTE</a></li>
+							<li><a href="#">POKER GAMES</a></li>
+							<li><a href="#">PROMOTIONS</a></li>
+						</ul>
+						<div class="search-games">
+							<form action="">
+								<button class="search-games__button"></button>
+								<input type="text" placeholder="search  games">
+							</form>
+						</div>
+					</nav>
+					<div class="row category-block">
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game1.jpg" alt="">
+								<span>ROULETTE</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game2.jpg" alt="">
+								<span>DICE</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game3.jpg" alt="">
+								<span>BLACKJACK</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game4.jpg" alt="">
+								<span>card slots</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game5.jpg" alt="">
+								<span>POKER GAMES</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game6.jpg" alt="">
+								<span>slots</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game7.jpg" alt="">
+								<span>card games</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" class="item-games">
+								<img src="img/img-game8.jpg" alt="">
+								<span>lotto</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="table-result">
+								<h3>Big winners</h3>
+								<table>
+									<tr>
+										<td>PRETTYDIAMOND</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>FATASSDAB</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>OBI</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>FATASSDAB</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="table-result">
+								<h3>Recent winners</h3>
+								<table>
+									<tr>
+										<td>PRETTYDIAMOND</td>
+										<td>BLACKJACK</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>FATASSDAB</td>
+										<td>BLACKJACK</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>OBI</td>
+										<td>BLACKJACK</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>FATASSDAB</td>
+										<td>BLACKJACK</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</main>
+		<!-- MAIN AND -->
+		<!-- FOOTER -->
+		<footer>
+			<div class="container">
+				<div class="footer-open-menu">
+					<a class="open-menu">
+						<span></span>
+						<span></span>
+						<span></span>
+					</a>
+				</div>
+				<nav class="footer-menu">
+					<ul>
+						<li><a href="#">About Us</a></li>
+						<li><a href="#">Provably Fair</a></li>
+						<li><a href="#">Terms and Conditions</a></li>
+						<li><a href="#">Responsible</a></li>
+						<li><a href="#">Gambling Rules</a></li>
+						<li><a href="#">Complaints</a></li>
+						<li><a href="#">Contact Us</a></li>
+					</ul>
+				</nav>
+			</div>
+		</footer>
+		<!-- FOOTER AND -->
+
+	</div>
+
+
+	<div class="hidden"></div>
+
+	<!--[if lt IE 9]>
+	<script src="libs/html5shiv/es5-shim.min.js"></script>
+	<script src="libs/html5shiv/html5shiv.min.js"></script>
+	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
+	<script src="libs/respond/respond.min.js"></script>
+	<![endif]-->
+
+	<script src="libs/jquery/jquery-1.11.2.min.js"></script>
+	<script src="libs/modernizr/modernizr.js"></script>
+	<script src="libs/selectivizr/selectivizr-min.js"></script>
+	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="js/common.js"></script>
+	<script type="text/javascript">  showTime();</script>
+	
+</body>
+</html>
