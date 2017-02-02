@@ -198,9 +198,9 @@ ScrGame.prototype.startGameEth = function(){
 		options.nonce = d.data.nonce;
 		options.data = '0xc3fe3e28'; //собственно это надо отправить, чтоб вызвалась функция game();
 		options.to = "0x130951893c010916b34773293e05404cee93d5c5"; //адрес нашего смарт контракта
-		options.gasPrice="0x4e3b29200";//web3.toHex('21000000000');
+		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
-		options.value = 20000000000000000; //  //ставка 0.02 эфира
+		options.value = 50000000000000000; //  //ставка 0.02 эфира
 
 		var tx = new EthereumTx(options);
 
@@ -276,7 +276,6 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		}
 		if(this.startGame){
 			this.clickHeroDao();
-			// this.resultGameEth(-1) // remove
 		} else {
 			this.clickHeroDao();
 			this.itemResult.visible = false;
@@ -344,10 +343,12 @@ ScrGame.prototype.response = function(command, value) {
 		this.sendRequest("getBalance");
 	} else if(command == "resultGame"){
 		var val = Number(value);
+		console.log("resultGame:", val)
 		if(val == 0){
 			this.clickDAO = true
 			this.timeGetResult = 0;
 			this.bSendRequest = false;
+			this.sendRequest("getBalance");
 		} else {
 			this.resultGameEth(val);
 		}
@@ -405,8 +406,9 @@ ScrGame.prototype.update = function() {
 	
 	if(this.startGame){
 		this.timeTotal += diffTime;
+		this.tfTotalTime.setText("time: " + Math.round(this.timeTotal/1000));
 	}
-	if(this.clickDAO && this.idGame){
+	if(this.idGame){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
 		this.bSendRequest == false){
