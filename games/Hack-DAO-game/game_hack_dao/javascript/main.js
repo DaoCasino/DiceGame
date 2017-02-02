@@ -80,6 +80,8 @@ function loadManifest(){
 	preloader.add("itemHero", "images/items/itemHero.png");
 	preloader.add("itemDao", "images/items/itemDao.png");
 	preloader.add("iconEthereum", "images/items/iconEthereum.png");
+	preloader.add("cloud1", "images/items/cloud1.png");
+	preloader.add("cloud2", "images/items/cloud2.png");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);

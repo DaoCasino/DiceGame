@@ -56,6 +56,10 @@ ScrGame.prototype.init = function() {
 	this.hero = addObj("itemHero", 400, 500, 1, -1);
 	this.game_mc.addChild(this.hero);
 	
+	this.createObj({x:700, y:150}, "cloud1")
+	this.createObj({x:150, y:200}, "cloud2")
+	this.createObj({x:-400, y:100}, "cloud1")
+	
 	this.createGUI();
 	
 	this.interactive = true;
@@ -76,17 +80,25 @@ ScrGame.prototype.createGUI = function() {
 	var tfResult = addText("time:", 50, "#000000", undefined, "center", 400)
 	this.itemResult.addChild(tfResult);
 	this.itemResult.tf = tfResult;
+	var tfBalance = addText("+0", 30, "#000000", undefined, "center", 400)
+	this.itemResult.addChild(tfBalance);
+	this.itemResult.tfBalance = tfBalance;
 	
-	this.tfTotalTime = addText("time:", 20, "#000000", undefined, "left", 400)
-	this.tfTotalTime.x = 20;
-	this.tfTotalTime.y = 55;
-	this.face_mc.addChild(this.tfTotalTime);
-	
+	var offsetY = 25;
+	var strUser = '0x96eE4CC8FEB236D6fbdbf8821f4D2873564B9D8f'
+	this.tfIdUser = addText("you: " + strUser, 20, "#000000", undefined, "left", 600)
+	this.tfIdUser.x = 20;
+	this.tfIdUser.y = 10;
+	this.face_mc.addChild(this.tfIdUser);
 	this.tfBalance = addText("balance:", 20, "#000000", undefined, "left", 400)
 	this.tfBalance.x = 20;
-	this.tfBalance.y = 30;
+	this.tfBalance.y = this.tfIdUser.y + offsetY*1;
 	this.face_mc.addChild(this.tfBalance);
 	this.sendRequest("getBalance");
+	this.tfTotalTime = addText("time: 0", 20, "#000000", undefined, "left", 400)
+	this.tfTotalTime.x = 20;
+	this.tfTotalTime.y = this.tfIdUser.y + offsetY*2;
+	this.face_mc.addChild(this.tfTotalTime);
 	
 	var w = 100
 	var h = 10
@@ -174,6 +186,11 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		if(point.x < this.itemDao.x){
 			mc.vX = -1;
 		}
+	} else if(mc.name == "cloud1" ||
+	mc.name == "cloud2"){
+		mc.speed = 3;
+		mc.vX = 1;
+		mc.tLife = 60000;
 	}
 	
 	if(mc.tLife == undefined){
@@ -220,17 +237,22 @@ ScrGame.prototype.startGameEth = function(){
 ScrGame.prototype.resultGameEth = function(val){
 	this._gameOver = true;
 	var str = "";
+	var strB = "";
 	if(val == 1){
 		str = "WIN!";
+		strB = "+0.08";
 		this.bResult = true;
 		this.showWinEthereum = 10;
 	} else {
 		str = "LOSE";
+		strB = "-0.05";
 		this.hero.rotation = 270*(Math.PI/180)
 		this.hero.y += this.hero.h/2
 	}
 	var tf = this.itemResult.tf;
 	tf.setText(str);
+	var tfB = this.itemResult.tfBalance;
+	tfB.setText(strB);
 	this.sendRequest("getBalance");
 	this.itemDao.dead = true;
 	this.itemResult.visible = true;
@@ -298,7 +320,7 @@ ScrGame.prototype.sendUrlRequest = function(url, name) {
 		if (xhr.readyState != 4) return;
 
 		if (xhr.status != 200) {
-			console.log(xhr.status + ': ' + xhr.statusText);
+			console.log("err:" + xhr.status + ': ' + xhr.statusText);
 		} else {
 			console.log(xhr.responseText);
 			obj_game["game"].response(name, xhr.responseText) 
@@ -392,6 +414,14 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					mc.y += mc.speed
 				}
 				mc.x += mc.speed/3*mc.vX
+			} else if(mc.name == "cloud1" ||
+			mc.name == "cloud2"){
+				mc.x += mc.speed*mc.vX
+				if(mc.x > _W + mc.w){
+					mc.tLife = 0;
+					var t = Math.ceil(Math.random()*2)
+					this.createObj({x:-400, y:50+Math.random()*100}, "cloud"+t)
+				}
 			}
 			mc.tLife -= diffTime;
 			if(mc.tLife < 0){
