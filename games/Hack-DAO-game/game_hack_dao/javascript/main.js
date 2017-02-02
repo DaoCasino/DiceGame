@@ -7,7 +7,7 @@ var ScreenGame;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
-var fontMain = "GlassJaw";
+var fontMain = "Luckiest Guy";
 var stats; //для вывода статистики справа
 
 var options_debug = false;
@@ -78,9 +78,8 @@ function loadManifest(){
 	preloader.add("btnYesOver", "images/buttons/btnYesOver.png");
 	
 	preloader.add("itemHero", "images/items/itemHero.png");
-	preloader.add("itemDOA", "images/items/itemDOA.png");
-	preloader.add("Oblachko1", "images/items/Oblachko1.png");
-	preloader.add("itemDisplay", "images/items/itemDisplay.jpg");
+	preloader.add("itemDao", "images/items/itemDao.png");
+	preloader.add("iconEthereum", "images/items/iconEthereum.png");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
@@ -468,6 +467,26 @@ function addText(text, size, color, glow, _align, width, px, bSc, font){
 	}
 	
 	return obj;
+}
+
+function initjiggle(t, startvalue, finishvalue, div, step){
+	if(startvalue){}else{startvalue = 2};
+	if(finishvalue){}else{finishvalue = 1};
+	if(div){}else{div =  0.7};
+	if(step){}else{step =  0.5};
+	
+	t.scale.x = startvalue
+	t.scale.y = t.scale.x
+	t.jska = finishvalue
+	t.jdx = 0
+	t.jdv = div
+	t.jdvstep = step
+}
+
+function jiggle(t){
+	t.jdx = t.jdx * t.jdvstep + (t.jska - t.scale.x) * t.jdv
+	t.scale.x = Math.max(0.1, t.scale.x + t.jdx)
+	t.scale.y = t.scale.x
 }
 
 function get_dd(p1, p2) {
