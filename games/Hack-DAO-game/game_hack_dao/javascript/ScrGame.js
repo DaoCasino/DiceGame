@@ -99,7 +99,7 @@ ScrGame.prototype.createAccount = function() {
 			console.log( {openkey: address, privkey: privateKey});
 			saveData();
 		} else {
-			// this.tfIdUser.setText("you: " + login_obj["openkey"]);
+			this.showError(ERROR_KEYTHEREUM);
 		}
 	}
 }
@@ -118,6 +118,18 @@ ScrGame.prototype.createGUI = function() {
 	this.itemResult.addChild(tfBalance);
 	this.itemResult.tfBalance = tfBalance;
 	
+	this.hintArrow = new PIXI.Container();
+	this.hintArrow.x = this.itemDao.x + 70;
+	this.hintArrow.y = this.itemDao.y - 90;
+	this.game_mc.addChild(this.hintArrow);
+	var hintArrow = addObj("hintArrow");
+	hintArrow.rotation = 35*Math.PI/180;
+	this.hintArrow.addChild(hintArrow);
+	var tfArrow = addText("CLICK DAO", 30, "#FFFFFF", "#000000", "center", 200)
+	tfArrow.x = 120;
+	tfArrow.y = - 25;
+	this.hintArrow.addChild(tfArrow);
+	
 	var offsetY = 25;
 	var strUser = 'id'
 	this.tfIdUser = addText("you: " + strUser, 20, "#ffffff", "#000000", "left", 1000)
@@ -132,7 +144,7 @@ ScrGame.prototype.createGUI = function() {
 	this.tfTotalTime.x = 20;
 	this.tfTotalTime.y = this.tfIdUser.y + offsetY*2;
 	this.face_mc.addChild(this.tfTotalTime);
-	this.tfLevel = addText("Level " + this.curLevel, 50, "#FFEF0B", "#000000", "center", 400)
+	this.tfLevel = addText("Level " + this.curLevel, 50, "#FFEF0B", "#000000", "center", 400, 4)
 	this.tfLevel.x = _W/2;
 	this.tfLevel.y = 50;
 	this.face_mc.addChild(this.tfLevel);
@@ -176,6 +188,19 @@ ScrGame.prototype.refillBalance = function() {
 		var url = "http://platform.dao.casino/topup/?client=" + login_obj["openkey"];
 		window.open(url, "_blank"); 
 	}
+}
+
+ScrGame.prototype.showError = function(value) {
+	var str = "ERR"
+	switch(value){
+		case ERROR_KEYTHEREUM:
+			str = "The key is not created. Try a different browser."
+			break;
+		default:
+			str = "ERR: " + value;
+			break;
+	}
+	this.createWndInfo(str);
 }
 
 ScrGame.prototype.warningBalance = function() {
@@ -374,6 +399,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 			} else {
 				this.clickHeroDao();
 				this.itemResult.visible = false;
+				this.hintArrow.visible = false;
 				this.bSendRequest = false;
 				this.startGame = true;
 				if(options_ethereum){
@@ -396,7 +422,6 @@ ScrGame.prototype.sendUrlRequest = function(url, name) {
 		if (xhr.status != 200) {
 			console.log("err:" + xhr.status + ': ' + xhr.statusText);
 		} else {
-			console.log(xhr.responseText);
 			obj_game["game"].response(name, xhr.responseText) 
 		}
 	}
@@ -451,6 +476,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getBalance"){
 		var obj = JSON.parse(value);
 		obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 2);
+		login_obj["balance"] = obj_game["balance"]
 		this.tfBalance.setText("balance: " + obj_game["balance"]);
 	}
 }

@@ -19,6 +19,8 @@ var options_mobile = true;
 var options_pause = false;
 var options_txt_offset = 0;
 
+var ERROR_KEYTHEREUM = 1;
+
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
     || window.msRequestAnimationFrame
@@ -84,6 +86,7 @@ function loadManifest(){
 	preloader.add("iconEthereum", "images/items/iconEthereum.png");
 	preloader.add("cloud1", "images/items/cloud1.png");
 	preloader.add("cloud2", "images/items/cloud2.png");
+	preloader.add("hintArrow", "images/items/hintArrow.png");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
@@ -224,10 +227,10 @@ function update() {
 
 function saveData() {
 	if(isLocalStorageAvailable()){
-		var login_str = JSON.stringify(login_obj);
-		localStorage.setItem('daocasino_hack', login_str);
-		localStorage.setItem('options_music', options_music);
-		localStorage.setItem('options_sound', options_sound);
+		// var login_str = JSON.stringify(login_obj);
+		// localStorage.setItem('daocasino_hack', login_str);
+		// localStorage.setItem('options_music', options_music);
+		// localStorage.setItem('options_sound', options_sound);
 		// console.log("Saving: ok!");
 	}
 }
