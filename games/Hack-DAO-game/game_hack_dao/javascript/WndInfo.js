@@ -26,8 +26,7 @@ WndInfo.prototype.init = function(_prnt) {
 	this.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
 	
-	this.tf = addText("", 26, "#FF7C2A", "#000000", "center", 350)
-	// this.tf = addText("", 26, "#FF7C2A", "#000000", "center", 350, "Impact")
+	this.tf = addText("", 26, "#FF7C2A", "#000000", "center", 350, 4, fontImpact)
 	this.tf.y = -70;
 	this.addChild(this.tf);
 	this.tfBtn = addText("", 26, "#FFFFFF", "#000000", "center", 350)

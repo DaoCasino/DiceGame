@@ -9,6 +9,7 @@ var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
 var fontMain = "Luckiest Guy";
+var fontImpact = "Impact";
 var stats; //для вывода статистики справа
 
 var options_debug = false;
