@@ -194,7 +194,7 @@ ScrGame.prototype.showError = function(value) {
 	var str = "ERR"
 	switch(value){
 		case ERROR_KEYTHEREUM:
-			str = "The key is not created. Try a different browser."
+			str = "OOOPS! \n The key is not created. Try a different browser."
 			break;
 		default:
 			str = "ERR: " + value;
