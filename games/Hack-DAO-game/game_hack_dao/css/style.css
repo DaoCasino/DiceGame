@@ -19,8 +19,14 @@ html, body, #tbl_wrap {
 	text-align: center; 
 }
 @font-face {
-   font-family: 'Luckiest Guy';
-   src: url('../fonts/LuckiestGuy.ttf') format('truetype');
+   font-family: 'Impact';
+   src: url('../fonts/impact.ttf') format('truetype');
+   font-weight: normal;
+   font-style: normal;
+}
+@font-impact {
+   font-family: 'Impact';
+   src: url('../fonts/impact.ttf') format('truetype');
    font-weight: normal;
    font-style: normal;
 }

@@ -1,5 +1,6 @@
 var _W = 1280;
 var _H = 720;
+var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
 var scrContainer;
@@ -70,12 +71,13 @@ function initGame() {
 function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
-	preloader.add("bgGame", "images/bg/bgGame.jpg");
+	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");
+	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
-	preloader.add("btnNo", "images/buttons/btnNo.png");
-	preloader.add("btnNoOver", "images/buttons/btnNoOver.png");
-	preloader.add("btnYes", "images/buttons/btnYes.png");
-	preloader.add("btnYesOver", "images/buttons/btnYesOver.png");
+	preloader.add("btnClose", "images/buttons/btnClose.png");
+	preloader.add("btnCloseOver", "images/buttons/btnCloseOver.png");
+	preloader.add("btnDefault", "images/buttons/btnDefault.png");
+	preloader.add("btnDefaultOver", "images/buttons/btnDefaultOver.png");
 	
 	preloader.add("itemHero", "images/items/itemHero.png");
 	preloader.add("itemDao", "images/items/itemDao.png");
@@ -187,8 +189,9 @@ function handleProgress(){
 }
 
 function handleComplete(evt) {
+	loadData();
 	spritesLoad();
-	// textureLoad();
+	textureLoad();
     onResize();
 	
 	start();
@@ -217,6 +220,50 @@ function update() {
 	
 	requestAnimationFrame(update);
 	renderer.render(stage);
+}
+
+function saveData() {
+	if(isLocalStorageAvailable()){
+		var login_str = JSON.stringify(login_obj);
+		localStorage.setItem('daocasino_hack', login_str);
+		localStorage.setItem('options_music', options_music);
+		localStorage.setItem('options_sound', options_sound);
+		// console.log("Saving: ok!");
+	}
+}
+
+function loadData() {
+	if(isLocalStorageAvailable()){
+		if (localStorage.getItem('daocasino_hack')){
+			var login_str = localStorage.getItem('daocasino_hack')
+			login_obj = JSON.parse(login_str);
+			options_music = localStorage.getItem('options_music')=='true';
+			options_sound = localStorage.getItem('options_sound')=='true';
+			checkData();
+			console.log("Loading: ok!");
+		} else {
+			checkData();
+			console.log("Loading: fail!");
+		}
+	}
+}
+
+function checkData() {
+	
+}
+
+function resetData() {
+	login_obj = {};
+	saveData();
+}
+
+function isLocalStorageAvailable() {
+    try {
+        return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+		console.log("localStorage_failed:",e);
+        return false;
+    }
 }
 
 function removeSelf(obj) {
@@ -397,25 +444,16 @@ function addObj(name, _x, _y, _scGr, _scaleX, _scaleY, _anchor) {
 	return obj;
 }
 
-function addText(text, size, color, glow, _align, width, px, bSc, font){
+function addText(text, size, color, glow, _align, width, px, font){
 	if(size){}else{size = 24};
 	if(color){}else{color = "#FFFFFF"};
 	if(glow){}else{glow = undefined};
 	if(_align){}else{_align = "center"};
 	if(width){}else{width = 600};
 	if(px){}else{px = 2};
-	if(bSc){}else{bSc = false};
 	if(font){}else{font = fontMain};
 	
-	var style = {
-		font : size + "px " + font,
-		fill : color,
-		align : _align,
-		stroke : glow,
-		strokeThickness : px,
-		wordWrap : true,
-		wordWrapWidth : width
-	};
+	var style;
 	
 	if(glow){
 		style = {

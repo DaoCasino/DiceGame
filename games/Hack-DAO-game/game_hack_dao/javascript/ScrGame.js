@@ -24,6 +24,7 @@ ScrGame.prototype.init = function() {
 	this._arHolder = [];
 	this.timeGetResult = 0;
 	this.timeTotal = 0;
+	this.timeCloseWnd = 0;
 	this.idGame = undefined;
 	this.clickDAO = false;
 	this.startGame = false;
@@ -36,14 +37,18 @@ ScrGame.prototype.init = function() {
 	this.showWinEthereum = 0;
 	this.showTimeEthereum = 100;
 	this.resurrection = this.resurrectionCur;
+	this.curLevel = login_obj["level"] || 1;
+	this.wndInfo;
+	this.curWindow;
 	
 	obj_game["game"] = this;
+	obj_game["balance"] = 0;
 	
 	this.addChild(this.game_mc);
 	this.addChild(this.gfx_mc);
 	this.addChild(this.face_mc);
 	
-	var bgGame = addObj("bgGame", _W/2, _H/2);
+	var bgGame = addObj("bgLevel"+this.curLevel, _W/2, _H/2);
 	this.game_mc.addChild(bgGame);
 	
 	this.itemDao = new ItemDao();
@@ -61,6 +66,8 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:-400, y:100}, "cloud1")
 	
 	this.createGUI();
+	this.createAccount();
+	this.sendRequest("getBalance");
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -68,6 +75,33 @@ ScrGame.prototype.init = function() {
 	this.on('touchstart', this.touchHandler);
 	this.on('touchmove', this.touchHandler);
 	this.on('touchend', this.touchHandler);
+}
+
+ScrGame.prototype.createAccount = function() {
+	if(login_obj["privkey"]){
+		this.tfIdUser.setText("you: " + login_obj["openkey"]);
+	}else{
+		var tfCreateKey = addText("Now you generate address", 40, "#FF8611", "#000000", "center", 800)
+		tfCreateKey.x = _W/2;
+		tfCreateKey.y = 150;
+		this.face_mc.addChild(tfCreateKey);
+		createjs.Tween.get(tfCreateKey).wait(2000).to({alpha:0},500)
+		console.log("keyethereum:", keyethereum);
+		if(keyethereum){
+			var dk = keyethereum.create();
+			var privateKey = dk.privateKey;
+			var address = ethUtil.privateToAddress(privateKey);
+			address = ethUtil.toChecksumAddress(address.toString('hex'));
+			privateKey = privateKey.toString('hex');
+			login_obj["privkey"] = privateKey;
+			login_obj["openkey"] = address;
+			this.tfIdUser.setText("you: " + address);
+			console.log( {openkey: address, privkey: privateKey});
+			saveData();
+		} else {
+			// this.tfIdUser.setText("you: " + login_obj["openkey"]);
+		}
+	}
 }
 
 ScrGame.prototype.createGUI = function() {
@@ -85,20 +119,23 @@ ScrGame.prototype.createGUI = function() {
 	this.itemResult.tfBalance = tfBalance;
 	
 	var offsetY = 25;
-	var strUser = '0x96eE4CC8FEB236D6fbdbf8821f4D2873564B9D8f'
-	this.tfIdUser = addText("you: " + strUser, 20, "#000000", undefined, "left", 600)
+	var strUser = 'id'
+	this.tfIdUser = addText("you: " + strUser, 20, "#ffffff", "#000000", "left", 1000)
 	this.tfIdUser.x = 20;
 	this.tfIdUser.y = 10;
 	this.face_mc.addChild(this.tfIdUser);
-	this.tfBalance = addText("balance:", 20, "#000000", undefined, "left", 400)
+	this.tfBalance = addText("balance: 0", 20, "#ffffff", "#000000", "left", 400)
 	this.tfBalance.x = 20;
 	this.tfBalance.y = this.tfIdUser.y + offsetY*1;
 	this.face_mc.addChild(this.tfBalance);
-	this.sendRequest("getBalance");
-	this.tfTotalTime = addText("time: 0", 20, "#000000", undefined, "left", 400)
+	this.tfTotalTime = addText("time: 0", 20, "#ffffff", "#000000", "left", 400)
 	this.tfTotalTime.x = 20;
 	this.tfTotalTime.y = this.tfIdUser.y + offsetY*2;
 	this.face_mc.addChild(this.tfTotalTime);
+	this.tfLevel = addText("Level " + this.curLevel, 50, "#FFEF0B", "#000000", "center", 400)
+	this.tfLevel.x = _W/2;
+	this.tfLevel.y = 50;
+	this.face_mc.addChild(this.tfLevel);
 	
 	var w = 100
 	var h = 10
@@ -113,6 +150,38 @@ ScrGame.prototype.createGUI = function() {
     life.beginFill(0xff00000).drawRect(0, 0, w, h).endFill();
     this.barDao.addChild(life);
 	this.barDao.life = life;
+}
+
+ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
+	if(this.wndInfo == undefined){
+		this.wndInfo = new WndInfo(this);
+		this.wndInfo.x = _W/2;
+		this.wndInfo.y = _H/2;
+		this.face_mc.addChild(this.wndInfo);
+	}
+	
+	this.bWindow = true;
+	this.wndInfo.show(str, callback, addStr)
+	this.wndInfo.visible = true;
+	this.curWindow = this.bWindow;
+}
+
+ScrGame.prototype.closeWindow = function(wnd) {
+	this.curWindow = wnd;
+	this.timeCloseWnd = 200;
+}
+
+ScrGame.prototype.refillBalance = function() {
+	if(login_obj["openkey"] && options_ethereum){
+		var url = "http://platform.dao.casino/topup/?client=" + login_obj["openkey"];
+		window.open(url, "_blank"); 
+	}
+}
+
+ScrGame.prototype.warningBalance = function() {
+	var str = "Refill your account in the amount of 0.05 ETH."
+	var addStr = "Refill";
+	this.createWndInfo(str, this.refillBalance, addStr);
 }
 
 ScrGame.prototype.createIcoEthereum = function() {
@@ -219,18 +288,19 @@ ScrGame.prototype.startGameEth = function(){
 		options.gasLimit=0x927c0; //web3.toHex('600000');
 		options.value = 50000000000000000; //  //ставка 0.02 эфира
 
-		var tx = new EthereumTx(options);
+		if(login_obj["privkey"]){
+			var tx = new EthereumTx(options);
+			tx.sign(new buf(login_obj["privkey"], 'hex')); //приватный ключ игрока, подписываем транзакцию
 
-		tx.sign(new buf('d283c2b462fa6444db77d622d8b05674f0bd71b9876c67d3aecafe01805620b1', 'hex')); //приватный ключ игрока, подписываем транзакцию
-
-		var serializedTx = tx.serialize().toString('hex');
-		
-		console.log("Транзакция подписана: "+serializedTx);
-		$.getJSON("https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
-			//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
-			obj_game["game"].response("idGame", d.result) 
-			console.log("Транзакция отправлена в сеть");
-		});
+			var serializedTx = tx.serialize().toString('hex');
+			
+			console.log("Транзакция подписана: "+serializedTx);
+			$.getJSON("https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+				//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
+				obj_game["game"].response("idGame", d.result) 
+				console.log("Транзакция отправлена в сеть");
+			});
+		}
 	}, "json");
 }
 
@@ -299,12 +369,16 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		if(this.startGame){
 			this.clickHeroDao();
 		} else {
-			this.clickHeroDao();
-			this.itemResult.visible = false;
-			this.bSendRequest = false;
-			this.startGame = true;
-			if(options_ethereum){
-				this.startGameEth();
+			if(obj_game["balance"] < 0.06){
+				this.warningBalance();
+			} else {
+				this.clickHeroDao();
+				this.itemResult.visible = false;
+				this.bSendRequest = false;
+				this.startGame = true;
+				if(options_ethereum){
+					this.startGameEth();
+				}
 			}
 		}
 	}
@@ -342,13 +416,13 @@ ScrGame.prototype.sendRequest = function(value) {
 				this.sendUrlRequest(str, "resultGame");
 			}
 		} else if(value == "getBalance"){
-			// if(this.idGame){
-				var adress = "0x96eE4CC8FEB236D6fbdbf8821f4D2873564B9D8f"
+			if(login_obj["openkey"]){
+				var adress = login_obj["openkey"].replace('0x','');
 				urlBalance = "https://api.etherscan.io/api?module=account&action=balance&address="+
 							adress+"&tag=latest&apikey=YourApiKeyToken"
 				var str = urlBalance;
 				this.sendUrlRequest(str, "getBalance");
-			// }
+			}
 		}
 	}
 }
@@ -447,6 +521,15 @@ ScrGame.prototype.update = function() {
 			this.sendRequest("idGame");
 		}
 	}
+	if(this.timeCloseWnd > 0 && this.curWindow){
+		this.timeCloseWnd -= diffTime;
+		if(this.timeCloseWnd < 100){
+			this.timeCloseWnd = 0;
+			this.curWindow.visible = false;
+			this.curWindow = undefined;
+			this.bWindow = false;
+		}
+	}
 	
 	for (var i = 0; i < this._arObject.length; i++) {
 		var obj = this._arObject[i];
@@ -494,6 +577,9 @@ ScrGame.prototype.checkButtons = function(evt){
 }
 
 ScrGame.prototype.touchHandler = function(evt){
+	if(this.bWindow){
+		return false;
+	}
 	var phase = evt.type;
 	
 	if(phase=='mousemove' || phase == 'touchmove' || phase == 'touchstart'){
