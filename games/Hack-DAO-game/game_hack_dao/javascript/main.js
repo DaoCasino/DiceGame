@@ -21,6 +21,7 @@ var options_pause = false;
 var options_txt_offset = 0;
 
 var ERROR_KEYTHEREUM = 1;
+var ERROR_TRANSACTION = 2;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame

@@ -96,14 +96,20 @@ ScrGame.prototype.init = function() {
 	this.on('touchend', this.touchHandler);
 }
 
-ScrGame.prototype.resetGame = function() {	
+ScrGame.prototype.resetGame = function() {
 	this.timeGetResult = 0;
 	this.timeTotal = 0;
 	this.timeCloseWnd = 0;
-	this.idGame = undefined;
 	this.clickDAO = false;
 	this.startGame = false;
 	this._gameOver = false;
+	this.tfTotalTime.setText("time: " + Math.round(this.timeTotal/1000));
+}
+
+ScrGame.prototype.clearLog = function() {	
+	resetData();
+	this.resetGame();
+	this.createAccount();
 }
 
 ScrGame.prototype.createAccount = function() {	
@@ -229,6 +235,10 @@ ScrGame.prototype.showError = function(value) {
 		case ERROR_KEYTHEREUM:
 			str = "OOOPS! \n The key is not created. Try a different browser."
 			break;
+		case ERROR_TRANSACTION:
+			str = "OOOPS! \n Transaction failed."
+			this.resetGame();
+			break;
 		default:
 			str = "ERR: " + value;
 			break;
@@ -243,9 +253,9 @@ ScrGame.prototype.warningBalance = function() {
 }
 
 ScrGame.prototype.showWndClearLog = function() {
-	// var str = "Refill your account in the amount of 0.05 ETH."
-	// var addStr = "Refill";
-	// this.createWndInfo(str, this.refillBalance, addStr);
+	var str = "Do you want to overwrite the keys?"
+	var addStr = "Yes";
+	this.createWndInfo(str, this.clearLog, addStr);
 }
 
 ScrGame.prototype.createIcoEthereum = function() {
@@ -354,17 +364,21 @@ ScrGame.prototype.startGameEth = function(){
 		options.value = 50000000000000000; //  //ставка 0.02 эфира
 
 		if(login_obj["privkey"]){
-			var tx = new EthereumTx(options);
-			tx.sign(new buf(login_obj["privkey"], 'hex')); //приватный ключ игрока, подписываем транзакцию
+			if(buf == undefined){
+				obj_game["game"].showError(ERROR_TRANSACTION);
+			} else {
+				var tx = new EthereumTx(options);
+				tx.sign(new buf(login_obj["privkey"], 'hex')); //приватный ключ игрока, подписываем транзакцию
 
-			var serializedTx = tx.serialize().toString('hex');
-			
-			console.log("Транзакция подписана: "+serializedTx);
-			$.getJSON("https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
-				//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
-				obj_game["game"].response("idGame", d.result) 
-				console.log("Транзакция отправлена в сеть");
-			});
+				var serializedTx = tx.serialize().toString('hex');
+				
+				console.log("Транзакция подписана: "+serializedTx);
+				$.getJSON("https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
+					obj_game["game"].response("idGame", d.result) 
+					console.log("Транзакция отправлена в сеть");
+				});
+			}
 		}
 	}, "json");
 }
@@ -429,9 +443,7 @@ ScrGame.prototype.healthDao = function() {
 
 ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.name == "btnReset"){
-		resetData();
-		this.resetGame();
-		this.createAccount();
+		this.showWndClearLog();
 	} else if(item_mc.name == "btnExport"){
 		this.exportKeys();
 	} else if(item_mc.name == "itemDao"){
