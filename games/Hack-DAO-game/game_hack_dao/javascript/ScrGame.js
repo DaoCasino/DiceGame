@@ -145,12 +145,13 @@ ScrGame.prototype.createGUI = function() {
 	this.itemResult.x = _W/2;
 	this.itemResult.y = 130;
 	this.itemResult.visible = false;
-	this.game_mc.addChild(this.itemResult);
+	this.face_mc.addChild(this.itemResult);
 	
-	var tfResult = addText("time:", 50, "#000000", undefined, "center", 400)
+	var tfResult = addText("time:", 50, "#FF0000", "#000000", "center", 400)
 	this.itemResult.addChild(tfResult);
 	this.itemResult.tf = tfResult;
-	var tfBalance = addText("+0", 30, "#000000", undefined, "center", 400)
+	var tfBalance = addText("+0", 30, "#FF0000", "#000000", "center", 400)
+	tfBalance.y = 55;
 	this.itemResult.addChild(tfBalance);
 	this.itemResult.tfBalance = tfBalance;
 	
@@ -392,11 +393,13 @@ ScrGame.prototype.resultGameEth = function(val){
 		strB = "+0.08";
 		this.bResult = true;
 		this.showWinEthereum = 10;
+		this.itemDao.setAct("Lose")
 	} else {
 		str = "LOSE";
 		strB = "-0.05";
 		this.hero.rotation = 270*(Math.PI/180)
 		this.hero.y += this.hero.h/2
+		this.itemDao.setAct("Win")
 	}
 	var tf = this.itemResult.tf;
 	tf.setText(str);
