@@ -65,6 +65,15 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:150, y:200}, "cloud2")
 	this.createObj({x:-400, y:100}, "cloud1")
 	
+	this.btnReset = addButton2("btnDefault",90, 120);
+	this.btnReset.name = "btnReset";
+	this.addChild(this.btnReset);
+	this._arButtons.push(this.btnReset);
+	var tfReset = addText("CLEAR LOG", 26, "#FFFFFF", "#000000", "center", 350)
+	tfReset.x = this.btnReset.x;
+	tfReset.y = this.btnReset.y - 17;
+	this.addChild(tfReset);
+	
 	this.createGUI();
 	this.createAccount();
 	this.sendRequest("getBalance");
@@ -126,10 +135,6 @@ ScrGame.prototype.createGUI = function() {
 	var hintArrow = addObj("hintArrow");
 	hintArrow.rotation = 35*Math.PI/180;
 	this.hintArrow.addChild(hintArrow);
-	var tfArrow = addText("CLICK DAO", 30, "#FFFFFF", "#000000", "center", 200)
-	tfArrow.x = 120;
-	tfArrow.y = - 20;
-	this.hintArrow.addChild(tfArrow);
 	
 	var offsetY = 25;
 	var strUser = 'id'
@@ -389,7 +394,10 @@ ScrGame.prototype.healthDao = function() {
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {
-	if(item_mc.name == "itemDao"){
+	if(item_mc.name == "btnReset"){
+		resetData();
+		this.createAccount();
+	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){
 			return false;
 		}
