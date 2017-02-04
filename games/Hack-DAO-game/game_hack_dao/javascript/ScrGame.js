@@ -73,6 +73,14 @@ ScrGame.prototype.init = function() {
 	tfReset.x = this.btnReset.x;
 	tfReset.y = this.btnReset.y - 17;
 	this.addChild(tfReset);
+	this.btnExport = addButton2("btnDefault",90, 180);
+	this.btnExport.name = "btnExport";
+	this.addChild(this.btnExport);
+	this._arButtons.push(this.btnExport);
+	var tfExport = addText("Export keys", 21, "#FFFFFF", "#000000", "center", 350)
+	tfExport.x = this.btnExport.x;
+	tfExport.y = this.btnExport.y - 15;
+	this.addChild(tfExport);
 	
 	this.createGUI();
 	this.createAccount();
@@ -84,6 +92,16 @@ ScrGame.prototype.init = function() {
 	this.on('touchstart', this.touchHandler);
 	this.on('touchmove', this.touchHandler);
 	this.on('touchend', this.touchHandler);
+}
+
+ScrGame.prototype.resetGame = function() {	
+	this.timeGetResult = 0;
+	this.timeTotal = 0;
+	this.timeCloseWnd = 0;
+	this.idGame = undefined;
+	this.clickDAO = false;
+	this.startGame = false;
+	this._gameOver = false;
 }
 
 ScrGame.prototype.createAccount = function() {	
@@ -192,6 +210,13 @@ ScrGame.prototype.closeWindow = function(wnd) {
 ScrGame.prototype.refillBalance = function() {
 	if(login_obj["openkey"] && options_ethereum){
 		var url = "http://platform.dao.casino/topup/?client=" + login_obj["openkey"];
+		window.open(url, "_blank"); 
+	}
+}
+
+ScrGame.prototype.exportKeys = function() {
+	if(login_obj["openkey"] && options_ethereum){
+		var url = "http://platform.dao.casino/export/?privkey="+login_obj["privkey"]+"&openkey="+login_obj["openkey"]
 		window.open(url, "_blank"); 
 	}
 }
@@ -396,7 +421,10 @@ ScrGame.prototype.healthDao = function() {
 ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.name == "btnReset"){
 		resetData();
+		this.resetGame();
 		this.createAccount();
+	} else if(item_mc.name == "btnExport"){
+		this.exportKeys();
 	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){
 			return false;
