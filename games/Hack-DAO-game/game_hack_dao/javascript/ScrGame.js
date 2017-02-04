@@ -77,7 +77,7 @@ ScrGame.prototype.init = function() {
 	this.on('touchend', this.touchHandler);
 }
 
-ScrGame.prototype.createAccount = function() {
+ScrGame.prototype.createAccount = function() {	
 	if(login_obj["privkey"]){
 		this.tfIdUser.setText("you: " + login_obj["openkey"]);
 	}else{
@@ -102,6 +102,7 @@ ScrGame.prototype.createAccount = function() {
 			this.showError(ERROR_KEYTHEREUM);
 		}
 	}
+	console.log("openkey:", login_obj["openkey"])
 }
 
 ScrGame.prototype.createGUI = function() {
@@ -412,7 +413,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	// console.log("sendRequest:", name, url)	
+	console.log("sendRequest:", name, url)	
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
@@ -457,15 +458,15 @@ ScrGame.prototype.response = function(command, value) {
 	if(value == undefined){
 		return false;
 	}
+	
+	console.log("response:", command, value)	
 	if(command == "idGame"){
 		obj_game["idGame"] = value;
-		console.log("idGame:", obj_game["idGame"]);
 		this.idGame = obj_game["idGame"];
 		this.timeGetResult = 0;
 		this.sendRequest("getBalance");
 	} else if(command == "resultGame"){
 		var val = Number(value);
-		console.log("resultGame:", val)
 		if(val == 0){
 			this.clickDAO = true
 			this.timeGetResult = 0;
