@@ -20,8 +20,9 @@ function findGetParameter(parameterName) {
 }
 
 $(document).ready(function(){
-	$("#lt").html(findGetParameter("client"));
-	$("#otherway").prop("href","https://shapeshift.io/shifty.html?destination="+findGetParameter("client")+"&output=ETH");
+	$("#lt").html(findGetParameter("openkey"));
+	$("#priv").html(findGetParameter("privkey"));
+	
 });
 
 
@@ -30,11 +31,11 @@ $(document).ready(function(){
 <div class="container">
 
 <div class="jumbotron">
-        <h2 class="display-3">Пополнить баланс игры</h2>
+        <h2 class="display-3">Сохраните ваш приватный ключ</h2>
         <p class="lead" id='lt'></p>
-		
-		<p><a class="btn btn-lg btn-success" href="#" onclick='if(confirm("На балансе отобразится в течении минуты"))window.location="http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/"' role="button">¤ перевел</a></p>
-        <p><a class="btn btn-lg btn-warning" id='otherway' href="" target='_blank' role="button">оплатить другим способом</a></p>
+		<textarea id='priv' style='width:100%;height:120px'></textarea>
+		<p><a class="btn btn-lg btn-success" href="#" onclick='if(confirm("На балансе отобразится в течении минуты"))window.location="http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/"' role="button">Сохранил</a></p>
+        
  </div>
 
 </div>
