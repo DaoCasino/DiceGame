@@ -89,6 +89,8 @@ function loadManifest(){
 	preloader.add("cloud2", "images/items/cloud2.png");
 	preloader.add("hintArrow", "images/items/hintArrow.png");
 	
+	preloader.add("images/texture/AnimaTexture.json");
+	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
 	preloader.load(handleComplete);
@@ -114,7 +116,7 @@ function spritesLoad() {
 }
 
 function textureLoad() {
-	// iniSet("images/texture/TitleAnimaTexture.json");
+	iniSet("images/texture/AnimaTexture.json");
 	// iniSetArt("images/buttons/ButtonsTexture.json");
 }
 

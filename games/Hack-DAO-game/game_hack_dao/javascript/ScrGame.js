@@ -127,7 +127,7 @@ ScrGame.prototype.createGUI = function() {
 	this.hintArrow.addChild(hintArrow);
 	var tfArrow = addText("CLICK DAO", 30, "#FFFFFF", "#000000", "center", 200)
 	tfArrow.x = 120;
-	tfArrow.y = - 25;
+	tfArrow.y = - 20;
 	this.hintArrow.addChild(tfArrow);
 	
 	var offsetY = 25;
@@ -215,7 +215,7 @@ ScrGame.prototype.createIcoEthereum = function() {
 	var _y = this.itemDao.y - 50
 	var pt = {x:_x, y:_y}
 	var str = "-"+String(this.damage)
-	this.createObj(pt, "iconEthereum", 0.2);
+	this.createObj(pt, "iconEthereum");
 }
 
 ScrGame.prototype.createText = function(point, str, color, t) {
@@ -363,6 +363,7 @@ ScrGame.prototype.clickHeroDao = function() {
 		this.resurrection = this.resurrectionCur*75;
 		var pt = {x:this.itemDao.x, y:this.itemDao.y - 100}
 		this.createText(pt, "HA-HA-HA");
+		this.itemDao.setAct("Cure")
 	}
 	this.createIcoEthereum();
 }
@@ -394,7 +395,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		if(this.startGame){
 			this.clickHeroDao();
 		} else {
-			if(obj_game["balance"] < 0.06){
+			if(obj_game["balance"] < 0.06 && options_ethereum){
 				this.warningBalance();
 			} else {
 				this.clickHeroDao();

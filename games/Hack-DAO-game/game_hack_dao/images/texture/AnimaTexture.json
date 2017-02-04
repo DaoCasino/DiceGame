@@ -1,0 +1,508 @@
+{"frames": {
+
+"daoCure/daoCure_0001.png":
+{
+	"frame": {"x":1,"y":1,"w":160,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":0,"w":160,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0002.png":
+{
+	"frame": {"x":1,"y":236,"w":154,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":0,"w":154,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0003.png":
+{
+	"frame": {"x":163,"y":1,"w":147,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":0,"w":147,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0004.png":
+{
+	"frame": {"x":454,"y":236,"w":139,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":22,"y":0,"w":139,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0005.png":
+{
+	"frame": {"x":732,"y":236,"w":128,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":0,"w":128,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0006.png":
+{
+	"frame": {"x":130,"y":471,"w":124,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":37,"y":0,"w":124,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0007.png":
+{
+	"frame": {"x":742,"y":706,"w":120,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":0,"w":120,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0008.png":
+{
+	"frame": {"x":1,"y":941,"w":120,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":0,"w":120,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0009.png":
+{
+	"frame": {"x":756,"y":471,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0010.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0011.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0012.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0013.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0014.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0015.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0016.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0017.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0018.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0019.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0020.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0021.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0022.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0023.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0024.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0025.png":
+{
+	"frame": {"x":489,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0026.png":
+{
+	"frame": {"x":610,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0027.png":
+{
+	"frame": {"x":731,"y":941,"w":119,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":0,"w":119,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0028.png":
+{
+	"frame": {"x":123,"y":941,"w":120,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":0,"w":120,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0029.png":
+{
+	"frame": {"x":245,"y":941,"w":120,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":0,"w":120,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0030.png":
+{
+	"frame": {"x":367,"y":941,"w":120,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":0,"w":120,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0031.png":
+{
+	"frame": {"x":373,"y":706,"w":121,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":40,"y":0,"w":121,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0032.png":
+{
+	"frame": {"x":496,"y":706,"w":121,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":40,"y":0,"w":121,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0033.png":
+{
+	"frame": {"x":619,"y":706,"w":121,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":40,"y":0,"w":121,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0034.png":
+{
+	"frame": {"x":632,"y":471,"w":122,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":39,"y":0,"w":122,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0035.png":
+{
+	"frame": {"x":1,"y":706,"w":122,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":39,"y":0,"w":122,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoCure/daoCure_0036.png":
+{
+	"frame": {"x":382,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":38,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":161,"h":233}
+},
+"daoDamage/daoDamage_0001.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0002.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0003.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0004.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0005.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0006.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0007.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0008.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0009.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0010.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0011.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoDamage/daoDamage_0012.png":
+{
+	"frame": {"x":507,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":123,"h":233}
+},
+"daoLose/daoLose_0001.png":
+{
+	"frame": {"x":125,"y":706,"w":122,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":122,"h":233},
+	"sourceSize": {"w":122,"h":233}
+},
+"daoStay/daoStay_0001.png":
+{
+	"frame": {"x":249,"y":706,"w":122,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":122,"h":233},
+	"sourceSize": {"w":122,"h":233}
+},
+"daoWin/daoWin_0001.png":
+{
+	"frame": {"x":382,"y":471,"w":123,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":25,"y":0,"w":123,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0002.png":
+{
+	"frame": {"x":256,"y":471,"w":124,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":0,"w":124,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0003.png":
+{
+	"frame": {"x":1,"y":471,"w":127,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":0,"w":127,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0004.png":
+{
+	"frame": {"x":730,"y":1,"w":129,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":19,"y":0,"w":129,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0005.png":
+{
+	"frame": {"x":596,"y":1,"w":132,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":16,"y":0,"w":132,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0006.png":
+{
+	"frame": {"x":595,"y":236,"w":135,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":13,"y":0,"w":135,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0007.png":
+{
+	"frame": {"x":456,"y":1,"w":138,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":0,"w":138,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0008.png":
+{
+	"frame": {"x":312,"y":1,"w":142,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":0,"w":142,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0009.png":
+{
+	"frame": {"x":307,"y":236,"w":145,"h":233},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":0,"w":145,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0010.png":
+{
+	"frame": {"x":157,"y":236,"w":148,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0011.png":
+{
+	"frame": {"x":157,"y":236,"w":148,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":233},
+	"sourceSize": {"w":148,"h":233}
+},
+"daoWin/daoWin_0012.png":
+{
+	"frame": {"x":157,"y":236,"w":148,"h":233},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":233},
+	"sourceSize": {"w":148,"h":233}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "AnimaTexture.png",
+	"format": "RGBA8888",
+	"size": {"w":876,"h":1175},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6ec578fd052c31b60f5739e32351b299:6a9ef5872099f1dcf0a58f6c20294ec6:247343779a0ae4747b65d2a047dfc546$"
+}
+}
