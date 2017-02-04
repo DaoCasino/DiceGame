@@ -65,15 +65,7 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:150, y:200}, "cloud2")
 	this.createObj({x:-400, y:100}, "cloud1")
 	
-	this.btnReset = addButton2("btnDefault",90, 120);
-	this.btnReset.name = "btnReset";
-	this.addChild(this.btnReset);
-	this._arButtons.push(this.btnReset);
-	var tfReset = addText("CLEAR LOG", 26, "#FFFFFF", "#000000", "center", 350)
-	tfReset.x = this.btnReset.x;
-	tfReset.y = this.btnReset.y - 17;
-	this.addChild(tfReset);
-	this.btnExport = addButton2("btnDefault",90, 180);
+	this.btnExport = addButton2("btnDefault",90, 120);
 	this.btnExport.name = "btnExport";
 	this.addChild(this.btnExport);
 	this._arButtons.push(this.btnExport);
@@ -81,6 +73,16 @@ ScrGame.prototype.init = function() {
 	tfExport.x = this.btnExport.x;
 	tfExport.y = this.btnExport.y - 15;
 	this.addChild(tfExport);
+	if(options_debug){
+		this.btnReset = addButton2("btnDefault",90, 180);
+		this.btnReset.name = "btnReset";
+		this.addChild(this.btnReset);
+		this._arButtons.push(this.btnReset);
+		var tfReset = addText("CLEAR LOG", 26, "#FFFFFF", "#000000", "center", 350)
+		tfReset.x = this.btnReset.x;
+		tfReset.y = this.btnReset.y - 17;
+		this.addChild(tfReset);
+	}
 	
 	this.createGUI();
 	this.createAccount();
@@ -240,6 +242,12 @@ ScrGame.prototype.warningBalance = function() {
 	this.createWndInfo(str, this.refillBalance, addStr);
 }
 
+ScrGame.prototype.showWndClearLog = function() {
+	// var str = "Refill your account in the amount of 0.05 ETH."
+	// var addStr = "Refill";
+	// this.createWndInfo(str, this.refillBalance, addStr);
+}
+
 ScrGame.prototype.createIcoEthereum = function() {
 	var dX = 100
 	var _x = this.itemDao.x + Math.random()*dX - dX/2
@@ -333,8 +341,9 @@ ScrGame.prototype.addHolderObj = function(obj){
 	obj.y = _H + 50;
 }
 
-ScrGame.prototype.startGameEth = function(){	
-	$.post("https://rpc.myetherwallet.com/api.mew",{txdata:'96eE4CC8FEB236D6fbdbf8821f4D2873564B9D8f'},function(d){
+ScrGame.prototype.startGameEth = function(){
+	var openkey = login_obj["openkey"].substr(2);
+	$.post("https://rpc.myetherwallet.com/api.mew",{txdata:openkey},function(d){
 		console.log("получили nonce");
 		var options = {};
 		options.nonce = d.data.nonce;
