@@ -69,8 +69,8 @@ function initGame() {
 		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
 		bgLoading.texture.baseTexture.on('loaded', 
 				function(){
-					bgLoading.x = _W/2 - LoadBack1.width/2;
-					bgLoading.y = _H/2 - LoadBack1.height/2;
+					bgLoading.x = _W/2 - bgLoading.width/2;
+					bgLoading.y = _H/2 - bgLoading.height/2;
 				});
 		LoadBack.addChild(bgLoading);
 		var w = 270;

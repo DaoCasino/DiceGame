@@ -436,8 +436,8 @@ ScrGame.prototype.startGameEth = function(){
 		options.nonce = d.data.nonce;
 		options.data = '0xc3fe3e28'; //собственно это надо отправить, чтоб вызвалась функция game();
 		options.to = "0x1fa8b177dc1a9aa12f52cc15db4a514e12194e21"; //адрес нашего смарт контракта
-		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(this.curLevel);
-		console.log("!!! this.curLevel:", this.curLevel)
+		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
+		console.log("!!! this.curLevel:", obj_game["game"].curLevel)
 		console.log("!!! options.data:", options.data)
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
