@@ -103,6 +103,7 @@ function loadManifest(){
 	preloader.add("cloud1", "images/items/cloud1.png");
 	preloader.add("cloud2", "images/items/cloud2.png");
 	preloader.add("hintArrow", "images/items/hintArrow.png");
+	preloader.add("itemMoney", "images/items/itemMoney.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	

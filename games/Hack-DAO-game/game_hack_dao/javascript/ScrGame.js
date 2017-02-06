@@ -468,7 +468,7 @@ ScrGame.prototype.resultGameEth = function(val){
 	var strB = "";
 	if(val == 1){
 		str = "WIN!";
-		strB = "+0.08";
+		strB = "";
 		this.bResult = true;
 		this.showWinEthereum = 10;
 		this.itemDao.setAct("Lose")
@@ -476,7 +476,7 @@ ScrGame.prototype.resultGameEth = function(val){
 		this.btnNext.visible = true;
 	} else {
 		str = "LOSE";
-		strB = "-0.05";
+		strB = "";
 		this.itemDao.setAct("Win")
 		this.itemDao.dead = true;
 		this.btnTry.visible = true;
