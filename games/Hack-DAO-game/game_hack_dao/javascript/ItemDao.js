@@ -19,6 +19,22 @@ ItemDao.prototype.init = function() {
 	this.init = false;
 	this.healthMax = 1000;
 	this.health = this.healthMax;
+	
+	var w = 100
+	var h = 10
+	this.barDao = new PIXI.Container();
+	this.barDao.x = - w/2
+	this.barDao.y = - 150
+    this.addChild(this.barDao);
+	var bg = new PIXI.Graphics();
+    bg.beginFill(0x0000000).drawRect(-2, -2, w+4, h+4).endFill();
+    this.barDao.addChild(bg);
+	var life = new PIXI.Graphics();
+    life.beginFill(0xff00000).drawRect(0, 0, w, h).endFill();
+    this.barDao.addChild(life);
+	this.barDao.life = life;
+	this.barDao.w = w;
+	this.barDao.h = h;
 }
 
 ItemDao.prototype.setSkin = function(skin) {
@@ -81,6 +97,12 @@ ItemDao.prototype.update = function(diffTime) {
 		if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
 			this.sprite.img.stop();
 		}
+	}
+	
+	if(this.barDao.visible){
+		var curSc = this.health/this.healthMax;
+		curSc = Math.max(curSc, 0.01);
+		this.barDao.life.scale.x = Math.min(curSc, 1);
 	}
 	
 	if(this.dead){

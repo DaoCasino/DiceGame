@@ -88,6 +88,7 @@ function loadManifest(){
 	
 	preloader.add("bgLoading", "images/bg/bgLoading.jpg");
 	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");
+	preloader.add("bgLevel2", "images/bg/bgLevel2.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
@@ -295,6 +296,10 @@ function removeSelf(obj) {
 }
 
 function start() {
+	if(LoadBack){
+		stage.removeChild(LoadBack);
+	}
+	
 	showGame();
 }
 

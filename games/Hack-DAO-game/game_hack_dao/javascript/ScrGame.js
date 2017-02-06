@@ -14,6 +14,7 @@ var obj_game = {};
 	
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
+	this.back_mc = new PIXI.Container();
 	this.game_mc = new PIXI.Container();
 	this.gfx_mc = new PIXI.Container();
 	
@@ -41,35 +42,44 @@ ScrGame.prototype.init = function() {
 	this.wndInfo;
 	this.curWindow;
 	
+	if(options_debug){
+		var tfDebug = addText("Debug", 20, "#FF0000", "#000000", "right", 400)
+		tfDebug.x = _W-20;
+		tfDebug.y = 10;
+		this.face_mc.addChild(tfDebug);
+		
+		this.curLevel = 2;
+	}
+	
 	this.arTitle = ["",
 		"30.04.2016 \n The DAO is live",
-		"ICO \n The DAO raised over US$100m from more than 11,000 participants",
-		"Пропозалы",
+		"ICO \n The DAO raised over US $100m from more than 11,000 participants",
+		"Proposal",
 		"16.06.2016 \n Dao get attacked, DAO price fell, ETH price fell",
 		"White hat attack",
 		"Hard Fork 1",
 		"Back to main network",
-		"Hard Fork 2. Hard fork cafe",
+		"Hard Fork 2 \n Hard fork cafe",
 		"Ethereum Classiс"
 	]
 	
 	obj_game["game"] = this;
 	obj_game["balance"] = 0;
 	
+	this.addChild(this.back_mc);
 	this.addChild(this.game_mc);
 	this.addChild(this.gfx_mc);
 	this.addChild(this.face_mc);
 	
-	var bgGame = addObj("bgLevel"+this.curLevel, _W/2, _H/2);
-	this.game_mc.addChild(bgGame);
+	this.bgGame = addObj("bgLevel"+this.curLevel, _W/2, _H/2);
+	this.back_mc.addChild(this.bgGame);
 	
-	this.tfTitleLevel = addText("DAO", 24, "#00FF00", "#000000", "center", 1000, 3)
+	this.tfTitleLevel = addText("", 24, "#00FF00", "#000000", "center", 1000, 3)
 	this.tfTitleLevel.x = _W/2;
 	this.tfTitleLevel.y = 120;
 	this.face_mc.addChild(this.tfTitleLevel);
 	
 	this.itemDao = new ItemDao();
-	this.createLevel();
 	this.game_mc.addChild(this.itemDao);
 	this._arButtons.push(this.itemDao);
 	this._arObject.push(this.itemDao);
@@ -79,9 +89,10 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:-400, y:100}, "cloud1")
 	
 	this.btnExport = this.createButton("btnExport", 90, 120, "Export keys", 21)
-	this.btnTry = this.createButton("btnTry", _W/2, 500, "Try again", 21)
+	this.btnStart = this.createButton("btnStart", _W/2, 550, "Start", 21)
+	this.btnTry = this.createButton("btnTry", _W/2, 550, "Try again", 21)
 	this.btnTry.visible = false;
-	this.btnNext = this.createButton("btnNext", _W/2, 500, "Next level", 21)
+	this.btnNext = this.createButton("btnNext", _W/2, 550, "Next level", 21)
 	this.btnNext.visible = false;
 	if(options_debug){
 		this.btnReset = this.createButton("btnReset", 90, 180, "Clear log", 26, 17)
@@ -109,6 +120,8 @@ ScrGame.prototype.resetGame = function() {
 	this.tfTotalTime.setText("time: " + Math.round(this.timeTotal/1000));
 	this.itemDao.healthMax = 1000;
 	this.itemDao.health = this.itemDao.healthMax;
+	this.btnStart.visible = true;
+	this.itemDao.visible = false;
 }
 
 ScrGame.prototype.clearLog = function() {	
@@ -134,12 +147,31 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 }
 
 ScrGame.prototype.createLevel = function() {
+	if(this.bgGame){
+		this.back_mc.removeChild(this.bgGame);
+	}
+	this.bgGame = addObj("bgLevel"+this.curLevel, _W/2, _H/2);
+	if(this.bgGame){
+	} else {
+		console.log("bgLevel"+this.curLevel + " is undefined")
+		this.bgGame = addObj("bgLevel1", _W/2, _H/2);
+	}
+	this.back_mc.addChild(this.bgGame);
 	this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
 	switch (this.curLevel){
 		case 1:
 			this.itemDao.setSkin("egg");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
+			this.itemDao.visible = true;
+			this.itemDao.x = _W/2;
+			this.itemDao.y = 500;
+			break;
+		case 2:
+			this.itemDao.setSkin("dao");
+			this.itemDao.setAct("Stay")
+			this.itemDao.dead = false;
+			this.itemDao.visible = true;
 			this.itemDao.x = _W/2;
 			this.itemDao.y = 500;
 			break;
@@ -148,6 +180,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.setSkin("dao");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
+			this.itemDao.visible = true;
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
 			
@@ -156,18 +189,12 @@ ScrGame.prototype.createLevel = function() {
 			break;
 	}
 	
-	if(this.barDao){
-		this.barDao.x = this.itemDao.x - this.barDao.w/2
-		this.barDao.y = this.itemDao.y - 150;
-		this.healthDao();
-		var curSc = this.itemDao.health/this.itemDao.healthMax;
-	}
-	
 	if(this.hintArrow){
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
 }
+
 ScrGame.prototype.createAccount = function() {	
 	if(login_obj["privkey"]){
 		this.tfIdUser.setText("you: " + login_obj["openkey"]);
@@ -234,22 +261,6 @@ ScrGame.prototype.createGUI = function() {
 	this.tfLevel.x = _W/2;
 	this.tfLevel.y = 50;
 	this.face_mc.addChild(this.tfLevel);
-	
-	var w = 100
-	var h = 10
-	this.barDao = new PIXI.Container();
-	this.barDao.x = this.itemDao.x - w/2
-	this.barDao.y = this.itemDao.y - 150
-    this.game_mc.addChild(this.barDao);
-	var bg = new PIXI.Graphics();
-    bg.beginFill(0x0000000).drawRect(-2, -2, w+4, h+4).endFill();
-    this.barDao.addChild(bg);
-	var life = new PIXI.Graphics();
-    life.beginFill(0xff00000).drawRect(0, 0, w, h).endFill();
-    this.barDao.addChild(life);
-	this.barDao.life = life;
-	this.barDao.w = w;
-	this.barDao.h = h;
 }
 
 ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
@@ -501,9 +512,6 @@ ScrGame.prototype.healthDao = function() {
 		}
 		this.itemDao.health += this.resurrection;
 	}
-	var curSc = this.itemDao.health/this.itemDao.healthMax;
-	curSc = Math.max(curSc, 0.01);
-	this.barDao.life.scale.x = Math.min(curSc, 1);
 }
 
 ScrGame.prototype.nextLevel = function() {
@@ -521,6 +529,20 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.showWndClearLog();
 	} else if(item_mc.name == "btnExport"){
 		this.exportKeys();
+	} else if(item_mc.name == "btnStart"){
+		if(obj_game["balance"] < 0.06 && options_ethereum &&
+		options_debug == false){
+			this.warningBalance();
+		} else {
+			this.createLevel();
+			this.bSendRequest = false;
+			this.startGame = true;
+			if(options_ethereum){
+				this.startGameEth();
+			}
+			this.createLevel();
+			this.btnStart.visible = false;
+		}
 	} else if(item_mc.name == "btnTry"){
 		this.resetGame();
 		this.btnTry.visible = false;
@@ -531,21 +553,10 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		if(this._gameOver){
 			return false;
 		}
-		if(this.startGame){
+		if(this.startGame &&
+		(this.curLevel == 1 || this.curLevel == 4)){
+			this.hintArrow.visible = false;
 			this.clickHeroDao();
-		} else {
-			if(obj_game["balance"] < 0.06 && options_ethereum){
-				this.warningBalance();
-			} else {
-				this.clickHeroDao();
-				this.itemResult.visible = false;
-				this.hintArrow.visible = false;
-				this.bSendRequest = false;
-				this.startGame = true;
-				if(options_ethereum){
-					this.startGameEth();
-				}
-			}
 		}
 	}
 }
