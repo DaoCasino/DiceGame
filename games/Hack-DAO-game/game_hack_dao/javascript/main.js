@@ -85,6 +85,7 @@ function loadManifest(){
 	
 	preloader.add("itemHero", "images/items/itemHero.png");
 	preloader.add("itemDao", "images/items/itemDao.png");
+	preloader.add("itemEgg", "images/items/itemEgg.png");
 	preloader.add("iconEthereum", "images/items/iconEthereum.png");
 	preloader.add("cloud1", "images/items/cloud1.png");
 	preloader.add("cloud2", "images/items/cloud2.png");

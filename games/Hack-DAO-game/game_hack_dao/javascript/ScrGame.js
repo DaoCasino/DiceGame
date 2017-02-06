@@ -37,7 +37,7 @@ ScrGame.prototype.init = function() {
 	this.showWinEthereum = 0;
 	this.showTimeEthereum = 100;
 	this.resurrection = this.resurrectionCur;
-	this.curLevel = login_obj["level"] || 1;
+	this.curLevel = Number(login_obj["level"]) || 1;
 	this.wndInfo;
 	this.curWindow;
 	
@@ -52,14 +52,10 @@ ScrGame.prototype.init = function() {
 	this.game_mc.addChild(bgGame);
 	
 	this.itemDao = new ItemDao();
-	this.itemDao.x = 800;
-	this.itemDao.y = 500;
+	this.createLevel();
 	this.game_mc.addChild(this.itemDao);
 	this._arButtons.push(this.itemDao);
 	this._arObject.push(this.itemDao);
-	
-	this.hero = addObj("itemHero", 400, 500, 1, -1);
-	this.game_mc.addChild(this.hero);
 	
 	this.createObj({x:700, y:150}, "cloud1")
 	this.createObj({x:150, y:200}, "cloud2")
@@ -94,6 +90,8 @@ ScrGame.prototype.resetGame = function() {
 	this.startGame = false;
 	this._gameOver = false;
 	this.tfTotalTime.setText("time: " + Math.round(this.timeTotal/1000));
+	this.itemDao.countLifeMax = 1000;
+	this.itemDao.countLife = this.countLifeMax;
 }
 
 ScrGame.prototype.clearLog = function() {	
@@ -118,6 +116,26 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 	return btn;
 }
 
+ScrGame.prototype.createLevel = function() {	
+	switch (this.curLevel){
+		case 1:
+			this.itemDao.setSkin("egg");
+			this.itemDao.setAct("Stay")
+			this.itemDao.x = _W/2;
+			this.itemDao.y = 500;
+			break;
+		case 4:
+		default:
+			this.itemDao.setSkin("dao");
+			this.itemDao.setAct("Stay")
+			this.itemDao.x = 900;
+			this.itemDao.y = 500;
+			
+			this.hero = addObj("itemHero", 400, 500, 1, -1);
+			this.game_mc.addChild(this.hero);
+			break;
+	}
+}
 ScrGame.prototype.createAccount = function() {	
 	if(login_obj["privkey"]){
 		this.tfIdUser.setText("you: " + login_obj["openkey"]);
@@ -135,7 +153,7 @@ ScrGame.prototype.createAccount = function() {
 			privateKey = privateKey.toString('hex');
 			login_obj["privkey"] = privateKey;
 			login_obj["openkey"] = address;
-			this.tfIdUser.setText("you: " + address);
+			this.tfIdUser.setText("your key: " + address);
 			saveData();
 		} else {
 			this.showError(ERROR_KEYTHEREUM);
@@ -168,7 +186,7 @@ ScrGame.prototype.createGUI = function() {
 	
 	var offsetY = 25;
 	var strUser = 'id'
-	this.tfIdUser = addText("you: " + strUser, 20, "#ffffff", "#000000", "left", 1000)
+	this.tfIdUser = addText("your key: " + strUser, 20, "#ffffff", "#000000", "left", 1000)
 	this.tfIdUser.x = 20;
 	this.tfIdUser.y = 10;
 	this.face_mc.addChild(this.tfIdUser);
@@ -355,6 +373,7 @@ ScrGame.prototype.addHolderObj = function(obj){
 	obj.y = _H + 50;
 }
 
+// STAR
 ScrGame.prototype.startGameEth = function(){
 	var openkey = login_obj["openkey"].substr(2);
 	$.post("https://rpc.myetherwallet.com/api.mew",{txdata:openkey},function(d){
@@ -387,6 +406,7 @@ ScrGame.prototype.startGameEth = function(){
 	}, "json");
 }
 
+// RESULT
 ScrGame.prototype.resultGameEth = function(val){
 	this._gameOver = true;
 	var str = "";
@@ -451,7 +471,8 @@ ScrGame.prototype.healthDao = function() {
 
 ScrGame.prototype.nextLevel = function() {
 	this.resetGame();
-	this.curLevel ++;
+	// this.curLevel ++;
+	this.curLevel = 4;
 	this.tfLevel.setText("Level " + this.curLevel);
 }
 

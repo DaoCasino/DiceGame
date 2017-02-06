@@ -10,12 +10,10 @@ var TIME_JIGGLE = 1500;
 
 ItemDao.prototype.init = function() {
 	this.name = "itemDao";
+	this.skin = "";
 	this.act = "";
 	this.item = new PIXI.Container();
 	this.addChild(this.item);
-	this.setAct("Stay")
-	this.w = this.sprite.w;
-	this.h = this.sprite.h;
 	this._selected = false;
 	this.dead = false;
 	this.init = false;
@@ -23,31 +21,46 @@ ItemDao.prototype.init = function() {
 	this.countLife = this.countLifeMax;
 }
 
+ItemDao.prototype.setSkin = function(skin) {
+	this.skin = skin;
+}
+
 ItemDao.prototype.setAct = function(act) {
-	if(this.act != act){
-		this.act = act;
-		this.item.removeChild(this.sprite);
-		var _x = 0;
-		var _y = 0;
-		if(act == "Cure"){
-			_x = -19;
-		} else if(act == "Win"){
-			_x = -12;
+	if(this.skin == "egg"){
+		if(this.act == ""){
+			this.sprite = addObj("itemEgg");
+			this.item.addChild(this.sprite);
+			this.w = this.sprite.w;
+			this.h = this.sprite.h;
 		}
-		this.sprite = addObj("dao"+this.act, _x, _y);
-		this.item.addChild(this.sprite);
-		
-		if(this.act == "Stay" || this.act == "Lose"){
-		} else {
-			this.sprite.img.play();
-			this.sprite.img.animationSpeed = 0.5;
+	} else {
+		if(this.act != act){
+			this.act = act;
+			this.item.removeChild(this.sprite);
+			var _x = 0;
+			var _y = 0;
+			if(act == "Cure"){
+				_x = -19;
+			} else if(act == "Win"){
+				_x = -12;
+			}
+			this.sprite = addObj(this.skin+this.act, _x, _y);
+			this.item.addChild(this.sprite);
+			this.w = this.sprite.w;
+			this.h = this.sprite.h;
+			
+			if(this.act == "Stay" || this.act == "Lose"){
+			} else {
+				this.sprite.img.play();
+				this.sprite.img.animationSpeed = 0.5;
+			}
 		}
 	}
 }
 
 ItemDao.prototype.initjiggle = function() {
 	this.init = true
-	if(this.act == "Stay"){
+	if(this.act == "Stay" && this.skin != "egg"){
 		if(Math.random() > 0.75){
 			this.setAct("Damage")
 		}
