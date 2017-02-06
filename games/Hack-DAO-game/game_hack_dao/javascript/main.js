@@ -63,18 +63,30 @@ function initGame() {
 	scrContainer = new PIXI.Container();
 	stage.addChild(scrContainer);
 	
-	var w = 270;
-	LoadPercent = addText("Game loading", 30, "#FFFFFF", "#000000", "center", w, 2.5);
-	LoadPercent.x = _W/2;
-	LoadPercent.y = _H/2 + 120;
-	LoadBack.addChild(LoadPercent);
-		
+	var preload_image = document.createElement("img");
+	preload_image.src = "images/bg/bgLoading.jpg";
+	preload_image.onload = function() {
+		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
+		bgLoading.texture.baseTexture.on('loaded', 
+				function(){
+					bgLoading.x = _W/2 - LoadBack1.width/2;
+					bgLoading.y = _H/2 - LoadBack1.height/2;
+				});
+		LoadBack.addChild(bgLoading);
+		var w = 270;
+		LoadPercent = addText("Game loading", 30, "#FFFFFF", "#000000", "center", w, 2.5);
+		LoadPercent.x = _W/2;
+		LoadPercent.y = _H/2 + 120;
+		LoadBack.addChild(LoadPercent);
+	};
+	
 	loadManifest();
 }
 
 function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
+	preloader.add("bgLoading", "images/bg/bgLoading.jpg");
 	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	

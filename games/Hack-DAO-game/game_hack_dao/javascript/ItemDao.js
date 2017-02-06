@@ -17,8 +17,8 @@ ItemDao.prototype.init = function() {
 	this._selected = false;
 	this.dead = false;
 	this.init = false;
-	this.countLifeMax = 1000;
-	this.countLife = this.countLifeMax;
+	this.healthMax = 1000;
+	this.health = this.healthMax;
 }
 
 ItemDao.prototype.setSkin = function(skin) {
@@ -26,34 +26,36 @@ ItemDao.prototype.setSkin = function(skin) {
 }
 
 ItemDao.prototype.setAct = function(act) {
+	if(this.skin+this.act == this.skin+act){
+		return false;
+	}
+	this.act = act;
+	if(this.sprite){
+		this.item.removeChild(this.sprite);
+	}
+	
 	if(this.skin == "egg"){
-		if(this.act == ""){
-			this.sprite = addObj("itemEgg");
-			this.item.addChild(this.sprite);
-			this.w = this.sprite.w;
-			this.h = this.sprite.h;
-		}
+		this.sprite = addObj("itemEgg");
+		this.item.addChild(this.sprite);
+		this.w = this.sprite.w;
+		this.h = this.sprite.h;
 	} else {
-		if(this.act != act){
-			this.act = act;
-			this.item.removeChild(this.sprite);
-			var _x = 0;
-			var _y = 0;
-			if(act == "Cure"){
-				_x = -19;
-			} else if(act == "Win"){
-				_x = -12;
-			}
-			this.sprite = addObj(this.skin+this.act, _x, _y);
-			this.item.addChild(this.sprite);
-			this.w = this.sprite.w;
-			this.h = this.sprite.h;
-			
-			if(this.act == "Stay" || this.act == "Lose"){
-			} else {
-				this.sprite.img.play();
-				this.sprite.img.animationSpeed = 0.5;
-			}
+		var _x = 0;
+		var _y = 0;
+		if(act == "Cure"){
+			_x = -19;
+		} else if(act == "Win"){
+			_x = -12;
+		}
+		this.sprite = addObj(this.skin+this.act, _x, _y);
+		this.item.addChild(this.sprite);
+		this.w = this.sprite.w;
+		this.h = this.sprite.h;
+		
+		if(this.act == "Stay" || this.act == "Lose"){
+		} else {
+			this.sprite.img.play();
+			this.sprite.img.animationSpeed = 0.5;
 		}
 	}
 }
@@ -70,15 +72,7 @@ ItemDao.prototype.initjiggle = function() {
 	}
 }
 
-ItemDao.prototype.update = function(diffTime) {
-	if(this.dead){
-		return false;
-	}
-	
-	if (this.init) {
-		jiggle(this.item)
-	}
-	
+ItemDao.prototype.update = function(diffTime) {	
 	if(this.act == "Cure" || this.act == "Damage"){
 		if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
 			this.setAct("Stay")
@@ -87,5 +81,13 @@ ItemDao.prototype.update = function(diffTime) {
 		if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
 			this.sprite.img.stop();
 		}
+	}
+	
+	if(this.dead){
+		return false;
+	}
+	
+	if (this.init) {
+		jiggle(this.item)
 	}
 }
