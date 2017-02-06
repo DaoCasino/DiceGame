@@ -65,23 +65,13 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:150, y:200}, "cloud2")
 	this.createObj({x:-400, y:100}, "cloud1")
 	
-	this.btnExport = addButton2("btnDefault",90, 120);
-	this.btnExport.name = "btnExport";
-	this.addChild(this.btnExport);
-	this._arButtons.push(this.btnExport);
-	var tfExport = addText("Export keys", 21, "#FFFFFF", "#000000", "center", 350)
-	tfExport.x = this.btnExport.x;
-	tfExport.y = this.btnExport.y - 15;
-	this.addChild(tfExport);
+	this.btnExport = this.createButton("btnExport", 90, 120, "Export keys", 21)
+	this.btnTry = this.createButton("btnTry", _W/2, 500, "Try again", 21)
+	this.btnTry.visible = false;
+	this.btnNext = this.createButton("btnNext", _W/2, 500, "Next level", 21)
+	this.btnNext.visible = false;
 	if(options_debug){
-		this.btnReset = addButton2("btnDefault",90, 180);
-		this.btnReset.name = "btnReset";
-		this.addChild(this.btnReset);
-		this._arButtons.push(this.btnReset);
-		var tfReset = addText("CLEAR LOG", 26, "#FFFFFF", "#000000", "center", 350)
-		tfReset.x = this.btnReset.x;
-		tfReset.y = this.btnReset.y - 17;
-		this.addChild(tfReset);
+		this.btnReset = this.createButton("btnReset", 90, 180, "Clear log", 26, 17)
 	}
 	
 	this.createGUI();
@@ -112,6 +102,22 @@ ScrGame.prototype.clearLog = function() {
 	this.createAccount();
 }
 
+ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {	
+	if(size){}else{size=22}
+	if(offset){}else{offset=15}
+	
+	var btn = addButton2("btnDefault", x, y);
+	btn.name = name;
+	this.face_mc.addChild(btn);
+	this._arButtons.push(btn);
+	var tf = addText(label, size, "#FFFFFF", "#000000", "center", 350)
+	tf.x = 0;
+	tf.y = - offset;
+	btn.addChild(tf);
+	
+	return btn;
+}
+
 ScrGame.prototype.createAccount = function() {	
 	if(login_obj["privkey"]){
 		this.tfIdUser.setText("you: " + login_obj["openkey"]);
@@ -121,7 +127,6 @@ ScrGame.prototype.createAccount = function() {
 		tfCreateKey.y = 150;
 		this.face_mc.addChild(tfCreateKey);
 		createjs.Tween.get(tfCreateKey).wait(2000).to({alpha:0},500)
-		console.log("keyethereum:", keyethereum);
 		if(keyethereum){
 			var dk = keyethereum.create();
 			var privateKey = dk.privateKey;
@@ -131,13 +136,11 @@ ScrGame.prototype.createAccount = function() {
 			login_obj["privkey"] = privateKey;
 			login_obj["openkey"] = address;
 			this.tfIdUser.setText("you: " + address);
-			console.log( {openkey: address, privkey: privateKey});
 			saveData();
 		} else {
 			this.showError(ERROR_KEYTHEREUM);
 		}
 	}
-	console.log("openkey:", login_obj["openkey"])
 }
 
 ScrGame.prototype.createGUI = function() {
@@ -394,19 +397,21 @@ ScrGame.prototype.resultGameEth = function(val){
 		this.bResult = true;
 		this.showWinEthereum = 10;
 		this.itemDao.setAct("Lose")
+		this.btnNext.visible = true;
 	} else {
 		str = "LOSE";
 		strB = "-0.05";
 		this.hero.rotation = 270*(Math.PI/180)
 		this.hero.y += this.hero.h/2
 		this.itemDao.setAct("Win")
+		this.btnTry.visible = true;
 	}
+	login_obj["startGame"] = false;
 	var tf = this.itemResult.tf;
 	tf.setText(str);
 	var tfB = this.itemResult.tfBalance;
 	tfB.setText(strB);
 	this.sendRequest("getBalance");
-	this.itemDao.dead = true;
 	this.itemResult.visible = true;
 	this.startGame = false;
 	this.timeTotal = 0;
@@ -444,11 +449,23 @@ ScrGame.prototype.healthDao = function() {
 	this.barDao.life.scale.x = Math.min(curSc, 1);
 }
 
+ScrGame.prototype.nextLevel = function() {
+	this.resetGame();
+	this.curLevel ++;
+	this.tfLevel.setText("Level " + this.curLevel);
+}
+
 ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.name == "btnReset"){
 		this.showWndClearLog();
 	} else if(item_mc.name == "btnExport"){
 		this.exportKeys();
+	} else if(item_mc.name == "btnTry"){
+		this.resetGame();
+		this.btnTry.visible = false;
+	} else if(item_mc.name == "btnNext"){
+		this.nextLevel();
+		this.btnNext.visible = false;
 	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){
 			return false;
@@ -473,7 +490,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	console.log("sendRequest:", name, url)	
+	// console.log("sendRequest:", name, url)	
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
@@ -519,12 +536,13 @@ ScrGame.prototype.response = function(command, value) {
 		return false;
 	}
 	
-	console.log("response:", command, value)	
+	// console.log("response:", command, value)	
 	if(command == "idGame"){
 		obj_game["idGame"] = value;
 		this.idGame = obj_game["idGame"];
 		this.timeGetResult = 0;
 		this.sendRequest("getBalance");
+		login_obj["startGame"] = true;
 	} else if(command == "resultGame"){
 		var val = Number(value);
 		if(val == 0){
