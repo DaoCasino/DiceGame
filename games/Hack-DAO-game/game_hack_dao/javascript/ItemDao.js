@@ -19,6 +19,10 @@ ItemDao.prototype.init = function() {
 	this.init = false;
 	this.healthMax = 1000;
 	this.health = this.healthMax;
+	this.speed = 10;
+	this._move = false;
+	this._ptMove;
+	this._angleMove = 0;
 	
 	var w = 100
 	var h = 10
@@ -88,6 +92,40 @@ ItemDao.prototype.initjiggle = function() {
 	}
 }
 
+ItemDao.prototype.initMove = function(point){
+	if(this.sprite){}else{
+		return false;
+	}
+	// this.setAct("Run");
+	this._move = true;
+	this._ptMove = point;
+	this._angleMove = Math.atan2(this._ptMove.y-(this.y), this._ptMove.x-(this.x));
+	
+	// if(this._ptMove.x < this.x){
+		// this.sprite.scale.x = 1*Math.abs(this.sprite.scale.x);
+	// } else {
+		// this.sprite.scale.x = -1*Math.abs(this.sprite.scale.x);
+	// }
+}
+
+ItemDao.prototype.move = function(){
+	this._angleMove = Math.atan2(this._ptMove.y-(this.y), this._ptMove.x-(this.x));
+	var cosAngle = Math.cos(this._angleMove);
+	var sinAngle = Math.sin(this._angleMove);
+	var speed = Math.max(this.speed, 1);
+	var xMov = speed*cosAngle;
+	var yMov = speed*sinAngle;
+	this.x += Math.round(xMov);
+	// this.y += Math.round(yMov);
+	if (Math.abs(this.x - this._ptMove.x) < this.speed && 
+	Math.abs(this.y - this._ptMove.y) < this.speed) {
+		this._move = false;
+		if(this.sprite){
+			// this.setAct("Stay");
+		}
+	}
+}
+
 ItemDao.prototype.update = function(diffTime) {	
 	if(this.act == "Cure" || this.act == "Damage"){
 		if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
@@ -111,5 +149,9 @@ ItemDao.prototype.update = function(diffTime) {
 	
 	if (this.init) {
 		jiggle(this.item)
+	}
+	
+	if(this._move){
+		this.move();
 	}
 }

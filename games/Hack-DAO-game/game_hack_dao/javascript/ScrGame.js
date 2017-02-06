@@ -11,6 +11,8 @@ var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlBalance = "";
 var obj_game = {};
+var _mouseX;
+var _mouseY;
 	
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
@@ -146,6 +148,7 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 	return btn;
 }
 
+// ALL LEVELS
 ScrGame.prototype.createLevel = function() {
 	if(this.bgGame){
 		this.back_mc.removeChild(this.bgGame);
@@ -158,12 +161,17 @@ ScrGame.prototype.createLevel = function() {
 	}
 	this.back_mc.addChild(this.bgGame);
 	this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
+	if(this.hintArrow){
+		this.hintArrow.visible = false;
+	}
+	
 	switch (this.curLevel){
 		case 1:
 			this.itemDao.setSkin("egg");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
 			this.itemDao.visible = true;
+			this.hintArrow.visible = true;
 			this.itemDao.x = _W/2;
 			this.itemDao.y = 500;
 			break;
@@ -181,6 +189,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
 			this.itemDao.visible = true;
+			this.hintArrow.visible = true;
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
 			
@@ -727,16 +736,22 @@ ScrGame.prototype.update = function() {
 	this.updateHolder(diffTime);
 	this.healthDao();
 	
+	if(this.curLevel == 2){
+		if(_mouseX && _mouseY){
+			this.itemDao.initMove({x:_mouseX, y:_mouseY})
+		}
+	}
+	
 	this.startTime = getTimer();
 }
 
 ScrGame.prototype.checkButtons = function(evt){
-	var mouseX = evt.data.global.x;
-	var mouseY = evt.data.global.y;
+	_mouseX = evt.data.global.x;
+	_mouseY = evt.data.global.y;
 	
 	for (var i = 0; i < this._arButtons.length; i++) {
 		var item_mc = this._arButtons[i];
-		if(hit_test_rec(item_mc, item_mc.w, item_mc.h, mouseX, mouseY) &&
+		if(hit_test_rec(item_mc, item_mc.w, item_mc.h, _mouseX, _mouseY) &&
 		item_mc.visible && item_mc.dead != true){
 			if(item_mc._selected == false){
 				item_mc._selected = true;
