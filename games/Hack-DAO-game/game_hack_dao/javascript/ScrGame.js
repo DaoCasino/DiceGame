@@ -104,6 +104,13 @@ ScrGame.prototype.init = function() {
 	this.createAccount();
 	this.sendRequest("getBalance");
 	
+	// если идет игра, дожидаемся ее результата
+	if(login_obj["startGame"] && login_obj["idGame"]){
+		this.btnStart.visible = false;
+		this.idGame = login_obj["idGame"];
+		this.createLevel();
+	}
+	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
 	this.on('mousemove', this.touchHandler);
@@ -160,10 +167,12 @@ ScrGame.prototype.createLevel = function() {
 		this.bgGame = addObj("bgLevel1", _W/2, _H/2);
 	}
 	this.back_mc.addChild(this.bgGame);
+	this.tfLevel.setText("Level " + this.curLevel);
 	this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
 	if(this.hintArrow){
 		this.hintArrow.visible = false;
 	}
+	login_obj["level"] = this.curLevel;
 	
 	switch (this.curLevel){
 		case 1:
@@ -493,6 +502,7 @@ ScrGame.prototype.resultGameEth = function(val){
 	this.itemResult.visible = true;
 	this.startGame = false;
 	this.timeTotal = 0;
+	saveData();
 }
 
 ScrGame.prototype.clickHeroDao = function() {
@@ -526,15 +536,19 @@ ScrGame.prototype.healthDao = function() {
 
 ScrGame.prototype.nextLevel = function() {
 	this.resetGame();
-	// this.curLevel ++;
-	this.curLevel = 4;
-	this.tfLevel.setText("Level " + this.curLevel);
+	this.curLevel ++;
+	// this.curLevel = 4;
 	this.itemResult.tf.setText("");
 	this.itemResult.tfBalance.setText("");
 	this.createLevel();
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {
+	item_mc._selected = false;
+	if(item_mc.over){
+		item_mc.over.visible = false;
+	}
+	
 	if(item_mc.name == "btnReset"){
 		this.showWndClearLog();
 	} else if(item_mc.name == "btnExport"){
@@ -618,9 +632,10 @@ ScrGame.prototype.response = function(command, value) {
 		return false;
 	}
 	
-	console.log("response:", command, value)	
+	// console.log("response:", command, value)	
 	if(command == "idGame"){
 		obj_game["idGame"] = value;
+		login_obj["idGame"] = value;
 		this.idGame = obj_game["idGame"];
 		this.timeGetResult = 0;
 		this.sendRequest("getBalance");
