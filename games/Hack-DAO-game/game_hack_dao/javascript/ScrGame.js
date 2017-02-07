@@ -58,6 +58,10 @@ ScrGame.prototype.init = function() {
 		
 		this.curLevel = 3;
 	}
+	var tfVersion = addText("v. 1.0.0", 16, "#000000", undefined, "right", 400)
+	tfVersion.x = _W-20;
+	tfVersion.y = _H-24;
+	this.face_mc.addChild(tfVersion);
 	
 	this.arTitle = ["",
 		"30.04.2016 \n The DAO is live",
@@ -595,7 +599,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.over){
 		item_mc.over.visible = false;
 	}
-	console.log("click:", item_mc.name)
+	
 	if(item_mc.name == "btnReset"){
 		this.showWndClearLog();
 	} else if(item_mc.name == "btnExport"){
