@@ -58,7 +58,7 @@ ScrGame.prototype.init = function() {
 		
 		this.curLevel = 3;
 	}
-	var tfVersion = addText("v. 1.0.1", 16, "#000000", undefined, "right", 400)
+	var tfVersion = addText("v. 1.0.2", 16, "#000000", undefined, "right", 400)
 	tfVersion.x = _W-20;
 	tfVersion.y = _H-24;
 	this.face_mc.addChild(tfVersion);
@@ -520,7 +520,8 @@ ScrGame.prototype.startGameEth = function(){
 				var serializedTx = tx.serialize().toString('hex');
 				
 				console.log("Транзакция подписана: "+serializedTx);
-				$.getJSON("https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+				// $.getJSON("https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+				$.getJSON("https://testnet.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
 					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
 					obj_game["game"].response("idGame", d.result) 
 					console.log("Транзакция отправлена в сеть");
