@@ -58,7 +58,7 @@ ScrGame.prototype.init = function() {
 		
 		this.curLevel = 3;
 	}
-	var tfVersion = addText("v. 1.0.2", 16, "#000000", undefined, "right", 400)
+	var tfVersion = addText("v. 1.0.3", 16, "#000000", undefined, "right", 400)
 	tfVersion.x = _W-20;
 	tfVersion.y = _H-24;
 	this.face_mc.addChild(tfVersion);
