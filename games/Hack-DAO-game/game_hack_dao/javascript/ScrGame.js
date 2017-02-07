@@ -8,6 +8,7 @@ ScrGame.prototype.constructor = ScrGame;
 
 var TIME_GET_RESULT = 10000;
 var TIME_RESPAWN_MONEY = 500;
+var TIME_RESPAWN_PROPOSAL = 2000;
 var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlBalance = "";
@@ -25,12 +26,14 @@ ScrGame.prototype.init = function() {
 	this.gameTime = getTimer();
 	this._arButtons = [];
 	this._arObject = [];
+	this._arObjectLevel = [];
 	this._arText = [];
 	this._arHolder = [];
 	this.timeGetResult = 0;
 	this.timeTotal = 0;
 	this.timeCloseWnd = 0;
 	this.timeMoney = 0;
+	this.timeProposal = 0;
 	this.idGame = undefined;
 	this.clickDAO = false;
 	this.startGame = false;
@@ -53,7 +56,7 @@ ScrGame.prototype.init = function() {
 		tfDebug.y = 10;
 		this.face_mc.addChild(tfDebug);
 		
-		this.curLevel = 2;
+		this.curLevel = 3;
 	}
 	
 	this.arTitle = ["",
@@ -176,6 +179,7 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.visible = false;
 	}
 	login_obj["level"] = this.curLevel;
+	this._arObjectLevel = [];
 	
 	switch (this.curLevel){
 		case 1:
@@ -196,6 +200,12 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.x = _W/2;
 			this.itemDao.y = 500;
 			break;
+		// case 3:
+			// this.itemDao.dead = true;
+			// this.itemDao.visible = true;
+			// this.itemWall = addObj("itemWall", 660, 428);
+			// this.game_mc.addChild(this.itemWall);
+			// break;
 		case 4:
 		default:
 			this.itemDao.setSkin("dao");
@@ -207,7 +217,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
 			
-			this.hero = addObj("itemHero", 400, 500, 1, -1);
+			this.hero = addObj("itemHero", 660, 500, 1, -1);
 			this.game_mc.addChild(this.hero);
 			break;
 	}
@@ -437,6 +447,14 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		if(Math.random()>0.5){
 			mc.vX = -1;
 		}
+	} else if(mc.name == "itemProposal"){
+		mc.act = "run";
+		mc.action = "run";
+		mc.scale.x = -1;
+		mc.vX = 1;
+		mc.speed = 2;
+		mc.tLife = 300000;
+		this._arObjectLevel.push(mc);
 	}
 	
 	if(mc.tLife == undefined){
@@ -498,21 +516,34 @@ ScrGame.prototype.resultGameEth = function(val){
 		strB = "";
 		this.bResult = true;
 		this.showWinEthereum = 10;
-		this.itemDao.setAct("Lose")
 		this.itemDao.dead = true;
 		this.btnNext.visible = true;
+		if(this.curLevel == 2){
+			this.itemDao.setAct("Win")
+		} else if(this.curLevel == 4){
+			this.itemDao.setAct("Lose")
+		}
+		if(this.curLevel < 9){
+			this.curLevel ++;
+		} else {
+			console.log("YOU WIN!");
+		}
 	} else {
 		str = "LOSE";
 		strB = "";
-		this.itemDao.setAct("Win")
+		 if(this.curLevel == 4){
+			this.itemDao.setAct("Win")
+			if(this.hero){
+				this.hero.rotation = 270*(Math.PI/180)
+				this.hero.y += this.hero.h/2
+			}
+		}
 		this.itemDao.dead = true;
 		this.btnTry.visible = true;
-		if(this.hero){
-			this.hero.rotation = 270*(Math.PI/180)
-			this.hero.y += this.hero.h/2
-		}
+		
 	}
 	login_obj["startGame"] = false;
+	login_obj["level"] = this.curLevel;
 	this.itemResult.tf.setText(str);
 	this.itemResult.tfBalance.setText(strB);
 	this.tfTitleLevel.setText("");
@@ -554,8 +585,6 @@ ScrGame.prototype.healthDao = function() {
 
 ScrGame.prototype.nextLevel = function() {
 	this.resetGame();
-	this.curLevel ++;
-	// this.curLevel = 4;
 	this.itemResult.tf.setText("");
 	this.itemResult.tfBalance.setText("");
 	this.createLevel();
@@ -566,7 +595,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.over){
 		item_mc.over.visible = false;
 	}
-	
+	console.log("click:", item_mc.name)
 	if(item_mc.name == "btnReset"){
 		this.showWndClearLog();
 	} else if(item_mc.name == "btnExport"){
@@ -582,7 +611,6 @@ ScrGame.prototype.clickCell = function(item_mc) {
 			if(options_ethereum){
 				this.startGameEth();
 			}
-			this.createLevel();
 			this.btnStart.visible = false;
 		}
 	} else if(item_mc.name == "btnTry"){
@@ -599,6 +627,17 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		(this.curLevel == 1 || this.curLevel == 4)){
 			this.hintArrow.visible = false;
 			this.clickHeroDao();
+		}
+	}
+}
+
+ScrGame.prototype.clickObject = function() {
+	for (var i = 0; i < this._arObjectLevel.length; i++ ) {
+		mc = this._arObjectLevel[i];
+		if (mc) {
+			// console.log(mc.name, mc.action)
+			// mc.action = "climb";
+			break;
 		}
 	}
 }
@@ -717,6 +756,22 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					var t = Math.ceil(Math.random()*2)
 					this.createObj({x:-400, y:50+Math.random()*100}, "cloud"+t)
 				}
+			} else if(mc.name == "itemProposal"){
+				if(mc.action == "run"){
+					mc.x += mc.speed*mc.vX;
+				}
+				var w = this.itemWall.w + mc.w;
+				var h = this.itemWall.h + mc.h;
+				if(hit_test_rec(this.itemWall, w, h, mc.x,mc.y)){
+					// console.log("hit_test_rec:", mc.action);
+					if(mc.action == "run"){
+						mc.vX = -mc.vX;
+						mc.scale.x = -mc.scale.x;
+					}
+				}
+				if(mc.x > _W + mc.w || mc.x < -mc.w*2){
+					mc.tLife = 0;
+				}
 			} else if(mc.name == "itemMoney"){
 				mc.y += mc.speed
 				mc.x += mc.speed/5*mc.vX
@@ -808,6 +863,12 @@ ScrGame.prototype.update = function() {
 				var posX = Math.round(Math.random()*(_W-200))+100
 				this.createObj({x:posX, y:-50}, "itemMoney")
 			}
+		} else if(this.curLevel == 3){
+			this.timeProposal += diffTime;
+			if(this.timeProposal >= TIME_RESPAWN_PROPOSAL){
+				this.timeProposal = 0;
+				this.createObj({x:-60, y:425}, "itemProposal")
+			}
 		}
 	}
 	
@@ -854,6 +915,12 @@ ScrGame.prototype.touchHandler = function(evt){
 			if(item_mc._selected){
 				this.clickCell(item_mc);
 				return;
+			}
+		}
+		
+		if(this.startGame){
+			if(this.curLevel == 3){
+				this.clickObject();
 			}
 		}
 	}

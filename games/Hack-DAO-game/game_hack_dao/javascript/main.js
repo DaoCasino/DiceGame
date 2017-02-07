@@ -3,7 +3,7 @@ var _H = 720;
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
-var scrContainer;
+var currentScreen, scrContainer;
 var ScreenGame;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
@@ -89,6 +89,7 @@ function loadManifest(){
 	preloader.add("bgLoading", "images/bg/bgLoading.jpg");
 	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");
 	preloader.add("bgLevel2", "images/bg/bgLevel2.jpg");
+	preloader.add("bgLevel3", "images/bg/bgLevel3.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
@@ -104,6 +105,8 @@ function loadManifest(){
 	preloader.add("cloud2", "images/items/cloud2.png");
 	preloader.add("hintArrow", "images/items/hintArrow.png");
 	preloader.add("itemMoney", "images/items/itemMoney.png");
+	preloader.add("itemWall", "images/items/itemWall.png");
+	preloader.add("itemProposal", "images/items/itemProposal.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	
@@ -243,6 +246,17 @@ function toFixed(value, precision){
 	return Math.ceil(value * precision) / precision;
 }
 
+function removeAllScreens() {
+	if(ScreenGame){
+		scrContainer.removeChild(ScreenGame);
+		ScreenGame = null;
+	}
+	if(currentScreen){
+		scrContainer.removeChild(currentScreen);
+		currentScreen = null;
+	}
+}
+
 function update() {
 	if(ScreenGame){
 		ScreenGame.update();
@@ -313,8 +327,11 @@ function start() {
 }
 
 function showGame() {
+	removeAllScreens();
 	ScreenGame = new ScrGame();
 	scrContainer.addChild(ScreenGame);
+	currentScreen = ScreenGame;
+	currentScreen.name = "game";
 }
 
 function addButton(name, _x, _y, _scGr) {
@@ -602,7 +619,7 @@ function visGame() {
 function hideGame() {
 	//pause
 	options_pause = true;
-	music_stop();
+	// music_stop();
 	refreshTime();
 }
 
