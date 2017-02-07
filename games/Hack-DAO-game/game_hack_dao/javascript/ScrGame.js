@@ -179,6 +179,8 @@ ScrGame.prototype.createLevel = function() {
 	this.back_mc.addChild(this.bgGame);
 	this.tfLevel.setText("Level " + this.curLevel);
 	this.tfTitleLevel.setText("");
+	this.itemResult.tf.setText("");
+	this.itemResult.tfBalance.setText("");
 	if(this.hintArrow){
 		this.hintArrow.visible = false;
 	}
@@ -704,7 +706,9 @@ ScrGame.prototype.sendRequest = function(value) {
 		} else if(value == "getBalance"){
 			if(login_obj["openkey"]){
 				var adress = login_obj["openkey"].replace('0x','');
-				urlBalance = "https://api.etherscan.io/api?module=account&action=balance&address="+
+				// urlBalance = "https://api.etherscan.io/api?module=account&action=balance&address="+
+							// adress+"&tag=latest&apikey=YourApiKeyToken"
+				urlBalance = "https://testnet.etherscan.io/api?module=account&action=balance&address="+
 							adress+"&tag=latest&apikey=YourApiKeyToken"
 				var str = urlBalance;
 				this.sendUrlRequest(str, "getBalance");
