@@ -107,6 +107,8 @@ function loadManifest(){
 	preloader.add("itemMoney", "images/items/itemMoney.png");
 	preloader.add("itemWall", "images/items/itemWall.png");
 	preloader.add("itemProposal", "images/items/itemProposal.png");
+	preloader.add("itemProposalR", "images/items/itemProposalR.png");
+	preloader.add("itemHome", "images/items/itemHome.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	
@@ -613,7 +615,6 @@ function visGame() {
 	//play
 	options_pause = false;
 	refreshTime();
-	update();
 }
 
 function hideGame() {
