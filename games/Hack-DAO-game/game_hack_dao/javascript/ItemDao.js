@@ -19,7 +19,8 @@ ItemDao.prototype.init = function() {
 	this.init = false;
 	this.healthMax = 1000;
 	this.health = this.healthMax;
-	this.speed = 10;
+	this.speed = 15;
+	this.rr = 50*50;
 	this._move = false;
 	this._ptMove;
 	this._angleMove = 0;
@@ -94,6 +95,9 @@ ItemDao.prototype.initjiggle = function() {
 
 ItemDao.prototype.initMove = function(point){
 	if(this.sprite){}else{
+		return false;
+	}
+	if (Math.abs(this.x - point.x) < this.speed){
 		return false;
 	}
 	// this.setAct("Run");

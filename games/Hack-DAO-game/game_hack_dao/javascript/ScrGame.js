@@ -7,6 +7,7 @@ ScrGame.prototype = Object.create(PIXI.Container.prototype);
 ScrGame.prototype.constructor = ScrGame;
 
 var TIME_GET_RESULT = 10000;
+var TIME_RESPAWN_MONEY = 500;
 var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlBalance = "";
@@ -21,6 +22,7 @@ ScrGame.prototype.init = function() {
 	this.gfx_mc = new PIXI.Container();
 	
 	this.startTime = getTimer();
+	this.gameTime = getTimer();
 	this._arButtons = [];
 	this._arObject = [];
 	this._arText = [];
@@ -28,6 +30,7 @@ ScrGame.prototype.init = function() {
 	this.timeGetResult = 0;
 	this.timeTotal = 0;
 	this.timeCloseWnd = 0;
+	this.timeMoney = 0;
 	this.idGame = undefined;
 	this.clickDAO = false;
 	this.startGame = false;
@@ -189,6 +192,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
 			this.itemDao.visible = true;
+			this.itemDao.barDao.visible = false;
 			this.itemDao.x = _W/2;
 			this.itemDao.y = 500;
 			break;
@@ -198,6 +202,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
 			this.itemDao.visible = true;
+			this.itemDao.barDao.visible = true;
 			this.hintArrow.visible = true;
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
@@ -402,7 +407,12 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	
 	if (newObj) {
 		mc = addObj(name, 0, 0, sc);
-		this.gfx_mc.addChild(mc);
+		if(mc.name == "cloud1" ||
+		mc.name == "cloud2"){
+			this.game_mc.addChild(mc);
+		} else {
+			this.gfx_mc.addChild(mc);
+		}
 		this._arHolder.push(mc);
 	}
 	
@@ -419,10 +429,18 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		mc.speed = 3;
 		mc.vX = 1;
 		mc.tLife = 60000;
+	} else if(mc.name == "itemMoney"){
+		mc.vX = 1;
+		mc.tgX = point.x;
+		mc.speed = 5;
+		mc.tLife = 60000;
+		if(Math.random()>0.5){
+			mc.vX = -1;
+		}
 	}
 	
 	if(mc.tLife == undefined){
-		mc.tLife = 500
+		mc.tLife = 60000
 	}
 	mc.x = point.x;
 	mc.y = point.y;
@@ -632,7 +650,7 @@ ScrGame.prototype.response = function(command, value) {
 		return false;
 	}
 	
-	// console.log("response:", command, value)	
+	console.log("response:", command, value)	
 	if(command == "idGame"){
 		obj_game["idGame"] = value;
 		login_obj["idGame"] = value;
@@ -699,6 +717,20 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					var t = Math.ceil(Math.random()*2)
 					this.createObj({x:-400, y:50+Math.random()*100}, "cloud"+t)
 				}
+			} else if(mc.name == "itemMoney"){
+				mc.y += mc.speed
+				mc.x += mc.speed/5*mc.vX
+				mc.rotation += mc.vX*(Math.PI/180)
+				if(Math.abs(mc.tgX - mc.x) > 5){
+					mc.vX = -mc.vX;
+				}
+				if(hit_test_rec(this.itemDao, 150, 70, mc.x,mc.y)){
+					this.createText(mc, "+ 100");
+					mc.tLife = 0;
+				}
+				if(mc.y > _H + mc.h){
+					mc.tLife = 0;
+				}
 			}
 			mc.tLife -= diffTime;
 			if(mc.tLife < 0){
@@ -706,6 +738,10 @@ ScrGame.prototype.updateHolder = function(diffTime){
 			}
 		}
 	}
+}
+
+ScrGame.prototype.resetTimer = function(){
+	this.gameTime = getTimer();
 }
 
 ScrGame.prototype.update = function() {	
@@ -724,6 +760,15 @@ ScrGame.prototype.update = function() {
 			this.sendRequest("idGame");
 		}
 	}
+	
+	this.startTime = getTimer();
+	
+	if(options_pause){
+		return false;
+	}
+	
+	diffTime = getTimer() - this.gameTime;
+	
 	if(this.timeCloseWnd > 0 && this.curWindow){
 		this.timeCloseWnd -= diffTime;
 		if(this.timeCloseWnd < 100){
@@ -752,12 +797,21 @@ ScrGame.prototype.update = function() {
 	this.updateHolder(diffTime);
 	this.healthDao();
 	
-	if(this.curLevel == 2){
-		if(_mouseX && _mouseY){
-			this.itemDao.initMove({x:_mouseX, y:_mouseY})
+	if(this.startGame){
+		if(this.curLevel == 2){
+			if(_mouseX && _mouseY){
+				this.itemDao.initMove({x:_mouseX, y:_mouseY})
+			}
+			this.timeMoney += diffTime;
+			if(this.timeMoney >= TIME_RESPAWN_MONEY){
+				this.timeMoney = 0;
+				var posX = Math.round(Math.random()*(_W-200))+100
+				this.createObj({x:posX, y:-50}, "itemMoney")
+			}
 		}
 	}
 	
+	this.gameTime = getTimer();
 	this.startTime = getTimer();
 }
 

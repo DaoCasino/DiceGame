@@ -225,6 +225,14 @@ function getTimer(){
 	return n;
 }
 
+function refreshTime(){
+	startTime = getTimer();
+	if(currentScreen){
+		if(ScreenGame){
+			ScreenGame.resetTimer();
+		}
+	}
+}
 
 /*
 * value - Дробное число.
@@ -584,3 +592,19 @@ function hit_test_rec(mc, w, h, tx, ty) {
 }
 
 
+function visGame() {
+	//play
+	options_pause = false;
+	refreshTime();
+	update();
+}
+
+function hideGame() {
+	//pause
+	options_pause = true;
+	music_stop();
+	refreshTime();
+}
+
+visibly.onVisible(visGame)
+visibly.onHidden(hideGame)
