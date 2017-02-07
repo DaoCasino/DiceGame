@@ -91,10 +91,10 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:-400, y:100}, "cloud1")
 	
 	this.btnExport = this.createButton("btnExport", 90, 120, "Export keys", 21)
-	this.btnStart = this.createButton("btnStart", _W/2, 550, "Start", 21)
-	this.btnTry = this.createButton("btnTry", _W/2, 550, "Try again", 21)
+	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 21)
+	this.btnTry = this.createButton("btnTry", _W/2, 600, "Try again", 21)
 	this.btnTry.visible = false;
-	this.btnNext = this.createButton("btnNext", _W/2, 550, "Next level", 21)
+	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
 	this.btnNext.visible = false;
 	if(options_debug){
 		this.btnReset = this.createButton("btnReset", 90, 180, "Clear log", 26, 17)
@@ -437,8 +437,6 @@ ScrGame.prototype.startGameEth = function(){
 		options.data = '0xc3fe3e28'; //собственно это надо отправить, чтоб вызвалась функция game();
 		options.to = "0x1fa8b177dc1a9aa12f52cc15db4a514e12194e21"; //адрес нашего смарт контракта
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
-		console.log("!!! this.curLevel:", obj_game["game"].curLevel)
-		console.log("!!! options.data:", options.data)
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
 		options.value = 50000000000000000; //  //ставка 0.02 эфира
@@ -620,7 +618,7 @@ ScrGame.prototype.response = function(command, value) {
 		return false;
 	}
 	
-	// console.log("response:", command, value)	
+	console.log("response:", command, value)	
 	if(command == "idGame"){
 		obj_game["idGame"] = value;
 		this.idGame = obj_game["idGame"];
@@ -702,7 +700,7 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText("time: " + Math.round(this.timeTotal/1000));
 	}
-	if(this.idGame){
+	if(this.idGame && login_obj["startGame"]){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
 		this.bSendRequest == false){
