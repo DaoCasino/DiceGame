@@ -124,13 +124,15 @@ ItemDao.prototype.move = function(){
 }
 
 ItemDao.prototype.update = function(diffTime) {	
-	if(this.act == "Cure" || this.act == "Damage"){
-		if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
-			this.setAct("Stay")
-		}
-	} else if(this.act == "Win"){
-		if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
-			this.sprite.img.stop();
+	if(this.skin == "dao"){
+		if(this.act == "Cure" || this.act == "Damage"){
+			if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
+				this.setAct("Stay")
+			}
+		} else if(this.act == "Win"){
+			if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
+				this.sprite.img.stop();
+			}
 		}
 	}
 	

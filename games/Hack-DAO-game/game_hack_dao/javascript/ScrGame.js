@@ -329,7 +329,7 @@ ScrGame.prototype.closeWindow = function(wnd) {
 ScrGame.prototype.refillBalance = function() {
 	if(login_obj["openkey"] && options_ethereum){
 		var url = "http://platform.dao.casino/topup/?client=" + login_obj["openkey"];
-		window.open(url, "_blank"); 
+		window.open(url, "_self"); // "_blank",  "_self"
 	}
 }
 
@@ -355,6 +355,10 @@ ScrGame.prototype.showError = function(value) {
 			break;
 	}
 	this.createWndInfo(str);
+	
+	if(this.hintArrow){
+		this.hintArrow.visible = false;
+	}
 }
 
 ScrGame.prototype.warningBalance = function() {
@@ -496,7 +500,7 @@ ScrGame.prototype.startGameEth = function(){
 	}
 	
 	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+login_obj["openkey"]+"&tag=latest&apikey=YourApiKeyToken",function(d){
-		console.log("получили nonce"+d.result);
+		console.log("получили nonce "+d.result);
 		var options = {};
 		options.nonce = d.result;
 		
@@ -585,7 +589,9 @@ ScrGame.prototype.clickHeroDao = function() {
 		this.resurrection = this.resurrectionCur*75;
 		var pt = {x:this.itemDao.x, y:this.itemDao.y - 100}
 		this.createText(pt, "HA-HA-HA");
-		this.itemDao.setAct("Cure")
+		if(this.itemDao.skin == "dao"){
+			this.itemDao.setAct("Cure")
+		}
 	}
 	this.createIcoEthereum();
 }
