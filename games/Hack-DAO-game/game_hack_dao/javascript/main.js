@@ -1,10 +1,11 @@
 var _W = 1280;
 var _H = 720;
+var version = "v. 1.0.4 testnet"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
 var currentScreen, scrContainer;
-var ScreenGame;
+var ScreenGame, ScreenLevels;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
@@ -14,6 +15,7 @@ var stats; //для вывода статистики справа
 
 var options_debug = false;
 var options_ethereum = true;
+var options_testnet = true;
 var options_music = true;
 var options_sound = true;
 var options_mobile = true;
@@ -87,6 +89,7 @@ function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
 	preloader.add("bgLoading", "images/bg/bgLoading.jpg");
+	preloader.add("bgLevels", "images/bg/bgLevels.jpg");
 	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");
 	preloader.add("bgLevel2", "images/bg/bgLevel2.jpg");
 	preloader.add("bgLevel3", "images/bg/bgLevel3.jpg");
@@ -109,6 +112,8 @@ function loadManifest(){
 	preloader.add("itemProposal", "images/items/itemProposal.png");
 	preloader.add("itemProposalR", "images/items/itemProposalR.png");
 	preloader.add("itemHome", "images/items/itemHome.png");
+	preloader.add("itemLevel", "images/items/itemLevel.png");
+	preloader.add("itemLock", "images/items/itemLock.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	
@@ -253,6 +258,10 @@ function removeAllScreens() {
 		scrContainer.removeChild(ScreenGame);
 		ScreenGame = null;
 	}
+	if(ScreenLevels){
+		scrContainer.removeChild(ScreenLevels);
+		ScreenLevels = null;
+	}
 	if(currentScreen){
 		scrContainer.removeChild(currentScreen);
 		currentScreen = null;
@@ -325,15 +334,29 @@ function start() {
 		stage.removeChild(LoadBack);
 	}
 	
-	showGame();
+	addScreen("levels");
 }
 
 function showGame() {
+	addScreen("game");
+}
+function showLevels() {
+	addScreen("levels");
+}
+
+function addScreen(name) {
 	removeAllScreens();
-	ScreenGame = new ScrGame();
-	scrContainer.addChild(ScreenGame);
-	currentScreen = ScreenGame;
-	currentScreen.name = "game";
+	
+	if(name == "game"){
+		ScreenGame = new ScrGame();
+		scrContainer.addChild(ScreenGame);
+		currentScreen = ScreenGame;
+	} else if(name == "levels"){
+		ScreenLevels = new ScrLevels();
+		scrContainer.addChild(ScreenLevels);
+		currentScreen = ScreenLevels;
+	}
+	currentScreen.name = name;
 }
 
 function addButton(name, _x, _y, _scGr) {
@@ -560,6 +583,19 @@ function addText(text, size, color, glow, _align, width, px, font){
 	}
 	
 	return obj;
+}
+
+function addWinLevel(id){
+	var levels = getLevels();
+	levels[id] = true;
+}
+
+function getLevels(){
+	if(login_obj["levels"]){}else{
+		login_obj["levels"] = {};
+	}
+	
+	return login_obj["levels"];
 }
 
 function initjiggle(t, startvalue, finishvalue, div, step){

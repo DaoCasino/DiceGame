@@ -46,22 +46,26 @@ ScrGame.prototype.init = function() {
 	this.showWinEthereum = 0;
 	this.showTimeEthereum = 100;
 	this.resurrection = this.resurrectionCur;
-	this.curLevel = Number(login_obj["level"]) || 1;
 	this.wndInfo;
 	this.curWindow;
+	
+	// если идет еще старая сессия, загружаем её
+	if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
+		login_obj["level"] = login_obj["curLevel"];
+		var tfOldGame = addText("Loaded previous session game", 40, "#FF8611", "#000000", "center", 800)
+		tfOldGame.x = _W/2;
+		tfOldGame.y = 150;
+		this.face_mc.addChild(tfOldGame);
+		createjs.Tween.get(tfOldGame).wait(3000).to({alpha:0},500)
+	}
+	this.curLevel = Number(login_obj["level"]) || 1;
 	
 	if(options_debug){
 		var tfDebug = addText("Debug", 20, "#FF0000", "#000000", "right", 400)
 		tfDebug.x = _W-20;
 		tfDebug.y = 10;
 		this.face_mc.addChild(tfDebug);
-		
-		this.curLevel = 3;
 	}
-	var tfVersion = addText("v. 1.0.3 testnet", 16, "#000000", undefined, "right", 400)
-	tfVersion.x = _W-20;
-	tfVersion.y = _H-24;
-	this.face_mc.addChild(tfVersion);
 	
 	this.arTitle = ["",
 		"30.04.2016 \n The DAO is live",
@@ -84,6 +88,11 @@ ScrGame.prototype.init = function() {
 	this.addChild(this.face_mc);
 	
 	this.bgGame = addObj("bgLevel"+this.curLevel, _W/2, _H/2);
+	if(this.bgGame){
+	} else {
+		console.log("bgLevel"+this.curLevel + " is undefined")
+		this.bgGame = addObj("bgLevel1", _W/2, _H/2);
+	}
 	this.back_mc.addChild(this.bgGame);
 	
 	this.tfTitleLevel = addText("", 24, "#00FF00", "#000000", "center", 1000, 3)
@@ -100,14 +109,15 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:150, y:200}, "cloud2")
 	this.createObj({x:-400, y:100}, "cloud1")
 	
-	this.btnExport = this.createButton("btnExport", 90, 120, "Export keys", 21)
+	this.btnLevels = this.createButton("btnLevels", 90, 120, "Menu", 24)
+	this.btnExport = this.createButton("btnExport", 90, 180, "Export keys", 21)
 	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 21)
 	this.btnTry = this.createButton("btnTry", _W/2, 600, "Try again", 21)
 	this.btnTry.visible = false;
 	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
 	this.btnNext.visible = false;
 	if(options_debug){
-		this.btnReset = this.createButton("btnReset", 90, 180, "Clear log", 26, 17)
+		this.btnReset = this.createButton("btnReset", 90, 240, "Clear log", 26, 17)
 	}
 	
 	this.createGUI();
@@ -115,7 +125,7 @@ ScrGame.prototype.init = function() {
 	this.sendRequest("getBalance");
 	
 	// если идет игра, дожидаемся ее результата
-	if(login_obj["startGame"] && login_obj["idGame"]){
+	if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
 		this.btnStart.visible = false;
 		this.idGame = login_obj["idGame"];
 		this.createLevel();
@@ -167,16 +177,6 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 
 // ALL LEVELS
 ScrGame.prototype.createLevel = function() {
-	if(this.bgGame){
-		this.back_mc.removeChild(this.bgGame);
-	}
-	this.bgGame = addObj("bgLevel"+this.curLevel, _W/2, _H/2);
-	if(this.bgGame){
-	} else {
-		console.log("bgLevel"+this.curLevel + " is undefined")
-		this.bgGame = addObj("bgLevel1", _W/2, _H/2);
-	}
-	this.back_mc.addChild(this.bgGame);
 	this.tfLevel.setText("Level " + this.curLevel);
 	this.tfTitleLevel.setText("");
 	this.itemResult.tf.setText("");
@@ -230,15 +230,6 @@ ScrGame.prototype.createLevel = function() {
 			
 			this.hero = addObj("itemHero", 660, 500, 1, -1);
 			this.game_mc.addChild(this.hero);
-			
-			if(this.itemWall){
-				this.game_mc.removeChild(this.itemWall);
-				this.itemWall = undefined;
-			}
-			if(this.itemHome){
-				this.gfx_mc.removeChild(this.itemHome);
-				this.itemHome = undefined;
-			}
 			break;
 	}
 	
@@ -499,8 +490,12 @@ ScrGame.prototype.addHolderObj = function(obj){
 // STAR
 ScrGame.prototype.startGameEth = function(){
 	var openkey = login_obj["openkey"].substr(2);
+	var urlSite = "https://api.etherscan.io/";
+	if(options_testnet){
+		urlSite = "https://testnet.etherscan.io/";
+	}
 	
-	$.get("https://testnet.etherscan.io/api?module=proxy&action=eth_getTransactionCount&address="+login_obj["openkey"]+"&tag=latest&apikey=YourApiKeyToken",function(d){
+	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+login_obj["openkey"]+"&tag=latest&apikey=YourApiKeyToken",function(d){
 		console.log("получили nonce"+d.result);
 		var options = {};
 		options.nonce = d.result;
@@ -522,8 +517,7 @@ ScrGame.prototype.startGameEth = function(){
 				var serializedTx = tx.serialize().toString('hex');
 				
 				console.log("Транзакция подписана: "+serializedTx);
-				// $.getJSON("https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
-				$.getJSON("https://testnet.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+				$.getJSON(urlSite+"api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
 					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
 					obj_game["game"].response("idGame", d.result) 
 					console.log("Транзакция отправлена в сеть");
@@ -551,7 +545,6 @@ ScrGame.prototype.resultGameEth = function(val){
 			this.itemDao.setAct("Lose")
 		}
 		if(this.curLevel < 9){
-			this.curLevel ++;
 		} else {
 			console.log("YOU WIN!");
 		}
@@ -571,7 +564,8 @@ ScrGame.prototype.resultGameEth = function(val){
 		
 	}
 	login_obj["startGame"] = false;
-	login_obj["level"] = this.curLevel;
+	login_obj["curLevel"] = false;
+	addWinLevel(this.curLevel);
 	this.itemResult.tf.setText(str);
 	this.itemResult.tfBalance.setText(strB);
 	this.sendRequest("getBalance");
@@ -625,6 +619,9 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnReset"){
 		this.showWndClearLog();
+	} else if(item_mc.name == "btnLevels"){
+		this.removeAllListener();
+		showLevels();
 	} else if(item_mc.name == "btnExport"){
 		this.exportKeys();
 	} else if(item_mc.name == "btnStart"){
@@ -644,8 +641,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.resetGame();
 		this.btnTry.visible = false;
 	} else if(item_mc.name == "btnNext"){
-		this.nextLevel();
-		this.btnNext.visible = false;
+		this.removeAllListener();
+		showLevels();
 	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){
 			return false;
@@ -708,10 +705,12 @@ ScrGame.prototype.sendRequest = function(value) {
 			}
 		} else if(value == "getBalance"){
 			if(login_obj["openkey"]){
+				var urlSite = "https://api.etherscan.io/";
+				if(options_testnet){
+					urlSite = "https://testnet.etherscan.io/";
+				}
 				var adress = login_obj["openkey"].replace('0x','');
-				// urlBalance = "https://api.etherscan.io/api?module=account&action=balance&address="+
-							// adress+"&tag=latest&apikey=YourApiKeyToken"
-				urlBalance = "https://testnet.etherscan.io/api?module=account&action=balance&address="+
+				urlBalance = urlSite+"api?module=account&action=balance&address="+
 							adress+"&tag=latest&apikey=YourApiKeyToken"
 				var str = urlBalance;
 				this.sendUrlRequest(str, "getBalance");
@@ -733,6 +732,7 @@ ScrGame.prototype.response = function(command, value) {
 		this.timeGetResult = 0;
 		this.sendRequest("getBalance");
 		login_obj["startGame"] = true;
+		login_obj["curLevel"] = this.curLevel;
 	} else if(command == "resultGame"){
 		var val = Number(value);
 		if(val == 0){
