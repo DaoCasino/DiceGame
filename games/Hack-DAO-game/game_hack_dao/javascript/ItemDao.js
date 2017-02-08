@@ -118,7 +118,9 @@ ItemDao.prototype.move = function(){
 	Math.abs(this.y - this._ptMove.y) < this.speed) {
 		this._move = false;
 		if(this.sprite){
-			// this.setAct("Stay");
+			// if(this.act == "RunMoney"){
+				// this.sprite.img.gotoAndStop(1);
+			// }
 		}
 	}
 }

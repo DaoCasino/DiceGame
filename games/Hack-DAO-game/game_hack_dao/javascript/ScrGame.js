@@ -202,7 +202,7 @@ ScrGame.prototype.createLevel = function() {
 			break;
 		case 2:
 			this.itemDao.setSkin("dao");
-			this.itemDao.setAct("Stay")
+			this.itemDao.setAct("RunMoney")
 			this.itemDao.dead = false;
 			this.itemDao.visible = true;
 			this.itemDao.barDao.visible = false;

@@ -283,6 +283,38 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0001.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0002.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0003.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0004.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0005.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0006.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0007.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0008.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0009.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0010.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0011.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0012.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0013.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0014.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0015.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0016.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0017.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0018.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0019.png</key>
+            <key type="filename">anima/daoRunMoney/daoRunMoney_0020.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>26,58,52,116</rect>
+                <key>scale9Paddings</key>
+                <rect>26,58,52,116</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/daoWin/daoWin_0001.png</key>
             <key type="filename">anima/daoWin/daoWin_0002.png</key>
             <key type="filename">anima/daoWin/daoWin_0003.png</key>
