@@ -508,7 +508,7 @@ ScrGame.prototype.startGameEth = function(){
 		options.data = '0xc3fe3e28'; //собственно это надо отправить, чтоб вызвалась функция game();
 		options.to = "0xE8B4B0C645B28999c33e527236185B01E4b89F3a"; //адрес нашего смарт контракта
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
-		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+		options.gasPrice="0x4614ff8200";//web3.toHex('310000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
 		options.value = 50000000000000000; //  //ставка 0.02 эфира
 
