@@ -539,7 +539,9 @@ ScrGame.prototype.resultGameEth = function(val){
 		this.showWinEthereum = 10;
 		this.itemDao.dead = true;
 		this.btnNext.visible = true;
-		if(this.curLevel == 2){
+		if(this.curLevel == 1){
+			this.itemDao.setAct("Win")
+		} else if(this.curLevel == 2){
 			this.itemDao.setAct("Win")
 		} else if(this.curLevel == 4){
 			this.itemDao.setAct("Lose")
@@ -596,11 +598,19 @@ ScrGame.prototype.healthDao = function() {
 			this.resurrection = this.resurrectionCur*20
 		}
 		this.itemDao.health += this.resurrection;
-	} else if(this.itemDao.health < this.itemDao.healthMax){
-		if(this.itemDao.health > this.itemDao.healthMax*0.9){
-			this.resurrection = this.resurrectionCur;
+	} else {
+		if(this.itemDao.health < this.itemDao.healthMax){
+			if(this.itemDao.health > this.itemDao.healthMax*0.9){
+				this.resurrection = this.resurrectionCur;
+			}
+			this.itemDao.health += this.resurrection;
 		}
-		this.itemDao.health += this.resurrection;
+		if(this.curLevel == 1){
+			if(this.itemDao.act == "Stay"){
+				var fr = Math.ceil((this.itemDao.healthMax - this.itemDao.health)/100);
+				this.itemDao.sprite.img.gotoAndStop(fr);
+			}
+		}
 	}
 }
 

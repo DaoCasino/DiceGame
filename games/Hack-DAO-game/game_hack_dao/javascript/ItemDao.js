@@ -55,29 +55,22 @@ ItemDao.prototype.setAct = function(act) {
 		this.item.removeChild(this.sprite);
 	}
 	
-	if(this.skin == "egg"){
-		this.sprite = addObj("itemEgg");
-		this.item.addChild(this.sprite);
-		this.w = this.sprite.w;
-		this.h = this.sprite.h;
+	var _x = 0;
+	var _y = 0;
+	if(act == "Cure"){
+		_x = -19;
+	} else if(act == "Win"){
+		_x = -12;
+	}
+	this.sprite = addObj(this.skin+this.act, _x, _y);
+	this.item.addChild(this.sprite);
+	this.w = this.sprite.w;
+	this.h = this.sprite.h;
+	
+	if(this.act == "Stay" || this.act == "Lose"){
 	} else {
-		var _x = 0;
-		var _y = 0;
-		if(act == "Cure"){
-			_x = -19;
-		} else if(act == "Win"){
-			_x = -12;
-		}
-		this.sprite = addObj(this.skin+this.act, _x, _y);
-		this.item.addChild(this.sprite);
-		this.w = this.sprite.w;
-		this.h = this.sprite.h;
-		
-		if(this.act == "Stay" || this.act == "Lose"){
-		} else {
-			this.sprite.img.play();
-			this.sprite.img.animationSpeed = 0.5;
-		}
+		this.sprite.img.play();
+		this.sprite.img.animationSpeed = 0.5;
 	}
 }
 

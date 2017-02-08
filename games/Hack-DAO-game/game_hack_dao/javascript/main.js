@@ -217,7 +217,8 @@ function iniSetArt(set_name) {
 }
 
 function handleProgress(){
-	var percent = preloader.progress
+	var percent = Math.ceil(preloader.progress)
+	LoadPercent.setText("Game loading: " + percent + "%");
 }
 
 function handleComplete(evt) {
