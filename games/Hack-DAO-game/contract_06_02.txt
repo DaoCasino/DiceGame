@@ -1,10 +1,10 @@
-pragma solidity ^0.4.8;
+﻿pragma solidity ^0.4.8;
 
 //в этом тестовом контракте мы реализуем простейший вариант казино
 //здесь будет одна игра
 //фронтенд будет полностью написан на js,html,css
 //ide http://dapps.oraclize.it/browser-solidity/
-
+//todo http://artgambling.com/index.php/ru/kontrol-chestnosti
 // <ORACLIZE_API>
 /*
 Copyright (c) 2015-2016 Oraclize SRL
