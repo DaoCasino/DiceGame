@@ -612,9 +612,11 @@ ScrGame.prototype.nextLevel = function() {
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {
-	item_mc._selected = false;
-	if(item_mc.over){
-		item_mc.over.visible = false;
+	if(item_mc.name.search("btn") != -1){
+		item_mc._selected = false;
+		if(item_mc.over){
+			item_mc.over.visible = false;
+		}
 	}
 	
 	if(item_mc.name == "btnReset"){

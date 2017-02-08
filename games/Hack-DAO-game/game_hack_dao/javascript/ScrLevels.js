@@ -46,6 +46,7 @@ ScrLevels.prototype.createLevels = function() {
 	var w = 800;
 	var offsetX = 240;
 	var offsetY = 160;
+	var levels = getLevels();
 	
 	for (var i = 0; i < 9; i++) {
 		var level = new ItemLevel(i+1);
@@ -53,13 +54,8 @@ ScrLevels.prototype.createLevels = function() {
 		level.y = startY + posY*offsetY;
 		this.addChild(level);
 		var lock = true;
-		if(i == 0 || options_debug){
+		if(i == 0 || levels[i] || options_debug){
 			lock = false;
-		}
-		if(login_obj["level"]){
-			if(i < Number(login_obj["level"])){
-				lock = false;
-			}
 		}
 		
 		level.setId(i+1, lock);
