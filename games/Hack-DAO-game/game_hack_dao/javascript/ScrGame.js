@@ -218,6 +218,7 @@ ScrGame.prototype.createLevel = function() {
 			this.gfx_mc.addChild(this.itemHome);
 			break;
 		case 4:
+		case 5:
 		default:
 			this.itemDao.setSkin("dao");
 			this.itemDao.setAct("Stay")
@@ -227,8 +228,12 @@ ScrGame.prototype.createLevel = function() {
 			this.hintArrow.visible = true;
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
+			var str = "itemHero";
+			if(this.curLevel == 5){
+				str = "itemHeroW";
+			}
 			
-			this.hero = addObj("itemHero", 660, 500, 1, -1);
+			this.hero = addObj(str, 660, 500, 1, -1);
 			this.game_mc.addChild(this.hero);
 			break;
 	}
@@ -555,7 +560,7 @@ ScrGame.prototype.resultGameEth = function(val){
 			this.itemDao.setAct("Win")
 		} else if(this.curLevel == 2){
 			this.itemDao.setAct("Win")
-		} else if(this.curLevel == 4){
+		} else if(this.curLevel == 4 || this.curLevel == 5){
 			this.itemDao.setAct("Lose")
 		}
 		if(this.curLevel < 9){
@@ -566,7 +571,7 @@ ScrGame.prototype.resultGameEth = function(val){
 	} else {
 		str = "LOSE";
 		strB = "";
-		 if(this.curLevel == 4){
+		 if(this.curLevel == 4 || this.curLevel == 5){
 			this.itemDao.setAct("Win")
 			if(this.hero){
 				this.hero.rotation = 270*(Math.PI/180)
@@ -674,7 +679,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 			return false;
 		}
 		if(this.startGame &&
-		(this.curLevel == 1 || this.curLevel == 4)){
+		(this.curLevel == 1 || this.curLevel == 4 || this.curLevel == 5)){
 			this.hintArrow.visible = false;
 			this.clickHeroDao();
 		}

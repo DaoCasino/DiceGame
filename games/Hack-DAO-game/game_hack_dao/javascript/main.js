@@ -94,6 +94,8 @@ function loadManifest(){
 	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");
 	preloader.add("bgLevel2", "images/bg/bgLevel2.jpg");
 	preloader.add("bgLevel3", "images/bg/bgLevel3.jpg");
+	preloader.add("bgLevel4", "images/bg/bgLevel4.jpg");
+	preloader.add("bgLevel5", "images/bg/bgLevel5.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
@@ -102,6 +104,7 @@ function loadManifest(){
 	preloader.add("btnDefaultOver", "images/buttons/btnDefaultOver.png");
 	
 	preloader.add("itemHero", "images/items/itemHero.png");
+	preloader.add("itemHeroW", "images/items/itemHeroW.png");
 	preloader.add("itemDao", "images/items/itemDao.png");
 	preloader.add("itemEgg", "images/items/itemEgg.png");
 	preloader.add("iconEthereum", "images/items/iconEthereum.png");
