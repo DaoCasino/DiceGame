@@ -50,14 +50,14 @@ ScrGame.prototype.init = function() {
 	this.curWindow;
 	
 	// если идет еще старая сессия, загружаем её
-	if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
+	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
 		login_obj["level"] = login_obj["curLevel"];
 		var tfOldGame = addText("Loaded previous session game", 40, "#FF8611", "#000000", "center", 800)
 		tfOldGame.x = _W/2;
 		tfOldGame.y = 150;
 		this.face_mc.addChild(tfOldGame);
 		createjs.Tween.get(tfOldGame).wait(3000).to({alpha:0},500)
-	}
+	}*/
 	this.curLevel = Number(login_obj["level"]) || 1;
 	
 	if(options_debug){
@@ -90,7 +90,6 @@ ScrGame.prototype.init = function() {
 	this.bgGame = addObj("bgLevel"+this.curLevel, _W/2, _H/2);
 	if(this.bgGame){
 	} else {
-		console.log("bgLevel"+this.curLevel + " is undefined")
 		this.bgGame = addObj("bgLevel1", _W/2, _H/2);
 	}
 	this.back_mc.addChild(this.bgGame);
@@ -117,11 +116,11 @@ ScrGame.prototype.init = function() {
 	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
 	this.btnNext.visible = false;
 	this.btnShare = addButton2("btnFacebookShare", 0, 0, 0.3);
+	this.btnShare.name = "btnShare";
 	this.btnShare.x = _W - 150;
 	this.btnShare.y = 120;
 	this.face_mc.addChild(this.btnShare);
 	this._arButtons.push(this.btnShare);
-	// this.btnShare = this.createButton("btnShare", _W - 90, 120, "Share", 24)
 	// this.btnShare.visible = false;
 	if(options_debug){
 		this.btnReset = this.createButton("btnReset", 90, 240, "Clear log", 26, 17)
@@ -132,11 +131,11 @@ ScrGame.prototype.init = function() {
 	this.sendRequest("getBalance");
 	
 	// если идет игра, дожидаемся ее результата
-	if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
+	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
 		this.btnStart.visible = false;
 		this.idGame = login_obj["idGame"];
 		this.createLevel();
-	}
+	}*/
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
