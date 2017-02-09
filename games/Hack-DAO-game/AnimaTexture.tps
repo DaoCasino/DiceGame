@@ -362,6 +362,60 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">anima/handClimb/handClimb_0001.png</key>
+            <key type="filename">anima/handClimb/handClimb_0002.png</key>
+            <key type="filename">anima/handClimb/handClimb_0003.png</key>
+            <key type="filename">anima/handClimb/handClimb_0004.png</key>
+            <key type="filename">anima/handClimb/handClimb_0005.png</key>
+            <key type="filename">anima/handClimb/handClimb_0006.png</key>
+            <key type="filename">anima/handClimb/handClimb_0007.png</key>
+            <key type="filename">anima/handClimb/handClimb_0008.png</key>
+            <key type="filename">anima/handClimb/handClimb_0009.png</key>
+            <key type="filename">anima/handClimb/handClimb_0010.png</key>
+            <key type="filename">anima/handClimb/handClimb_0011.png</key>
+            <key type="filename">anima/handClimb/handClimb_0012.png</key>
+            <key type="filename">anima/handClimb/handClimb_0013.png</key>
+            <key type="filename">anima/handClimb/handClimb_0014.png</key>
+            <key type="filename">anima/handClimb/handClimb_0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,15,15,31</rect>
+                <key>scale9Paddings</key>
+                <rect>8,15,15,31</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">anima/legRun/legRun_0001.png</key>
+            <key type="filename">anima/legRun/legRun_0002.png</key>
+            <key type="filename">anima/legRun/legRun_0003.png</key>
+            <key type="filename">anima/legRun/legRun_0004.png</key>
+            <key type="filename">anima/legRun/legRun_0005.png</key>
+            <key type="filename">anima/legRun/legRun_0006.png</key>
+            <key type="filename">anima/legRun/legRun_0007.png</key>
+            <key type="filename">anima/legRun/legRun_0008.png</key>
+            <key type="filename">anima/legRun/legRun_0009.png</key>
+            <key type="filename">anima/legRun/legRun_0010.png</key>
+            <key type="filename">anima/legRun/legRun_0011.png</key>
+            <key type="filename">anima/legRun/legRun_0012.png</key>
+            <key type="filename">anima/legRun/legRun_0013.png</key>
+            <key type="filename">anima/legRun/legRun_0014.png</key>
+            <key type="filename">anima/legRun/legRun_0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>6,13,12,27</rect>
+                <key>scale9Paddings</key>
+                <rect>6,13,12,27</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>

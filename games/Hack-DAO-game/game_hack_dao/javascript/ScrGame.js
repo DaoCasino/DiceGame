@@ -214,7 +214,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.visible = true;
 			this.itemWall = addObj("itemWall", 660, 428);
 			this.game_mc.addChild(this.itemWall);
-			this.itemHome = addObj("itemHome", 1139, 351);
+			this.itemHome = addObj("itemHome", 1204, 364);
 			this.gfx_mc.addChild(this.itemHome);
 			break;
 		case 4:
@@ -267,7 +267,7 @@ ScrGame.prototype.createAccount = function() {
 ScrGame.prototype.createGUI = function() {
 	this.itemResult = new PIXI.Container();
 	this.itemResult.x = _W/2;
-	this.itemResult.y = 130;
+	this.itemResult.y = 160;
 	this.itemResult.visible = false;
 	this.face_mc.addChild(this.itemResult);
 	
@@ -431,11 +431,13 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	}
 	
 	if (newObj) {
-		mc = addObj(name, 0, 0, sc);
-		if(mc.name == "cloud1" ||
-		mc.name == "cloud2" ||
-		mc.name == "itemProposal" ||
-		mc.name == "itemProposalR"){
+		if(name == "itemProposal"){
+			mc = new ItemProposal();
+		} else {
+			mc = addObj(name, 0, 0, sc);
+		}
+		if(name.search("cloud") > -1 ||
+		name == "itemProposal"){
 			this.game_mc.addChild(mc);
 		} else {
 			this.gfx_mc.addChild(mc);
@@ -464,15 +466,21 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		if(Math.random()>0.5){
 			mc.vX = -1;
 		}
-	} else if(mc.name == "itemProposal" ||
-	mc.name == "itemProposalR"){
-		mc.act = "run";
+	} else if(mc.name == "itemProposal"){
+		if(Math.random() > 0.5){
+			mc.setBody("Red");
+		} else {
+			mc.setBody("Green");
+		}
+		mc.setAct("Run");
+		mc.setScaleX(-1);
 		mc.action = "run";
 		mc.state = 1;
-		mc.scale.x = -1;
 		mc.vX = 1;
 		mc.speed = 2;
 		mc.tLife = 300000;
+		mc.showMark = false;
+		mc.mark.visible = false;
 		this._arObjectLevel.push(mc);
 	}
 	
@@ -680,8 +688,11 @@ ScrGame.prototype.clickObject = function() {
 			if (mc) {
 				if(hit_test_rec(mc, mc.w, mc.h, _mouseX, _mouseY)){
 					if(this.curLevel == 3){
-						if(mc.action == "run"){
+						console.log("mc.scale.x:", mc.scale.x)
+						if(mc.action == "run" && mc.sprite.scale.x == -1){
 							mc.action = "climb";
+							mc.showMark = true;
+							mc.mark.visible = true;
 							break;
 						}
 					}
@@ -810,8 +821,7 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					var t = Math.ceil(Math.random()*2)
 					this.createObj({x:-400, y:50+Math.random()*100}, "cloud"+t)
 				}
-			} else if(mc.name == "itemProposal" ||
-			mc.name == "itemProposalR"){
+			} else if(mc.name == "itemProposal"){
 				if(mc.state == 1){
 					mc.x += mc.speed*mc.vX;
 					var w = this.itemWall.w + mc.w;
@@ -819,15 +829,17 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					if(hit_test_rec(this.itemWall, w, h, mc.x,mc.y)){
 						if(mc.action == "run"){
 							mc.vX = -mc.vX;
-							mc.scale.x = -mc.scale.x;
+							mc.setScaleX(1);
 						} else if(mc.action == "climb"){
 							mc.state = 2;
+							mc.setAct("Climb");
 						}
 					}
 				} else if(mc.state == 2){
 					mc.y -= mc.speed;
 					if(mc.y+mc.h/2 < this.itemWall.y - this.itemWall.h/2){
 						mc.state = 3;
+						mc.setAct("Run");
 					}
 				} else if(mc.state == 3){
 					mc.x += mc.speed;
@@ -940,11 +952,7 @@ ScrGame.prototype.update = function() {
 			this.timeProposal += diffTime;
 			if(this.timeProposal >= TIME_RESPAWN_PROPOSAL){
 				this.timeProposal = 0;
-				var name = "itemProposal";
-				if(Math.random() > 0.5){
-					name = "itemProposalR";
-				}
-				this.createObj({x:-60, y:425}, name)
+				this.createObj({x:-60, y:425}, "itemProposal")
 			}
 		}
 	}

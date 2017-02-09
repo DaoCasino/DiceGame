@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.4 testnet"
+var version = "v. 1.0.5 testnet"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -11,6 +11,7 @@ var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
 var fontMain = "Luckiest Guy";
 var fontImpact = "Impact";
+var fontTahoma = "Tahoma";
 var stats; //для вывода статистики справа
 
 var options_debug = false;
@@ -114,6 +115,10 @@ function loadManifest(){
 	preloader.add("itemHome", "images/items/itemHome.png");
 	preloader.add("itemLevel", "images/items/itemLevel.png");
 	preloader.add("itemLock", "images/items/itemLock.png");
+	preloader.add("itemHeadProposal", "images/items/itemHeadProposal.png");
+	preloader.add("itemBodyGreen", "images/items/itemBodyGreen.png");
+	preloader.add("itemBodyRed", "images/items/itemBodyRed.png");
+	preloader.add("iconCheckMark", "images/items/iconCheckMark.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	
