@@ -116,7 +116,12 @@ ScrGame.prototype.init = function() {
 	this.btnTry.visible = false;
 	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
 	this.btnNext.visible = false;
-	this.btnShare = this.createButton("btnShare", _W - 90, 120, "Share", 24)
+	this.btnShare = addButton2("btnFacebookShare", 0, 0, 0.3);
+	this.btnShare.x = _W - 150;
+	this.btnShare.y = 120;
+	this.face_mc.addChild(this.btnShare);
+	this._arButtons.push(this.btnShare);
+	// this.btnShare = this.createButton("btnShare", _W - 90, 120, "Share", 24)
 	// this.btnShare.visible = false;
 	if(options_debug){
 		this.btnReset = this.createButton("btnReset", 90, 240, "Clear log", 26, 17)
@@ -342,24 +347,20 @@ ScrGame.prototype.refillBalance = function() {
 
 ScrGame.prototype.shareFB = function() {	
 	if (typeof(FB) != 'undefined' && FB != null ) {
-		var urlGame = 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/'
+		var urlGame = 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/';
+		var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/distr/icon_1024.png";
 		/*FB.ui({
 			method: 'share',
-			href: 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/',
+			href: urlGame,
 		}, function(response){});*/
 		
-		/*FB.ui({
-			method: 'share_open_graph',
-			action_type: 'og.likes',
-			action_properties: JSON.stringify({
-				object:'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/',
-			})
-		}, function(response){});*/
 		
 		FB.ui({
 		  method: 'feed',
+		  picture: urlImg,
 		  link: urlGame,
-		  caption: 'I passed Level ' + this.curLevel,
+		  caption: 'PLAY',
+		  description: 'I passed Level ' + this.curLevel,
 		}, function(response){});
 	} else {
 		console.log("FB is not defined");
@@ -700,8 +701,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 			this.btnStart.visible = false;
 		}
 	} else if(item_mc.name == "btnTry"){
-		this.resetGame();
-		this.btnTry.visible = false;
+		this.removeAllListener();
+		showLevels();
 	} else if(item_mc.name == "btnNext"){
 		this.removeAllListener();
 		showLevels();
@@ -1009,6 +1010,11 @@ ScrGame.prototype.checkButtons = function(evt){
 				item_mc._selected = true;
 				if(item_mc.over){
 					item_mc.over.visible = true;
+				} else {
+					if(item_mc.name == "btnFacebookShare"){
+						item_mc.scale.x = 0.33;
+						item_mc.scale.y = item_mc.scale.x;
+					}
 				}
 			}
 		} else {
@@ -1016,6 +1022,11 @@ ScrGame.prototype.checkButtons = function(evt){
 				item_mc._selected = false;
 				if(item_mc.over){
 					item_mc.over.visible = false;
+				} else {
+					if(item_mc.name == "btnFacebookShare"){
+						item_mc.scale.x = 0.3;
+						item_mc.scale.y = item_mc.scale.x;
+					}
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.8"
+var version = "v. 1.0.9"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -109,6 +109,7 @@ function loadManifest(){
 	preloader.add("btnCloseOver", "images/buttons/btnCloseOver.png");
 	preloader.add("btnDefault", "images/buttons/btnDefault.png");
 	preloader.add("btnDefaultOver", "images/buttons/btnDefaultOver.png");
+	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");
 	
 	preloader.add("itemHero", "images/items/itemHero.png");
 	preloader.add("itemHeroW", "images/items/itemHeroW.png");
