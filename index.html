@@ -112,13 +112,13 @@
 					<div class="col-md-3 col-sm-6 col-xs-7">
 						<div class="switch-block clearfix">
 							<form action="">
-								<span class="real-money switch-span">MAINNET</span>
+								<span class="real-money switch-span">TESTNET</span>
 								<span class="toggle-bg">
 									<input type="radio" id="checked-off" name="toggle" value="off">
 									<input type="radio" id="checked-on" name="toggle" value="on"> 
 									<span class="switch"></span>
 								</span>
-								<span class="free-money switch-span">TESTNET</span>
+								<span class="free-money switch-span">MAINNET</span>
 							</form>
 						</div>
 					</div>
@@ -375,6 +375,24 @@
 	<script type="text/javascript">  showTime();</script>
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
-	
+	<script>
+	if (!localStorage.getItem("openkey")) {
+		var secretSeed = lightwallet.keystore.generateRandomSeed();
+		lightwallet.keystore.deriveKeyFromPassword('sdfsdf', function (err, pwDerivedKey) {
+		 var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
+		 ks.generateNewAddress(pwDerivedKey, 1);
+		 var address = ks.getAddresses()[0];
+		 var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
+		 
+		 localStorage.setItem("openkey",address);
+		 localStorage.setItem("privkey",prv_key);
+		 
+		 console.log('address and key: ', address, prv_key);
+		 $.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
+				console.log(d);
+			});
+		});
+	}
+	</script>
 </body>
 </html>
