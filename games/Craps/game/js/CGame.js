@@ -128,16 +128,17 @@ function CGame(oData){
     this._generateWinLoss = function(){
         
         var iWinOccurence;
+		// если банк казино меньще,чем двойная ставка игрока, игрок проиграл
         if(_iCasinoCash < _oMySeat.getCurBet()*2){
-            iWinOccurence = 0;
+            iWinOccurence = 0; // шанс выграть 0%
         }else{
-            iWinOccurence = WIN_OCCURRENCE;
+            iWinOccurence = WIN_OCCURRENCE; // шанс выграть 30%
         }
-        
         
         var aDiceForLose;
         var aDiceForWin;
         
+		// список на что поставили
         for(var szBet in _aBetHistory){
             //BET STRING EXCEPTION
             if(szBet.indexOf("any11_") !== -1){
@@ -147,12 +148,14 @@ function CGame(oData){
             }
             
             var oRet = s_oGameSettings.getBetWinLoss(_iState,_iNumberPoint,szBet);
-            aDiceForLose = oRet.lose;
-            aDiceForWin = oRet.win;
+            aDiceForLose = oRet.lose; // список костей для проигрыша
+            aDiceForWin = oRet.win; // список костей для победы
         }
 
+		// _iContRolling - номер попытки (броска костей)
+		// _iMaxNumRolling - максимальное количество попыток
         var iRand = Math.floor(Math.random() * (100));
-
+		
         if (iRand >= iWinOccurence) {
             //LOSE
             _bWinAssigned = false;
