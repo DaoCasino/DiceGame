@@ -567,6 +567,7 @@ ScrGame.prototype.resultGameEth = function(val){
 		} else {
 			console.log("YOU WIN!");
 		}
+		addWinLevel(this.curLevel);
 		this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
 	} else {
 		str = "LOSE";
@@ -584,7 +585,7 @@ ScrGame.prototype.resultGameEth = function(val){
 	}
 	login_obj["startGame"] = false;
 	login_obj["curLevel"] = false;
-	addWinLevel(this.curLevel);
+	
 	this.itemResult.tf.setText(str);
 	this.itemResult.tfBalance.setText(strB);
 	this.sendRequest("getBalance");

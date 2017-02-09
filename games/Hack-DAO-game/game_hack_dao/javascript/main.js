@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.6 testnet"
+var version = "v. 1.0.6"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -53,6 +53,13 @@ function initGame() {
     preloader = new PIXI.loaders.Loader();
 
     window.addEventListener("resize", onResize, false);
+	
+	if(document.location.hash == "#testnet"){
+		options_testnet = true;
+	}
+	if(options_testnet){
+		version = version + " testnet"
+	}
 
 	startTime = getTimer();
     onResize();
