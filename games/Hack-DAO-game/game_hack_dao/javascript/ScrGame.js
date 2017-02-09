@@ -342,17 +342,24 @@ ScrGame.prototype.refillBalance = function() {
 
 ScrGame.prototype.shareFB = function() {	
 	if (typeof(FB) != 'undefined' && FB != null ) {
+		var urlGame = 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/'
 		/*FB.ui({
 			method: 'share',
 			href: 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/',
 		}, function(response){});*/
 		
-		FB.ui({
+		/*FB.ui({
 			method: 'share_open_graph',
 			action_type: 'og.likes',
 			action_properties: JSON.stringify({
 				object:'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/',
 			})
+		}, function(response){});*/
+		
+		FB.ui({
+		  method: 'feed',
+		  link: urlGame,
+		  caption: 'I passed Level ' + this.curLevel,
 		}, function(response){});
 	} else {
 		console.log("FB is not defined");
