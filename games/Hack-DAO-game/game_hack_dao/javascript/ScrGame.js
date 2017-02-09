@@ -116,6 +116,8 @@ ScrGame.prototype.init = function() {
 	this.btnTry.visible = false;
 	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
 	this.btnNext.visible = false;
+	this.btnShare = this.createButton("btnShare", _W - 90, 120, "Share", 24)
+	// this.btnShare.visible = false;
 	if(options_debug){
 		this.btnReset = this.createButton("btnReset", 90, 240, "Clear log", 26, 17)
 	}
@@ -335,6 +337,25 @@ ScrGame.prototype.refillBalance = function() {
 	if(login_obj["openkey"] && options_ethereum){
 		var url = "http://platform.dao.casino/topup/?client=" + login_obj["openkey"];
 		window.open(url, "_self"); // "_blank",  "_self"
+	}
+}
+
+ScrGame.prototype.shareFB = function() {
+	console.log("shareFB");
+	
+	if (typeof(FB) != 'undefined' && FB != null ) {
+		FB.ui({
+			method: 'share_open_graph',
+			action_type: 'og.likes',
+			action_properties: JSON.stringify({
+				object:'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/',
+			})
+		}, function(response){
+		  // Debug response (optional)
+		  console.log(response);
+		});
+	} else {
+		console.log("FB is not defined");
 	}
 }
 
@@ -656,6 +677,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		showLevels();
 	} else if(item_mc.name == "btnExport"){
 		this.exportKeys();
+	} else if(item_mc.name == "btnShare"){
+		this.shareFB();
 	} else if(item_mc.name == "btnStart"){
 		if(obj_game["balance"] < 0.06 && options_ethereum &&
 		options_debug == false){

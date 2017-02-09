@@ -6,7 +6,7 @@
 		
 		<!--CSS style import-->
 		<link rel="stylesheet" href="css/style.css">
-
+		
 		<!-- framework, pixi.js - v3.0.10 -->
 		<script src="javascript/jquery.min.js"></script>
 		<script src="javascript/pixi.js"></script>
@@ -25,5 +25,24 @@
 		<script src="javascript/main.js"></script>
 	</head>
 	<body onload="initGame()">
+		<script>
+		  window.fbAsyncInit = function() {
+			FB.init({
+			  appId      : '246877662432802',
+			  xfbml      : true,
+			  version    : 'v2.8'
+			});
+			FB.AppEvents.logPageView();
+			console.log("!!!!!!!!!!!!!!!");
+		  };
+
+		  (function(d, s, id){
+			 var js, fjs = d.getElementsByTagName(s)[0];
+			 if (d.getElementById(id)) {return;}
+			 js = d.createElement(s); js.id = id;
+			 js.src = "//connect.facebook.net/en_US/sdk.js";
+			 fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+		</script>
 	</body>
 </html>
