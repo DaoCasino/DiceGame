@@ -41,6 +41,7 @@ ScrGame.prototype.init = function() {
 	this.bSendRequest = false;
 	this.bWindow = false;
 	this.bResult = false;
+	this.bHealthDao09 = false; // 90% health
 	this.damage = 20;
 	this.resurrectionCur = 1;
 	this.showWinEthereum = 0;
@@ -121,7 +122,7 @@ ScrGame.prototype.init = function() {
 	this.btnShare.y = 120;
 	this.face_mc.addChild(this.btnShare);
 	this._arButtons.push(this.btnShare);
-	// this.btnShare.visible = false;
+	this.btnShare.visible = false;
 	if(options_debug){
 		this.btnReset = this.createButton("btnReset", 90, 240, "Clear log", 26, 17)
 	}
@@ -205,6 +206,7 @@ ScrGame.prototype.createLevel = function() {
 			this.hintArrow.visible = true;
 			this.itemDao.x = _W/2;
 			this.itemDao.y = 500;
+			this.damage = 40;
 			break;
 		case 2:
 			this.itemDao.setSkin("dao");
@@ -234,9 +236,11 @@ ScrGame.prototype.createLevel = function() {
 			this.hintArrow.visible = true;
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
+			this.damage = 30;
 			var str = "itemHero";
 			if(this.curLevel == 5){
 				str = "itemHeroW";
+				this.damage = 20;
 			}
 			
 			this.hero = addObj(str, 660, 500, 1, -1);
@@ -574,6 +578,9 @@ ScrGame.prototype.startGameEth = function(){
 
 // RESULT
 ScrGame.prototype.resultGameEth = function(val){
+	if(this._gameOver){
+		return false;
+	}
 	this._gameOver = true;
 	var str = "";
 	var strB = "";
@@ -597,6 +604,7 @@ ScrGame.prototype.resultGameEth = function(val){
 		}
 		addWinLevel(this.curLevel);
 		this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
+		this.btnShare.visible = true;
 	} else {
 		str = "LOSE";
 		strB = "";
@@ -609,7 +617,7 @@ ScrGame.prototype.resultGameEth = function(val){
 		}
 		this.itemDao.dead = true;
 		this.btnTry.visible = true;
-		
+		resetLevels();
 	}
 	login_obj["startGame"] = false;
 	login_obj["curLevel"] = false;
@@ -650,8 +658,14 @@ ScrGame.prototype.healthDao = function() {
 		if(this.itemDao.health < this.itemDao.healthMax){
 			if(this.itemDao.health > this.itemDao.healthMax*0.9){
 				this.resurrection = this.resurrectionCur;
+			} else {
+				this.bHealthDao09 = true;
 			}
 			this.itemDao.health += this.resurrection;
+		} else {
+			if(this.bHealthDao09){
+				this.resultGameEth(-1);
+			}
 		}
 		if(this.curLevel == 1){
 			if(this.itemDao.act == "Stay"){
@@ -1010,7 +1024,7 @@ ScrGame.prototype.checkButtons = function(evt){
 				if(item_mc.over){
 					item_mc.over.visible = true;
 				} else {
-					if(item_mc.name == "btnFacebookShare"){
+					if(item_mc.name == "btnShare"){
 						item_mc.scale.x = 0.33;
 						item_mc.scale.y = item_mc.scale.x;
 					}
@@ -1022,7 +1036,7 @@ ScrGame.prototype.checkButtons = function(evt){
 				if(item_mc.over){
 					item_mc.over.visible = false;
 				} else {
-					if(item_mc.name == "btnFacebookShare"){
+					if(item_mc.name == "btnShare"){
 						item_mc.scale.x = 0.3;
 						item_mc.scale.y = item_mc.scale.x;
 					}

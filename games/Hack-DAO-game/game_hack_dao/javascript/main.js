@@ -609,6 +609,10 @@ function addWinLevel(id){
 	levels[id] = true;
 }
 
+function resetLevels(){
+	login_obj["levels"] = {};
+}
+
 function getLevels(){
 	if(login_obj["levels"]){}else{
 		login_obj["levels"] = {};
