@@ -25,6 +25,7 @@
 	<link rel="stylesheet" href="css/fonts.css" />
 	<link rel="stylesheet" href="css/media.min.css" />
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
+	<link rel="stylesheet" href="libs/magnific-popup/magnific-popup.css" />
 	<script type="text/javascript">
 		function showTime()
 		{
@@ -109,26 +110,29 @@
 								</a>
 							</div>
 						</div>
-					<div class="col-md-3 col-sm-6 col-xs-7">
-						<div class="switch-block clearfix">
-							<form action="">
-								<span class="real-money switch-span">TESTNET</span>
-								<span class="toggle-bg">
-									<input type="radio" id="checked-off" name="toggle" value="off">
-									<input type="radio" id="checked-on" name="toggle" value="on"> 
-									<span class="switch"></span>
-								</span>
-								<span class="free-money switch-span">MAINNET</span>
-							</form>
+						<div class="col-md-3 col-sm-6 col-xs-7">
+							<div class="switch-block clearfix">
+								<form action="">
+									<span class="real-money switch-span">TESTNET</span>
+									<span class="toggle-bg">
+										<input type="radio" id="checked-off" name="toggle" value="off">
+										<input type="radio" id="checked-on" name="toggle" value="on"> 
+										<span class="switch"></span>
+									</span>
+									<span class="free-money switch-span">MAINNET</span>
+								</form>
+							</div>
 						</div>
-					</div>
 						<div class="col-md-4 col-sm-6 col-xs-6">
 							<button class="log-in">login</button>
+							<a class="popup-with-move-anim" href="#small-dialog">
+								Auth
+							</a>
 						</div>
 					</div>
 				</div>
 			</div>
-		
+
 		</header>
 		<!-- HEADER AND -->
 		<!-- MAIN -->
@@ -348,7 +352,7 @@
 						<li><a href="https://daocasino.slack.com">Join Slack</a></li>
 						<li><a href="https://twitter.com/daocasino">Twitter</a></li>
 						<li><a href="https://github.com/DaoCasino">GitHub</a></li>
-				
+
 					</ul>
 				</nav>
 			</div>
@@ -358,7 +362,23 @@
 	</div>
 
 
-	<div class="hidden"></div>
+	<div class="hidden">
+		<div id="small-dialog" class="zoom-anim-dialog">
+			<h1>USING LIGHTWALLET</h1>
+			<p>
+				Please watch our <a href="#">instructional video</a> on how to 
+				generate, use and restore your SingularDTV Lightwallet.
+			</p>
+			<p class="disclaimer">
+				<span>DISCLAIMER</span>
+				This lightwallet is still in beta and is presently not recommended for the storage of large amounts of ETH.
+			</p>
+			<p>
+				If you created an account before, enter your seed below or open a wallet.
+				Click on „Generate“ to create a new account.
+			</p>
+		</div>
+	</div>
 
 	<!--[if lt IE 9]>
 	<script src="libs/html5shiv/es5-shim.min.js"></script>
@@ -371,28 +391,29 @@
 	<script src="libs/modernizr/modernizr.js"></script>
 	<script src="libs/selectivizr/selectivizr-min.js"></script>
 	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 	<script src="js/common.js"></script>
 	<script type="text/javascript">  showTime();</script>
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script>
-	if (!localStorage.getItem("openkey")) {
-		var secretSeed = lightwallet.keystore.generateRandomSeed();
-		lightwallet.keystore.deriveKeyFromPassword('sdfsdf', function (err, pwDerivedKey) {
-		 var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-		 ks.generateNewAddress(pwDerivedKey, 1);
-		 var address = ks.getAddresses()[0];
-		 var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-		 
-		 localStorage.setItem("openkey",address);
-		 localStorage.setItem("privkey",prv_key);
-		 
-		 console.log('address and key: ', address, prv_key);
-		 $.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
-				console.log(d);
+		if (!localStorage.getItem("openkey")) {
+			var secretSeed = lightwallet.keystore.generateRandomSeed();
+			lightwallet.keystore.deriveKeyFromPassword('sdfsdf', function (err, pwDerivedKey) {
+				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
+				ks.generateNewAddress(pwDerivedKey, 1);
+				var address = ks.getAddresses()[0];
+				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
+
+				localStorage.setItem("openkey",address);
+				localStorage.setItem("privkey",prv_key);
+
+				console.log('address and key: ', address, prv_key);
+				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
+					console.log(d);
+				});
 			});
-		});
-	}
+		}
 	</script>
 </body>
 </html>
