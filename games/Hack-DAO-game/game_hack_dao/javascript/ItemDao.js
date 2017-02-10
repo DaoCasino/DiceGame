@@ -17,7 +17,7 @@ ItemDao.prototype.init = function() {
 	this._selected = false;
 	this.dead = false;
 	this.init = false;
-	this.healthMax = 1000;
+	this.healthMax = 10000;
 	this.health = this.healthMax;
 	this.speed = 15;
 	this.rr = 50*50;
@@ -63,7 +63,6 @@ ItemDao.prototype.setAct = function(act) {
 		_x = -12;
 	}
 	this.sprite = addObj(this.skin+this.act, _x, _y);
-	this.sprite.interactive = true;
 	this.sprite.buttonMode=true;
 	this.item.addChild(this.sprite);
 	this.w = this.sprite.w;

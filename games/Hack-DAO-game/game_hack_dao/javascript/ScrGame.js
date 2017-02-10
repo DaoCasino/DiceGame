@@ -8,7 +8,7 @@ ScrGame.prototype.constructor = ScrGame;
 
 var TIME_GET_RESULT = 10000;
 var TIME_RESPAWN_MONEY = 500;
-var TIME_RESPAWN_PROPOSAL = 2000;
+var TIME_RESPAWN_PROPOSAL = 1000;
 var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
@@ -51,6 +51,8 @@ ScrGame.prototype.init = function() {
 	this.resurrection = this.resurrectionCur;
 	this.wndInfo;
 	this.curWindow;
+	this.valueLevelMax = 0;
+	this.valueLevel = 0; // какое-то значение для проигрыша га уровне
 	
 	if(options_testnet){
 		urlSite = "https://testnet.etherscan.io/";
@@ -214,6 +216,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.setSkin("egg");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
+			this.itemDao.sprite.interactive = true;
 			this.itemDao.visible = true;
 			this.hintArrow.visible = true;
 			this.itemDao.x = _W/2;
@@ -228,6 +231,8 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.barDao.visible = false;
 			this.itemDao.x = _W/2;
 			this.itemDao.y = 500;
+			this.valueLevelMax = 5000;
+			this.tfTitleLevel.setText("Lost money: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
 		case 3:
 			this.itemDao.dead = true;
@@ -236,6 +241,8 @@ ScrGame.prototype.createLevel = function() {
 			this.game_mc.addChild(this.itemWall);
 			this.itemHome = addObj("itemHome", 1204, 364);
 			this.gfx_mc.addChild(this.itemHome);
+			this.valueLevelMax = 10;
+			this.tfTitleLevel.setText("Bad proposal: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
 		case 4:
 		case 5:
@@ -245,6 +252,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.dead = false;
 			this.itemDao.visible = true;
 			this.itemDao.barDao.visible = true;
+			this.itemDao.sprite.interactive = true;
 			this.hintArrow.visible = true;
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
@@ -531,7 +539,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		mc.action = "run";
 		mc.state = 1;
 		mc.vX = 1;
-		mc.speed = 2;
+		mc.speed = 4;
 		mc.tLife = 300000;
 		mc.showMark = false;
 		mc.mark.visible = false;
@@ -669,7 +677,7 @@ ScrGame.prototype.healthDao = function() {
 		this.itemDao.health += this.resurrection;
 	} else {
 		if(this.itemDao.health < this.itemDao.healthMax){
-			if(this.itemDao.health > this.itemDao.healthMax*0.9){
+			if(this.itemDao.health > this.itemDao.healthMax*0.8){
 				this.resurrection = this.resurrectionCur;
 			} else {
 				this.bHealthDao09 = true;
@@ -682,7 +690,7 @@ ScrGame.prototype.healthDao = function() {
 		}
 		if(this.curLevel == 1){
 			if(this.itemDao.act == "Stay"){
-				var fr = Math.ceil((this.itemDao.healthMax - this.itemDao.health)/100);
+				var fr = Math.ceil((this.itemDao.healthMax - this.itemDao.health)/(this.itemDao.healthMax/10));
 				this.itemDao.sprite.img.gotoAndStop(fr);
 			}
 		}
@@ -753,7 +761,6 @@ ScrGame.prototype.clickObject = function() {
 			if (mc) {
 				if(hit_test_rec(mc, mc.w, mc.h, _mouseX, _mouseY)){
 					if(this.curLevel == 3){
-						console.log("mc.scale.x:", mc.scale.x)
 						if(mc.action == "run" && mc.sprite.scale.x == -1){
 							mc.action = "climb";
 							mc.showMark = true;
@@ -916,6 +923,14 @@ ScrGame.prototype.updateHolder = function(diffTime){
 				}
 				
 				if(mc.x > _W + mc.w || mc.x < -mc.w*2){
+					if((mc.color == "Red" && mc.x > _W + mc.w) ||
+					(mc.color == "Green" && mc.x < -mc.w*2)){
+						this.valueLevel += 1;
+						this.tfTitleLevel.setText("Bad proposal: " + this.valueLevel + "/" + this.valueLevelMax);
+						if(this.valueLevel >= this.valueLevelMax){
+							this.resultGameEth(-1);
+						}
+					}
 					mc.tLife = 0;
 				}
 			} else if(mc.name == "itemMoney"){
@@ -926,10 +941,17 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					mc.vX = -mc.vX;
 				}
 				if(hit_test_rec(this.itemDao, 150, 70, mc.x,mc.y)){
-					this.createText(mc, "+ 100");
+					// this.createText(mc, "+ 100");
 					mc.tLife = 0;
 				}
 				if(mc.y > _H + mc.h){
+					this.valueLevel += 100;
+					this.tfTitleLevel.setText("Lost money: " + this.valueLevel + "/" + this.valueLevelMax);
+					this.createText(mc, "- 100");
+					if(this.valueLevel >= this.valueLevelMax){
+						this.resultGameEth(-1);
+						this.itemDao.sprite.img.stop();
+					}
 					mc.tLife = 0;
 				}
 			}
