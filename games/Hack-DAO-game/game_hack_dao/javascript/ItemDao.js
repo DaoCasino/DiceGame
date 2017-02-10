@@ -63,6 +63,8 @@ ItemDao.prototype.setAct = function(act) {
 		_x = -12;
 	}
 	this.sprite = addObj(this.skin+this.act, _x, _y);
+	this.sprite.interactive = true;
+	this.sprite.buttonMode=true;
 	this.item.addChild(this.sprite);
 	this.w = this.sprite.w;
 	this.h = this.sprite.h;

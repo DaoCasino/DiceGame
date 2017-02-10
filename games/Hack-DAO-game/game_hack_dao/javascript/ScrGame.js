@@ -11,7 +11,9 @@ var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 2000;
 var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
+var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
+var optionsTo = "0xE8B4B0C645B28999c33e527236185B01E4b89F3a";
 var obj_game = {};
 var _mouseX;
 var _mouseY;
@@ -49,6 +51,10 @@ ScrGame.prototype.init = function() {
 	this.resurrection = this.resurrectionCur;
 	this.wndInfo;
 	this.curWindow;
+	
+	if(options_testnet){
+		urlSite = "https://testnet.etherscan.io/";
+	}
 	
 	// если идет еще старая сессия, загружаем её
 	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
@@ -109,22 +115,26 @@ ScrGame.prototype.init = function() {
 	this.createObj({x:150, y:200}, "cloud2")
 	this.createObj({x:-400, y:100}, "cloud1")
 	
-	this.btnLevels = this.createButton("btnLevels", 90, 120, "Menu", 24)
-	this.btnExport = this.createButton("btnExport", 90, 180, "Export keys", 21)
-	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 21)
+	var ofssetX = 60;
+	this.btnLevels = this.createButton("btnLevels", 90, ofssetX*2, "Menu", 24)
+	this.btnExport = this.createButton("btnExport", 90, ofssetX*3, "Export keys", 21)
+	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 38, 24)
+	this.btnSmart = this.createButton("btnSmart", 90, ofssetX*11, "Check contract", 17, 12)
 	this.btnTry = this.createButton("btnTry", _W/2, 600, "Try again", 21)
 	this.btnTry.visible = false;
 	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
 	this.btnNext.visible = false;
 	this.btnShare = addButton2("btnFacebookShare", 0, 0, 0.3);
 	this.btnShare.name = "btnShare";
+	this.btnShare.interactive = true;
+	this.btnShare.buttonMode=true;
 	this.btnShare.x = _W - 150;
 	this.btnShare.y = 120;
 	this.face_mc.addChild(this.btnShare);
 	this._arButtons.push(this.btnShare);
 	this.btnShare.visible = false;
 	if(options_debug){
-		this.btnReset = this.createButton("btnReset", 90, 240, "Clear log", 26, 17)
+		this.btnReset = this.createButton("btnReset", 90, ofssetX*4, "Clear log", 26, 17)
 	}
 	
 	this.createGUI();
@@ -172,6 +182,8 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 	
 	var btn = addButton2("btnDefault", x, y);
 	btn.name = name;
+	btn.interactive = true;
+	btn.buttonMode=true;
 	this.face_mc.addChild(btn);
 	this._arButtons.push(btn);
 	var tf = addText(label, size, "#FFFFFF", "#000000", "center", 350)
@@ -282,7 +294,7 @@ ScrGame.prototype.createAccount = function() {
 ScrGame.prototype.createGUI = function() {
 	this.itemResult = new PIXI.Container();
 	this.itemResult.x = _W/2;
-	this.itemResult.y = 160;
+	this.itemResult.y = 190;
 	this.itemResult.visible = false;
 	this.face_mc.addChild(this.itemResult);
 	
@@ -368,6 +380,11 @@ ScrGame.prototype.shareFB = function() {
 	} else {
 		console.log("FB is not defined");
 	}
+}
+
+ScrGame.prototype.showSmartContract = function() {
+	var url = urlSite + "address/{" + optionsTo + "}"
+	window.open(url, "_blank"); 
 }
 
 ScrGame.prototype.exportKeys = function() {
@@ -539,10 +556,6 @@ ScrGame.prototype.addHolderObj = function(obj){
 // STAR
 ScrGame.prototype.startGameEth = function(){
 	var openkey = login_obj["openkey"].substr(2);
-	var urlSite = "https://api.etherscan.io/";
-	if(options_testnet){
-		urlSite = "https://testnet.etherscan.io/";
-	}
 	
 	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+login_obj["openkey"]+"&tag=latest&apikey=YourApiKeyToken",function(d){
 		console.log("получили nonce "+d.result);
@@ -550,7 +563,7 @@ ScrGame.prototype.startGameEth = function(){
 		options.nonce = d.result;
 		
 		options.data = '0xc3fe3e28'; //собственно это надо отправить, чтоб вызвалась функция game();
-		options.to = "0xE8B4B0C645B28999c33e527236185B01E4b89F3a"; //адрес нашего смарт контракта
+		options.to = optionsTo; //адрес нашего смарт контракта
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
@@ -700,6 +713,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.exportKeys();
 	} else if(item_mc.name == "btnShare"){
 		this.shareFB();
+	} else if(item_mc.name == "btnSmart"){
+		this.showSmartContract();
 	} else if(item_mc.name == "btnStart"){
 		if(obj_game["balance"] < 0.06 && options_ethereum &&
 		options_debug == false){
@@ -784,10 +799,6 @@ ScrGame.prototype.sendRequest = function(value) {
 			}
 		} else if(value == "getBalance"){
 			if(login_obj["openkey"]){
-				var urlSite = "https://api.etherscan.io/";
-				if(options_testnet){
-					urlSite = "https://testnet.etherscan.io/";
-				}
 				var adress = login_obj["openkey"].replace('0x','');
 				urlBalance = urlSite+"api?module=account&action=balance&address="+
 							adress+"&tag=latest&apikey=YourApiKeyToken"
