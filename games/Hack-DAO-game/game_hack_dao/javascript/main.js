@@ -103,6 +103,7 @@ function loadManifest(){
 	preloader.add("bgLevel3", "images/bg/bgLevel3.jpg");
 	preloader.add("bgLevel4", "images/bg/bgLevel4.jpg");
 	preloader.add("bgLevel5", "images/bg/bgLevel5.jpg");
+	preloader.add("bgLevel6", "images/bg/bgLevel6.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
@@ -130,6 +131,10 @@ function loadManifest(){
 	preloader.add("itemBodyGreen", "images/items/itemBodyGreen.png");
 	preloader.add("itemBodyRed", "images/items/itemBodyRed.png");
 	preloader.add("iconCheckMark", "images/items/iconCheckMark.png");
+	preloader.add("itemPlatform", "images/items/itemPlatform.png");
+	preloader.add("itemTeleport", "images/items/itemTeleport.png");
+	preloader.add("contractNew", "images/items/contractNew.png");
+	preloader.add("contractOld", "images/items/contractOld.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	
@@ -302,6 +307,7 @@ function saveData() {
 		localStorage.setItem('daocasino_hack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
+		localStorage.setItem('openkey', login_obj["openkey"]);
 		// console.log("Saving: ok!");
 	}
 }

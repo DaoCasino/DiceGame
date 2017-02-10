@@ -246,7 +246,6 @@ ScrGame.prototype.createLevel = function() {
 			break;
 		case 4:
 		case 5:
-		default:
 			this.itemDao.setSkin("dao");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
@@ -266,12 +265,62 @@ ScrGame.prototype.createLevel = function() {
 			this.hero = addObj(str, 660, 500, 1, -1);
 			this.game_mc.addChild(this.hero);
 			break;
+		case 6:
+			this.arListPlatform = ["75_200", "225_200", "375_200", "525_200", 
+									"825_200", "975_200", "1125_200", "1275_200",
+									"75_400", "225_400", "525_400", "675_400", 
+									"825_400", "1125_400", "1275_400"];
+			this.arListTeleport = ["1_ 90_550_2", "2_1175_337_1_1", "3_1175_550_4_1",
+									"4_355_136_3", "5_520_337_3", "6_820_337_7_1", "7_820_136_6"];
+			this.createLevel6();
+			break;
+		default:
+			this.tfTitleLevel.setText("Level of development");
+			break;
 	}
 	
 	if(this.hintArrow){
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
+}
+
+ScrGame.prototype.createLevel6 = function() {
+	var i = 0;
+	var _x = 0;
+	var _y = 0;
+	var obj;
+	
+	for (i = 0; i < this.arListTeleport.length; i++ ) {
+		obj = this.arListTeleport[i];
+		obj = obj.split("_");
+		var id = obj[0];
+		_x = obj[1];
+		_y = obj[2];
+		var teleport = obj[3];
+		var inv = obj[4] || 0;
+		var sc = 1;
+		if(inv){
+			sc = -1;
+		}
+		
+		var item = addObj("itemTeleport", _x, _y, 1, sc);
+		this.game_mc.addChild(item);
+	}
+	for (i = 0; i < this.arListPlatform.length; i++ ) {
+		obj = this.arListPlatform[i];
+		obj = obj.split("_");
+		_x = obj[0];
+		_y = obj[1];
+		
+		var item = addObj("itemPlatform", _x, _y);
+		this.game_mc.addChild(item);
+	}
+	
+	var contractNew = addObj("contractNew", 1175, 124);
+	this.game_mc.addChild(contractNew);
+	var contractOld = addObj("contractOld", 675, 537);
+	this.game_mc.addChild(contractOld);
 }
 
 ScrGame.prototype.createAccount = function() {	
@@ -498,8 +547,9 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		} else {
 			mc = addObj(name, 0, 0, sc);
 		}
-		if(name.search("cloud") > -1 ||
-		name == "itemProposal"){
+		if(name.search("cloud") > -1){
+			this.back_mc.addChild(mc);
+		} else if(name == "itemProposal"){
 			this.game_mc.addChild(mc);
 		} else {
 			this.gfx_mc.addChild(mc);
