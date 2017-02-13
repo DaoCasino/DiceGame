@@ -364,10 +364,10 @@
 
 	<div class="hidden">
 		<div id="small-dialog" class="zoom-anim-dialog">
-			<h1>USING LIGHTWALLET</h1>
+			<h1>Save this seed</h1>
 			<p>
-				Please watch our <a href="#">instructional video</a> on how to 
-				generate, use and restore your SingularDTV Lightwallet.
+			
+				<textarea style='width:100%;scolor:white;background-color:red;padding:5px' id='seed'></textarea>
 			</p>
 			<p class="disclaimer">
 				<span>DISCLAIMER</span>
@@ -397,6 +397,8 @@
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script>
+		var secretSeed = lightwallet.keystore.generateRandomSeed();
+		$("#seed").html(secretSeed);
 		if (!localStorage.getItem("openkey")) {
 			var secretSeed = lightwallet.keystore.generateRandomSeed();
 			lightwallet.keystore.deriveKeyFromPassword('sdfsdf', function (err, pwDerivedKey) {
