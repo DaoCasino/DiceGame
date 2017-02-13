@@ -1,0 +1,34 @@
+﻿<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script>
+
+function main_js(){
+	$("#lt").html(localStorage.getItem("openkey"));
+	$("#otherway").prop("href","https://shapeshift.io/shifty.html?destination="+findGetParameter("client")+"&output=ETH");	
+}
+$(document).ready(function(){
+	main_js();
+});
+
+
+</script>
+
+<div class="container">
+
+<div class="jumbotron">
+        <h2 class="display-3">Пополнить баланс игры [TESTNET!!!]</h2>
+        <p class="lead" id='lt'></p>
+		
+		<!--
+		<p>
+			<a class="btn btn-lg btn-success" href="#" onclick='if(confirm("На балансе отобразится в течении минуты"))window.location="http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/"' role="button">Я перевел</a>
+		</p>
+  <p><a class="btn btn-lg btn-warning" id='otherway' href="" target='_blank' role="button">оплатить другим способом</a></p> -->
+
+1. Заходим сюда http://faucet.ropsten.be:3001/ <Br>
+2. Вводим ваш адрес (выше который) <br>
+3. Жмем "Send me 1 test ether" <br>
+4. Ждем 1 минуту  <br>
+ </div>
+
+</div>
