@@ -14,8 +14,8 @@ var fontImpact = "Impact";
 var fontTahoma = "Tahoma";
 var stats; //для вывода статистики справа
 
-var options_debug = false;
-var options_ethereum = true;
+var options_debug = true;
+var options_ethereum = false;
 var options_testnet = true;
 var options_music = true;
 var options_sound = true;
@@ -135,6 +135,7 @@ function loadManifest(){
 	preloader.add("itemTeleport", "images/items/itemTeleport.png");
 	preloader.add("contractNew", "images/items/contractNew.png");
 	preloader.add("contractOld", "images/items/contractOld.png");
+	preloader.add("itemHeadMiner", "images/items/itemHeadMiner.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	

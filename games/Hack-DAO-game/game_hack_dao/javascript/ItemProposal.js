@@ -1,12 +1,15 @@
-function ItemProposal() {
+function ItemProposal(head, sign) {
 	PIXI.Container.call( this );
-	this.init();
+	this.init(head, sign);
 }
 
 ItemProposal.prototype = Object.create(PIXI.Container.prototype);
 ItemProposal.prototype.constructor = ItemProposal;
 
-ItemProposal.prototype.init = function() {
+ItemProposal.prototype.init = function(head, sign) {
+	if(head){}else{head="itemHeadProposal"}
+	if(sign){}else{sign="P"}
+	
 	this.name = "itemProposal";
 	this.color = "Green";
 	this.act = "Run";
@@ -34,16 +37,28 @@ ItemProposal.prototype.init = function() {
 	var bodyY = 14;
 	this.body = addObj("itemBodyGreen", bodyX, bodyY);
 	this.item.addChild(this.body);
-	this.head = addObj("itemHeadProposal", 8, -42);
+	var headX = 8;
+	var headY = -42;
+	if(head == "itemHeadMiner"){
+		headX = -16;
+		headY = -13;
+	}
+	this.head = addObj(head, headX, headY);
 	this.sprite.addChild(this.head);
 	this.mark = addObj("iconCheckMark", 38, -55);
 	this.mark.scale.x = -1;
 	this.mark.visible = false;
 	this.sprite.addChild(this.mark);
-	this.sign = addText("P", 30, "#FFFFFF", undefined, "center", 50, 1, fontTahoma)
+	this.sign = addText(sign, 30, "#FFFFFF", undefined, "center", 50, 1, fontTahoma)
 	this.sign.x = -15;
 	this.sign.y = -8;
 	this.addChild(this.sign);
+	
+	if(head == "itemHeadMiner"){
+		this.hand.visible = false;
+		this.w = 73;
+		this.h = this.legL.h+this.body.h+41;
+	}
 }
 
 ItemProposal.prototype.setBody = function(color) {
@@ -60,14 +75,23 @@ ItemProposal.prototype.setBody = function(color) {
 }
 
 ItemProposal.prototype.setScaleX = function(scX) {
-	this.sprite.scale.x = scX;
+	this.sprite.scale.x = scX*Math.abs(this.sprite.scale.x);
 	if(this.act == "Run"){
 		if(scX == 1){
-			this.sign.x = -15;
+			this.sign.x = -15*this.sign.scale.x;
 		} else {
-			this.sign.x = 15;
+			this.sign.x = 15*this.sign.scale.x;
 		}
 	}
+}
+
+ItemProposal.prototype.setScale = function(sc) {
+	this.sprite.scale.x = sc;
+	this.sprite.scale.y = sc;
+	this.sign.scale.x = sc;
+	this.sign.scale.y = sc;
+	this.w = this.w*sc;
+	this.h = this.h*sc;
 }
 
 ItemProposal.prototype.setAct = function(act) {
