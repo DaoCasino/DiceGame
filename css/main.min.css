@@ -167,13 +167,76 @@ form input:focus:-moz-placeholder{opacity:0;transition:opacity 0.3s ease;}
 form input:focus:-ms-input-placeholder{opacity:0;transition:opacity 0.3s ease;}
 
 div#small-dialog {
-	max-width: 400px;
+	max-width: 470px;
 	width: 100%;
 	background: #272647;
 	padding: 30px 25px;
 	position: relative;
 	margin: 0 auto;
 	color: #fff;
+}
+
+.dispinl {
+	display: inline-block;
+}
+
+.disclaimer-btn {
+	font: 17px/normal "ProximaNova-Bold";
+	text-transform: uppercase;
+	border: 0;
+	outline: none;
+	padding: 9px 12px 7px;
+	text-decoration: none;
+	display: inline-block;
+	-webkit-transition: all .25s ease-out;
+	-o-transition: all .25s ease-out;
+	transition: all .25s ease-out;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-o-border-radius: 4px;
+	-ms-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.dialog-window-cancel,
+.dialog-window-cancel-two {
+	display: block;
+	text-align: center;
+	margin: 15px 0 0;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.disclaimer-btn:hover,
+.disclaimer-btn:focus {
+	text-decoration: none;
+	color: #fff;
+}
+
+.dialog-window,
+.dialog-window-two {
+	text-align: center;
+	display: none;
+}
+
+.popup-textarea {
+	width: 100%;
+	max-width: 420px;
+	max-height: 500px;
+	min-height: 80px;
+	outline: none;
+	color: white;
+	background-color: #e1d0bd;
+	padding: 5px
+}
+
+.dialog-window-two input {
+	display: block;
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 15px;
+	color: #333;
+	outline: none;
 }
 
 

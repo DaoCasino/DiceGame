@@ -1,5 +1,31 @@
 $(document).ready(function() {
 
+	/* POPUP */
+
+	$('.open-dialog-window').click(function(){
+		$('.dialog-content').slideUp();
+		$('.popup-button').slideUp();
+		$('.dialog-window').slideDown();
+	});
+
+	$('.dialog-window-cancel').click(function(){
+		$('.dialog-content').slideDown();
+		$('.popup-button').slideDown();
+		$('.dialog-window').slideUp();
+	}); 
+
+	$('.dialog-window-cancel-two').click(function(){
+		$('.dialog-window-two').slideUp();
+		$('.dialog-window').slideDown();
+	});
+
+	$('#restore-from').click(function(){
+		$('.dialog-window-two').slideDown();
+		$('.dialog-window').slideUp();
+	});
+
+	/* AND POPUP */
+
 	$('.toggle-bg input').click(function(){
 		if($('input#checked-on:checked')){
 			$('.free-money').toggleClass('free-money__enable');
