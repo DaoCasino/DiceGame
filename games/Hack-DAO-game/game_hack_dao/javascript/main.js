@@ -1,9 +1,10 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.10"
+var version = "v. 1.0.11"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
+var openkey, privkey;
 var currentScreen, scrContainer;
 var ScreenGame, ScreenLevels;
 var LoadPercent = null;
@@ -14,8 +15,8 @@ var fontImpact = "Impact";
 var fontTahoma = "Tahoma";
 var stats; //для вывода статистики справа
 
-var options_debug = true;
-var options_ethereum = false;
+var options_debug = false;
+var options_ethereum = true;
 var options_testnet = true;
 var options_music = true;
 var options_sound = true;
@@ -308,7 +309,6 @@ function saveData() {
 		localStorage.setItem('daocasino_hack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
-		localStorage.setItem('openkey', login_obj["openkey"]);
 		// console.log("Saving: ok!");
 	}
 }
@@ -320,6 +320,8 @@ function loadData() {
 			login_obj = JSON.parse(login_str);
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';
+			openkey = localStorage.getItem('openkey')
+			privkey = localStorage.getItem('privkey')
 			checkData();
 			console.log("Loading: ok!");
 		} else {

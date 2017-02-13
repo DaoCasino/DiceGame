@@ -55,7 +55,8 @@ ScrGame.prototype.init = function() {
 	this.curWindow;
 	this.groundY = _H;
 	this.valueLevelMax = 0;
-	this.valueLevel = 0; // какое-то значение для проигрыша га уровне
+	this.valueLevel = 0; // какое-то значение для проигрыша на уровне
+	this.oldBalance = -1;
 	
 	if(options_testnet){
 		urlSite = "https://testnet.etherscan.io/";
@@ -330,8 +331,8 @@ ScrGame.prototype.createLevel6 = function() {
 }
 
 ScrGame.prototype.createAccount = function() {	
-	if(login_obj["privkey"]){
-		this.tfIdUser.setText("you: " + login_obj["openkey"]);
+	if(privkey){
+		this.tfIdUser.setText("your key: " + openkey);
 	}else{
 		var tfCreateKey = addText("Now you generate address", 40, "#FF8611", "#000000", "center", 800)
 		tfCreateKey.x = _W/2;
@@ -344,8 +345,8 @@ ScrGame.prototype.createAccount = function() {
 			var address = ethUtil.privateToAddress(privateKey);
 			address = ethUtil.toChecksumAddress(address.toString('hex'));
 			privateKey = privateKey.toString('hex');
-			login_obj["privkey"] = privateKey;
-			login_obj["openkey"] = address;
+			privkey = privateKey;
+			openkey = address;
 			this.tfIdUser.setText("your key: " + address);
 			saveData();
 		} else {
@@ -417,8 +418,8 @@ ScrGame.prototype.closeWindow = function(wnd) {
 }
 
 ScrGame.prototype.refillBalance = function() {
-	if(login_obj["openkey"] && options_ethereum){
-		var url = "http://platform.dao.casino/topup/?client=" + login_obj["openkey"];
+	if(openkey && options_ethereum){
+		var url = "http://platform.dao.casino/topup/?client=" + openkey;
 		window.open(url, "_self"); // "_blank",  "_self"
 	}
 }
@@ -446,13 +447,13 @@ ScrGame.prototype.shareFB = function() {
 }
 
 ScrGame.prototype.showSmartContract = function() {
-	var url = urlSite + "address/{" + optionsTo + "}"
+	var url = urlSite + "address/" + optionsTo
 	window.open(url, "_blank"); 
 }
 
 ScrGame.prototype.exportKeys = function() {
-	if(login_obj["openkey"] && options_ethereum){
-		var url = "http://platform.dao.casino/export/?privkey="+login_obj["privkey"]+"&openkey="+login_obj["openkey"]
+	if(openkey && options_ethereum){
+		var url = "http://platform.dao.casino/export/?privkey="+privkey+"&openkey="+openkey
 		window.open(url, "_blank"); 
 	}
 }
@@ -479,7 +480,7 @@ ScrGame.prototype.showError = function(value) {
 }
 
 ScrGame.prototype.warningBalance = function() {
-	var str = "Refill your account in the amount of 0.05 ETH."
+	var str = "Refill your account in the amount of 0.2 ETH."
 	var addStr = "Refill";
 	this.createWndInfo(str, this.refillBalance, addStr);
 }
@@ -631,9 +632,9 @@ ScrGame.prototype.addHolderObj = function(obj){
 
 // STAR
 ScrGame.prototype.startGameEth = function(){
-	var openkey = login_obj["openkey"].substr(2);
+	var openKey = openkey.substr(2);
 	
-	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+login_obj["openkey"]+"&tag=latest&apikey=YourApiKeyToken",function(d){
+	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",function(d){
 		console.log("получили nonce "+d.result);
 		var options = {};
 		options.nonce = d.result;
@@ -645,12 +646,12 @@ ScrGame.prototype.startGameEth = function(){
 		options.gasLimit=0x927c0; //web3.toHex('600000');
 		options.value = 200000000000000000; //  //ставка 0.2 эфира
 
-		if(login_obj["privkey"]){
+		if(privkey){
 			if(buf == undefined){
 				obj_game["game"].showError(ERROR_TRANSACTION);
 			} else {
 				var tx = new EthereumTx(options);
-				tx.sign(new buf(login_obj["privkey"], 'hex')); //приватный ключ игрока, подписываем транзакцию
+				tx.sign(new buf(privkey, 'hex')); //приватный ключ игрока, подписываем транзакцию
 
 				var serializedTx = tx.serialize().toString('hex');
 				
@@ -876,8 +877,8 @@ ScrGame.prototype.sendRequest = function(value) {
 				this.sendUrlRequest(str, "resultGame");
 			}
 		} else if(value == "getBalance"){
-			if(login_obj["openkey"]){
-				var adress = login_obj["openkey"].replace('0x','');
+			if(openkey){
+				var adress = openkey.replace('0x','');
 				urlBalance = urlSite+"api?module=account&action=balance&address="+
 							adress+"&tag=latest&apikey=YourApiKeyToken"
 				var str = urlBalance;
@@ -914,8 +915,27 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getBalance"){
 		var obj = JSON.parse(value);
 		obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 2);
-		login_obj["balance"] = obj_game["balance"]
+		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText("balance: " + obj_game["balance"]);
+		
+		if(this.oldBalance == -1){
+			// записываем баланс на старте игры
+			this.oldBalance = Number(obj_game["balance"]);
+		} else {
+			// определяем результат, если баланс изменился
+			if(obj_game["balance"] != this.oldBalance){
+				if(obj_game["balance"]>this.oldBalance){
+					this.resultGameEth(1);
+				} else {
+					this.resultGameEth(-1);
+				}
+			} else {
+				// повторно запросим баланс через TIME_GET_RESULT мс
+				this.clickDAO = true
+				this.timeGetResult = 0;
+				this.bSendRequest = false;
+			}
+		}
 	}
 }
 
@@ -1074,7 +1094,8 @@ ScrGame.prototype.update = function() {
 		this.bSendRequest == false){
 			this.bSendRequest = true;
 			this.timeGetResult = 0;
-			this.sendRequest("idGame");
+			// this.sendRequest("idGame");
+			this.sendRequest("getBalance");
 		}
 	}
 	
