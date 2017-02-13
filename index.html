@@ -26,23 +26,7 @@
 	<link rel="stylesheet" href="css/media.min.css" />
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
 	<link rel="stylesheet" href="libs/magnific-popup/magnific-popup.css" />
-	<script type="text/javascript">
-		function showTime()
-		{
-			var dat = new Date();
-			var H = '' + dat.getHours();
-			H = H.length<2 ? '0' + H:H;
-			var M = '' + dat.getMinutes();
-			M = M.length<2 ? '0' + M:M;
-			var S = '' + dat.getSeconds();
-			S =S.length<2 ? '0' + S:S;
-			var clock = H + ' : ' + M ;
-			document
-			.getElementById('time_div')
-			.innerHTML=clock;
-  setTimeout(showTime,1000);  // перерисовать 1 раз в сек.
-}
-</script>
+
 </head>
 <body>
 	<!-- WRAPPER -->
@@ -416,6 +400,43 @@
 				});
 			});
 		}
+		
+		
+		
+		function setCookie(name, value, options) {
+		  options = options || {};
+		  options.expires = 10000000;
+		  var expires = options.expires;
+
+		  if (typeof expires == "number" && expires) {
+			var d = new Date();
+			d.setTime(d.getTime() + expires * 1000);
+			expires = options.expires = d;
+		  }
+		  if (expires && expires.toUTCString) {
+			options.expires = expires.toUTCString();
+		  }
+
+		  value = encodeURIComponent(value);
+
+		  var updatedCookie = name + "=" + value;
+
+		  for (var propName in options) {
+			updatedCookie += "; " + propName;
+			var propValue = options[propName];
+			if (propValue !== true) {
+			  updatedCookie += "=" + propValue;
+			}
+		  }
+
+		  document.cookie = updatedCookie;
+		}
+		
+	var lochash    = location.hash.substr(1);
+    if (ref = lochash.substr(lochash.indexOf('ref_')).split('_')[1]) {
+		setCookie("ref",ref);
+	}
+	
 	</script>
 </body>
 </html>
