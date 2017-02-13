@@ -126,14 +126,14 @@
 					<nav class="main-top-menu">
 						<ul class="clearfix">
 							<li><a href="/">games</a></li>
-							<!-- <li><a href="#" onclick='$.get("aref.html",function(d){$("#main").html(d);}); return false'>Affiliate program</a></li> -->
-							<li><a href="#" onclick='$.get("hist.html",function(d){$("#main").html(d);main_js();}); return false'>balance</a></li> 
-							<li><a href="#" onclick='$.get("dev.html",function(d){$("#main").html(d);main_js();}); return false'>for developers</a></li>
+							<li><a href="#" onclick='$.get("aref.html",function(d){$("#main").html(d);}); return false'>Affiliate program</a></li>
+							<li><a href="#" onclick='$.get("hist.html",function(d){$("#main").html(d);}); return false'>history</a></li>
+							<li><a href="#" onclick='$.get("dev.html",function(d){$("#main").html(d);}); return false'>for developers</a></li>
 							
 						</ul>
 					</nav>
 				</div>
-				<div class="container" style='color:white' id='main'>
+				<div class="container" id='main'>
 					<div class="row">
 						<div class="col-md-9">
 							<img src="img/baner-top-min.jpg" class="baner-top-img" width="100%" alt="">
@@ -349,10 +349,7 @@
 	<div class="hidden">
 		<div id="small-dialog" class="zoom-anim-dialog">
 			<h1>Save this seed</h1>
-			<p>
-			
-				<textarea style='width:100%;scolor:white;background-color:red;padding:5px' id='seed'></textarea>
-			</p>
+			<textarea class="popup-textarea" id='seed'></textarea>
 			<p class="disclaimer">
 				<span>DISCLAIMER</span>
 				This lightwallet is still in beta and is presently not recommended for the storage of large amounts of ETH.
@@ -361,6 +358,29 @@
 				If you created an account before, enter your seed below or open a wallet.
 				Click on „Generate“ to create a new account.
 			</p>
+			<div class="dialog-window">
+				<button class="disclaimer-btn registr-now" id="restore-from">RESTORE FROM SEED</button>
+				<div class="dispinl">
+					<label for="myfile">
+						<div class='button-container'>
+							<div class='disclaimer-btn registr-now button-text'>UPLOAD WALLET FILE</div>
+						</div>
+					</label>
+					<div class="hide">
+						<input type="file" id="myfile" />
+					</div>
+				</div>
+				<span class="dialog-window-cancel">cancel</span>
+			</div>
+			<div class="dialog-window-two">
+				<input type="text" placeholder="Wallet Seed Phrase" require>
+				<button class="disclaimer-btn registr-now">CONTINUE</button>
+				<span class="dialog-window-cancel-two">cancel</span>
+			</div>
+			<div class="popup-button">
+				<button class="disclaimer-btn registr-now">GENERATE</button>
+				<button class="disclaimer-btn registr-now open-dialog-window">RESTORE</button>
+			</div>
 		</div>
 	</div>
 
@@ -404,39 +424,39 @@
 		
 		
 		function setCookie(name, value, options) {
-		  options = options || {};
-		  options.expires = 10000000;
-		  var expires = options.expires;
+			options = options || {};
+			options.expires = 10000000;
+			var expires = options.expires;
 
-		  if (typeof expires == "number" && expires) {
-			var d = new Date();
-			d.setTime(d.getTime() + expires * 1000);
-			expires = options.expires = d;
-		  }
-		  if (expires && expires.toUTCString) {
-			options.expires = expires.toUTCString();
-		  }
-
-		  value = encodeURIComponent(value);
-
-		  var updatedCookie = name + "=" + value;
-
-		  for (var propName in options) {
-			updatedCookie += "; " + propName;
-			var propValue = options[propName];
-			if (propValue !== true) {
-			  updatedCookie += "=" + propValue;
+			if (typeof expires == "number" && expires) {
+				var d = new Date();
+				d.setTime(d.getTime() + expires * 1000);
+				expires = options.expires = d;
 			}
-		  }
+			if (expires && expires.toUTCString) {
+				options.expires = expires.toUTCString();
+			}
 
-		  document.cookie = updatedCookie;
+			value = encodeURIComponent(value);
+
+			var updatedCookie = name + "=" + value;
+
+			for (var propName in options) {
+				updatedCookie += "; " + propName;
+				var propValue = options[propName];
+				if (propValue !== true) {
+					updatedCookie += "=" + propValue;
+				}
+			}
+
+			document.cookie = updatedCookie;
 		}
 		
-	var lochash    = location.hash.substr(1);
-    if (ref = lochash.substr(lochash.indexOf('ref_')).split('_')[1]) {
-		setCookie("ref",ref);
-	}
-	
+		var lochash    = location.hash.substr(1);
+		if (ref = lochash.substr(lochash.indexOf('ref_')).split('_')[1]) {
+			setCookie("ref",ref);
+		}
+
 	</script>
 </body>
 </html>
