@@ -26,6 +26,11 @@ WndInfo.prototype.init = function(_prnt) {
 	this.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
 	
+	btnClose.interactive = true;
+	btnClose.buttonMode=true;
+	this.btnOk.interactive = true;
+	this.btnOk.buttonMode=true;
+	
 	this.tf = addText("", 26, "#854015", undefined, "center", 350, 4, fontTahoma)
 	this.tf.y = -70;
 	this.addChild(this.tf);

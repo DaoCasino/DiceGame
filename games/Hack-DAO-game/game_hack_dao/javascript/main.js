@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.11"
+var version = "v. 1.0.12"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -307,8 +307,12 @@ function saveData() {
 		localStorage.setItem('daocasino_hack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
-		localStorage.setItem('openkey', openkey);
-		localStorage.setItem('privkey', privkey);
+		if(openkey){
+			localStorage.setItem('openkey', openkey);
+		}
+		if(privkey){
+			localStorage.setItem('privkey', privkey);
+		}
 		// console.log("Saving: ok!");
 	}
 }
@@ -676,6 +680,18 @@ function hit_test_rec(mc, w, h, tx, ty) {
 		}
 	}
 	return false;
+}
+function hitTestObject(mc1, mc2) {
+	if (mc1.x < mc2.x + mc2.w &&
+	   mc1.x + mc1.w > mc2.x &&
+	   mc1.y < mc2.y + mc2.h &&
+	   mc1.h + mc1.y > mc2.y) {
+		return true;
+	}
+	return false;
+}
+function intersects(a, b) {
+  return ( a.y1 < b.y2 || a.y2 > b.y1 || a.x2 < b.x1 || a.x1 > b.x2 );
 }
 
 

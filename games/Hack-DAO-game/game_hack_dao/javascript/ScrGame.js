@@ -9,12 +9,14 @@ ScrGame.prototype.constructor = ScrGame;
 var TIME_GET_RESULT = 10000;
 var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 1000;
-var TIME_RESPAWN_MINER = 1000;
+var TIME_RESPAWN_MINER = 5000;
 var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
 var optionsTo = "0xE8B4B0C645B28999c33e527236185B01E4b89F3a";
+var betEth = 200000000000000000; //ставка эфира
+var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
 var _mouseX;
 var _mouseY;
@@ -33,6 +35,7 @@ ScrGame.prototype.init = function() {
 	this._arText = [];
 	this._arHolder = [];
 	this._arPlatform = [];
+	this._arTeleport = [];
 	this.timeGetResult = 0;
 	this.timeTotal = 0;
 	this.timeCloseWnd = 0;
@@ -57,6 +60,7 @@ ScrGame.prototype.init = function() {
 	this.valueLevelMax = 0;
 	this.valueLevel = 0; // какое-то значение для проигрыша на уровне
 	this.oldBalance = -1;
+	this._speedGravity = 1;
 	
 	if(options_testnet){
 		urlSite = "https://testnet.etherscan.io/";
@@ -107,7 +111,7 @@ ScrGame.prototype.init = function() {
 	}
 	this.back_mc.addChild(this.bgGame);
 	
-	this.tfTitleLevel = addText("", 24, "#00FF00", "#000000", "center", 1000, 3)
+	this.tfTitleLevel = addText("", 24, "#FF0000", "#000000", "center", 1000, 3)
 	this.tfTitleLevel.x = _W/2;
 	this.tfTitleLevel.y = 120;
 	this.face_mc.addChild(this.tfTitleLevel);
@@ -269,17 +273,19 @@ ScrGame.prototype.createLevel = function() {
 			
 			this.hero = addObj(str, 660, 500, 1, -1);
 			this.game_mc.addChild(this.hero);
+			this.valueLevelMax = 10;
+			this.tfTitleLevel.setText("Old contract: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
-		// case 6:
-			// this.groundY = 595;
-			// this.arListPlatform = ["75_200", "225_200", "375_200", "525_200", 
-									// "825_200", "975_200", "1125_200", "1275_200",
-									// "75_400", "225_400", "525_400", "675_400", 
-									// "825_400", "1125_400", "1275_400"];
-			// this.arListTeleport = ["1_ 90_550_2", "2_1175_337_1_1", "3_1175_550_4_1",
-									// "4_355_136_3", "5_520_337_3", "6_820_337_7_1", "7_820_136_6"];
-			// this.createLevel6();
-			// break;
+		case 6:
+			this.groundY = 590;
+			this.arListPlatform = ["75_200", "225_200", "375_200", "525_200", 
+									"825_200", "975_200", "1125_200", "1275_200",
+									"-75_400", "75_400", "225_400", "525_400", "675_400", 
+									"825_400", "1125_400", "1275_400"];
+			this.arListTeleport = ["1_ 90_550_2", "2_1175_337_1_1", "3_1175_550_4_1",
+									"4_355_136_3", "5_520_337_3", "6_820_337_7_1", "7_820_136_6"];
+			this.createLevel6();
+			break;
 		default:
 			this.tfTitleLevel.setText("Level of development");
 			break;
@@ -300,18 +306,20 @@ ScrGame.prototype.createLevel6 = function() {
 	for (i = 0; i < this.arListTeleport.length; i++ ) {
 		obj = this.arListTeleport[i];
 		obj = obj.split("_");
-		var id = obj[0];
-		_x = obj[1];
-		_y = obj[2];
-		var teleport = obj[3];
+		var id = Number(obj[0]);
+		_x = Number(obj[1]);
+		_y = Number(obj[2]);
+		var teleport = Number(obj[3]);
 		var inv = obj[4] || 0;
 		var sc = 1;
 		if(inv){
-			sc = -1;
+			// sc = -1;
 		}
 		
 		var item = addObj("itemTeleport", _x, _y, 1, sc);
+		item.teleport = teleport;
 		this.game_mc.addChild(item);
+		this._arTeleport.push(item);
 	}
 	for (i = 0; i < this.arListPlatform.length; i++ ) {
 		obj = this.arListPlatform[i];
@@ -324,14 +332,16 @@ ScrGame.prototype.createLevel6 = function() {
 		this._arPlatform.push(item);
 	}
 	
-	var contractNew = addObj("contractNew", 1175, 124);
-	this.game_mc.addChild(contractNew);
-	var contractOld = addObj("contractOld", 675, 537);
-	this.game_mc.addChild(contractOld);
+	this.contractNew = addObj("contractNew", 1175, 124);
+	this.game_mc.addChild(this.contractNew);
+	this.contractOld = addObj("contractOld", 675, 537);
+	this.game_mc.addChild(this.contractOld);
+	
+	this.createObj({x:-30, y:280}, "itemMiner")
 }
 
 ScrGame.prototype.createAccount = function() {	
-	if(privkey){
+	if(privkey || options_debug){
 		this.tfIdUser.setText("your key: " + openkey);
 	}else{
 		var tfCreateKey = addText("Now you generate address", 40, "#FF8611", "#000000", "center", 800)
@@ -555,6 +565,8 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		}else if(name == "itemMiner"){
 			mc = new ItemProposal("itemHeadMiner", "M");
 			mc.name = "itemMiner";
+			mc.speedyMax = this._speedGravity;
+			mc.speedy = mc.speedyMax;
 			this._arObjectLevel.push(mc);
 		} else {
 			mc = addObj(name, 0, 0, sc);
@@ -607,11 +619,12 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		mc.showMark = false;
 		mc.mark.visible = false;
 	} else if(mc.name == "itemMiner"){
-		TIME_RESPAWN_MINER = 10000000000000
 		mc.setScale(0.6);
 		mc.setScaleX(-1);
 		mc.vX = 1;
-		mc.speed = 1;
+		mc.speed = 2;
+		mc.timeHit = 0;
+		mc.timeTeleport = 0;
 		mc.tLife = 300000;
 	}
 	
@@ -644,7 +657,7 @@ ScrGame.prototype.startGameEth = function(){
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
-		options.value = 200000000000000000; //  //ставка 0.2 эфира
+		options.value = betEth; //  //ставка 0.2 эфира
 
 		if(privkey){
 			if(buf == undefined){
@@ -793,17 +806,21 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnSmart"){
 		this.showSmartContract();
 	} else if(item_mc.name == "btnStart"){
-		if(obj_game["balance"] < 0.06 && options_ethereum &&
-		options_debug == false){
-			this.warningBalance();
-		} else {
-			this.createLevel();
-			this.bSendRequest = false;
-			this.startGame = true;
-			if(options_ethereum){
-				this.startGameEth();
+		if(privkey || options_debug){
+			if(obj_game["balance"] < betGame && options_ethereum &&
+			options_debug == false){
+				this.warningBalance();
+			} else {
+				this.createLevel();
+				this.bSendRequest = false;
+				this.startGame = true;
+				if(options_ethereum){
+					this.startGameEth();
+				}
+				this.btnStart.visible = false;
 			}
-			this.btnStart.visible = false;
+		} else {
+			this.createAccount();
 		}
 	} else if(item_mc.name == "btnTry"){
 		this.removeAllListener();
@@ -939,20 +956,83 @@ ScrGame.prototype.response = function(command, value) {
 	}
 }
 
-ScrGame.prototype.updateColission = function(mc, array){
+ScrGame.prototype.updateColission = function(mc, array, diffTime){
 	if(mc.dead){
 		return false;
 	}
-	console.log("_____________")
-	for (var i = 0; i < array.length; i++ ) {
+	
+	for (i = 0; i < array.length; i ++) {
 		var obj = array[i];
-		if(mc.name == "itemMiner"){
-			// TODO написать новый метод проверки 
-			// console.log(i, hit_test_rec(obj, obj.w, obj.h, mc.x, mc.y))
-			// if(hit_test_rec(mc, mc.w, mc.h, obj.x, obj.y)){
-				
-			// }
+		this.collisionObjs(mc, obj, diffTime);
+	}
+}
+
+ScrGame.prototype.hitTeleport = function(mc, array, diffTime){
+	if(mc.dead){
+		return false;
+	}
+	if(mc.timeTeleport > 0){
+		mc.timeTeleport -= diffTime;
+		return false;
+	}
+	
+	for (i = 0; i < array.length; i ++) {
+		var obj = array[i];
+		var hit = hit_test_rec(obj, obj.w, obj.h, mc.x, mc.y);
+		if(hit){
+			var newTeleport = this._arTeleport[obj.teleport-1];
+			if(newTeleport){
+				mc.timeTeleport = 2000;
+				mc.x = newTeleport.x;
+				mc.y = newTeleport.y - mc.h/2;
+			}
+			break;
 		}
+	}
+}
+
+ScrGame.prototype.hitContract = function(mc){
+	var cN = this.contractNew;
+	var cO = this.contractOld;
+	var hitNew = hit_test_rec(cN, cN.w, cN.h, mc.x, mc.y);
+	var hitOld = hit_test_rec(cO, cO.w, cO.h, mc.x, mc.y);
+	if(hitNew){
+		mc.tLife = 0;
+	}
+	if(hitOld){
+		mc.tLife = 0;
+	}
+}
+
+ScrGame.prototype.collisionObjs = function(obj, platform, diffTime){
+	// console.log("collisionObjs:", obj.y, platform.y);
+	var prevX = obj.prevX;
+	var prevY = obj.prevY;
+	var objY = obj.y + obj.h/2;
+	var hit = hit_test_rec(platform, platform.w, platform.h, obj.x, objY);
+	
+	if(obj.platform){
+		var _w = obj.platform.w;
+		var hitCur = hit_test_rec(obj.platform, _w, obj.platform.h, obj.x, objY);
+		if(hitCur == false){
+			obj.timeHit = 0;
+			obj.platform = null;
+		}
+	} else if(hit){
+		if(prevY + obj.h/2 < platform.y){
+			obj.speedy = 0;
+			obj.platform = platform;
+		}
+	} else {
+		if(obj.timeHit > 500){
+			obj.timeHit = 0;
+			obj.speedy = obj.speedyMax;
+		}
+		obj.timeHit += diffTime;
+	}
+	
+	if(objY > this.groundY){
+		obj.speedy = 0;
 	}
 }
 
@@ -975,6 +1055,7 @@ ScrGame.prototype.updateText = function(diffTime){
 
 ScrGame.prototype.updateHolder = function(diffTime){
 	var mc;
+	
 	for (var i = 0; i < this._arHolder.length; i++ ) {
 		mc = this._arHolder[i];
 		if (mc) {
@@ -998,8 +1079,13 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					this.createObj({x:-400, y:50+Math.random()*100}, "cloud"+t)
 				}
 			} else if(mc.name == "itemMiner"){
+				mc.prevX = mc.x;
+				mc.prevY = mc.y;
 				mc.x += mc.speed*mc.vX;
-				this.updateColission(mc, this._arPlatform);
+				mc.y += mc.speedy * diffTime;
+				this.updateColission(mc, this._arPlatform, diffTime);
+				this.hitTeleport(mc, this._arTeleport, diffTime);
+				this.hitContract(mc);
 				if(mc.x > _W + mc.w || mc.x < -mc.w*2){
 					mc.tLife = 0;
 				}
@@ -1156,7 +1242,7 @@ ScrGame.prototype.update = function() {
 			this.timeProposal += diffTime;
 			if(this.timeProposal >= TIME_RESPAWN_MINER){
 				this.timeProposal = 0;
-				this.createObj({x:-30, y:340}, "itemMiner")
+				this.createObj({x:-30, y:280}, "itemMiner")
 			}
 		}
 	}
