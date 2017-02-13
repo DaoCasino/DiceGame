@@ -15,8 +15,8 @@ var fontImpact = "Impact";
 var fontTahoma = "Tahoma";
 var stats; //для вывода статистики справа
 
-var options_debug = true;
-var options_ethereum = false;
+var options_debug = false;
+var options_ethereum = true;
 var options_testnet = true;
 var options_music = true;
 var options_sound = true;
