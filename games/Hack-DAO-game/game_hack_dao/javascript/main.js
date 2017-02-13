@@ -15,8 +15,8 @@ var fontImpact = "Impact";
 var fontTahoma = "Tahoma";
 var stats; //для вывода статистики справа
 
-var options_debug = false;
-var options_ethereum = true;
+var options_debug = true;
+var options_ethereum = false;
 var options_testnet = true;
 var options_music = true;
 var options_sound = true;
@@ -123,8 +123,6 @@ function loadManifest(){
 	preloader.add("hintArrow", "images/items/hintArrow.png");
 	preloader.add("itemMoney", "images/items/itemMoney.png");
 	preloader.add("itemWall", "images/items/itemWall.png");
-	preloader.add("itemProposal", "images/items/itemProposal.png");
-	preloader.add("itemProposalR", "images/items/itemProposalR.png");
 	preloader.add("itemHome", "images/items/itemHome.png");
 	preloader.add("itemLevel", "images/items/itemLevel.png");
 	preloader.add("itemLock", "images/items/itemLock.png");
@@ -309,6 +307,8 @@ function saveData() {
 		localStorage.setItem('daocasino_hack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
+		localStorage.setItem('openkey', openkey);
+		localStorage.setItem('privkey', privkey);
 		// console.log("Saving: ok!");
 	}
 }
