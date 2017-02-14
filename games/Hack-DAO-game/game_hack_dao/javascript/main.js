@@ -250,7 +250,7 @@ function handleComplete(evt) {
 		options_testnet = true;
 	}
 	if(options_mainet){
-		if(options_mainet == "On"){
+		if(options_mainet == "on"){
 			options_mainet = true;
 		} else {
 			options_mainet = false;
@@ -342,7 +342,6 @@ function loadData() {
 			privkey = localStorage.getItem('privkey')
 			checkData();
 			console.log("Loading: ok!");
-			console.log("options_mainet:", options_mainet);
 		} else {
 			checkData();
 			console.log("Loading: fail!");
