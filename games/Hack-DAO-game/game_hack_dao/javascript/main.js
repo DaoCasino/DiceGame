@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.12"
+var version = "v. 1.0.13"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -98,19 +98,21 @@ function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
 	preloader.add("bgLoading", "images/bg/bgLoading.jpg");
+	preloader.add("bgMenu", "images/bg/bgMenu.jpg");
 	preloader.add("bgLevels", "images/bg/bgLevels.jpg");
 	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");
 	preloader.add("bgLevel2", "images/bg/bgLevel2.jpg");
 	preloader.add("bgLevel3", "images/bg/bgLevel3.jpg");
 	preloader.add("bgLevel4", "images/bg/bgLevel4.jpg");
 	preloader.add("bgLevel5", "images/bg/bgLevel5.jpg");
-	preloader.add("bgLevel6", "images/bg/bgLevel6.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
 	preloader.add("btnCloseOver", "images/buttons/btnCloseOver.png");
 	preloader.add("btnDefault", "images/buttons/btnDefault.png");
 	preloader.add("btnDefaultOver", "images/buttons/btnDefaultOver.png");
+	preloader.add("btnDao", "images/buttons/btnDao.png");
+	preloader.add("btnDaoOver", "images/buttons/btnDaoOver.png");
 	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");
 	
 	preloader.add("itemHero", "images/items/itemHero.png");
@@ -366,9 +368,12 @@ function start() {
 		stage.removeChild(LoadBack);
 	}
 	
-	addScreen("levels");
+	addScreen("menu");
 }
 
+function showMenu() {
+	addScreen("menu");
+}
 function showGame() {
 	addScreen("game");
 }
@@ -383,6 +388,10 @@ function addScreen(name) {
 		ScreenGame = new ScrGame();
 		scrContainer.addChild(ScreenGame);
 		currentScreen = ScreenGame;
+	} else if(name == "menu"){
+		ScreenMenu = new ScrMenu();
+		scrContainer.addChild(ScreenMenu);
+		currentScreen = ScreenMenu;
 	} else if(name == "levels"){
 		ScreenLevels = new ScrLevels();
 		scrContainer.addChild(ScreenLevels);

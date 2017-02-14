@@ -127,7 +127,6 @@ ScrGame.prototype.init = function() {
 	
 	var ofssetX = 60;
 	this.btnLevels = this.createButton("btnLevels", 90, ofssetX*2, "Menu", 24)
-	this.btnExport = this.createButton("btnExport", 90, ofssetX*3, "Export keys", 21)
 	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 38, 24)
 	this.btnSmart = this.createButton("btnSmart", 90, ofssetX*11, "Check contract", 17, 12)
 	this.btnTry = this.createButton("btnTry", _W/2, 600, "Try again", 21)
@@ -144,6 +143,7 @@ ScrGame.prototype.init = function() {
 	this._arButtons.push(this.btnShare);
 	this.btnShare.visible = false;
 	if(options_debug){
+		this.btnExport = this.createButton("btnExport", 90, ofssetX*3, "Export keys", 21)
 		this.btnReset = this.createButton("btnReset", 90, ofssetX*4, "Clear log", 26, 17)
 	}
 	
@@ -254,7 +254,6 @@ ScrGame.prototype.createLevel = function() {
 			this.tfTitleLevel.setText("Bad proposal: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
 		case 4:
-		case 5:
 			this.itemDao.setSkin("dao");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
@@ -266,17 +265,17 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.y = 500;
 			this.damage = 30;
 			var str = "itemHero";
-			if(this.curLevel == 5){
-				str = "itemHeroW";
-				this.damage = 20;
-			}
+			// if(this.curLevel == 5){
+				// str = "itemHeroW";
+				// this.damage = 20;
+			// }
 			
 			this.hero = addObj(str, 660, 500, 1, -1);
 			this.game_mc.addChild(this.hero);
 			this.valueLevelMax = 10;
 			this.tfTitleLevel.setText("Old contract: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
-		case 6:
+		case 5:
 			this.groundY = 590;
 			this.arListPlatform = ["75_200", "225_200", "375_200", "525_200", 
 									"825_200", "975_200", "1125_200", "1275_200",
@@ -284,7 +283,7 @@ ScrGame.prototype.createLevel = function() {
 									"825_400", "1125_400", "1275_400"];
 			this.arListTeleport = ["1_ 90_550_2", "2_1175_337_1_1", "3_1175_550_4_1",
 									"4_355_136_3", "5_520_337_3", "6_820_337_7_1", "7_820_136_6"];
-			this.createLevel6();
+			this.createLevel5();
 			break;
 		default:
 			this.tfTitleLevel.setText("Level of development");
@@ -297,7 +296,7 @@ ScrGame.prototype.createLevel = function() {
 	}
 }
 
-ScrGame.prototype.createLevel6 = function() {
+ScrGame.prototype.createLevel5 = function() {
 	var i = 0;
 	var _x = 0;
 	var _y = 0;
@@ -583,12 +582,22 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	}
 	
 	if(mc.name == "iconEthereum"){
-		mc.speed = 10;
-		mc.force = 20;
-		mc.vX = 1;
-		mc.tLife = 650;
-		if(point.x < this.itemDao.x){
-			mc.vX = -1;
+		if(this.curLevel == 1){
+			mc.speed = 10;
+			mc.force = 20;
+			mc.vX = 1;
+			mc.tLife = 650;
+			if(point.x < this.itemDao.x){
+				mc.vX = -1;
+			}
+		} else if(this.curLevel == 2){
+			mc.vX = 1;
+			mc.tgX = point.x;
+			mc.speed = 5;
+			mc.tLife = 60000;
+			if(Math.random()>0.5){
+				mc.vX = -1;
+			}
 		}
 	} else if(mc.name == "cloud1" ||
 	mc.name == "cloud2"){
@@ -1063,13 +1072,36 @@ ScrGame.prototype.updateHolder = function(diffTime){
 				continue;
 			}
 			if(mc.name == "iconEthereum"){
-				if(mc.force > 0){
-					mc.force --;
-					mc.y -= mc.speed*(mc.force/20)
-				} else {
+				if(this.curLevel == 1){
+					if(mc.force > 0){
+						mc.force --;
+						mc.y -= mc.speed*(mc.force/20)
+					} else {
+						mc.y += mc.speed
+					}
+					mc.x += mc.speed/3*mc.vX
+				} else if(this.curLevel == 2){
 					mc.y += mc.speed
+					mc.x += mc.speed/5*mc.vX
+					mc.rotation += mc.vX*(Math.PI/180)
+					if(Math.abs(mc.tgX - mc.x) > 5){
+						mc.vX = -mc.vX;
+					}
+					if(hit_test_rec(this.itemDao, 150, 70, mc.x,mc.y)){
+						// this.createText(mc, "+ 100");
+						mc.tLife = 0;
+					}
+					if(mc.y > _H + mc.h){
+						this.valueLevel += 100;
+						this.tfTitleLevel.setText("Lost ethereum: " + this.valueLevel + "/" + this.valueLevelMax);
+						this.createText(mc, "- 100");
+						if(this.valueLevel >= this.valueLevelMax){
+							this.resultGameEth(-1);
+							this.itemDao.sprite.img.stop();
+						}
+						mc.tLife = 0;
+					}
 				}
-				mc.x += mc.speed/3*mc.vX
 			} else if(mc.name == "cloud1" ||
 			mc.name == "cloud2"){
 				mc.x += mc.speed*mc.vX
@@ -1230,7 +1262,7 @@ ScrGame.prototype.update = function() {
 			if(this.timeMoney >= TIME_RESPAWN_MONEY){
 				this.timeMoney = 0;
 				var posX = Math.round(Math.random()*(_W-200))+100
-				this.createObj({x:posX, y:-50}, "itemMoney")
+				this.createObj({x:posX, y:-50}, "iconEthereum")
 			}
 		} else if(this.curLevel == 3){
 			this.timeProposal += diffTime;
