@@ -109,10 +109,18 @@
 						</div>
 						<div class="col-md-5 col-sm-6 col-xs-6">
 							<div class="registration">
-								<a class="popup-with-move-anim disclaimer-btn registr-now" href="#small-dialog">
+								<a class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
 									Sign in
 								</a>
+								
+								<div id='isreg' style='display:none'>
+								x ETH
+								<a class="popup-with-move-anim disclaimer-btn registr-now" href="#small-dialog">
+									Log Out
+								</a>
+								</div>
 							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -364,17 +372,13 @@
 				ведите 12 слов полученные в предыдщем окне, если вы забыли их записать, начните сначала
 			</p>
 
-			<div class="window-open-registr">
-				<input type="text" placeholder="Wallet Seed Phrase" require>
-				<button class="disclaimer-btn registr-now">CONTINUE</button>
+			<div class="window-open-registr dialog-window-two">
+				<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
+				<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val())'>CONTINUE</button>
 				<span class="dialog-window-cancel">назад</span>
 			</div>
 
-			<div class="dialog-window-two">
-				<input type="text" placeholder="Wallet Seed Phrase" require>
-				<button class="disclaimer-btn registr-now">CONTINUE</button>
-				<span class="dialog-window-cancel-two">назад</span>
-			</div>
+		
 
 			<div class="popup-button clearfix">
 				<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
@@ -398,15 +402,20 @@
 	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 	<script src="js/common.js"></script>
-	<script type="text/javascript">  showTime();</script>
+
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script>
+		if (localStorage.getItem("isreg")) {
+			$("#isreg").show();
+			$("#regbut").hide();
+		}
+							
 		var secretSeed = lightwallet.keystore.generateRandomSeed();
 		$("#seed").html(secretSeed);
 		if (!localStorage.getItem("openkey")) {
 			var secretSeed = lightwallet.keystore.generateRandomSeed();
-			lightwallet.keystore.deriveKeyFromPassword('sdfsdf', function (err, pwDerivedKey) {
+			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
 				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
 				ks.generateNewAddress(pwDerivedKey, 1);
 				var address = ks.getAddresses()[0];
@@ -422,6 +431,25 @@
 			});
 		}
 		
+		function wallet_open(secretSeed) { //box aerobic sweet proof warfare alone atom snake amateur spy couple side
+			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
+				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
+				ks.generateNewAddress(pwDerivedKey, 1);
+				var address = ks.getAddresses()[0];
+				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
+
+				localStorage.setItem("openkey",address);
+				localStorage.setItem("privkey",prv_key);
+				localStorage.setItem("isreg",1);
+				
+				console.log('address and key: ', address, prv_key);
+				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
+					console.log(d);
+					window.location = '/topup';
+				});
+				
+			});
+		}
 		
 		
 		function setCookie(name, value, options) {
@@ -458,6 +486,10 @@
 			setCookie("ref",ref);
 		}
 
+		
+		$(".toggle-bg").click(function(){
+			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val())
+		});
 	</script>
 </body>
 </html>
