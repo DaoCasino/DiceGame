@@ -145,7 +145,7 @@ a.item-games span{position:absolute;text-transform:uppercase;bottom:0;color:#fff
 .table-result table{font:13px/normal "ProximaNova-Bold";text-transform:uppercase;color:#fff;width:100%;}
 .table-result table tr{display:block;height:36px;border-radius:6px;border:1px solid #2d282f;line-height:38px;margin-top:4px;padding:0 11px;cursor:pointer;-webkit-transition:all .25s ease-out;-o-transition:all .25s ease-out;transition:all .25s ease-out;}
 .table-result table tr:nth-of-type(1){border:1px solid #976431;}
-.table-result table tr:hover{border:1px solid #976431;}
+.table-result table tr:hover,.popup-style .table-result table tr:hover{border:1px solid #976431;}
 .table-result table tr td:nth-of-type(1){width:27%;min-width:154px;}
 .table-result table tr td:nth-of-type(2){width:52%;}
 .table-result table tr td:nth-of-type(3){width:15%;}
@@ -174,7 +174,8 @@ form input:focus:-ms-input-placeholder{opacity:0;transition:opacity 0.3s ease;}
 	float: right;
 }
 
-div#small-dialog {
+div#small-dialog,
+.popup-style {
 	max-width: 470px;
 	width: 100%;
 	background: #272647;
@@ -279,6 +280,10 @@ div#small-dialog {
 
 #popup-open-text-before {
 	display: none;
+}
+
+.popup-style .table-result table tr {
+	border: 1px solid #565556;
 }
 
 /*Fade-zoom animation for first dialog*/
