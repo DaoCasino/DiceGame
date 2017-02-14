@@ -109,9 +109,9 @@ WndResult.prototype.clickObj = function(item_mc) {
 	if(item_mc.over){
 		item_mc.over.visible = false;
 	}
-	this._prnt.closeWindow(this);
 	
 	if(name == "btnDefault"){
+		this._prnt.closeWindow(this);
 		if(this._callback){
 			this._callback();
 		}
@@ -130,6 +130,11 @@ WndResult.prototype.checkButtons = function(evt){
 				item_mc._selected = true;
 				if(item_mc.over){
 					item_mc.over.visible = true;
+				} else {
+					if(item_mc.name == "btnShare"){
+						item_mc.scale.x = 0.33;
+						item_mc.scale.y = item_mc.scale.x;
+					}
 				}
 			}
 		} else {
@@ -137,6 +142,11 @@ WndResult.prototype.checkButtons = function(evt){
 				item_mc._selected = false;
 				if(item_mc.over){
 					item_mc.over.visible = false;
+				} else {
+					if(item_mc.name == "btnShare"){
+						item_mc.scale.x = 0.3;
+						item_mc.scale.y = item_mc.scale.x;
+					}
 				}
 			}
 		}

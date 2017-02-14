@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.13"
+var version = "v. 1.0.14"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -17,7 +17,8 @@ var stats; //для вывода статистики справа
 
 var options_debug = false;
 var options_ethereum = true;
-var options_testnet = true;
+var options_mainet = false;
+var options_testnet = false;
 var options_music = true;
 var options_sound = true;
 var options_mobile = true;
@@ -55,13 +56,6 @@ function initGame() {
 
     window.addEventListener("resize", onResize, false);
 	
-	if(document.location.hash == "#testnet"){
-		options_testnet = true;
-	}
-	if(options_testnet){
-		version = version + " testnet"
-	}
-
 	startTime = getTimer();
     onResize();
     update();
@@ -252,6 +246,23 @@ function handleComplete(evt) {
 	textureLoad();
     onResize();
 	
+	if(document.location.hash == "#testnet"){
+		options_testnet = true;
+	}
+	if(options_mainet){
+		if(options_mainet == "On"){
+			options_mainet = true;
+		} else {
+			options_mainet = false;
+		}
+	} else {
+		options_mainet = true;
+	}
+	options_testnet = !options_mainet;
+	if(options_testnet){
+		version = version + " testnet"
+	}
+	
 	start();
 }
 
@@ -326,10 +337,12 @@ function loadData() {
 			login_obj = JSON.parse(login_str);
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';
+			options_mainet = localStorage.getItem('mainnet')
 			openkey = localStorage.getItem('openkey')
 			privkey = localStorage.getItem('privkey')
 			checkData();
 			console.log("Loading: ok!");
+			console.log("options_mainet:", options_mainet);
 		} else {
 			checkData();
 			console.log("Loading: fail!");

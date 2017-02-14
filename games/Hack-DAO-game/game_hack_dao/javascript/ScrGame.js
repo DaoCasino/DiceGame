@@ -14,7 +14,7 @@ var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
-var optionsTo = "0xE8B4B0C645B28999c33e527236185B01E4b89F3a";
+var optionsTo = "0x000000000000";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
@@ -65,6 +65,7 @@ ScrGame.prototype.init = function() {
 	
 	if(options_testnet){
 		urlSite = "https://testnet.etherscan.io/";
+		optionsTo = "0xE8B4B0C645B28999c33e527236185B01E4b89F3a";
 	}
 	
 	// если идет еще старая сессия, загружаем её
@@ -130,19 +131,6 @@ ScrGame.prototype.init = function() {
 	this.btnLevels = this.createButton("btnLevels", 90, ofssetX*2, "Menu", 24)
 	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 38, 24)
 	this.btnSmart = this.createButton("btnSmart", 90, ofssetX*11, "Check contract", 17, 12)
-	this.btnTry = this.createButton("btnTry", _W/2, 600, "Try again", 21)
-	this.btnTry.visible = false;
-	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
-	this.btnNext.visible = false;
-	// this.btnShare = addButton2("btnFacebookShare", 0, 0, 0.3);
-	// this.btnShare.name = "btnShare";
-	// this.btnShare.interactive = true;
-	// this.btnShare.buttonMode=true;
-	// this.btnShare.x = _W - 150;
-	// this.btnShare.y = 120;
-	// this.face_mc.addChild(this.btnShare);
-	// this._arButtons.push(this.btnShare);
-	// this.btnShare.visible = false;
 	if(options_debug){
 		this.btnExport = this.createButton("btnExport", 90, ofssetX*3, "Export keys", 21)
 		this.btnReset = this.createButton("btnReset", 90, ofssetX*4, "Clear log", 26, 17)
@@ -295,8 +283,6 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
-	
-	this.resultGameEth(1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -705,7 +691,6 @@ ScrGame.prototype.resultGameEth = function(val){
 		this.bResult = true;
 		this.showWinEthereum = 10;
 		this.itemDao.dead = true;
-		this.btnNext.visible = true;
 		if(this.curLevel == 1){
 			this.itemDao.setAct("Win")
 		} else if(this.curLevel == 2){
@@ -719,7 +704,6 @@ ScrGame.prototype.resultGameEth = function(val){
 		}
 		addWinLevel(this.curLevel);
 		// this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
-		// this.btnShare.visible = true;
 	} else {
 		str = "LOSE";
 		strB = "";
@@ -731,7 +715,6 @@ ScrGame.prototype.resultGameEth = function(val){
 			}
 		}
 		this.itemDao.dead = true;
-		this.btnTry.visible = true;
 		resetLevels();
 	}
 	login_obj["startGame"] = false;
@@ -1316,11 +1299,6 @@ ScrGame.prototype.checkButtons = function(evt){
 				item_mc._selected = true;
 				if(item_mc.over){
 					item_mc.over.visible = true;
-				} else {
-					if(item_mc.name == "btnShare"){
-						item_mc.scale.x = 0.33;
-						item_mc.scale.y = item_mc.scale.x;
-					}
 				}
 			}
 		} else {
@@ -1328,11 +1306,6 @@ ScrGame.prototype.checkButtons = function(evt){
 				item_mc._selected = false;
 				if(item_mc.over){
 					item_mc.over.visible = false;
-				} else {
-					if(item_mc.name == "btnShare"){
-						item_mc.scale.x = 0.3;
-						item_mc.scale.y = item_mc.scale.x;
-					}
 				}
 			}
 		}

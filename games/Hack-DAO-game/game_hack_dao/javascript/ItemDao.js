@@ -83,7 +83,7 @@ ItemDao.prototype.initjiggle = function() {
 		}
 	}
 	if(this.act != "Cure"){
-		initjiggle(this.item, 1.1, 1, 0.4, 0.7)
+		this.initjiggle(this.item, 1.1, 1, 0.4, 0.7)
 	}
 }
 
