@@ -55,6 +55,7 @@ ScrGame.prototype.init = function() {
 	this.showTimeEthereum = 100;
 	this.resurrection = this.resurrectionCur;
 	this.wndInfo;
+	this.wndResult;
 	this.curWindow;
 	this.groundY = _H;
 	this.valueLevelMax = 0;
@@ -133,15 +134,15 @@ ScrGame.prototype.init = function() {
 	this.btnTry.visible = false;
 	this.btnNext = this.createButton("btnNext", _W/2, 600, "Next level", 21)
 	this.btnNext.visible = false;
-	this.btnShare = addButton2("btnFacebookShare", 0, 0, 0.3);
-	this.btnShare.name = "btnShare";
-	this.btnShare.interactive = true;
-	this.btnShare.buttonMode=true;
-	this.btnShare.x = _W - 150;
-	this.btnShare.y = 120;
-	this.face_mc.addChild(this.btnShare);
-	this._arButtons.push(this.btnShare);
-	this.btnShare.visible = false;
+	// this.btnShare = addButton2("btnFacebookShare", 0, 0, 0.3);
+	// this.btnShare.name = "btnShare";
+	// this.btnShare.interactive = true;
+	// this.btnShare.buttonMode=true;
+	// this.btnShare.x = _W - 150;
+	// this.btnShare.y = 120;
+	// this.face_mc.addChild(this.btnShare);
+	// this._arButtons.push(this.btnShare);
+	// this.btnShare.visible = false;
 	if(options_debug){
 		this.btnExport = this.createButton("btnExport", 90, ofssetX*3, "Export keys", 21)
 		this.btnReset = this.createButton("btnReset", 90, ofssetX*4, "Clear log", 26, 17)
@@ -294,6 +295,8 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
+	
+	this.resultGameEth(1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -582,7 +585,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	}
 	
 	if(mc.name == "iconEthereum"){
-		if(this.curLevel == 1){
+		if(this.curLevel == 1 || this.curLevel == 4){
 			mc.speed = 10;
 			mc.force = 20;
 			mc.vX = 1;
@@ -715,8 +718,8 @@ ScrGame.prototype.resultGameEth = function(val){
 			console.log("YOU WIN!");
 		}
 		addWinLevel(this.curLevel);
-		this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
-		this.btnShare.visible = true;
+		// this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
+		// this.btnShare.visible = true;
 	} else {
 		str = "LOSE";
 		strB = "";
@@ -734,13 +737,33 @@ ScrGame.prototype.resultGameEth = function(val){
 	login_obj["startGame"] = false;
 	login_obj["curLevel"] = false;
 	
-	this.itemResult.tf.setText(str);
 	this.itemResult.tfBalance.setText(strB);
 	this.sendRequest("getBalance");
 	this.itemResult.visible = true;
 	this.startGame = false;
 	this.timeTotal = 0;
 	saveData();
+	
+	this.resultGame(val);
+}
+
+ScrGame.prototype.resultGame = function(val) {
+	if(this.wndResult == undefined){
+		this.wndResult = new WndResult(this);
+		this.wndResult.x = _W/2;
+		this.wndResult.y = _H/2;
+		this.face_mc.addChild(this.wndResult);
+	}
+	
+	this.bWindow = true;
+	
+	var str = "";
+	if(val){
+		str = this.arTitle[this.curLevel];
+	}
+	this.wndResult.show(val, str, this.nextLevel)
+	this.wndResult.visible = true;
+	this.curWindow = this.bWindow;
 }
 
 ScrGame.prototype.clickHeroDao = function() {
@@ -761,9 +784,9 @@ ScrGame.prototype.clickHeroDao = function() {
 ScrGame.prototype.healthDao = function() {
 	if(this._gameOver){
 		if(this.bResult){
-			this.resurrection = -this.resurrectionCur*10
+			this.resurrection = -this.resurrectionCur*75
 		} else {
-			this.resurrection = this.resurrectionCur*20
+			this.resurrection = this.resurrectionCur*75
 		}
 		this.itemDao.health += this.resurrection;
 	} else {
@@ -789,10 +812,8 @@ ScrGame.prototype.healthDao = function() {
 }
 
 ScrGame.prototype.nextLevel = function() {
-	this.resetGame();
-	this.itemResult.tf.setText("");
-	this.itemResult.tfBalance.setText("");
-	this.createLevel();
+	this.removeAllListener();
+	showLevels();
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {
@@ -1072,7 +1093,7 @@ ScrGame.prototype.updateHolder = function(diffTime){
 				continue;
 			}
 			if(mc.name == "iconEthereum"){
-				if(this.curLevel == 1){
+				if(this.curLevel == 1 || this.curLevel == 4){
 					if(mc.force > 0){
 						mc.force --;
 						mc.y -= mc.speed*(mc.force/20)
