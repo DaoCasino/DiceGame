@@ -114,8 +114,8 @@
 								</a>
 								
 								<div id='isreg' style='display:none'>
-								x ETH
-								<a class="popup-with-move-anim disclaimer-btn registr-now" href="#small-dialog">
+								
+								<a class="disclaimer-btn" href="#">
 									Log Out
 								</a>
 								</div>
@@ -374,7 +374,7 @@
 
 			<div class="window-open-registr dialog-window-two">
 				<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
-				<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val())'>CONTINUE</button>
+				<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("whait..")'>CONTINUE</button>
 				<span class="dialog-window-cancel">назад</span>
 			</div>
 
@@ -438,14 +438,14 @@
 				var address = ks.getAddresses()[0];
 				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
 
-				localStorage.setItem("openkey",address);
+				localStorage.setItem("openkey","0x"+address);
 				localStorage.setItem("privkey",prv_key);
 				localStorage.setItem("isreg",1);
 				
 				console.log('address and key: ', address, prv_key);
 				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
 					console.log(d);
-					window.location = '/topup/';
+					window.location='/';
 				});
 				
 			});
