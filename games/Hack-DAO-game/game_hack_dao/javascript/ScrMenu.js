@@ -24,7 +24,7 @@ ScrMenu.prototype.init = function() {
 	btnDao.addChild(tf);
 	
 	var str1 = "This game is a proof of concept and intended for test purposes. It is based on experimental software.";
-	var str2 = "In no respect shall the authors of this game and the project team incur any liability for the loss of ether.";
+	var str2 = "In no respect shall this game or its authors incur any liability for the loss of ether.";
 	var str3 = "Players who access this game from other jurisdictions do so at their own volition and are responsible for compliance with local law.";
 	var str4 = "This program comes with ABSOLUTELY NO WARRANTY.";
 	

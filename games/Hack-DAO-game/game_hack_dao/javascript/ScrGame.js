@@ -62,10 +62,15 @@ ScrGame.prototype.init = function() {
 	this.valueLevel = 0; // какое-то значение для проигрыша на уровне
 	this.oldBalance = -1;
 	this._speedGravity = 1;
+	this.countNew = 0;
+	this.countOld = 0;
 	
 	if(options_testnet){
 		urlSite = "https://testnet.etherscan.io/";
 		optionsTo = "0xE8B4B0C645B28999c33e527236185B01E4b89F3a";
+	} else {
+		betEth = 1000000000000000000; //ставка эфира
+		betGame = betEth/1000000000000000000; //ставка 1 эфир
 	}
 	
 	// если идет еще старая сессия, загружаем её
@@ -265,14 +270,15 @@ ScrGame.prototype.createLevel = function() {
 			this.tfTitleLevel.setText("Old contract: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
 		case 5:
-			this.groundY = 590;
+			this.groundY = 600;
 			this.arListPlatform = ["75_200", "225_200", "375_200", "525_200", 
 									"825_200", "975_200", "1125_200", "1275_200",
 									"-75_400", "75_400", "225_400", "525_400", "675_400", 
 									"825_400", "1125_400", "1275_400"];
-			this.arListTeleport = ["1_ 90_550_2", "2_1175_337_1_1", "3_1175_550_4_1",
+			this.arListTeleport = ["1_ 90_535_2", "2_1175_337_1_1", "3_1175_535_4_1",
 									"4_355_136_3", "5_520_337_3", "6_820_337_7_1", "7_820_136_6"];
 			this.createLevel5();
+			this.tfTitleLevel.setText("Hard Fork/Old chain");
 			break;
 		default:
 			this.tfTitleLevel.setText("Level of development");
@@ -296,15 +302,16 @@ ScrGame.prototype.createLevel5 = function() {
 		obj = obj.split("_");
 		var id = Number(obj[0]);
 		_x = Number(obj[1]);
-		_y = Number(obj[2]);
+		_y = Number(obj[2]) + 17;
 		var teleport = Number(obj[3]);
 		var inv = obj[4] || 0;
 		var sc = 1;
 		if(inv){
-			// sc = -1;
+			sc = -1;
 		}
 		
-		var item = addObj("itemTeleport", _x, _y, 1, sc);
+		var item = addObj("itemTeleport", _x, _y);
+		item.scale.x = sc;
 		item.teleport = teleport;
 		this.game_mc.addChild(item);
 		this._arTeleport.push(item);
@@ -316,19 +323,20 @@ ScrGame.prototype.createLevel5 = function() {
 		_y = obj[1];
 		
 		var item = addObj("itemPlatform", _x, _y);
+		item.setRegY(0)
 		this.game_mc.addChild(item);
 		this._arPlatform.push(item);
 	}
 	
-	this.contractNew = addObj("contractNew", 1175, 124);
+	this.contractNew = addObj("contractNew", 1175, 140);
 	this.game_mc.addChild(this.contractNew);
 	this.contractOld = addObj("contractOld", 675, 537);
 	this.game_mc.addChild(this.contractOld);
 	
-	this.createObj({x:-30, y:280}, "itemMiner")
+	this.createObj({x:60, y:280}, "itemMiner")
 }
 
-ScrGame.prototype.createAccount = function() {	
+ScrGame.prototype.createAccount = function() {
 	if(privkey || options_debug){
 		this.tfIdUser.setText("your key: " + openkey);
 	}else{
@@ -337,6 +345,7 @@ ScrGame.prototype.createAccount = function() {
 		tfCreateKey.y = 150;
 		this.face_mc.addChild(tfCreateKey);
 		createjs.Tween.get(tfCreateKey).wait(2000).to({alpha:0},500)
+		
 		if(keyethereum){
 			var dk = keyethereum.create();
 			var privateKey = dk.privateKey;
@@ -346,6 +355,10 @@ ScrGame.prototype.createAccount = function() {
 			privkey = privateKey;
 			openkey = address;
 			this.tfIdUser.setText("your key: " + address);
+			if(options_testnet){
+				var str = "http://faucet.ropsten.be:3001/donate/"+openkey;
+				this.sendUrlRequest(str, "getEthereum");
+			}
 			saveData();
 		} else {
 			this.showError(ERROR_KEYTHEREUM);
@@ -478,7 +491,7 @@ ScrGame.prototype.showError = function(value) {
 }
 
 ScrGame.prototype.warningBalance = function() {
-	var str = "Refill your account in the amount of 0.2 ETH."
+	var str = "Refill your account in the amount of " + betGame + "ETH."
 	var addStr = "Refill";
 	this.createWndInfo(str, this.refillBalance, addStr);
 }
@@ -551,7 +564,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 			mc = new ItemProposal();
 			this._arObjectLevel.push(mc);
 		}else if(name == "itemMiner"){
-			mc = new ItemProposal("itemHeadMiner", "M");
+			mc = new ItemMiner("itemHeadMiner", "M");
 			mc.name = "itemMiner";
 			mc.speedyMax = this._speedGravity;
 			mc.speedy = mc.speedyMax;
@@ -643,6 +656,10 @@ ScrGame.prototype.addHolderObj = function(obj){
 
 // STAR
 ScrGame.prototype.startGameEth = function(){
+	if(openKey == undefined){
+		return false;
+	}
+	
 	var openKey = openkey.substr(2);
 	
 	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",function(d){
@@ -685,6 +702,17 @@ ScrGame.prototype.resultGameEth = function(val){
 	this._gameOver = true;
 	var str = "";
 	var strB = "";
+	
+	// если собрали мало форка
+	if(this.curLevel == 5){
+		var total = this.countNew + this.countOld;
+		var pN = Math.round(this.countNew/total*100);
+		var pO = Math.round(this.countOld/total*100);
+		if(pO >= 25){
+			val = -1;
+		}
+	}
+	
 	if(val == 1){
 		str = "WIN!";
 		strB = "";
@@ -858,7 +886,11 @@ ScrGame.prototype.clickObject = function() {
 		for (var i = 0; i < this._arObjectLevel.length; i++ ) {
 			mc = this._arObjectLevel[i];
 			if (mc) {
-				if(hit_test_rec(mc, mc.w, mc.h, _mouseX, _mouseY)){
+				var ptY = _mouseY;
+				if(mc.name == "itemMiner"){
+					ptY = _mouseY + mc.h/2
+				}
+				if(hit_test_rec(mc, mc.w, mc.h, _mouseX, ptY)){
 					if(this.curLevel == 3){
 						if(mc.action == "run" && mc.sprite.scale.x == -1){
 							mc.action = "climb";
@@ -866,7 +898,7 @@ ScrGame.prototype.clickObject = function() {
 							mc.mark.visible = true;
 							break;
 						}
-					} else if(this.curLevel == 6){
+					} else if(this.curLevel == 5){
 						mc.setScaleX(mc.vX)
 						mc.vX = -mc.vX;
 					}
@@ -942,6 +974,12 @@ ScrGame.prototype.response = function(command, value) {
 		} else {
 			this.resultGameEth(val);
 		}
+	} else if(command == "getEthereum"){
+		var obj = JSON.parse(value);
+		console.log("getEthereum:", obj);
+		// obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 2);
+		// login_obj["balance"] = obj_game["balance"];
+		// this.tfBalance.setText("balance: " + obj_game["balance"]);
 	} else if(command == "getBalance"){
 		var obj = JSON.parse(value);
 		obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 2);
@@ -973,10 +1011,49 @@ ScrGame.prototype.updateColission = function(mc, array, diffTime){
 	if(mc.dead){
 		return false;
 	}
+	var hit = false;
+	var mcY = mc.y;
+	var stopY = -1;
+	mc.x += mc.speed*mc.vX;
 	
-	for (i = 0; i < array.length; i ++) {
-		var obj = array[i];
-		this.collisionObjs(mc, obj, diffTime);
+	if(mc.timeHit > 100){
+		mc.timeHit = 0;
+		mc.speedy = mc.speedyMax;
+	}
+	mc.timeHit += diffTime;
+	
+	if(mcY >= this.groundY){
+		mc.speedy = 0;
+		stopY = this.groundY;
+		hit = true;
+	} else if(mc.platform){
+		var _w = mc.platform.w;
+		var hitCur = hit_test_rec(mc.platform, _w, platformH, mc.x, mcY);
+		if(hitCur == false){
+			mc.timeHit = 0;
+			mc.platform = null;
+		}
+	} else {
+		for (var i = 0; i < array.length; i ++) {
+			var platform = array[i];
+			var platformH = platform.h*2;
+			hit = hit_test_rec(platform, platform.w, platformH, mc.x, mcY);
+			if(hit){
+				mc.platform = platform;
+				mc.speedy = 0;
+				stopY = platform.y;
+				break;
+			}
+		}
+	}
+	
+	if(stopY > 0){
+		mc.y = stopY;
+	}
+	
+	if(hit){
+	} else {
+		mc.y += mc.speedy * diffTime;
 	}
 }
 
@@ -989,63 +1066,45 @@ ScrGame.prototype.hitTeleport = function(mc, array, diffTime){
 		return false;
 	}
 	
-	for (i = 0; i < array.length; i ++) {
+	var mcY = mc.y - mc.h/2;
+	var hit = undefined;
+	for (var i = 0; i < array.length; i ++) {
 		var obj = array[i];
-		var hit = hit_test_rec(obj, obj.w, obj.h, mc.x, mc.y);
+		hit = hit_test_rec(obj, obj.w, obj.h, mc.x, mcY);
 		if(hit){
 			var newTeleport = this._arTeleport[obj.teleport-1];
 			if(newTeleport){
-				mc.timeTeleport = 2000;
+				mc.timeTeleport = 500;
 				mc.x = newTeleport.x;
-				mc.y = newTeleport.y - mc.h/2;
+				mc.y = newTeleport.y;
 			}
 			break;
 		}
 	}
+	
+	return hit;
 }
 
 ScrGame.prototype.hitContract = function(mc){
 	var cN = this.contractNew;
 	var cO = this.contractOld;
-	var hitNew = hit_test_rec(cN, cN.w, cN.h, mc.x, mc.y);
-	var hitOld = hit_test_rec(cO, cO.w, cO.h, mc.x, mc.y);
+	var mcY = mc.y - mc.h/2;
+	var hitNew = hit_test_rec(cN, cN.w, cN.h, mc.x, mcY);
+	var hitOld = hit_test_rec(cO, cO.w, cO.h, mc.x, mcY);
 	if(hitNew){
 		mc.tLife = 0;
+		this.countNew ++;
 	}
 	if(hitOld){
 		mc.tLife = 0;
-	}
-}
-
-ScrGame.prototype.collisionObjs = function(obj, platform, diffTime){
-	// console.log("collisionObjs:", obj.y, platform.y);
-	var prevX = obj.prevX;
-	var prevY = obj.prevY;
-	var objY = obj.y + obj.h/2;
-	var hit = hit_test_rec(platform, platform.w, platform.h, obj.x, objY);
-	
-	if(obj.platform){
-		var _w = obj.platform.w;
-		var hitCur = hit_test_rec(obj.platform, _w, obj.platform.h, obj.x, objY);
-		if(hitCur == false){
-			obj.timeHit = 0;
-			obj.platform = null;
-		}
-	} else if(hit){
-		if(prevY + obj.h/2 < platform.y){
-			obj.speedy = 0;
-			obj.platform = platform;
-		}
-	} else {
-		if(obj.timeHit > 500){
-			obj.timeHit = 0;
-			obj.speedy = obj.speedyMax;
-		}
-		obj.timeHit += diffTime;
+		this.countOld ++;
 	}
 	
-	if(objY > this.groundY){
-		obj.speedy = 0;
+	var total = this.countNew + this.countOld;
+	var pN = Math.round(this.countNew/total*100);
+	var pO = Math.round(this.countOld/total*100);
+	if(total > 0){
+		this.tfTitleLevel.setText("Hard Fork " + pN + "%/"+ pO +"% Old chain");
 	}
 }
 
@@ -1117,8 +1176,8 @@ ScrGame.prototype.updateHolder = function(diffTime){
 			} else if(mc.name == "itemMiner"){
 				mc.prevX = mc.x;
 				mc.prevY = mc.y;
-				mc.x += mc.speed*mc.vX;
-				mc.y += mc.speedy * diffTime;
+				// mc.x += mc.speed*mc.vX;
+				// mc.y += mc.speedy * diffTime;
 				this.updateColission(mc, this._arPlatform, diffTime);
 				this.hitTeleport(mc, this._arTeleport, diffTime);
 				this.hitContract(mc);
@@ -1274,11 +1333,11 @@ ScrGame.prototype.update = function() {
 				this.timeProposal = 0;
 				this.createObj({x:-60, y:425}, "itemProposal")
 			}
-		} else if(this.curLevel == 6){
+		} else if(this.curLevel == 5){
 			this.timeProposal += diffTime;
 			if(this.timeProposal >= TIME_RESPAWN_MINER){
 				this.timeProposal = 0;
-				this.createObj({x:-30, y:280}, "itemMiner")
+				this.createObj({x:30, y:280}, "itemMiner")
 			}
 		}
 	}
@@ -1330,7 +1389,7 @@ ScrGame.prototype.touchHandler = function(evt){
 		}
 		
 		if(this.startGame){
-			if(this.curLevel == 3 || this.curLevel == 6){
+			if(this.curLevel == 3 || this.curLevel == 5){
 				this.clickObject();
 			}
 		}
