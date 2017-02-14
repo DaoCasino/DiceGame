@@ -166,6 +166,14 @@ form input:focus::-moz-placeholder{opacity:0;transition:opacity 0.3s ease;}
 form input:focus:-moz-placeholder{opacity:0;transition:opacity 0.3s ease;}
 form input:focus:-ms-input-placeholder{opacity:0;transition:opacity 0.3s ease;}
 
+.fl-left {
+	float: left;
+}
+
+.fl-right {
+	float: right;
+}
+
 div#small-dialog {
 	max-width: 470px;
 	width: 100%;
@@ -214,7 +222,8 @@ div#small-dialog {
 }
 
 .dialog-window,
-.dialog-window-two {
+.dialog-window-two,
+.window-open-registr {
 	text-align: center;
 	display: none;
 }
@@ -223,14 +232,22 @@ div#small-dialog {
 	width: 100%;
 	max-width: 420px;
 	max-height: 500px;
-	min-height: 80px;
+	min-height: 50px;
 	outline: none;
 	color: white;
-	background-color: #e1d0bd;
-	padding: 5px
+	background-color: #c61f1f;
+	padding: 8px;
+	text-align: center;
+	border: 0; 
 }
 
-.dialog-window-two input {
+#small-dialog h1 {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.dialog-window-two input,
+.window-open-registr input {
 	display: block;
 	width: 100%;
 	padding: 8px;
@@ -239,6 +256,30 @@ div#small-dialog {
 	outline: none;
 }
 
+.entry-pass {
+	display: none;
+}
+
+.entry-pass input {
+	max-width: 250px;
+	width: 100%;
+	color: #333;
+	display: block;
+	padding: 8px;
+	border: none;
+	margin: 15px auto;
+	text-transform: uppercase;
+	outline: none;
+}
+
+.entry-pass button {
+	display: block;
+	margin: 0 auto 0px;
+}
+
+#popup-open-text-before {
+	display: none;
+}
 
 /*Fade-zoom animation for first dialog*/
 

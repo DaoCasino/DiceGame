@@ -1,27 +1,37 @@
 $(document).ready(function() {
 
+	if ($("input[pass-one]").val()!=$("input[pass-ok]").val()) {
+		$(".error").html("Passwords not mach");
+	}
+
 	/* POPUP */
+
+	$('.open-register').click(function(){
+		$('.window-open-registr').slideDown();
+		$('#popup-open-text-before').slideDown();
+		$('.window-seed').slideUp();
+		$('.popup-button').slideUp();
+		$('#popup-open-text-after').slideUp();
+	});
+
+	$('.dialog-window-cancel').click(function(){
+		$('.popup-button').slideDown();
+		$('.window-open-registr').slideDown();
+		$('#popup-open-text-after').slideDown();
+		$('.window-seed').slideDown();
+		$('#popup-open-text-before').slideUp();
+		$('.window-open-registr').slideUp();
+	});
 
 	$('.open-dialog-window').click(function(){
 		$('.dialog-content').slideUp();
 		$('.popup-button').slideUp();
-		$('.dialog-window').slideDown();
-	});
-
-	$('.dialog-window-cancel').click(function(){
-		$('.dialog-content').slideDown();
-		$('.popup-button').slideDown();
-		$('.dialog-window').slideUp();
+		$('.dialog-window-two').slideDown();
 	}); 
 
 	$('.dialog-window-cancel-two').click(function(){
 		$('.dialog-window-two').slideUp();
-		$('.dialog-window').slideDown();
-	});
-
-	$('#restore-from').click(function(){
-		$('.dialog-window-two').slideDown();
-		$('.dialog-window').slideUp();
+		$('.popup-button').slideDown();
 	});
 
 	/* AND POPUP */

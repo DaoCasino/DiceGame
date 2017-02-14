@@ -107,11 +107,12 @@
 								</form>
 							</div>
 						</div>
-						<div class="col-md-4 col-sm-6 col-xs-6">
-							<button class="log-in">login</button>
-							<a class="popup-with-move-anim" href="#small-dialog">
-								Auth
-							</a>
+						<div class="col-md-5 col-sm-6 col-xs-6">
+							<div class="registration">
+								<a class="popup-with-move-anim disclaimer-btn registr-now" href="#small-dialog">
+									Sign in
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -347,41 +348,41 @@
 
 
 	<div class="hidden">
+
 		<div id="small-dialog" class="zoom-anim-dialog">
-			<h1>Save this seed</h1>
-			<textarea class="popup-textarea" id='seed'></textarea>
-			<p class="disclaimer">
-				<span>DISCLAIMER</span>
-				This lightwallet is still in beta and is presently not recommended for the storage of large amounts of ETH.
-			</p>
-			<p>
-				If you created an account before, enter your seed below or open a wallet.
-				Click on „Generate“ to create a new account.
-			</p>
-			<div class="dialog-window">
-				<button class="disclaimer-btn registr-now" id="restore-from">RESTORE FROM SEED</button>
-				<div class="dispinl">
-					<label for="myfile">
-						<div class='button-container'>
-							<div class='disclaimer-btn registr-now button-text'>UPLOAD WALLET FILE</div>
-						</div>
-					</label>
-					<div class="hide">
-						<input type="file" id="myfile" />
-					</div>
-				</div>
-				<span class="dialog-window-cancel">cancel</span>
+
+			<div class="window-seed">
+				<h1>Save this seed</h1>
+				<textarea class="popup-textarea" id='seed'></textarea>
 			</div>
+
+			<p id="popup-open-text-after">
+				сохраните эти 12 слов в надежном месте, они понадобятся для авторизации в дальнейшем
+			</p>
+
+			<p id="popup-open-text-before">
+				ведите 12 слов полученные в предыдщем окне, если вы забыли их записать, начните сначала
+			</p>
+
+			<div class="window-open-registr">
+				<input type="text" placeholder="Wallet Seed Phrase" require>
+				<button class="disclaimer-btn registr-now">CONTINUE</button>
+				<span class="dialog-window-cancel">назад</span>
+			</div>
+
 			<div class="dialog-window-two">
 				<input type="text" placeholder="Wallet Seed Phrase" require>
 				<button class="disclaimer-btn registr-now">CONTINUE</button>
-				<span class="dialog-window-cancel-two">cancel</span>
+				<span class="dialog-window-cancel-two">назад</span>
 			</div>
-			<div class="popup-button">
-				<button class="disclaimer-btn registr-now">GENERATE</button>
-				<button class="disclaimer-btn registr-now open-dialog-window">RESTORE</button>
+
+			<div class="popup-button clearfix">
+				<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
+				<button class="disclaimer-btn registr-now open-dialog-window fl-right">Restore Wallet from Backup</button>
 			</div>
+
 		</div>
+		
 	</div>
 
 	<!--[if lt IE 9]>
