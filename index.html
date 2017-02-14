@@ -87,14 +87,14 @@
 			<div class="wrapper-block__logo">
 				<div class="wrapper-lofo clearfix">
 					<div class="row">
-						<div class="col-md-4 col-sm-6 col-xs-6">
+						<div class="col-md-4 col-sm-6 col-xs-6 top-logo">
 							<div class="logo">
 								<a href="#">
 									<img src="img/logo.png" alt="Logo images">
 								</a>
 							</div>
 						</div>
-						<div class="col-md-3 col-sm-6 col-xs-7">
+						<div class="col-md-3 col-sm-6 col-xs-6 top-check">
 							<div class="switch-block clearfix">
 								<form action="">
 									<span class="real-money switch-span">TESTNET</span>
@@ -107,17 +107,17 @@
 								</form>
 							</div>
 						</div>
-						<div class="col-md-5 col-sm-6 col-xs-6">
+						<div class="col-md-5 col-sm-6 col-xs-6 top-sign-in">
 							<div class="registration">
 								<a class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
 									Sign in
 								</a>
 								
 								<div id='isreg' style='display:none'>
-								
-								<a class="disclaimer-btn" href="#">
-									Log Out
-								</a>
+
+									<a class="disclaimer-btn" href="#">
+										Log Out
+									</a>
 								</div>
 							</div>
 							
@@ -378,7 +378,7 @@
 				<span class="dialog-window-cancel">назад</span>
 			</div>
 
-		
+
 
 			<div class="popup-button clearfix">
 				<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
@@ -410,7 +410,7 @@
 			$("#isreg").show();
 			$("#regbut").hide();
 		}
-							
+
 		var secretSeed = lightwallet.keystore.generateRandomSeed();
 		$("#seed").html(secretSeed);
 		if (!localStorage.getItem("openkey")) {
