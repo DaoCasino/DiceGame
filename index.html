@@ -445,7 +445,7 @@
 				console.log('address and key: ', address, prv_key);
 				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
 					console.log(d);
-					window.location = '/topup';
+					window.location = '/topup/';
 				});
 				
 			});
