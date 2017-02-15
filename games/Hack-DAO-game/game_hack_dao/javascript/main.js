@@ -99,7 +99,7 @@ function initGame() {
 		var tfVersion = addText(version, 16, "#000000", undefined, "right", 400)
 		tfVersion.x = _W-20;
 		tfVersion.y = _H-24;
-		this.addChild(tfVersion);
+		LoadBack.addChild(tfVersion);
 	};
 	
 	loadManifest();
