@@ -116,8 +116,10 @@ function loadManifest(){
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
 	preloader.add("btnCloseOver", "images/buttons/btnCloseOver.png");
+	preloader.add("btnCloseDown", "images/buttons/btnCloseDown.png");
 	preloader.add("btnDefault", "images/buttons/btnDefault.png");
 	preloader.add("btnDefaultOver", "images/buttons/btnDefaultOver.png");
+	preloader.add("btnDefaultDown", "images/buttons/btnDefaultDown.png");
 	preloader.add("btnDao", "images/buttons/btnDao.png");
 	preloader.add("btnDaoOver", "images/buttons/btnDaoOver.png");
 	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");

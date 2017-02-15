@@ -151,15 +151,16 @@ ScrGame.prototype.init = function() {
 	this._arButtons.push(this.itemDao);
 	this._arObject.push(this.itemDao);
 	
-	var posX = 60;
-	var ofssetX = 60;
-	this.btnLevels = this.createButton("btnLevels", 90, posX+ofssetX*2, "Menu", 24)
-	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 38, 24);
+	var posX = 100;
+	var posY = 60;
+	var ofssetY = 60;
+	this.btnLevels = this.createButton("btnLevels", posX, posY+ofssetY*2, "Menu", 24)
+	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 34, 24);
 	this.btnStart.visible = false;
-	this.btnSmart = this.createButton("btnSmart", 90, ofssetX*11, "Check contract", 17, 12)
+	this.btnSmart = this.createButton("btnSmart", posX, ofssetY*11, "Check contract", 17, 12)
 	if(options_debug){
-		this.btnExport = this.createButton("btnExport", 90, posX+ofssetX*3, "Export keys", 21)
-		this.btnReset = this.createButton("btnReset", 90, posX+ofssetX*4, "Clear log", 26, 17)
+		this.btnExport = this.createButton("btnExport", posX, posY+ofssetY*3, "Export keys", 21)
+		this.btnReset = this.createButton("btnReset", posX, posY+ofssetY*4, "Clear log", 26, 17)
 	}
 	
 	this.createPrepareLevel();
@@ -205,7 +206,7 @@ ScrGame.prototype.clearLog = function() {
 
 ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {	
 	if(size){}else{size=22}
-	if(offset){}else{offset=15}
+	if(offset){}else{offset=17}
 	
 	var btn = addButton2("btnDefault", x, y);
 	btn.name = name;
@@ -572,7 +573,7 @@ ScrGame.prototype.showError = function(value) {
 }
 
 ScrGame.prototype.warningBalance = function() {
-	var str = "Refill your account in the amount of " + betGame + "ETH."
+	var str = "Refill your account in the amount of " + betGame + " ETH."
 	var addStr = "Refill";
 	this.createWndInfo(str, this.refillBalance, addStr);
 	this.btnStart.visible = true;

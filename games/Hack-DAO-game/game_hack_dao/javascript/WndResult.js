@@ -22,7 +22,7 @@ WndResult.prototype.init = function(_prnt) {
 	var bg = addObj("wndInfo");
 	this.wnd.addChild(bg);
 	
-	this.btnOk = addButton2("btnDefault", 0, 85);
+	this.btnOk = addButton2("btnDefault", 0, 150);
 	this.wnd.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
 	

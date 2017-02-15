@@ -19,10 +19,10 @@ WndInfo.prototype.init = function(_prnt) {
 	var bg = addObj("wndInfo");
 	this.addChild(bg);
 	
-	var btnClose = addButton2("btnClose", 170, -90);
+	var btnClose = addButton2("btnClose", 230, -160);
 	this.addChild(btnClose);
 	this._arButtons.push(btnClose);
-	this.btnOk = addButton2("btnDefault", 0, 85);
+	this.btnOk = addButton2("btnDefault", 0, 150);
 	this.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
 	
@@ -31,7 +31,7 @@ WndInfo.prototype.init = function(_prnt) {
 	this.btnOk.interactive = true;
 	this.btnOk.buttonMode=true;
 	
-	this.tf = addText("", 26, "#854015", undefined, "center", 350, 4, fontTahoma)
+	this.tf = addText("", 26, "#FFCC00", "#000000", "center", 350, 3, fontTahoma)
 	this.tf.y = -70;
 	this.addChild(this.tf);
 	this.tfBtn = addText("", 26, "#FFFFFF", "#000000", "center", 350)
