@@ -409,17 +409,22 @@ div#small-dialog,
 
  /* DICE CONTENT */
 
-p{
-	margin: 0;
-}
+ p{
+ 	margin: 0;
+ }
 
-.game-status {
-	color: #d08c49;
-}
+ .game-status {
+ 	color: #d08c49;
+ }
 
-.game-status label {
-	display: block;
-	text-align: center;
-}
+ .game-status label {
+ 	display: block;
+ 	text-align: center;
+ }
+
+ .game-status input {
+ 	margin: 0 auto 15px;
+ 	display: block;
+ }
 
  /* END DICE CONTENT */
