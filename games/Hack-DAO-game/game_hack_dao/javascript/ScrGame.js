@@ -97,11 +97,33 @@ ScrGame.prototype.init = function() {
 		"ICO \n The DAO raised over US $100m from more than 11,000 participants",
 		"Proposal",
 		"16.06.2016 \n Dao get attacked, DAO price fell, ETH price fell",
-		"White hat attack",
 		"Hard Fork 1",
 		"Back to main network",
 		"Hard Fork 2 \n Hard fork cafe",
-		"Ethereum Classiс"
+		"Ethereum Classiс",
+		""
+	]
+	this.arDescWin = ["",
+		"30.04 contract deloyed",
+		"You have collected enough",
+		"All proposals submitted",
+		"Hacker hacked the dao",
+		"Hard Fork",
+		"",
+		"",
+		"",
+		""
+	]
+	this.arDescLose = ["",
+		"Something went wrong try again",
+		"You lost a lot of money",
+		"You didn't get the proposals right",
+		"Failed to hack the dao",
+		"Old Chain",
+		"",
+		"",
+		"",
+		""
 	]
 	
 	obj_game["game"] = this;
@@ -295,7 +317,7 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
-	// this.resultGameEth(-1)
+	// this.resultGameEth(1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -814,8 +836,10 @@ ScrGame.prototype.resultGame = function(val) {
 		if(options_testnet){
 			str = "You have passed the first level. The following levels are available on MAINNET."
 		} else {
-			str = this.arTitle[this.curLevel];
+			str = this.arDescWin[this.curLevel];
 		}
+	} else {
+		str = this.arDescLose[this.curLevel];
 	}
 	this.wndResult.show(val, str, this.nextLevel)
 	this.wndResult.visible = true;
