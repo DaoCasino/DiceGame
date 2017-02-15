@@ -96,6 +96,10 @@ function initGame() {
 		LoadPercent.x = _W/2;
 		LoadPercent.y = _H/2 + 120;
 		LoadBack.addChild(LoadPercent);
+		var tfVersion = addText(version, 16, "#000000", undefined, "right", 400)
+		tfVersion.x = _W-20;
+		tfVersion.y = _H-24;
+		this.addChild(tfVersion);
 	};
 	
 	loadManifest();
