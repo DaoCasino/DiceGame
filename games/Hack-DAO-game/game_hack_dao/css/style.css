@@ -36,6 +36,12 @@ html, body, #tbl_wrap {
    font-weight: normal;
    font-style: normal;
 }
+@font-gothic {
+   font-family: 'Century Gothic';
+   src: url('../fonts/GOTHIC.ttf') format('truetype');
+   font-weight: normal;
+   font-style: normal;
+}
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;
