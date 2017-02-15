@@ -781,7 +781,11 @@ ScrGame.prototype.resultGame = function(val) {
 	
 	var str = "";
 	if(val){
-		str = this.arTitle[this.curLevel];
+		if(options_testnet){
+			str = "You have passed the first level. The following levels are available on MAINNET."
+		} else {
+			str = this.arTitle[this.curLevel];
+		}
 	}
 	this.wndResult.show(val, str, this.nextLevel)
 	this.wndResult.visible = true;
