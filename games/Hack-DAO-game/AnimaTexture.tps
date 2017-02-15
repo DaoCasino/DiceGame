@@ -90,9 +90,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>2000</int>
             <key>height</key>
-            <int>2048</int>
+            <int>2000</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
