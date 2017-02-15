@@ -30,10 +30,6 @@ ScrLevels.prototype.init = function() {
 	
 	this.createLevels();
 	
-	 "this game is intended solely for test purposes"
-	"This game is a proof of concept. It is based on experimental software. Please, play responsibly, do not use any ether that you cannot afford to lose. Do not play if you are under 18."
-	
-	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
 	this.on('mousemove', this.touchHandler);

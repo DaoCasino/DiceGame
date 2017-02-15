@@ -4,6 +4,7 @@ var version = "v. 1.0.14"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
+var betslevel = [];
 var openkey, privkey;
 var currentScreen, scrContainer;
 var ScreenGame, ScreenLevels;
@@ -60,6 +61,17 @@ function initGame() {
 	startTime = getTimer();
     onResize();
     update();
+	
+	betslevel[0] = {win:100, koef:1};
+	betslevel[1] = {win:90, koef:1.09};
+	betslevel[2] = {win:80, koef:1.22};
+	betslevel[3] = {win:70, koef:1.40};
+	betslevel[4] = {win:60, koef:1.63};
+	betslevel[5] = {win:50, koef:1.96};
+	betslevel[6] = {win:40, koef:2.45};
+	betslevel[7] = {win:30, koef:3.26};
+	betslevel[8] = {win:20, koef:4.9};
+	betslevel[9] = {win:10, koef:9.8};
 	
 	// soundManager = new SoundManager();
 	// soundManager.currentMusic = "none";

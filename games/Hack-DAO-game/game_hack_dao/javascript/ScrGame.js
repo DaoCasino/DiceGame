@@ -132,7 +132,8 @@ ScrGame.prototype.init = function() {
 	var posX = 60;
 	var ofssetX = 60;
 	this.btnLevels = this.createButton("btnLevels", 90, posX+ofssetX*2, "Menu", 24)
-	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 38, 24)
+	this.btnStart = this.createButton("btnStart", _W/2, 600, "Start", 38, 24);
+	this.btnStart.visible = false;
 	this.btnSmart = this.createButton("btnSmart", 90, ofssetX*11, "Check contract", 17, 12)
 	if(options_debug){
 		this.btnExport = this.createButton("btnExport", 90, posX+ofssetX*3, "Export keys", 21)
@@ -142,6 +143,7 @@ ScrGame.prototype.init = function() {
 	this.createGUI();
 	this.createAccount();
 	this.sendRequest("getBalance");
+	this.showWndStart();
 	
 	// если идет игра, дожидаемся ее результата
 	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
@@ -168,7 +170,7 @@ ScrGame.prototype.resetGame = function() {
 	this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	this.itemDao.healthMax = 1000;
 	this.itemDao.health = this.itemDao.healthMax;
-	this.btnStart.visible = true;
+	// this.btnStart.visible = true;
 	this.itemDao.visible = false;
 }
 
@@ -293,6 +295,7 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
+	// this.resultGameEth(-1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -505,12 +508,19 @@ ScrGame.prototype.warningBalance = function() {
 	var str = "Refill your account in the amount of " + betGame + "ETH."
 	var addStr = "Refill";
 	this.createWndInfo(str, this.refillBalance, addStr);
+	this.btnStart.visible = true;
 }
 
 ScrGame.prototype.showWndClearLog = function() {
 	var str = "Do you want to overwrite the keys?"
 	var addStr = "Yes";
 	this.createWndInfo(str, this.clearLog, addStr);
+}
+
+ScrGame.prototype.showWndStart = function() {
+	var str = "To play the game, send " + betslevel[this.curLevel - 1].koef + " ETH."
+	var addStr = "Start";
+	this.createWndInfo(str, this.startGameF, addStr);
 }
 
 ScrGame.prototype.createIcoEthereum = function() {
@@ -670,7 +680,8 @@ ScrGame.prototype.startGameEth = function(){
 	if(openKey == undefined){
 		return false;
 	}
-	
+	// To play the game send 1 ether [confirm]
+	// win odds ... mult...
 	var openKey = openkey.substr(2);
 	
 	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",function(d){
@@ -769,6 +780,25 @@ ScrGame.prototype.resultGameEth = function(val){
 	this.resultGame(val);
 }
 
+ScrGame.prototype.startGameF = function() {
+	if(privkey || options_debug){
+		if(obj_game["balance"] < betGame && options_ethereum &&
+		options_debug == false){
+			obj_game["game"].warningBalance();
+		} else {
+			obj_game["game"].createLevel();
+			obj_game["game"].bSendRequest = false;
+			obj_game["game"].startGame = true;
+			if(options_ethereum){
+				obj_game["game"].startGameEth();
+			}
+			// obj_game["game"].btnStart.visible = false;
+		}
+	} else {
+		obj_game["game"].createAccount();
+	}
+}
+
 ScrGame.prototype.resultGame = function(val) {
 	if(this.wndResult == undefined){
 		this.wndResult = new WndResult(this);
@@ -780,7 +810,7 @@ ScrGame.prototype.resultGame = function(val) {
 	this.bWindow = true;
 	
 	var str = "";
-	if(val){
+	if(val == 1){
 		if(options_testnet){
 			str = "You have passed the first level. The following levels are available on MAINNET."
 		} else {
@@ -862,22 +892,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnSmart"){
 		this.showSmartContract();
 	} else if(item_mc.name == "btnStart"){
-		if(privkey || options_debug){
-			if(obj_game["balance"] < betGame && options_ethereum &&
-			options_debug == false){
-				this.warningBalance();
-			} else {
-				this.createLevel();
-				this.bSendRequest = false;
-				this.startGame = true;
-				if(options_ethereum){
-					this.startGameEth();
-				}
-				this.btnStart.visible = false;
-			}
-		} else {
-			this.createAccount();
-		}
+		this.startGameF();
 	} else if(item_mc.name == "btnTry"){
 		this.removeAllListener();
 		showLevels();

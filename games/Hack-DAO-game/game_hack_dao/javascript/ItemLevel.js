@@ -12,17 +12,6 @@ ItemLevel.prototype.init = function() {
 	this.id = 0;
 	this.lock = true;
 	
-	this.betslevel = [];
-	this.betslevel[1] = {win:90, koef:1.09};
-	this.betslevel[2] = {win:80, koef:1.20};
-	this.betslevel[3] = {win:70, koef:1.50};
-	this.betslevel[4] = {win:60, koef:1.80};
-	this.betslevel[5] = {win:50, koef:2.00};
-	this.betslevel[6] = {win:40, koef:2.00};
-	this.betslevel[7] = {win:30, koef:2.50};
-	this.betslevel[8] = {win:20, koef:3.30};
-	this.betslevel[9] = {win:10, koef:5.00};
-	
 	this.bg = addObj("itemLevel");
 	this.addChild(this.bg);
 	this.preview = new PIXI.Container();
@@ -59,11 +48,11 @@ ItemLevel.prototype.setId = function(id, value) {
 		img.y = -2;
 		this.preview.addChild(img);
 		
-		var strW = "Win Odds: " + this.betslevel[id].win + "%"
+		var strW = "Win Odds: " + betslevel[id].win + "%"
 		var wOdd = addText(strW, 20, "#FFFFFF", "#000000", "center", 180, 2)
 		wOdd.y = -50;
 		this.addChild(wOdd);
-		var strX = "Multiplier: x" + this.betslevel[id].koef;
+		var strX = "Multiplier: x" + betslevel[id].koef;
 		var tfMult = addText(strX, 16, "#FFFFFF", "#000000", "center", 180, 2)
 		tfMult.y = -25;
 		this.addChild(tfMult);
