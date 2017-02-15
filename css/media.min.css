@@ -38,13 +38,13 @@ header{padding-bottom:24px;}
 }
 @media only screen and (max-width:767px){.registration{margin-top:40px;}
 }
-@media only screen and (max-width:758px){.registration{margin-top:40px;}
+@media only screen and (max-width:758px){.registration{margin-top:12px;}
 .mobile-menu .main-top-menu li a{font-size:19px;padding:0 !important;}
 .search-games,
 .main-top-menu{display:none;}
 .open-menu{display:inline-block;}
 .mobile-menu .main-top-menu{display:block;}
-.registration{display:none;}
+//.registration{display:none;}
 .wrapper-content{padding-top:15px;}
 header{padding-bottom:10px;}
 .footer-menu{display:none;}
@@ -66,14 +66,17 @@ header{padding-bottom:10px;}
 @media only screen and (max-width:480px){.category-block .col-md-3{width:100% !important;padding-left:15px;padding-right:15px;}
 }
 @media only screen and (max-width:479px){.col-xs-5,
-.col-xs-7{width:100%;}
-.date{display:none;}
-.open-menu{margin-top:0;position:relative;top:-17px;}
-.footer-open-menu .open-menu{margin-top:10px;position:relative;top:0px;}
+	.col-xs-7{width:100%;}
+	.date{display:none;}
+	.open-menu{margin-top:0;position:relative;top:-17px;}
+	.footer-open-menu .open-menu{margin-top:10px;position:relative;top:0px;}
+}
+@media only screen and (max-width:414px){
+	.wrapper-lofo .col-xs-6{width: 100% !important;} .switch-block{margin-top: 15px; text-align: left;} div#small-dialog{padding: 20px 10px;}.disclaimer-btn{font-size: 15px;}
 }
 @media only screen and (max-width:400px){.table-result table tr{padding:0 4px;}
 .table-result table tr td:nth-of-type(1){min-width:130px;}
 .table-result table{font-size:11px;}
 }
-@media only screen and (max-width:360px){.online{display:none;}
+@media only screen and (max-width:360px){.online{display:none;}.disclaimer-btn{display:block; float:none;margin: 10px auto 0px;}a.disclaimer-btn{display: inline-block;}
 }
