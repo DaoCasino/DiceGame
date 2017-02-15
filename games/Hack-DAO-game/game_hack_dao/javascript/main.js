@@ -16,7 +16,7 @@ var fontTahoma = "Tahoma";
 var fontGothic = "Century Gothic";
 var stats; //для вывода статистики справа
 
-var options_debug = true;
+var options_debug = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
