@@ -66,7 +66,7 @@ WndResult.prototype.show = function(val, str, callback) {
 	
 	this.wnd.y = -_H;
 	this.rect.alpha = 0;
-	createjs.Tween.get(this.rect).wait(1000).to({alpha: 0.5}, 700)
+	createjs.Tween.get(this.rect).wait(2000).to({alpha: 0.5}, 700)
 	createjs.Tween.get(this.wnd).wait(1000).to({y: 0}, 700)
 	
 	var strTitle = "Lose";

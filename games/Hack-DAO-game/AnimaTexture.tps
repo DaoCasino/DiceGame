@@ -197,6 +197,30 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">anima/daoAppear/daoAppear_0001.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0002.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0003.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0004.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0005.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0006.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0007.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0008.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0009.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0010.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0011.png</key>
+            <key type="filename">anima/daoAppear/daoAppear_0012.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>65,79,129,158</rect>
+                <key>scale9Paddings</key>
+                <rect>65,79,129,158</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/daoCure/daoCure_0001.png</key>
             <key type="filename">anima/daoCure/daoCure_0002.png</key>
             <key type="filename">anima/daoCure/daoCure_0003.png</key>

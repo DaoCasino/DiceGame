@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.14"
+var version = "v. 1.0.15"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -147,8 +147,10 @@ function loadManifest(){
 	preloader.add("icoKey", "images/items/icoKey.png");
 	preloader.add("icoEthereum", "images/items/icoEthereum.png");
 	preloader.add("icoTime", "images/items/icoTime.png");
+	preloader.add("starAppear", "images/items/starAppear.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
+	preloader.add("images/texture/Anima2Texture.json");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
@@ -176,6 +178,7 @@ function spritesLoad() {
 
 function textureLoad() {
 	iniSet("images/texture/AnimaTexture.json");
+	iniSet("images/texture/Anima2Texture.json");
 	// iniSetArt("images/buttons/ButtonsTexture.json");
 }
 
@@ -691,6 +694,12 @@ function jiggle(t){
 	t.scale.y = t.scale.x
 }
 
+function rad(qdeg){
+	return qdeg * (Math.PI / 180);
+}
+function deg(qrad){
+	return qrad * (180 / Math.PI);
+}
 function get_dd(p1, p2) {
 	var dx=p2.x-p1.x;
 	var dy=p2.y-p1.y;

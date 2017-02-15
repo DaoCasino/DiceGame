@@ -50,7 +50,7 @@ ScrGame.prototype.init = function() {
 	this.bResult = false;
 	this.bHealthDao09 = false; // 90% health
 	this.damage = 20;
-	this.resurrectionCur = 1;
+	this.resurrectionCur = 10;
 	this.showWinEthereum = 0;
 	this.showTimeEthereum = 100;
 	this.resurrection = this.resurrectionCur;
@@ -162,6 +162,7 @@ ScrGame.prototype.init = function() {
 		this.btnReset = this.createButton("btnReset", 90, posX+ofssetX*4, "Clear log", 26, 17)
 	}
 	
+	this.createPrepareLevel();
 	this.createGUI();
 	this.createAccount();
 	this.sendRequest("getBalance");
@@ -221,6 +222,45 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 }
 
 // ALL LEVELS
+ScrGame.prototype.createPrepareLevel = function() {
+	switch (this.curLevel){
+		case 1:
+			var pr1 = addObj("programmer1", 275, 300, 1, -1);
+			pr1.img.animationSpeed = 0.5;
+			pr1.img.play();
+			this.back_mc.addChild(pr1);
+			var pr2 = addObj("programmer1", 1000, 300);
+			pr2.img.animationSpeed = 0.5;
+			pr2.img.play();
+			this.back_mc.addChild(pr2);
+			var nb1 = addObj("notebook1", 320, 340);
+			nb1.img.animationSpeed = 0.5;
+			nb1.img.play();
+			this.back_mc.addChild(nb1);
+			var nb2 = addObj("notebook1", 956, 340, 1, -1);
+			nb2.img.animationSpeed = 0.5;
+			nb2.img.play();
+			this.back_mc.addChild(nb2);
+			var nb3 = addObj("notebook2", 280, 510, 1, -1);
+			nb3.img.animationSpeed = 0.5;
+			nb3.img.play();
+			this.back_mc.addChild(nb3);
+			var nb4 = addObj("notebook2", 1000, 500);
+			nb4.img.animationSpeed = 0.5;
+			nb4.img.play();
+			this.back_mc.addChild(nb4);
+			var pr3 = addObj("programmer2", 210, 500, 1, -1);
+			pr3.img.animationSpeed = 0.5;
+			pr3.img.play();
+			this.back_mc.addChild(pr3);
+			var pr4 = addObj("programmer2", 1080, 490);
+			pr4.img.animationSpeed = 0.5;
+			pr4.img.play();
+			this.back_mc.addChild(pr4);
+			break
+	}
+}
+
 ScrGame.prototype.createLevel = function() {
 	this.tfLevel.setText("Level " + this.curLevel);
 	this.tfTitleLevel.setText("");
@@ -250,8 +290,8 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.visible = true;
 			this.hintArrow.visible = true;
 			this.itemDao.x = _W/2-10;
-			this.itemDao.y = 400;
-			this.damage = 40;
+			this.itemDao.y = 360;
+			this.damage = 180;
 			break;
 		case 2:
 			this.itemDao.setSkin("dao");
@@ -285,7 +325,7 @@ ScrGame.prototype.createLevel = function() {
 			this.hintArrow.visible = true;
 			this.itemDao.x = 900;
 			this.itemDao.y = 500;
-			this.damage = 30;
+			this.damage = 150;
 			var str = "itemHero";
 			// if(this.curLevel == 5){
 				// str = "itemHeroW";
@@ -317,7 +357,7 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
-	// this.resultGameEth(1)
+	// this.resultGameEth(-1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -460,8 +500,13 @@ ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
 }
 
 ScrGame.prototype.closeWindow = function(wnd) {
-	this.curWindow = wnd;
-	this.timeCloseWnd = 200;
+	if(false){
+		wnd.visible = false;
+		obj_game["game"].curWindow = undefined;
+	} else {
+		obj_game["game"].curWindow = wnd;
+		obj_game["game"].timeCloseWnd = 200;
+	}
 }
 
 ScrGame.prototype.refillBalance = function() {
@@ -830,6 +875,23 @@ ScrGame.prototype.resultGame = function(val) {
 	}
 	
 	this.bWindow = true;
+	
+	if(val == 1){
+		switch (this.curLevel){
+			case 1:
+				var star = addObj("starAppear", 630, 250);
+				star.alpha = 0;
+				this.game_mc.addChild(star);
+				var dao = addObj("daoAppear", 630, 270);
+				dao.img.animationSpeed = 0.5;
+				dao.img.play();
+				this.game_mc.addChild(dao);
+				this._arHolder.push(dao);
+				createjs.Tween.get(star,{loop:true}).to({rotation:rad(22)},500)
+				createjs.Tween.get(star).to({alpha:1},500)
+				break;
+		}
+	}
 	
 	var str = "";
 	if(val == 1){
@@ -1227,11 +1289,13 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					var t = Math.ceil(Math.random()*2)
 					this.createObj({x:-400, y:50+Math.random()*100}, "cloud"+t)
 				}
+			} else if(mc.name == "daoAppear"){
+				if(mc.img.currentFrame >= mc.img.totalFrames - 1){
+					mc.img.stop();
+				}
 			} else if(mc.name == "itemMiner"){
 				mc.prevX = mc.x;
 				mc.prevY = mc.y;
-				// mc.x += mc.speed*mc.vX;
-				// mc.y += mc.speedy * diffTime;
 				this.updateColission(mc, this._arPlatform, diffTime);
 				this.hitTeleport(mc, this._arTeleport, diffTime);
 				this.hitContract(mc);
@@ -1336,12 +1400,6 @@ ScrGame.prototype.update = function() {
 	
 	this.startTime = getTimer();
 	
-	if(options_pause){
-		return false;
-	}
-	
-	diffTime = getTimer() - this.gameTime;
-	
 	if(this.timeCloseWnd > 0 && this.curWindow){
 		this.timeCloseWnd -= diffTime;
 		if(this.timeCloseWnd < 100){
@@ -1351,6 +1409,13 @@ ScrGame.prototype.update = function() {
 			this.bWindow = false;
 		}
 	}
+	
+	if(options_pause){
+		return false;
+	}
+	
+	diffTime = getTimer() - this.gameTime;
+	
 	
 	for (var i = 0; i < this._arObject.length; i++) {
 		var obj = this._arObject[i];
