@@ -109,14 +109,16 @@
 						</div>
 						<div class="col-md-5 col-sm-6 col-xs-6 top-sign-in">
 							<div class="registration">
-								<a class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
+								<a style='visibility:hidden' class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
 									Sign in
 								</a>
 								
 								<div id='isreg' style='display:none'>
-
-									<a class="disclaimer-btn" href="#">
-										Log Out
+									<a class="disclaimer-btn" id='balance' href="/balance.html">
+										? ETH
+									</a>
+									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn" href="#">
+										exit
 									</a>
 								</div>
 							</div>
@@ -131,7 +133,7 @@
 		<!-- MAIN -->
 		<main clsaa="main">
 			<div class="wrapper-content">
-				<div class="container">
+				<div  style='visibility:hidden' class="container">
 					<nav class="main-top-menu">
 						<ul class="clearfix">
 							<li><a href="/">games</a></li>
@@ -409,6 +411,10 @@
 		if (localStorage.getItem("isreg")) {
 			$("#isreg").show();
 			$("#regbut").hide();
+		} else {
+			$("#isreg").hide();
+			$("#regbut").css("visibility","visible");
+			
 		}
 
 		var secretSeed = lightwallet.keystore.generateRandomSeed();
@@ -488,8 +494,36 @@
 
 		
 		$(".toggle-bg").click(function(){
-			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val())
+			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val());
+			if (!localStorage.getItem("mainnet")) {localStorage.setItem("mainnet","off");}
+			rebalance();
 		});
+		
+		
+		
+		if (localStorage.getItem("mainnet") == "on") {
+			
+			$(".free-money").addClass("free-money__enable");
+			$(".real-money").addClass("free-money__disabled");
+			rebalance();
+			$("#checked-on").click();
+			localStorage.setItem("mainnet","on");
+		} else {
+			rebalance();
+		}
+		
+		function rebalance() {	
+		$("#balance").html("? ETH");
+		setTimeout(function(){
+		var u='testnet.etherscan.io';
+		if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
+			$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
+				$("#balance").html(d.result/1000000000000000000+" ETH");
+			});
+			
+		},1000);
+		}
+		
 	</script>
 </body>
 </html>

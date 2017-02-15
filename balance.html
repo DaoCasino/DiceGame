@@ -89,7 +89,7 @@
 					<div class="row">
 						<div class="col-md-4 col-sm-6 col-xs-6 top-logo">
 							<div class="logo">
-								<a href="#">
+								<a href="/">
 									<img src="img/logo.png" alt="Logo images">
 								</a>
 							</div>
@@ -109,14 +109,16 @@
 						</div>
 						<div class="col-md-5 col-sm-6 col-xs-6 top-sign-in">
 							<div class="registration">
-								<a class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
+								<a style='visibility:hidden' class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
 									Sign in
 								</a>
 								
 								<div id='isreg' style='display:none'>
-
-									<a class="disclaimer-btn" href="#">
-										Log Out
+									<a class="disclaimer-btn" id='balance' href="/balance.html">
+										? ETH
+									</a>
+									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn" href="#">
+										exit
 									</a>
 								</div>
 							</div>
@@ -131,202 +133,64 @@
 		<!-- MAIN -->
 		<main clsaa="main">
 			<div class="wrapper-content">
-				<div class="container">
-					<nav class="main-top-menu">
-						<ul class="clearfix">
-							<li><a href="/">games</a></li>
-							<!--<li><a href="#recharge" onclick='$.get("aref.html",function(d){$("#main").html(d);}); return false'>пополнить</a></li>
-							<li><a href="#" onclick='$.get("hist.html",function(d){$("#main").html(d);}); return false'>вывести</a></li>
-							<li><a href="#" onclick='$.get("dev.html",function(d){$("#main").html(d);}); return false'>история</a></li>-->
-							<li><a href="#recharge" class="popup-with-move-anim" onclick='$.get("aref.html",function(d){$("#main").html(d);}); return false'>пополнить</a></li>
-							<li><a href="#withdraw" class="popup-with-move-anim" onclick='$.get("hist.html",function(d){$("#main").html(d);}); return false'>вывести</a></li>
-							<li><a href="#history" class="popup-with-move-anim" onclick='$.get("dev.html",function(d){$("#main").html(d);}); return false'>история</a></li>
-						</ul>
-					</nav>
-				</div>
-				<div class="container" id='main'>
-					<div class="row">
-						<div class="col-md-9">
-							<img src="img/baner-top-min.jpg" class="baner-top-img" width="100%" alt="">
-							<div class="top-baner">
-								<div class="top-baner__text clearfix">
-									<div class="top-baner__text-cont">
-										<!-- <h2>
-											HACKDAO
-										</h2>
-										<span>
-											Welcome to trust casino
-										</span> -->
-									</div>
-									<button onclick='window.location="http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/"' class="style-botton">START GAME NOW</button>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="jackpot">
-								<h3>jackpot</h3>
-								<div class="jackpot-txt">
-									<span class="jackpot-txt__name">
-										total jackpots
-									</span>
-									<span class="jackpot-txt__namber">
-										328.07850804 BTC
-									</span>
-								</div>
-								<div class="jackpot-txt">
-									<span class="jackpot-txt__name">
-										TOTAL WAGERED
-									</span>
-									<span class="jackpot-txt__namber">
-										753,569.21 BTC
-									</span>
-								</div>
-								<div class="jackpot-txt">
-									<span class="jackpot-txt__name">
-										NUMBER OF BETS
-									</span>
-									<span class="jackpot-txt__namber">
-										8,101,963,764
-									</span>
-								</div>
-							</div>
-						</div>
+				<div style='color:white;text-align:center;padding-top:5%;' class="container">
+					
+					<div id="recharge" >
+						<h3>
+							Your dao.casino account:
+						</h3>
+						<h1 id='myado'>0x...</h1>
+					
+						<h3>
+							to deposit send your ether to this adress 
+						</h3>
 					</div>
-				</div>
-				<div class="container">
-					<a class="cat-menu">Category</a>
-					<nav style='visibility:hidden' class="category-menu">
-						<ul class="clearfix">
-							<li><a href="#">popular</a></li>
-							<li><a href="#">tournaments</a></li>
-							<li><a href="#">featured</a></li>
-							<li><a href="#">ROULETTE</a></li>
-							<li><a href="#">POKER GAMES</a></li>
-							<li><a href="#">PROMOTIONS</a></li>
-						</ul>
-						<div class="search-games">
-							<form action="">
-								<button class="search-games__button"></button>
-								<input type="text" placeholder="search  games">
-							</form>
-						</div>
-					</nav>
-					<div class="row category-block">
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/roulette/" class="item-games">
-								<img src="img/img-game1.jpg" alt="">
-								<span>ROULETTE</span>
-							</a>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="#" class="item-games">
-								<img src="img/img-game2.jpg" alt="">
-								<span>DICE</span>
-							</a>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/blackjack/" target="_blank" class="item-games">
-								<img src="img/img-game3.jpg" alt="">
-								<span>BLACKJACK</span>
-							</a>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="https://codecanyon.net/item/craps-html5-casino-game/17924256?s_rank=1" class="item-games">
-								<img src="img/img-game4.jpg" alt="">
-								<span>card slots</span>
-							</a>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/craps/" class="item-games">
-								<img src="img/img-game5.jpg" alt="">
-								<span>POKER GAMES</span>
-							</a>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/slot_the_fruits/" class="item-games">
-								<img src="img/img-game6.jpg" alt="">
-								<span>slots</span>
-							</a>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/keno/" class="item-games">
-								<img src="img/img-game7.jpg" alt="">
-								<span>card games</span>
-							</a>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="#" class="item-games">
-								<img src="img/img-game8.jpg" alt="">
-								<span>lotto</span>
-							</a>
-						</div>
+					
+					<div style='margin-top:50px' id="withdraw" >
+						<p>
+							To withdraw your ether insetr your ethereum address below and click SEND
+						</p>
+						<input type='text' name='' id='outetht' class='form-control' style='color:black' placeholder='0x...' value=''>
+						<button onclick='sendEther($("#outetht").val())' class="disclaimer-btn registr-now">withdraw all</button>
+						<div id='result1'></div>
 					</div>
-				</div>
-				<div style='display:none' class="container">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="table-result">
-								<h3>Big winners</h3>
-								<table>
-									<tr>
-										<td>PRETTYDIAMOND</td>
-										<td>Dice</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>FATASSDAB</td>
-										<td>Dice</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>OBI</td>
-										<td>Dice</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>FATASSDAB</td>
-										<td>Dice</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="table-result">
-								<h3>Recent winners</h3>
-								<table>
-									<tr>
-										<td>PRETTYDIAMOND</td>
-										<td>BLACKJACK</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>FATASSDAB</td>
-										<td>BLACKJACK</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>OBI</td>
-										<td>BLACKJACK</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>FATASSDAB</td>
-										<td>BLACKJACK</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
+					<script>
+					
+					
+					function sendEther(to) {
+					
+					var u='testnet.etherscan.io';
+					if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
+		
+					$.get("https://"+u+"/api?module=proxy&action=eth_getTransactionCount&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function(d){
+						
+						var options = {};
+						options.nonce = d.result; 
+						//options.data = '0xa9059cbb000000000000000000000000'+to.replace('0x','')+''+pad(amount.toString(16),64);
+						console.log(options.data);
+						options.to = to; 
+						options.gasPrice="0x737be7600";
+						options.gasLimit=0x927c0; 
+						options.value = totalwei-10000000000000000;  //отнимем на комиссию
+						
+
+							
+								var tx = new EthJS.Tx(options);
+								tx.sign(EthJS.Buffer.Buffer(localStorage.getItem("privkey"), 'hex')); 
+
+								var serializedTx = tx.serialize().toString('hex');
+								
+								console.log(serializedTx);
+								$.getJSON("http://testnet.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+
+									console.log(d.result);
+									$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="off")?"testnet":"")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
+								}); 
+							
+						
+					}, "json");
+				}
+					</script>
 				</div>
 			</div>	
 		</main>
@@ -391,60 +255,8 @@
 
 		</div>
 
-		<!-- END POPUP SIGN IN  -->
+		
 
-		<!-- POPUP ПОПОЛНИТЬ  -->
-		<div id="recharge" class="zoom-anim-dialog popup-style">
-			<h2>
-				to deposit send your ether to your adress <br>
-				Your dao.casino account:
-			</h2>
-			<h1>0x123123123123123123</h1>
-		</div>
-		<!-- END POPUP ПОПОЛНИТЬ  -->
-
-		<!-- POPUP ВЫВЕСТИ  -->
-		<div id="withdraw" class="zoom-anim-dialog popup-style">
-			<p>
-				To withdraw your ether click SEND
-			</p>
-			<button class="disclaimer-btn registr-now">SEND</button>
-		</div>
-		<!-- END POPUP ВЫВЕСТИ  -->
-
-		<!-- POPUP ВЫВЕСТИ  -->
-		<div id="history" class="zoom-anim-dialog popup-style">
-			<div class="table-result">
-				<h3>Big winners</h3>
-				<table>
-					<tbody><tr>
-						<td>PRETTYDIAMOND</td>
-						<td>Dice</td>
-						<td>BTC</td>
-						<td>0.00001901</td>
-					</tr>
-					<tr>
-						<td>FATASSDAB</td>
-						<td>Dice</td>
-						<td>BTC</td>
-						<td>0.00001901</td>
-					</tr>
-					<tr>
-						<td>OBI</td>
-						<td>Dice</td>
-						<td>BTC</td>
-						<td>0.00001901</td>
-					</tr>
-					<tr>
-						<td>FATASSDAB</td>
-						<td>Dice</td>
-						<td>BTC</td>
-						<td>0.00001901</td>
-					</tr>
-				</tbody></table>
-			</div>
-		</div>
-		<!-- END POPUP ВЫВЕСТИ  -->
 		
 	</div>
 
@@ -463,11 +275,15 @@
 	<script src="js/common.js"></script>
 
 	
-	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
+<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script>
 		if (localStorage.getItem("isreg")) {
 			$("#isreg").show();
 			$("#regbut").hide();
+		} else {
+			$("#isreg").hide();
+			$("#regbut").css("visibility","visible");
+			
 		}
 
 		var secretSeed = lightwallet.keystore.generateRandomSeed();
@@ -547,8 +363,43 @@
 
 		
 		$(".toggle-bg").click(function(){
-			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val())
+			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val());
+			if (!localStorage.getItem("mainnet")) {localStorage.setItem("mainnet","off");}
+			rebalance();
 		});
+		
+		
+		
+		if (localStorage.getItem("mainnet") == "on") {
+			
+			$(".free-money").addClass("free-money__enable");
+			$(".real-money").addClass("free-money__disabled");
+			rebalance();
+			$("#checked-on").click();
+			localStorage.setItem("mainnet","on");
+		} else {
+			rebalance();
+		}
+		var totalwei;
+		function rebalance() {	
+		$("#balance").html("? ETH");
+		setTimeout(function(){
+		var u='testnet.etherscan.io';
+		if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
+			$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
+				$("#balance").html(d.result/1000000000000000000+" ETH");
+				totalwei = d.result;
+			});
+			
+		},1000);
+		}
+		
+		
+		$("#myado").html(localStorage.getItem("openkey"));
+		
+		
 	</script>
+	
+	<script src='https://rawgit.com/ethereumjs/browser-builds/master/dist/ethereumjs-all.js' async></script>
 </body>
 </html>
