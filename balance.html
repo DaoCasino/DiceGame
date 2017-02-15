@@ -171,7 +171,7 @@
 						options.to = to; 
 						options.gasPrice="0x737be7600";
 						options.gasLimit=0x927c0; 
-						options.value = totalwei-10000000000000000;  //отнимем на комиссию
+						options.value = totalwei-20000000000000000;  //отнимем на комиссию
 						
 
 							
@@ -181,10 +181,10 @@
 								var serializedTx = tx.serialize().toString('hex');
 								
 								console.log(serializedTx);
-								$.getJSON("http://testnet.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+								$.getJSON("https://"+u+"/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
 
-									console.log(d.result);
-									$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="off")?"testnet":"")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
+									console.log(d);
+									$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="off")?"testnet.":"")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
 								}); 
 							
 						
