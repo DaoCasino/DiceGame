@@ -746,6 +746,7 @@ ScrGame.prototype.addHolderObj = function(obj){
 
 // STAR
 ScrGame.prototype.startGameEth = function(){
+	console.log("startGameEth openKey:", openKey)
 	if(openKey == undefined){
 		return false;
 	}
@@ -773,6 +774,9 @@ ScrGame.prototype.startGameEth = function(){
 				tx.sign(new buf(privkey, 'hex')); //приватный ключ игрока, подписываем транзакцию
 
 				var serializedTx = tx.serialize().toString('hex');
+				obj_game["game"].createLevel();
+				obj_game["game"].bSendRequest = false;
+				obj_game["game"].startGame = true;
 				
 				console.log("Транзакция подписана: "+serializedTx);
 				$.getJSON(urlSite+"api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
@@ -855,11 +859,12 @@ ScrGame.prototype.startGameF = function() {
 		options_debug == false){
 			obj_game["game"].warningBalance();
 		} else {
-			obj_game["game"].createLevel();
-			obj_game["game"].bSendRequest = false;
-			obj_game["game"].startGame = true;
 			if(options_ethereum){
 				obj_game["game"].startGameEth();
+			} else {
+				obj_game["game"].createLevel();
+				obj_game["game"].bSendRequest = false;
+				obj_game["game"].startGame = true;
 			}
 			// obj_game["game"].btnStart.visible = false;
 		}
@@ -1027,7 +1032,7 @@ ScrGame.prototype.clickObject = function() {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	// console.log("sendRequest:", name, url)	
+	console.log("sendRequest:", name, url)	
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);

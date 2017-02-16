@@ -21,6 +21,10 @@ WndResult.prototype.init = function(_prnt) {
 	
 	var bg = addObj("wndInfo");
 	this.wnd.addChild(bg);
+	// var bgWin = addObj("wndWin");
+	// this.wnd.addChild(bgWin);
+	// var bgLose = addObj("bgLose");
+	// this.wnd.addChild(bgLose);
 	
 	this.btnOk = addButton2("btnDefault", 0, 150);
 	this.wnd.addChild(this.btnOk);

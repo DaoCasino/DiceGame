@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.16"
+var version = "v. 1.0.17"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -35,6 +35,16 @@ var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.msRequestAnimationFrame
     || function(callback) { return window.setTimeout(callback, 1000 / 60); };
 
+var font1 = addText("font1", 16, "#000000")
+font1.x = _W/2;
+font1.y = -100;
+stage.addChild(font1);
+(text, size, color, glow, _align, width, px, font)
+var font2 = addText("font2", 16, "#000000", undefined, "center", 200, 2, fontTahoma)
+font2.x = _W/2;
+font2.y = -120;
+stage.addChild(font2);
+	
 function initGame() {
 	if(window.orientation == undefined){
 		options_mobile = false;
@@ -117,6 +127,8 @@ function loadManifest(){
 	preloader.add("bgLevel4", "images/bg/bgLevel4.jpg");
 	preloader.add("bgLevel5", "images/bg/bgLevel5.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
+	preloader.add("wndWin", "images/bg/wndWin.png");
+	preloader.add("wndLose", "images/bg/wndLose.png");
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
 	preloader.add("btnCloseOver", "images/buttons/btnCloseOver.png");
