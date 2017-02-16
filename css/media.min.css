@@ -1,7 +1,8 @@
-@media only screen and (max-width:2000px){.wrapper-block__logo{position:absolute;}
-.wrapper-lofo{max-width:2000px;margin:0 auto;padding-left:68px;padding-right:76px;}
+@media only screen and (max-width:2000px){/*.wrapper-block__logo{position:absolute;}*/
+.wrapper-block__logo{max-width: 1232px;position: relative;top: 0;margin: 30px auto 0;}
+.wrapper-lofo{max-width:2000px;margin:0 auto;/*padding-left:68px;padding-right:76px;*/padding-left:0px;padding-right:0px;}
 }
-@media only screen and (max-width:1800px){.wrapper-lofo{padding-left:40px;padding-right:70px;}
+@media only screen and (max-width:1800px){.wrapper-lofo{/*padding-left:40px;padding-right:70px;*/padding-left:0px;padding-right:0px;}
 }
 @media only screen and (max-width:1750px){.wrapper-block__logo{max-width:1232px;position:relative;top:0;margin:30px auto 0;}
 .wrapper-lofo{padding-left:0px;padding-right:0px;}

@@ -170,7 +170,7 @@
 										total jackpots
 									</span>
 									<span class="jackpot-txt__namber">
-										328.07850804 BTC
+										<span>0</span> BTC
 									</span>
 								</div>
 								<div class="jackpot-txt">
@@ -178,7 +178,7 @@
 										TOTAL WAGERED
 									</span>
 									<span class="jackpot-txt__namber">
-										753,569.21 BTC
+										<span>0</span> BTC
 									</span>
 								</div>
 								<div class="jackpot-txt">
@@ -186,7 +186,7 @@
 										NUMBER OF BETS
 									</span>
 									<span class="jackpot-txt__namber">
-										8,101,963,764
+										<span>0</span>
 									</span>
 								</div>
 							</div>
@@ -213,49 +213,49 @@
 					</nav>
 					<div class="row category-block">
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/roulette/" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game1.jpg" alt="">
 								<span>ROULETTE</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="#" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game2.jpg" alt="">
 								<span>DICE</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/blackjack/" target="_blank" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game3.jpg" alt="">
 								<span>BLACKJACK</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="https://codecanyon.net/item/craps-html5-casino-game/17924256?s_rank=1" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game4.jpg" alt="">
 								<span>card slots</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/craps/" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game5.jpg" alt="">
 								<span>POKER GAMES</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/slot_the_fruits/" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game6.jpg" alt="">
 								<span>slots</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="http://showcase.codethislab.com/games/keno/" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game7.jpg" alt="">
 								<span>card games</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="#" class="item-games">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game8.jpg" alt="">
 								<span>lotto</span>
 							</a>
@@ -359,19 +359,25 @@
 
 	<div class="hidden">
 
+	<div id="popup-games" class="popup-style zoom-anim-dialog">
+		<p>COMING SOON</p>
+	</div>
+
 		<div id="small-dialog" class="zoom-anim-dialog">
 
 			<div class="window-seed">
-				<h1>Save this seed</h1>
+				<h1>
+					Your seed from Mainnet and Testnet is:
+				</h1>
 				<textarea class="popup-textarea" id='seed'></textarea>
 			</div>
 
 			<p id="popup-open-text-after">
-				сохраните эти 12 слов в надежном месте, они понадобятся для авторизации в дальнейшем
+				Please write down your seed phrase. It is impossible to access your fund without your seed.
 			</p>
 
 			<p id="popup-open-text-before">
-				ведите 12 слов полученные в предыдщем окне, если вы забыли их записать, начните сначала
+				Let’s verify your seed phrase
 			</p>
 
 			<div class="window-open-registr dialog-window-two">
@@ -513,15 +519,15 @@
 		}
 		
 		function rebalance() {	
-		$("#balance").html("? ETH");
-		setTimeout(function(){
-		var u='testnet.etherscan.io';
-		if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
-			$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
-				$("#balance").html(d.result/1000000000000000000+" ETH");
-			});
-			
-		},1000);
+			$("#balance").html("? ETH");
+			setTimeout(function(){
+				var u='testnet.etherscan.io';
+				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
+				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
+					$("#balance").html(d.result/1000000000000000000+" ETH");
+				});
+
+			},1000);
 		}
 		
 	</script>
