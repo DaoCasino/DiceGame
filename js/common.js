@@ -1,9 +1,5 @@
 $(document).ready(function() {
-
-	if ($("input[pass-one]").val()!=$("input[pass-ok]").val()) {
-		$(".error").html("Passwords not mach");
-	}
-
+	
 	/* POPUP */
 
 	$('.open-register').click(function(){

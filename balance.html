@@ -150,9 +150,18 @@
 						<p>
 							To withdraw your ether insert your ethereum address below and click SEND
 						</p>
-						<input type='text' name='' id='outetht' class='form-control' style='color:black' placeholder='0x...' value=''>
-						<button onclick='sendEther($("#outetht").val())' class="disclaimer-btn registr-now">withdraw all</button>
+						<div class="balanse-wrap__input">
+						<div class="col-md-4">
+							<input type='text' name='' id='outetht' class='form-control' style='color:black' placeholder='0x...' value=''>
+						</div>
+						<div class="col-md-4">
+							<input type="text">
+						</div>
+						<div class="col-md-4">
+							<button onclick='sendEther($("#outetht").val())' class="disclaimer-btn registr-now">withdraw</button>
+						</div>
 						<div id='result1'></div>
+						</div>
 					</div>
 					<script>
 					

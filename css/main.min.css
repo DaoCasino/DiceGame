@@ -254,11 +254,13 @@ div#small-dialog,
 }
 
 .dialog-window-two input,
-.window-open-registr input {
+.window-open-registr input,
+#outetht {
 	display: block;
 	width: 100%;
+	max-width: 420px;
 	padding: 8px;
-	margin-bottom: 15px;
+	margin: 0 auto 15px;
 	color: #333;
 	outline: none;
 }
