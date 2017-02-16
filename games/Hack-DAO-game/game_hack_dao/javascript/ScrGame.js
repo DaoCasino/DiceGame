@@ -15,7 +15,7 @@ var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
 var optionsTo = "0x000000000000";
-var betEth = 200000000000000000; //ставка эфира
+var betEth = 1000000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
 var _mouseX;
@@ -586,7 +586,8 @@ ScrGame.prototype.showWndClearLog = function() {
 }
 
 ScrGame.prototype.showWndStart = function() {
-	var str = "To play the game, send " + betslevel[this.curLevel - 1].koef + " ETH."
+	var bet = toFixed(betslevel[this.curLevel].bet, 2);
+	var str = "To play the game, send " + bet + " ETH."
 	var addStr = "Start";
 	this.createWndInfo(str, this.startGameF, addStr);
 }
