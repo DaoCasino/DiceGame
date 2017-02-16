@@ -19,12 +19,10 @@ WndResult.prototype.init = function(_prnt) {
 	this.wnd = new PIXI.Container();
 	this.addChild(this.wnd);
 	
-	var bg = addObj("wndInfo");
-	this.wnd.addChild(bg);
-	// var bgWin = addObj("wndWin");
-	// this.wnd.addChild(bgWin);
-	// var bgLose = addObj("bgLose");
-	// this.wnd.addChild(bgLose);
+	this.bgWin = addObj("wndWin");
+	this.wnd.addChild(this.bgWin);
+	this.bgLose = addObj("wndLose");
+	this.wnd.addChild(this.bgLose);
 	
 	this.btnOk = addButton2("btnDefault", 0, 150);
 	this.wnd.addChild(this.btnOk);
@@ -43,9 +41,6 @@ WndResult.prototype.init = function(_prnt) {
 	this.btnOk.interactive = true;
 	this.btnOk.buttonMode=true;
 	
-	this.tf = addText("", 26, "#51DE26", "#000000", "center", 350, 4, fontMain)
-	this.tf.y = -70;
-	this.wnd.addChild(this.tf);
 	this.tfDesc = addText("", 20, "#FFFFFF", "#000000", "center", 400, 4, fontMain)
 	this.tfDesc.y = -30;
 	this.wnd.addChild(this.tfDesc);
@@ -73,13 +68,13 @@ WndResult.prototype.show = function(val, str, callback) {
 	createjs.Tween.get(this.rect).wait(2000).to({alpha: 0.5}, 700)
 	createjs.Tween.get(this.wnd).wait(1000).to({y: 0}, 700)
 	
-	var strTitle = "Lose";
 	if(val == 1){
-		strTitle = "Congratulations!";
 		this.btnShare.visible = true;
+		this.bgLose.visible = false;
+	} else {
+		this.bgWin.visible = false;
 	}
 	
-	this.tf.setText(strTitle);
 	this.tfDesc.setText(str);
 }
 

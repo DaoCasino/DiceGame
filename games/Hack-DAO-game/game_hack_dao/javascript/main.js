@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.17"
+var version = "v. 1.0.18"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -139,6 +139,12 @@ function loadManifest(){
 	preloader.add("btnDao", "images/buttons/btnDao.png");
 	preloader.add("btnDaoOver", "images/buttons/btnDaoOver.png");
 	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");
+	preloader.add("btnOrange", "images/buttons/btnOrange.png");
+	preloader.add("btnOrangeOver", "images/buttons/btnOrangeOver.png");
+	preloader.add("btnOrangeDown", "images/buttons/btnOrangeDown.png");
+	preloader.add("btnGreen", "images/buttons/btnGreen.png");
+	preloader.add("btnGreenOver", "images/buttons/btnGreenOver.png");
+	preloader.add("btnGreenDown", "images/buttons/btnGreenDown.png");
 	
 	preloader.add("itemHero", "images/items/itemHero.png");
 	preloader.add("itemHeroW", "images/items/itemHeroW.png");

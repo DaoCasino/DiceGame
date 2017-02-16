@@ -746,8 +746,7 @@ ScrGame.prototype.addHolderObj = function(obj){
 
 // STAR
 ScrGame.prototype.startGameEth = function(){
-	console.log("startGameEth openKey:", openKey)
-	if(openKey == undefined){
+	if(openkey == undefined){
 		return false;
 	}
 	// To play the game send 1 ether [confirm]
