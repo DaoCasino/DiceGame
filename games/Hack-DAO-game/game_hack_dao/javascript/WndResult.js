@@ -88,7 +88,7 @@ WndResult.prototype.init = function(_prnt) {
 	this.on('touchend', this.touchHandler);
 }
 
-WndResult.prototype.show = function(val, str, callback) {
+WndResult.prototype.show = function(val, str, callback, obj_game) {
 	if(callback){
 		this._callback = callback
 	}else{
@@ -98,9 +98,9 @@ WndResult.prototype.show = function(val, str, callback) {
 	this.wnd.y = -_H;
 	this.rect.alpha = 0;
 	createjs.Tween.get(this.rect).wait(2000).to({alpha: 0.5}, 700)
-	createjs.Tween.get(this.wnd).wait(1000).to({y: 0}, 700)
-	
-	var valTime = get_normal_time(Math.round(this._prnt.timeTotal/1000));
+	createjs.Tween.get(this.wnd).wait(2000).to({y: 0}, 700)
+	var seconds = obj_game["time"];
+	var valTime = get_normal_time(seconds);
 	this.tfTime.setText(valTime);
 	
 	if(val == 1){

@@ -10,6 +10,7 @@ var TIME_GET_RESULT = 10000;
 var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 1000;
 var TIME_RESPAWN_MINER = 5000;
+var TIME_RESPAWN_HACKER = 2000;
 var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
@@ -41,6 +42,7 @@ ScrGame.prototype.init = function() {
 	this.timeCloseWnd = 0;
 	this.timeMoney = 0;
 	this.timeProposal = 0;
+	this.timeHacker = 0;
 	this.idGame = undefined;
 	this.clickDAO = false;
 	this.startGame = false;
@@ -317,7 +319,17 @@ ScrGame.prototype.createLevel = function() {
 			this.tfTitleLevel.setText("Bad proposal: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
 		case 4:
-			this.itemDao.setSkin("dao");
+			this.itemDao.dead = true;
+			this.itemDao.visible = true;
+			this.itemHome = addObj("itemHome2", 1206, 364);
+			this.gfx_mc.addChild(this.itemHome);
+			this.valueLevelMax = 500000;
+			this.groundY = 425;
+			this.damage = 10;
+			this.tfTitleLevel.setText("Stolen money: $" + this.valueLevel + "/" + this.valueLevelMax);
+			
+			
+			/*this.itemDao.setSkin("dao");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
 			this.itemDao.visible = true;
@@ -336,7 +348,7 @@ ScrGame.prototype.createLevel = function() {
 			this.hero = addObj(str, 660, 500, 1, -1);
 			this.game_mc.addChild(this.hero);
 			this.valueLevelMax = 10;
-			this.tfTitleLevel.setText("Old contract: " + this.valueLevel + "/" + this.valueLevelMax);
+			this.tfTitleLevel.setText("Old contract: " + this.valueLevel + "/" + this.valueLevelMax);*/
 			break;
 		case 5:
 			this.groundY = 600;
@@ -662,12 +674,16 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 			mc.speedyMax = this._speedGravity;
 			mc.speedy = mc.speedyMax;
 			this._arObjectLevel.push(mc);
+		}else if(name == "itemHacker"){
+			mc = new ItemHacker();
+			this._arObjectLevel.push(mc);
 		} else {
 			mc = addObj(name, 0, 0, sc);
 		}
 		if(name.search("cloud") > -1){
 			this.back_mc.addChild(mc);
 		} else if(name == "itemProposal" ||
+		name == "itemHacker" ||
 		name == "itemMiner"){
 			this.game_mc.addChild(mc);
 		} else {
@@ -677,7 +693,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	}
 	
 	if(mc.name == "iconEthereum"){
-		if(this.curLevel == 1 || this.curLevel == 4){
+		if(this.curLevel == 1){
 			mc.speed = 10;
 			mc.force = 20;
 			mc.vX = 1;
@@ -730,6 +746,15 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		mc.timeHit = 0;
 		mc.timeTeleport = 0;
 		mc.tLife = 300000;
+	} else if(mc.name == "itemHacker"){
+		mc.setScale(0.6);
+		mc.setScaleX(-1);
+		mc.vX = 1;
+		mc.speed = 2;
+		mc.timeHit = 0;
+		mc.tLife = 300000;
+		mc.health = mc.healthMax;
+		mc.refreshHealth();
 	}
 	
 	if(mc.tLife == undefined){
@@ -798,7 +823,6 @@ ScrGame.prototype.resultGameEth = function(val){
 		return false;
 	}
 	this._gameOver = true;
-	var str = "";
 	var strB = "";
 	
 	// если собрали мало форка
@@ -812,17 +836,15 @@ ScrGame.prototype.resultGameEth = function(val){
 	}
 	
 	if(val == 1){
-		str = "WIN!";
 		strB = "";
 		this.bResult = true;
 		this.showWinEthereum = 10;
 		this.itemDao.dead = true;
+		this.itemDao.sprite.buttonMode=false;
 		if(this.curLevel == 1){
 			this.itemDao.setAct("Win")
 		} else if(this.curLevel == 2){
 			this.itemDao.setAct("Win")
-		} else if(this.curLevel == 4 || this.curLevel == 5){
-			this.itemDao.setAct("Lose")
 		}
 		if(this.curLevel < 9){
 		} else {
@@ -831,20 +853,13 @@ ScrGame.prototype.resultGameEth = function(val){
 		addWinLevel(this.curLevel);
 		// this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
 	} else {
-		str = "LOSE";
 		strB = "";
-		 if(this.curLevel == 4 || this.curLevel == 5){
-			this.itemDao.setAct("Win")
-			if(this.hero){
-				this.hero.rotation = 270*(Math.PI/180)
-				this.hero.y += this.hero.h/2
-			}
-		}
 		this.itemDao.dead = true;
 		resetLevels();
 	}
 	login_obj["startGame"] = false;
 	login_obj["curLevel"] = false;
+	obj_game["time"] = this.timeTotal;
 	
 	this.itemResult.tfBalance.setText(strB);
 	this.sendRequest("getBalance");
@@ -913,7 +928,7 @@ ScrGame.prototype.resultGame = function(val) {
 	} else {
 		str = this.arDescLose[this.curLevel];
 	}
-	this.wndResult.show(val, str, this.clickMenu)
+	this.wndResult.show(val, str, this.clickMenu, obj_game)
 	this.wndResult.visible = true;
 	this.curWindow = this.bWindow;
 }
@@ -950,7 +965,7 @@ ScrGame.prototype.healthDao = function() {
 			}
 			this.itemDao.health += this.resurrection;
 		} else {
-			if(this.bHealthDao09){
+			if(this.bHealthDao09 && this.curLevel > 1){
 				this.resultGameEth(-1);
 			}
 		}
@@ -1007,7 +1022,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 			return false;
 		}
 		if(this.startGame &&
-		(this.curLevel == 1 || this.curLevel == 4 || this.curLevel == 5)){
+		(this.curLevel == 1)){
 			this.hintArrow.visible = false;
 			this.clickHeroDao();
 		}
@@ -1030,6 +1045,14 @@ ScrGame.prototype.clickObject = function() {
 							mc.showMark = true;
 							mc.mark.visible = true;
 							break;
+						}
+					} else if(this.curLevel == 4){
+						if(!mc.dead){
+							mc.health -= this.damage;
+							mc.refreshHealth();
+							if(mc.health <= 0){
+								this.addHolderObj(mc);
+							}
 						}
 					} else if(this.curLevel == 5){
 						mc.setScaleX(mc.vX)
@@ -1268,7 +1291,7 @@ ScrGame.prototype.updateHolder = function(diffTime){
 				continue;
 			}
 			if(mc.name == "iconEthereum"){
-				if(this.curLevel == 1 || this.curLevel == 4){
+				if(this.curLevel == 1){
 					if(mc.force > 0){
 						mc.force --;
 						mc.y -= mc.speed*(mc.force/20)
@@ -1310,13 +1333,25 @@ ScrGame.prototype.updateHolder = function(diffTime){
 				if(mc.img.currentFrame >= mc.img.totalFrames - 1){
 					mc.img.stop();
 				}
+			} else if(mc.name == "itemHacker"){
+				mc.x += mc.speed*mc.vX;
+				if(mc.x > 1220 || mc.x < -120){
+					if(mc.x > 1220){
+						this.valueLevel += 50000;
+						this.tfTitleLevel.setText("Stolen money: $" + this.valueLevel + "/" + this.valueLevelMax);
+						if(this.valueLevel >= this.valueLevelMax){
+							this.resultGameEth(-1);
+						}
+					}
+					mc.tLife = 0;
+				}
 			} else if(mc.name == "itemMiner"){
 				mc.prevX = mc.x;
 				mc.prevY = mc.y;
 				this.updateColission(mc, this._arPlatform, diffTime);
 				this.hitTeleport(mc, this._arTeleport, diffTime);
 				this.hitContract(mc);
-				if(mc.x > _W + mc.w || mc.x < -mc.w*2){
+				if(mc.x > _W + mc.w || mc.x < -120){
 					mc.tLife = 0;
 				}
 			} else if(mc.name == "itemProposal"){
@@ -1469,6 +1504,12 @@ ScrGame.prototype.update = function() {
 				this.timeProposal = 0;
 				this.createObj({x:-60, y:425}, "itemProposal")
 			}
+		} else if(this.curLevel == 4){
+			this.timeHacker += diffTime;
+			if(this.timeHacker >= TIME_RESPAWN_HACKER){
+				this.timeHacker = 0;
+				this.createObj({x:-60, y:455}, "itemHacker")
+			}
 		} else if(this.curLevel == 5){
 			this.timeProposal += diffTime;
 			if(this.timeProposal >= TIME_RESPAWN_MINER){
@@ -1525,7 +1566,9 @@ ScrGame.prototype.touchHandler = function(evt){
 		}
 		
 		if(this.startGame){
-			if(this.curLevel == 3 || this.curLevel == 5){
+			if(this.curLevel == 3 || 
+			this.curLevel == 4 || 
+			this.curLevel == 5){
 				this.clickObject();
 			}
 		}

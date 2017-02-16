@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.18"
+var version = "v. 1.0.19"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -158,11 +158,13 @@ function loadManifest(){
 	preloader.add("itemMoney", "images/items/itemMoney.png");
 	preloader.add("itemWall", "images/items/itemWall.png");
 	preloader.add("itemHome", "images/items/itemHome.png");
+	preloader.add("itemHome2", "images/items/itemHome2.png");
 	preloader.add("itemLevel", "images/items/itemLevel.png");
 	preloader.add("itemLock", "images/items/itemLock.png");
 	preloader.add("itemHeadProposal", "images/items/itemHeadProposal.png");
 	preloader.add("itemBodyGreen", "images/items/itemBodyGreen.png");
 	preloader.add("itemBodyRed", "images/items/itemBodyRed.png");
+	preloader.add("itemBodyBlack", "images/items/itemBodyBlack.png");
 	preloader.add("iconCheckMark", "images/items/iconCheckMark.png");
 	preloader.add("itemPlatform", "images/items/itemPlatform.png");
 	preloader.add("itemTeleport", "images/items/itemTeleport.png");
@@ -173,6 +175,7 @@ function loadManifest(){
 	preloader.add("icoEthereum", "images/items/icoEthereum.png");
 	preloader.add("icoTime", "images/items/icoTime.png");
 	preloader.add("starAppear", "images/items/starAppear.png");
+	preloader.add("bagMoney", "images/items/bagMoney.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	preloader.add("images/texture/Anima2Texture.json");
