@@ -792,13 +792,6 @@ ScrGame.prototype.startGameEth = function(){
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
 		options.value = betEth; //  //ставка 0.2 эфира
-		
-		console.log("options-------------------");
-		console.log("options to:", options.to);
-		console.log("options data:", options.data);
-		console.log("options gasPrice:", options.gasPrice);
-		console.log("options gasLimit:", options.gasLimit);
-		console.log("options betEth:", options.betEth);
 
 		if(privkey){
 			if(buf == undefined){
@@ -879,7 +872,7 @@ ScrGame.prototype.resultGameEth = function(val){
 
 ScrGame.prototype.startGameF = function() {
 	if(privkey || options_debug){
-		if(obj_game["balance"] < betGame && options_ethereum &&
+		if(betGame > obj_game["balance"] && options_ethereum &&
 		options_debug == false){
 			obj_game["game"].warningBalance();
 		} else {
