@@ -35,16 +35,6 @@ var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
     || window.msRequestAnimationFrame
     || function(callback) { return window.setTimeout(callback, 1000 / 60); };
-
-var font1 = addText("font1", 16, "#000000")
-font1.x = _W/2;
-font1.y = -100;
-stage.addChild(font1);
-(text, size, color, glow, _align, width, px, font)
-var font2 = addText("font2", 16, "#000000", undefined, "center", 200, 2, fontTahoma)
-font2.x = _W/2;
-font2.y = -120;
-stage.addChild(font2);
 	
 function initGame() {
 	if(window.orientation == undefined){
@@ -72,6 +62,15 @@ function initGame() {
 	startTime = getTimer();
     onResize();
     update();
+	
+	var font1 = addText("font1", 16, "#000000")
+	font1.x = _W/2;
+	font1.y = -100;
+	stage.addChild(font1);
+	var font2 = addText("font2", 16, "#000000", undefined, "center", 200, 2, fontTahoma)
+	font2.x = _W/2;
+	font2.y = -120;
+	stage.addChild(font2);
 	
 	betslevel[0] = {win:100, koef:1};
 	betslevel[1] = {win:90, koef:1.09, bet:1};

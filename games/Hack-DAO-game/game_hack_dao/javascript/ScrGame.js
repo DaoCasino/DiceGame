@@ -10,7 +10,7 @@ var TIME_GET_RESULT = 10000;
 var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 1000;
 var TIME_RESPAWN_MINER = 5000;
-var TIME_RESPAWN_HACKER = 2000;
+var TIME_RESPAWN_HACKER = 1500;
 var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
@@ -1029,16 +1029,19 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	}
 }
 
-ScrGame.prototype.clickObject = function() {
-	if(_mouseX && _mouseY){
+ScrGame.prototype.clickObject = function(evt) {
+	var mouseX = evt.data.global.x;
+	var mouseY = evt.data.global.y;
+	
+	if(mouseX && mouseY){
 		for (var i = 0; i < this._arObjectLevel.length; i++ ) {
 			mc = this._arObjectLevel[i];
 			if (mc) {
-				var ptY = _mouseY;
+				var ptY = mouseY;
 				if(mc.name == "itemMiner"){
-					ptY = _mouseY + mc.h/2
+					ptY = mouseY + mc.h/2
 				}
-				if(hit_test_rec(mc, mc.w, mc.h, _mouseX, ptY)){
+				if(hit_test_rec(mc, mc.w, mc.h, mouseX, ptY)){
 					if(this.curLevel == 3){
 						if(mc.action == "run" && mc.sprite.scale.x == -1){
 							mc.action = "climb";
@@ -1445,7 +1448,6 @@ ScrGame.prototype.update = function() {
 		this.bSendRequest == false){
 			this.bSendRequest = true;
 			this.timeGetResult = 0;
-			// this.sendRequest("idGame");
 			this.sendRequest("getBalance");
 		}
 	}
@@ -1569,7 +1571,7 @@ ScrGame.prototype.touchHandler = function(evt){
 			if(this.curLevel == 3 || 
 			this.curLevel == 4 || 
 			this.curLevel == 5){
-				this.clickObject();
+				this.clickObject(evt);
 			}
 		}
 	}

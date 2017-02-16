@@ -10,9 +10,11 @@ ItemHacker.prototype.init = function() {
 	this.name = "itemHacker";
 	this.color = "Black";
 	this.act = "Run";
-	this.w = 120*1.5;
-	this.h = 170*1.5;
-	this.healthMax = 80;
+	this.wMax = 120*1.5;
+	this.hMax = 170*1.5;
+	this.w = this.wMax;
+	this.h = this.hMax;
+	this.healthMax = 100;
 	this.health = this.healthMax;
 	this.dead = false;
 	
@@ -90,8 +92,8 @@ ItemHacker.prototype.setScale = function(sc) {
 	this.barDao.scale.y = sc;
 	this.zone.scale.x = sc;
 	this.zone.scale.y = sc;
-	this.w = this.w*sc;
-	this.h = this.h*sc;
+	this.w = this.wMax*sc;
+	this.h = this.hMax*sc;
 }
 
 ItemHacker.prototype.setAct = function(act) {
