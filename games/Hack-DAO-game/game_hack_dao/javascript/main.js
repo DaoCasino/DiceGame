@@ -29,6 +29,7 @@ var options_txt_offset = 0;
 
 var ERROR_KEYTHEREUM = 1;
 var ERROR_TRANSACTION = 2;
+var ERROR_KEY = 3;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
@@ -322,6 +323,25 @@ function refreshTime(){
 			ScreenGame.resetTimer();
 		}
 	}
+}
+
+function get_normal_time(ms){
+	if (ms<0) {
+		return "00:00";
+	}
+	var s = Math.round(ms/1000);
+	var m = Math.floor(s / 60);
+	s = s - m * 60;
+	var tS = String(s);
+	var tM = String(m);
+	
+	if (s<10 && s>=0) {
+		tS = "0" + String(s);
+	}
+	if (m<10 && m>=0) {
+		tM = "0" + String(m);
+	}
+	return tM + ":" + tS;
 }
 
 /*

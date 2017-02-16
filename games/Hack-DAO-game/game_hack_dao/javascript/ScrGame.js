@@ -358,7 +358,7 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
-	// this.resultGameEth(-1)
+	// this.resultGameEth(1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -561,6 +561,9 @@ ScrGame.prototype.showError = function(value) {
 			str = "OOOPS! \n Transaction failed."
 			this.resetGame();
 			break;
+		case ERROR_KEY:
+			str = "OOOPS! \n The key is not valid."
+			break;
 		default:
 			str = "ERR: " + value;
 			break;
@@ -747,6 +750,7 @@ ScrGame.prototype.addHolderObj = function(obj){
 // STAR
 ScrGame.prototype.startGameEth = function(){
 	if(openkey == undefined){
+		obj_game["game"].showError(ERROR_KEY);
 		return false;
 	}
 	// To play the game send 1 ether [confirm]
@@ -909,7 +913,7 @@ ScrGame.prototype.resultGame = function(val) {
 	} else {
 		str = this.arDescLose[this.curLevel];
 	}
-	this.wndResult.show(val, str, this.nextLevel)
+	this.wndResult.show(val, str, this.clickMenu)
 	this.wndResult.visible = true;
 	this.curWindow = this.bWindow;
 }
@@ -959,9 +963,16 @@ ScrGame.prototype.healthDao = function() {
 	}
 }
 
-ScrGame.prototype.nextLevel = function() {
+ScrGame.prototype.clickMenu = function() {
 	this.removeAllListener();
 	showLevels();
+}
+
+ScrGame.prototype.nextLevel = function() {
+	this.removeAllListener();
+	this.curLevel ++;
+	login_obj["level"] = this.curLevel;
+	showGame();
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {
@@ -1522,6 +1533,13 @@ ScrGame.prototype.touchHandler = function(evt){
 }
 
 ScrGame.prototype.removeAllListener = function(){
+	if(this.wndInfo){
+		this.wndInfo.removeAllListener();
+	}
+	if(this.wndResult){
+		this.wndResult.removeAllListener();
+	}
+	
 	this.interactive = false;
 	this.off('mousedown', this.touchHandler);
 	this.off('mousemove', this.touchHandler);

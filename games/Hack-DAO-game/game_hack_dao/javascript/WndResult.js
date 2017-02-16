@@ -24,9 +24,12 @@ WndResult.prototype.init = function(_prnt) {
 	this.bgLose = addObj("wndLose");
 	this.wnd.addChild(this.bgLose);
 	
-	this.btnOk = addButton2("btnDefault", 0, 150);
+	this.btnOk = addButton2("btnOrange", 0, 220);
 	this.wnd.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
+	this.btnNext = addButton2("btnGreen", 150, 220);
+	this.wnd.addChild(this.btnNext);
+	this._arButtons.push(this.btnNext);
 	
 	this.btnShare = addButton2("btnFacebookShare", 0, 0, 0.3);
 	this.btnShare.name = "btnShare";
@@ -40,13 +43,42 @@ WndResult.prototype.init = function(_prnt) {
 	
 	this.btnOk.interactive = true;
 	this.btnOk.buttonMode=true;
+	this.btnNext.interactive = true;
+	this.btnNext.buttonMode=true;
 	
-	this.tfDesc = addText("", 20, "#FFFFFF", "#000000", "center", 400, 4, fontMain)
-	this.tfDesc.y = -30;
+	this.tfDesc = addText("", 30, "#FFFFFF", "#000000", "center", 560, 4, fontTahoma)
+	this.tfDesc.y = -50;
 	this.wnd.addChild(this.tfDesc);
-	this.tfBtn = addText("OK", 26, "#FFFFFF", "#000000", "center", 350)
-	this.tfBtn.y = - 17;
+	var tfTitleTime = addText("Your time:", 30, "#FFFFFF", "#000000", "right", 300, 4, fontTahoma)
+	tfTitleTime.x = 0;
+	tfTitleTime.y = 20;
+	this.wnd.addChild(tfTitleTime);
+	this.tfTime = addText("0", 30, "#00CCFF", "#000000", "left", 300, 4, fontTahoma)
+	this.tfTime.x = 0;
+	this.tfTime.y = tfTitleTime.y;
+	this.wnd.addChild(this.tfTime);
+	this.tfTitleEth = addText("You won:", 30, "#FFFFFF", "#000000", "right", 300, 4, fontTahoma)
+	this.tfTitleEth.x = 0;
+	this.tfTitleEth.y = 90;
+	this.wnd.addChild(this.tfTitleEth);
+	this.tfEth = addText("0", 30, "#FF70D6", "#000000", "left", 300, 4, fontTahoma)
+	this.tfEth.x = 40;
+	this.tfEth.y = this.tfTitleEth.y;
+	this.wnd.addChild(this.tfEth);
+	this.icoEthereum = addObj("icoEthereum");
+	this.icoEthereum.x = 20;
+	this.icoEthereum.y = this.tfTitleEth.y+20;
+	this.wnd.addChild(this.icoEthereum);
+	this.tfBtn = addText("Menu", 36, "#FFFFFF", "#000000", "center", 350)
+	this.tfBtn.y = - 24;
 	this.btnOk.addChild(this.tfBtn);
+	this.tfBtnNext = addText("Next", 36, "#FFFFFF", "#000000", "center", 350)
+	this.tfBtnNext.y = - 24;
+	this.btnNext.addChild(this.tfBtnNext);
+	
+	if(Number(login_obj["level"]) == 9){
+		this.btnNext.visible = false;
+	}
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -68,11 +100,19 @@ WndResult.prototype.show = function(val, str, callback) {
 	createjs.Tween.get(this.rect).wait(2000).to({alpha: 0.5}, 700)
 	createjs.Tween.get(this.wnd).wait(1000).to({y: 0}, 700)
 	
+	var valTime = get_normal_time(Math.round(this._prnt.timeTotal/1000));
+	this.tfTime.setText(valTime);
+	
 	if(val == 1){
 		this.btnShare.visible = true;
 		this.bgLose.visible = false;
+		this.btnOk.x = -150;
 	} else {
 		this.bgWin.visible = false;
+		this.tfTitleEth.visible = false;
+		this.tfEth.visible = false;
+		this.icoEthereum.visible = false;
+		this.btnNext.visible = false;
 	}
 	
 	this.tfDesc.setText(str);
@@ -109,11 +149,15 @@ WndResult.prototype.clickObj = function(item_mc) {
 		item_mc.over.visible = false;
 	}
 	
-	if(name == "btnDefault"){
+	if(name == "btnOrange"){
 		this._prnt.closeWindow(this);
 		if(this._callback){
 			this._callback();
 		}
+	} else if(name == "btnGreen"){
+		this._prnt.closeWindow(this);
+		this._prnt.nextLevel();
+		
 	} else if(name == "btnShare"){
 		this.shareFB();
 	}
