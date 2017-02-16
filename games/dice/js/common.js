@@ -5,9 +5,9 @@ $(document).ready(function() {
 	$( function() {
 		$( "#slider-dice-one" ).slider({
 			range: "min",
-			value: 37,
+			value: 50,
 			min: 1,
-			max: 700,
+			max: 100,
 			slide: function( event, ui ) {
 				$( "#amount-one" ).val( ui.value );
 			}
@@ -117,15 +117,15 @@ var rowHeaders = table.querySelectorAll('tbody th');
 var nextButton = document.createElement('button');
 
 function createButtons() {
-  nextButton.textContent = nextButtonText;
-  nextButton.style.display =  'none';
+	nextButton.textContent = nextButtonText;
+	nextButton.style.display =  'none';
 
-  table.parentNode.insertBefore(nextButton, table.nextSibling );
-  
-  nextButton.addEventListener('click', function(){
-    currentVisibleColumn = currentVisibleColumn + 1 > columnHeaders.length ? 1 : currentVisibleColumn + 1;
-    showCurrentlyVisible();
-  });
+	table.parentNode.insertBefore(nextButton, table.nextSibling );
+
+	nextButton.addEventListener('click', function(){
+		currentVisibleColumn = currentVisibleColumn + 1 > columnHeaders.length ? 1 : currentVisibleColumn + 1;
+		showCurrentlyVisible();
+	});
 }
 
 function showCurrentlyVisible() {
@@ -135,7 +135,7 @@ function showCurrentlyVisible() {
 
     // Hide All The Cells
     for(var i=0;i<allCells.length;i++ ) { 
-      allCells[i].style.display = 'none'; 
+    	allCells[i].style.display = 'none'; 
     }
 
     // Show Currently Visible Col Header
@@ -143,38 +143,38 @@ function showCurrentlyVisible() {
 
     // Show Currently Visible Cells
     for( var i=0;i<currentlyVisibleCells.length;i++) {
-      currentlyVisibleCells[i].style.display = 'block';
+    	currentlyVisibleCells[i].style.display = 'block';
     }
 
     // Show Row Headers
     for( var i=0;i<rowHeaders.length;i++) {
-      rowHeaders[i].style.display = 'block';
+    	rowHeaders[i].style.display = 'block';
     }
-}
+  }
 
-function updateTable() {
-  
+  function updateTable() {
+
   // Get the Table's Width. Might as well go FULL Container Query over here.
   var tableWidth = table.getBoundingClientRect().width;
   
   // If the table explodes off the viewport or is wider than the target breakpoint
   if ( tableWidth > window.innerWidth || tableWidth < targetBreakpoint ) {
 
-    if(table.getAttribute('data-comparing') != 'active') {
+  	if(table.getAttribute('data-comparing') != 'active') {
       // Set the comparison state to "Active"
       table.setAttribute('data-comparing','active');
 
       // Show Next Button
       nextButton.style.display =  'block';
-    
+
       // Show the currently visible column
       showCurrentlyVisible();
 
     }
 
   } else {
-    
-    if(table.getAttribute('data-comparing') == 'active') {
+
+  	if(table.getAttribute('data-comparing') == 'active') {
 
       // Turn off comparing    
       table.setAttribute('data-comparing','');
@@ -184,12 +184,12 @@ function updateTable() {
 
       // Remove styles from all cells, ergo, show all the cells
       for( var i=0;i<allCells.length;i++ ) {
-        allCells[i].style.display = ''; 
+      	allCells[i].style.display = ''; 
       }
 
       // Remove styles from all row headers
       for( var i=0;i<rowHeaders.length;i++) {
-        rowHeaders[i].style.display = '';
+      	rowHeaders[i].style.display = '';
       }
     }
   }

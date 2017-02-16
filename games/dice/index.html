@@ -136,24 +136,31 @@
 			<div class="wrapper-content">
 				<div class="game-status">
 					<div class="container">
-						<div class="row">
+						<div class="row block-dice-status">
 							<div class="col-md-12">
-								<div class="player-stats">
-									<p class="label-numbers">Total Rolls Made</p>
-									<h2 class="gs-total-rolls-made">456,332,817</h2>
+								<div class="row">
+									<div class="col-md-4">
+										<div class="player-stats">
+											<p class="label-numbers">Total Rolls Made</p>
+											<h2 class="status-numbers">456,332,817</h2>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="wrapper-slider">
-									<div class="wrapper-slider__item">
-										<label for="your-balance">Your Balance</label>
-										<input type="text" value="2.00000000" id="your-balance">
+									<div class="clearfix">
+										<div class="wrapper-slider__item">
+											<label for="your-balance">Your Balance</label>
+											<input type="text" value="2.00000000" id="your-balance">
+										</div>
+										<div class="wrapper-slider__item">
+											<label for="amount-one">Bet amount</label>
+											<input type="text" id="amount-one" readonly>
+										</div>
 									</div>
-									<div class="wrapper-slider__item">
-										<label for="amount-one">Bet amount</label>
-										<input type="text" id="amount-one" readonly>
-									</div>
-									<div class="">
+									<div class="slider-dice__wrapper">
+										<label>Adjust Bet amount</label>
 										<div id="slider-dice-one"></div>
 									</div>
 								</div>
@@ -170,19 +177,22 @@
 							</div>
 							<div class="col-md-4">
 								<div class="wrapper-slider">
-									<div class="wrapper-slider__right-item">
-										<label for="less-than-wins">Less than wins</label>
-										<input type="text" value="32768" id="less-than-wins">
+									<div class="clearfix">
+										<div class="wrapper-slider__right-item">
+											<label for="less-than-wins">Less than wins</label>
+											<input type="text" value="32768" id="less-than-wins">
+										</div>
+										<div class="wrapper-slider__right-item">
+											<label for="amount-two">Win Chance</label>
+											<input type="text" id="amount-two" readonly>
+										</div>
+										<div class="wrapper-slider__right-item">
+											<label>Payout</label>
+											<input type="text" value="x1.96200">
+										</div>
 									</div>
-									<div class="wrapper-slider__right-item">
-										<label for="amount-two">Win Chance</label>
-										<input type="text" id="amount-two" readonly>
-									</div>
-									<div class="wrapper-slider__right-item">
-										<label>Payout</label>
-										<input type="text" value="x1.96200">
-									</div>
-									<div class="">
+									<div class="slider-dice__wrapper">
+										<label>Move slider to change chance to win</label>
 										<div id="slider-dice-two"></div>
 									</div>
 								</div>
@@ -190,28 +200,50 @@
 						</div>
 					</div>
 					<div class="container">
-						<table class="dice-table">
-							<thead>
-								<tr>
-									<td>TIMESTAMP / PLAYER</td>
-									<th>BET RANGE / LUCKY NUMBER</th>
-									<th>OUTCOME</th>
-									<th>BET AMOUNT</th>
-									<th>PAYOUT</th>
-									<th>PROFIT</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th>Feature 1</th>
-									<td>✔</td>
-									<td>✔</td>
-									<td>✔</td>
-									<td>✔</td>
-									<td>✔</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="wrapper-dice_table">
+							<table class="dice-table">
+								<thead>
+									<tr>
+										<th>TIMESTAMP / PLAYER</th>
+										<th>BET RANGE / LUCKY NUMBER</th>
+										<th>OUTCOME</th>
+										<th>BET AMOUNT</th>
+										<th>PAYOUT</th>
+										<th>PROFIT</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<span class="tbl-span">less than a minute ago</span>
+											<a href="#">Alpha05358</a>
+										</td>
+										<td>
+											<span class="tbl-span">less than 31,684 (48.35%)</span>
+											
+										</td>
+										<td>
+											<div class="icon-w"></div>
+										</td>
+										<td>
+											<a href="#">
+												0.00000500 BTC
+											</a>
+										</td>
+										<td>
+											<a href="#">
+												x2.029
+											</a>
+										</td>
+										<td>
+											<a href="#">
+												-0.00000500 BTC
+											</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

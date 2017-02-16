@@ -408,22 +408,166 @@ p{
 
 .game-status {
 	color: #d08c49;
+	padding-top: 20px;
 }
 
 .game-status label {
+	font-size: 14px;
 	display: block;
 	text-align: center;
+	margin-bottom: 5px;
 }
 
 .game-status input {
-	margin: 0 auto 15px;
+	margin: 0 auto 10px;
 	display: block;
 	padding: 4px 8px;
 }
 
+.player-stats h2 {
+	font: 28px/normal "ProximaNova-Bold";
+	color: #fff;
+	text-transform: uppercase;
+}
+
+.player-stats p {
+	font: 16px/normal "ProximaNova-Regular";
+	color: #fff;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+}
+
+.wrapper-slider__item {
+	width: 50%;
+	padding: 0 5px;
+	float: left;
+}
+
+.slider-dice__wrapper {
+	padding: 0 5px;
+}
+
+.ui-slider-range.ui-corner-all.ui-widget-header.ui-slider-range-min {
+	background: #d08c49;
+	border: 1px solid #d08c49;
+}
+
+.ui-widget.ui-widget-content {
+	border: 0px !important;
+	height: 30px;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+	top: 0 !important;
+}
+
+.ui-slider .ui-slider-handle {
+	width: 10px !important;
+}
+
+.ui-state-default, 
+.ui-widget-content .ui-state-default {
+	border: 0 !important;
+	outline: none;
+	background: #d7a472 !important;
+	height: 22px !important;
+	width: 22px !important;
+	left: -1px;
+	position: relative;
+	top: -4px;
+	z-index: 1;
+	//-webkit-transition: left .15s ease-out;
+	//-o-transition: left .15s ease-out;
+	//transition: left .15s ease-out;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+}
+
+.ui-state-default:before {
+	content: "";
+	display: block;
+	position: absolute;
+	height: 12px;
+	width: 4px;
+	top: 50%;
+	left: 50%;
+	margin-top: -6px;
+	margin-left: -2px;
+	background: #e1d0bd;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active {
+	border: 0 !important;
+	background: #007fff;
+	font-weight: normal;
+	color: #ffffff;
+}
+
+.wrapper-slider__item input,
+.wrapper-slider input {
+	width: 100%;
+	border-radius: 4px;
+	border: 0;
+	text-align: center;
+}
+
+.player-stats {
+	max-width: 380px;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.wrapper-slider {
+	text-align: center;
+}
+
+.wrapper-slider input {
+	width: 100%;
+}
+
+.wrapper-slider__right-item {
+	width: 33.3%;
+	float: left;
+	padding: 0 5px
+}
+
+.block-dice-status {
+	margin-bottom: 35px;
+}
+
+.icon-w {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	background: #d08c49;
+	border-radius: 50%;
+}
+
+.tbl-span {
+	font-family: "ProximaNova-Regular", Arial;
+	font-size: 14px;
+	display: block;
+	margin-bottom: 10px;
+	text-transform: initial;
+}
+
 /* TABLE DICE */
 
-table {
+.wrapper-dice_table {
+	padding: 0 5px;
+}
+
+table.dice-table {
 	font: 13px/normal "ProximaNova-Bold";
 	text-transform: uppercase;
 	color: #fff;
@@ -433,16 +577,13 @@ table {
 table.dice-table tr:nth-of-type(1) {
 	//border: 1px solid #976431;
 }
-//table.dice-table tr:hover
-.dice-table thead tr {
+/*table.dice-table tr:hover*/
+table.dice-table thead tr {
 	border: 1px solid #976431 !important;
 }
 table.dice-table tr {
-	//display: block;;
-	height: 36px;
 	border-radius: 6px;
 	border: 1px solid #2d282f;
-	line-height: 38px;
 	margin-top: 4px;
 	padding: 0 11px;
 	cursor: pointer;
@@ -451,18 +592,30 @@ table.dice-table tr {
 	transition: all .25s ease-out;
 }
 table.dice-table th,
-table.dice-table td,
-table.dice-table tbody th,
-table.dice-table tbody td {
+table.dice-table td {
 	//width: 16.6%;
 	//white-space: pre;
+	padding: 12px 0 10px;
 }
-thead th,
-tbody td {
+table.dice-table thead th,
+table.dice-table tbody td {
 	text-align: center;
 }
+table.dice-table a {
+	font: 12px/normal "ProximaNova-Bold";
+	color: #d08c49;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 10px 18px;
+	-webkit-transition: all .25s ease-out;
+	-o-transition: all .25s ease-out;
+	transition: all .25s ease-out;
+}
+table.dice-table a:hover {
+	text-decoration: underline;
+}
 // Custom Styles
-thead {
+.dice-table thead {
 	color: white;
 	background: #0cf;
 	th {
@@ -479,4 +632,10 @@ thead {
 
 /* END TABLE DICE */
 
- /* END DICE CONTENT */
+/* END DICE CONTENT */
+
+/* PROGRES BAR */
+
+
+
+ /* END PROGRES BAR */
