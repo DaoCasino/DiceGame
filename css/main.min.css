@@ -245,6 +245,12 @@ div#small-dialog,
 #small-dialog h1 {
 	text-align: center;
 	margin-bottom: 10px;
+	font-size: 22px;
+}
+
+#popup-open-text-after,
+#popup-open-text-before {
+    text-align: center;
 }
 
 .dialog-window-two input,
