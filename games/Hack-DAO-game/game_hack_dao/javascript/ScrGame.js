@@ -816,7 +816,7 @@ ScrGame.prototype.startGameEth = function(){
 				$.getJSON(urlSite+"api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
 					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
 					obj_game["game"].response("idGame", d.result) 
-					console.log("Транзакция отправлена в сеть");
+					console.log("Транзакция отправлена в сеть:", d.result);
 				});
 			}
 		}
