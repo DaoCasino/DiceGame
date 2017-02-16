@@ -346,85 +346,137 @@ div#small-dialog,
 	opacity: 0;
 }
 
+/* at start */
+.my-mfp-slide-bottom .zoom-anim-dialog {
+	opacity: 0;
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
 
+	-webkit-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-moz-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-ms-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-o-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+}
 
-/**
- * Fade-move animation for second dialog
- */
+/* animate in */
+.my-mfp-slide-bottom.mfp-ready .zoom-anim-dialog {
+	opacity: 1;
+	-webkit-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	-moz-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	-ms-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	-o-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+}
 
- /* at start */
- .my-mfp-slide-bottom .zoom-anim-dialog {
- 	opacity: 0;
- 	-webkit-transition: all 0.2s ease-out;
- 	-moz-transition: all 0.2s ease-out;
- 	-o-transition: all 0.2s ease-out;
- 	transition: all 0.2s ease-out;
+/* animate out */
+.my-mfp-slide-bottom.mfp-removing .zoom-anim-dialog {
+	opacity: 0;
 
- 	-webkit-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
- 	-moz-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
- 	-ms-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
- 	-o-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
- 	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	-moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	-ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	-o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+}
 
- }
+/* Dark overlay, start state */
+.my-mfp-slide-bottom.mfp-bg {
+	opacity: 0;
 
- /* animate in */
- .my-mfp-slide-bottom.mfp-ready .zoom-anim-dialog {
- 	opacity: 1;
- 	-webkit-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
- 	-moz-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
- 	-ms-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
- 	-o-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
- 	transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
- }
+	-webkit-transition: opacity 0.3s ease-out; 
+	-moz-transition: opacity 0.3s ease-out; 
+	-o-transition: opacity 0.3s ease-out; 
+	transition: opacity 0.3s ease-out;
+}
+/* animate in */
+.my-mfp-slide-bottom.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+/* animate out */
+.my-mfp-slide-bottom.mfp-removing.mfp-bg {
+	opacity: 0;
+}
 
- /* animate out */
- .my-mfp-slide-bottom.mfp-removing .zoom-anim-dialog {
- 	opacity: 0;
+/* DICE CONTENT */
 
- 	-webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
- 	-moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
- 	-ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
- 	-o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
- 	transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
- }
+p{
+	margin: 0;
+}
 
- /* Dark overlay, start state */
- .my-mfp-slide-bottom.mfp-bg {
- 	opacity: 0;
+.game-status {
+	color: #d08c49;
+}
 
- 	-webkit-transition: opacity 0.3s ease-out; 
- 	-moz-transition: opacity 0.3s ease-out; 
- 	-o-transition: opacity 0.3s ease-out; 
- 	transition: opacity 0.3s ease-out;
- }
- /* animate in */
- .my-mfp-slide-bottom.mfp-ready.mfp-bg {
- 	opacity: 0.8;
- }
- /* animate out */
- .my-mfp-slide-bottom.mfp-removing.mfp-bg {
- 	opacity: 0;
- }
+.game-status label {
+	display: block;
+	text-align: center;
+}
 
- /* DICE CONTENT */
+.game-status input {
+	margin: 0 auto 15px;
+	display: block;
+	padding: 4px 8px;
+}
 
- p{
- 	margin: 0;
- }
+/* TABLE DICE */
 
- .game-status {
- 	color: #d08c49;
- }
+table {
+	font: 13px/normal "ProximaNova-Bold";
+	text-transform: uppercase;
+	color: #fff;
+	width: 100%;
+	border-collapse: collapse;
+}
+table.dice-table tr:nth-of-type(1) {
+	//border: 1px solid #976431;
+}
+//table.dice-table tr:hover
+.dice-table thead tr {
+	border: 1px solid #976431 !important;
+}
+table.dice-table tr {
+	//display: block;;
+	height: 36px;
+	border-radius: 6px;
+	border: 1px solid #2d282f;
+	line-height: 38px;
+	margin-top: 4px;
+	padding: 0 11px;
+	cursor: pointer;
+	-webkit-transition: all .25s ease-out;
+	-o-transition: all .25s ease-out;
+	transition: all .25s ease-out;
+}
+table.dice-table th,
+table.dice-table td,
+table.dice-table tbody th,
+table.dice-table tbody td {
+	//width: 16.6%;
+	//white-space: pre;
+}
+thead th,
+tbody td {
+	text-align: center;
+}
+// Custom Styles
+thead {
+	color: white;
+	background: #0cf;
+	th {
+		padding: 1em;
+	}
+}
+&[data-comparing="active"] tbody th {
+	border-bottom: none;
+	font-size: 0.75em;
+	color: #767676;
+	padding-bottom: 0;
+}
+}
 
- .game-status label {
- 	display: block;
- 	text-align: center;
- }
-
- .game-status input {
- 	margin: 0 auto 15px;
- 	display: block;
- }
+/* END TABLE DICE */
 
  /* END DICE CONTENT */
