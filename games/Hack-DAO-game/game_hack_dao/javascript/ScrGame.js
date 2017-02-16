@@ -787,12 +787,18 @@ ScrGame.prototype.startGameEth = function(){
 		var options = {};
 		options.nonce = d.result;
 		
-		options.data = '0xc3fe3e28'; //собственно это надо отправить, чтоб вызвалась функция game();
 		options.to = optionsTo; //адрес нашего смарт контракта
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
 		options.value = betEth; //  //ставка 0.2 эфира
+		
+		console.log("options-------------------");
+		console.log("options to:", options.to);
+		console.log("options data:", options.data);
+		console.log("options gasPrice:", options.gasPrice);
+		console.log("options gasLimit:", options.gasLimit);
+		console.log("options betEth:", options.betEth);
 
 		if(privkey){
 			if(buf == undefined){
