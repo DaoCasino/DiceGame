@@ -140,7 +140,7 @@
 							Your dao.casino account:
 						</h3>
 						<h1 id='myado'>0x....:::::.:::::.::::::.:::::.::::....::::.:::::....::...::....:::.::::::.:::.::::.::::.::::</h1>
-					
+
 						<h3>
 							to deposit send your ether to this adress 
 						</h3>
@@ -150,31 +150,31 @@
 						<p>
 							To withdraw your ether insert your ethereum address below and click SEND
 						</p>
-						<div class="balanse-wrap__input">
-						<div class="col-md-4">
-							<input type='text' name='' id='outetht' class='form-control' style='color:black' placeholder='0x...' value=''>
-						</div>
-						<div class="col-md-4">
-							<input type="text">
-						</div>
-						<div class="col-md-4">
-							<button onclick='sendEther($("#outetht").val())' class="disclaimer-btn registr-now">withdraw</button>
-						</div>
-						<div id='result1'></div>
+						<div class="balanse-wrap__input clearfix">
+							<div class="col-md-4">
+								<input type='text' name='' id='outetht' class='form-control' style='color:black' placeholder='0x...' value=''>
+							</div>
+							<div class="col-md-4">
+								<input type="text">
+							</div>
+							<div class="col-md-4">
+								<button onclick='sendEther($("#outetht").val())' class="disclaimer-btn registr-now">withdraw</button>
+							</div>
+							<div id='result1'></div>
 						</div>
 					</div>
 					<script>
-					
-					
-					function sendEther(to) {
-					
-					var u='testnet.etherscan.io';
-					if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
-		
-					$.get("https://"+u+"/api?module=proxy&action=eth_getTransactionCount&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function(d){
-						
-						var options = {};
-						options.nonce = d.result; 
+
+
+						function sendEther(to) {
+
+							var u='testnet.etherscan.io';
+							if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
+
+							$.get("https://"+u+"/api?module=proxy&action=eth_getTransactionCount&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function(d){
+
+								var options = {};
+								options.nonce = d.result; 
 						//options.data = '0xa9059cbb000000000000000000000000'+to.replace('0x','')+''+pad(amount.toString(16),64);
 						console.log(options.data);
 						options.to = to; 
@@ -183,91 +183,97 @@
 						options.value = totalwei-20000000000000000;  //отнимем на комиссию
 						
 
-							
-								var tx = new EthJS.Tx(options);
-								tx.sign(EthJS.Buffer.Buffer(localStorage.getItem("privkey"), 'hex')); 
 
-								var serializedTx = tx.serialize().toString('hex');
-								
-								console.log(serializedTx);
-								$.getJSON("https://"+u+"/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+						var tx = new EthJS.Tx(options);
+						tx.sign(EthJS.Buffer.Buffer(localStorage.getItem("privkey"), 'hex')); 
 
-									console.log(d);
-									$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="off")?"testnet.":"")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
-								}); 
-							
+						var serializedTx = tx.serialize().toString('hex');
+
+						console.log(serializedTx);
+						$.getJSON("https://"+u+"/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+
+							console.log(d);
+							$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="off")?"testnet.":"")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
+						}); 
+
 						
 					}, "json");
-				}
-					</script>
-				</div>
-			</div>	
-		</main>
-		<!-- MAIN AND -->
-		<!-- FOOTER -->
-		<footer>
-			<div class="container">
-				<div class="footer-open-menu">
-					<a class="open-menu">
-						<span></span>
-						<span></span>
-						<span></span>
-					</a>
-				</div>
-				<nav class="footer-menu">
-					<ul>
-						<li><a href="http://dao.casino/">dao.casino</a></li>
-						<li><a href="https://daocasino.slack.com">Join Slack</a></li>
-						<li><a href="https://twitter.com/daocasino">Twitter</a></li>
-						<li><a href="https://github.com/DaoCasino">GitHub</a></li>
+}
+</script>
+</div>
+</div>	
+</main>
+<!-- MAIN AND -->
+<!-- FOOTER -->
+<footer>
+	<div class="container">
+		<div class="footer-open-menu">
+			<a class="open-menu">
+				<span></span>
+				<span></span>
+				<span></span>
+			</a>
+		</div>
+		<nav class="footer-menu">
+			<ul>
+				<li><a href="http://dao.casino/">dao.casino</a></li>
+				<li><a href="https://daocasino.slack.com">Join Slack</a></li>
+				<li><a href="https://twitter.com/daocasino">Twitter</a></li>
+				<li><a href="https://github.com/DaoCasino">GitHub</a></li>
 
-					</ul>
-				</nav>
-			</div>
-		</footer>
-		<!-- FOOTER AND -->
-
+			</ul>
+		</nav>
 	</div>
+</footer>
+<!-- FOOTER AND -->
 
+</div>
 
-	<div class="hidden">
+<div id="bg_popup" onclick="document.getElementById('bg_popup').style.display='none'; return false;">
+	<div id="popup">
+		<a  id="setCookie" class="close" href="#" title="Закрыть" onclick="document.getElementById('bg_popup').style.display='none'; return false;">X</a>
+		<h1>Your 1 test ether will be available shortly</h1>
+	</div>
+</div>
 
-		<!-- POPUP SIGN IN  -->
+<div class="hidden">
 
-		<div id="small-dialog" class="zoom-anim-dialog">
+	<!-- POPUP SIGN IN  -->
 
-			<div class="window-seed">
-				<h1>Save this seed</h1>
-				<textarea class="popup-textarea" id='seed'></textarea>
-			</div>
+	<div id="small-dialog" class="zoom-anim-dialog">
 
-			<p id="popup-open-text-after">
-				Keep these 12 words in a safe place, they will need to log in to the future
-			</p>
-
-			<p id="popup-open-text-before">
-				Enter 12 words obtained in the previous screen if you forget to write them down, start over
-			</p>
-
-			<div class="window-open-registr dialog-window-two">
-				<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
-				<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("whait..")'>CONTINUE</button>
-				<span class="dialog-window-cancel">Back</span>
-			</div>
-
-
-
-			<div class="popup-button clearfix">
-				<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
-				<button class="disclaimer-btn registr-now open-dialog-window fl-right">Restore Wallet from Backup</button>
-			</div>
-
+		<div class="window-seed">
+			<h1>Save this seed</h1>
+			<textarea class="popup-textarea" id='seed'></textarea>
 		</div>
 
-		
+		<p id="popup-open-text-after">
+			Keep these 12 words in a safe place, they will need to log in to the future
+		</p>
 
-		
+		<p id="popup-open-text-before">
+			Enter 12 words obtained in the previous screen if you forget to write them down, start over
+		</p>
+
+		<div class="window-open-registr dialog-window-two">
+			<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
+			<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("whait..")'>CONTINUE</button>
+			<span class="dialog-window-cancel">Back</span>
+		</div>
+
+
+
+		<div class="popup-button clearfix">
+			<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
+			<button class="disclaimer-btn registr-now open-dialog-window fl-right">Restore Wallet from Backup</button>
+		</div>
+
 	</div>
+
+
+
+
+</div>
 
 	<!--[if lt IE 9]>
 	<script src="libs/html5shiv/es5-shim.min.js"></script>
@@ -279,12 +285,30 @@
 	<script src="libs/jquery/jquery-1.11.2.min.js"></script>
 	<script src="libs/modernizr/modernizr.js"></script>
 	<script src="libs/selectivizr/selectivizr-min.js"></script>
+	<script src="libs/jquery.cookie.js"></script>
 	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 	<script src="js/common.js"></script>
 
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#setCookie").click(function () {
+				$.cookie("popup", "24house", {expires: 0} );
+				$("#bg_popup").hide();
+			});
+			
+			if ( $.cookie("popup") == null )
+			{
+				setTimeout(function(){
+					$("#bg_popup").show();
+				}, 4000)
+			}
+			else { $("#bg_popup").hide();
+		}
+	});
+	</script>
 	
-<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
+	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script>
 		if (localStorage.getItem("isreg")) {
 			$("#isreg").show();
@@ -391,16 +415,16 @@
 		}
 		var totalwei;
 		function rebalance() {	
-		$("#balance").html("? ETH");
-		setTimeout(function(){
-		var u='testnet.etherscan.io';
-		if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
-			$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
-				$("#balance").html(d.result/1000000000000000000+" ETH");
-				totalwei = d.result;
-			});
-			
-		},1000);
+			$("#balance").html("? ETH");
+			setTimeout(function(){
+				var u='testnet.etherscan.io';
+				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
+				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
+					$("#balance").html(d.result/1000000000000000000+" ETH");
+					totalwei = d.result;
+				});
+
+			},1000);
 		}
 		
 		

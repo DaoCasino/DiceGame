@@ -255,7 +255,7 @@ div#small-dialog,
 
 .dialog-window-two input,
 .window-open-registr input,
-#outetht {
+.balanse-wrap__input input {
 	display: block;
 	width: 100%;
 	max-width: 420px;
@@ -374,6 +374,24 @@ div#small-dialog,
 
 	opacity: 0;
 }
+
+/* BALANSE */
+
+.balanse-wrap__input {
+	max-width: 500px;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.balanse-wrap__input input {
+	padding: 4px;
+}
+
+.balanse-wrap__input button {
+	width: 100%;
+}
+
+/* END BALANSE */
 
 /* Dark overlay, start state */
 .my-mfp-zoom-in.mfp-bg {
