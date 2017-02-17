@@ -6,10 +6,13 @@ function WndResult(_prnt) {
 WndResult.prototype = Object.create(PIXI.Container.prototype);
 WndResult.prototype.constructor = WndResult;
 
+var obj = {};
+
 WndResult.prototype.init = function(_prnt) {
 	this._prnt = _prnt;
 	this._callback = undefined;
 	this._arButtons= [];
+	obj["prnt"] = _prnt;
 	
 	var rect = new PIXI.Graphics();
 	rect.beginFill(0x000000).drawRect(-_W/2, -_H/2, _W, _H).endFill();
@@ -123,7 +126,7 @@ WndResult.prototype.shareFB = function() {
 	if (typeof(FB) != 'undefined' && FB != null ) {
 		var urlGame = 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/';
 		// var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/distr/icon_1024.png";
-		var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/share/bgLevel_"+ _prnt.curLevel+".png";
+		var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/share/bgLevel_"+ obj["prnt"].curLevel+".png";
 		/*FB.ui({
 			method: 'share',
 			href: urlGame,
@@ -135,7 +138,7 @@ WndResult.prototype.shareFB = function() {
 		  picture: urlImg,
 		  link: urlGame,
 		  caption: 'PLAY',
-		  description: 'Hack the DAO Level ' + _prnt.curLevel,
+		  description: 'Hack the DAO Level ' + obj["prnt"].curLevel,
 		}, function(response){});
 	} else {
 		console.log("FB is not defined");
