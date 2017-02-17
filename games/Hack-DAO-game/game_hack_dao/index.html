@@ -34,6 +34,22 @@
 		</noscript>
 		<!-- DO NOT MODIFY -->
 		<!-- End Facebook Pixel Code -->
+		<script>window.twttr = (function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0],
+			t = window.twttr || {};
+		  if (d.getElementById(id)) return t;
+		  js = d.createElement(s);
+		  js.id = id;
+		  js.src = "https://platform.twitter.com/widgets.js";
+		  fjs.parentNode.insertBefore(js, fjs);
+
+		  t._e = [];
+		  t.ready = function(f) {
+			t._e.push(f);
+		  };
+
+		  return t;
+		}(document, "script", "twitter-wjs"));</script>
 		
 		<!-- framework, pixi.js - v3.0.10 -->
 		<script src="javascript/jquery.min.js"></script>
@@ -41,7 +57,6 @@
 		<script src="javascript/tweenjs-0.6.2.min.js"></script>
 		<script src="javascript/ResizeManager.js"></script>
 		<script src="javascript/eth_api.js"></script>
-		<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 		
 		<!-- main program -->
 		<script src="javascript/visibly.js"></script>

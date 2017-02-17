@@ -136,27 +136,14 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 	this.tfDesc.setText(str);
 }
 
-WndResult.prototype.tweetIntentToAnalytics = function(intentEvent) {
-	console.log("tweetIntentToAnalytics: !!!", intentEvent)
-	if (!intentEvent) return;
-	var label = "tweet";
-	pageTracker._trackEvent(
-		'twitter_web_intents',
-		intentEvent.type,
-		label
-	);
-}
-
 WndResult.prototype.shareTwitter = function() {	
 	// @daocasino @ethereumproject @edcon #blockchain #ethereum
 	if(twttr){
-		twttr.events.bind(
-			'tweet',
-			function (event) {
-				console.log("!!!:", event)
-				console.log("!!! this:", this)
-			}
-		);
+		var url="https://twitter.com/intent/tweet";
+		var str='Hack the DAO Level ' + obj["prnt"].curLevel;
+		var hashtags="blockchain,ethereum";
+		var via="daocasino";
+		window.open(url+"?text="+str+";hashtags="+hashtags+";via="+via,"","width=500,height=300");
 	}
 }
 
