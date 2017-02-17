@@ -150,22 +150,25 @@
 						<p>
 							To withdraw your ether insert your ethereum address below and click WITHDRAW
 						</p>
+						
 						<div class="balanse-wrap__input clearfix">
-							<div class="col-md-4">
-								<input type='text' name='' id='outetht' class='form-control' style='color:black' placeholder='0x...' value=''>
+						<form action='#' onsubmit='sendEther($("#outetht").val());return false;' method='post'>	
+							<div class="col-md-5">
+								<input type='text' style='' required name='' id='outetht' class='form-control' style='color:black' placeholder='0x...' value=''>
+							</div>
+							<div class="col-md-3">
+								<input type="text" id='amount' placeholder='amount ETH'>
 							</div>
 							<div class="col-md-4">
-								<input type="text">
-							</div>
-							<div class="col-md-4">
-								<button onclick='sendEther($("#outetht").val())' class="disclaimer-btn registr-now">withdraw</button>
+								<button type='submit' class="disclaimer-btn registr-now">withdraw</button>
 							</div>
 							<div id='result1'></div>
+						</form>
 						</div>
 					</div>
 					<script>
-
-
+						
+	
 						function sendEther(to) {
 
 							var u='testnet.etherscan.io';
@@ -180,7 +183,10 @@
 						options.to = to; 
 						options.gasPrice="0x737be7600";
 						options.gasLimit=0x927c0; 
-						options.value = totalwei-20000000000000000;  //отнимем на комиссию
+						
+						if (!$("#amount").val()) $("#amount").val(totalwei/1000000000000000000);
+						
+						options.value = $("#amount").val()*1000000000000000000-20000000000000000;  //отнимем на комиссию
 						
 
 
@@ -193,7 +199,7 @@
 						$.getJSON("https://"+u+"/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
 
 							console.log(d);
-							$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="off")?"testnet.":"")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
+							$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="on")?"":"testnet.")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
 						}); 
 
 						

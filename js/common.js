@@ -159,16 +159,18 @@ if (localStorage.getItem("isreg")) {
 		} else {
 			rebalance();
 		}
-		
+		var totalwei;
 		function rebalance() {	
-			$("#balance").html("? ETH");
+			if (!totalwei) $("#balance").html("? ETH");
 			setTimeout(function(){
 				var u='testnet.etherscan.io';
 				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
 				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
+					totalwei = d.result;
 					$("#balance").html(d.result/1000000000000000000+" ETH");
 				});
 
 			},1000);
 		}
 		
+		setInterval(rebalance,5000);
