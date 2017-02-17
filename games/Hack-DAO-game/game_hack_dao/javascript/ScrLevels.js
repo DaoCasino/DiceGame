@@ -28,6 +28,17 @@ ScrLevels.prototype.init = function() {
 		this.addChild(tfDebug);
 	}
 	
+	var btnDao = addButton2("btnOrange", 120, 80);
+	btnDao.name = "btnDao";
+	btnDao.interactive = true;
+	btnDao.buttonMode=true;
+	this.addChild(btnDao);
+	this._arButtons.push(btnDao);
+	var tfDao = addText("DAO casino", 20, "#FFFFFF", "#000000", "center", 350)
+	tfDao.x = 0;
+	tfDao.y = - 17;
+	btnDao.addChild(tfDao);
+	
 	this.createLevels();
 	
 	this.interactive = true;
@@ -80,6 +91,10 @@ ScrLevels.prototype.clickCell = function(item_mc) {
 		login_obj["level"] = item_mc.id;
 		this.removeAllListener();
 		showGame();
+	} else if(item_mc.name == "btnDao"){
+		this.removeAllListener();
+		var url = "http://platform.dao.casino/";
+		window.open(url, "_self"); // "_blank",  "_self"
 	}
 }
 
