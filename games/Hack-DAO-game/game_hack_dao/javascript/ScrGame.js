@@ -922,14 +922,19 @@ ScrGame.prototype.resultGame = function(val) {
 	
 	var str = "";
 	if(val == 1){
-		if(options_testnet){
-			str = "You have passed the first level. The following levels are available on MAINNET."
-		} else {
-			str = this.arDescWin[this.curLevel];
-		}
+		// if(options_testnet){
+			// str = "You have passed the first level. The following levels are available on MAINNET."
+		// } else {
+			if(this._gameOverClient){
+				str = this.arDescLose[this.curLevel];
+			} else {
+				str = this.arDescWin[this.curLevel];
+			}
+		// }
 	} else {
-		str = this.arDescLose[this.curLevel];
+		str = "You lose your bet, start from the beginning";
 	}
+	obj_game["gameOver"] = this._gameOverClient;
 	this.wndResult.show(val, str, this.clickMenu, obj_game)
 	this.wndResult.visible = true;
 	this.curWindow = this.bWindow;
@@ -968,7 +973,8 @@ ScrGame.prototype.healthDao = function() {
 			this.itemDao.health += this.resurrection;
 		} else {
 			if(this.bHealthDao09 && this.curLevel > 1){
-				this.resultGameEth(-1);
+				// this.resultGameEth(-1);
+				this._gameOverClient = true;
 			}
 		}
 		if(this.curLevel == 1){
@@ -1321,7 +1327,8 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						this.tfTitleLevel.setText("Lost ethereum: " + this.valueLevel + "/" + this.valueLevelMax);
 						this.createText(mc, "- 100");
 						if(this.valueLevel >= this.valueLevelMax){
-							this.resultGameEth(-1);
+							// this.resultGameEth(-1);
+							this._gameOverClient = true;
 							this.itemDao.sprite.img.stop();
 						}
 						mc.tLife = 0;
@@ -1346,7 +1353,8 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						this.valueLevel += 50000;
 						this.tfTitleLevel.setText("Stolen money: $" + this.valueLevel + "/" + this.valueLevelMax);
 						if(this.valueLevel >= this.valueLevelMax){
-							this.resultGameEth(-1);
+							// this.resultGameEth(-1);
+							this._gameOverClient = true;
 						}
 					}
 					mc.tLife = 0;
@@ -1399,7 +1407,8 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						this.valueLevel += 1;
 						this.tfTitleLevel.setText("Bad proposal: " + this.valueLevel + "/" + this.valueLevelMax);
 						if(this.valueLevel >= this.valueLevelMax){
-							this.resultGameEth(-1);
+							// this.resultGameEth(-1);
+							this._gameOverClient = true;
 						}
 					}
 					mc.tLife = 0;
@@ -1420,7 +1429,8 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					this.tfTitleLevel.setText("Lost money: " + this.valueLevel + "/" + this.valueLevelMax);
 					this.createText(mc, "- 100");
 					if(this.valueLevel >= this.valueLevelMax){
-						this.resultGameEth(-1);
+						// this.resultGameEth(-1);
+						this._gameOverClient = true;
 						this.itemDao.sprite.img.stop();
 					}
 					mc.tLife = 0;

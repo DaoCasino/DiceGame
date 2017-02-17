@@ -79,8 +79,6 @@ WndResult.prototype.init = function(_prnt) {
 	this.tfBtnNext.y = - 24;
 	this.btnNext.addChild(this.tfBtnNext);
 	
-	// You lose your bet, start from the beginning
-	
 	if(Number(login_obj["level"]) == 9){
 		this.btnNext.visible = false;
 	}
@@ -108,13 +106,16 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 	var valTime = get_normal_time(seconds);
 	this.tfTime.setText(valTime);
 	// var valBalance = toFixed(obj_game["balance"]-obj_game["oldBalance"], 4);
-	var valBalance = toFixed(betslevel[obj["prnt"].curLevel].bet, 4)
+	var valBalance = toFixed(betslevel[obj["prnt"].curLevel].prize, 4)
 	this.tfEth.setText("+"+valBalance);
 	
-	if(val == 1){
+	if(val == 1 && obj_game["gameOver"] == false){
 		this.btnShare.visible = true;
 		this.bgLose.visible = false;
 		this.btnOk.x = -150;
+	} else if(val == 1 && obj_game["gameOver"] == true){
+		this.bgWin.visible = false;
+		this.btnNext.visible = false;
 	} else {
 		this.bgWin.visible = false;
 		this.tfTitleEth.visible = false;

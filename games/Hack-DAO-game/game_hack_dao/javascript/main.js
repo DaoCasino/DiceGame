@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.34"
+var version = "v. 1.0.35"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -84,11 +84,11 @@ function initGame() {
 	// betslevel[9] = {win:10, koef:9.8, bet:232.7757874665328};
 	
 	// eth = 0.2
-	betslevel[1] = {win:90, koef:1.09, bet:0.2, win:0.018};
-	betslevel[2] = {win:80, koef:1.22, bet:0.214, win:0.04708};
-	betslevel[3] = {win:70, koef:1.40, bet:0.25708, win:0.102832};
-	betslevel[4] = {win:60, koef:1.63, bet:0.355912, win:0.22422456};
-	betslevel[5] = {win:50, koef:1.96, bet:0.57613656, win:0.5530910976};
+	betslevel[1] = {win:90, koef:1.09, bet:0.2, prize:0.018};
+	betslevel[2] = {win:80, koef:1.22, bet:0.214, prize:0.04708};
+	betslevel[3] = {win:70, koef:1.40, bet:0.25708, prize:0.102832};
+	betslevel[4] = {win:60, koef:1.63, bet:0.355912, prize:0.22422456};
+	betslevel[5] = {win:50, koef:1.96, bet:0.57613656, prize:0.5530910976};
 	
 	// soundManager = new SoundManager();
 	// soundManager.currentMusic = "none";
