@@ -15,7 +15,7 @@ var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
-var optionsTo = "0x000000000000";
+var optionsTo = "0xcd3e727275bc2f511822dc9a26bd7b0bbf161784";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
@@ -47,6 +47,7 @@ ScrGame.prototype.init = function() {
 	this.clickDAO = false;
 	this.startGame = false;
 	this._gameOver = false;
+	this._gameOverClient = false;
 	this.bSendRequest = false;
 	this.bWindow = false;
 	this.bResult = false;
@@ -369,7 +370,7 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
-	// this.resultGameEth(1)
+	// this.resultGameEth(-1)
 }
 
 ScrGame.prototype.createLevel5 = function() {

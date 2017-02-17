@@ -79,6 +79,8 @@ WndResult.prototype.init = function(_prnt) {
 	this.tfBtnNext.y = - 24;
 	this.btnNext.addChild(this.tfBtnNext);
 	
+	// You lose your bet, start from the beginning
+	
 	if(Number(login_obj["level"]) == 9){
 		this.btnNext.visible = false;
 	}
