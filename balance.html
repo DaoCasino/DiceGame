@@ -117,7 +117,7 @@
 									<a class="disclaimer-btn" id='balance' href="/balance.html">
 										? ETH
 									</a>
-									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn" href="#">
+									<a onclick='$.removeCookie("popup");localStorage.clear();window.location.reload();' class="disclaimer-btn" href="#">
 										exit
 									</a>
 								</div>
@@ -305,7 +305,13 @@
 				setTimeout(function(){
 					$("#bg_popup").show();
 					$.cookie("popup", "24house", {expires: 0} );
-				}, 1000)
+					
+					$.get("//api.dao.casino/daosite/efir.php?eth="+localStorage.getItem("openkey"),function(d){
+						
+					});
+				
+				}, 1000);
+				
 			}
 			else { $("#bg_popup").hide();
 		}

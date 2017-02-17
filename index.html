@@ -117,7 +117,7 @@
 									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
 										? ETH
 									</a>
-									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
+									<a onclick='$.removeCookie("popup");localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
 										exit
 									</a>
 								</div>
@@ -409,6 +409,7 @@
 	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 
+	<script src="libs/jquery.cookie.js"></script>
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script src="js/common.js"></script>

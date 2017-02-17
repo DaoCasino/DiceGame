@@ -97,10 +97,8 @@ if (localStorage.getItem("isreg")) {
 				localStorage.setItem("isreg",1);
 				localStorage.setItem("mainnet","off");
 				console.log('address and key: ', address, prv_key);
-				$.get("http://api.dao.casino/daosite/efir.php?eth="+address,function(d){
-					
-					window.location='balance.html';
-				});
+				window.location='balance.html';
+				
 				
 			});
 		}
@@ -174,3 +172,15 @@ if (localStorage.getItem("isreg")) {
 		}
 		
 		setInterval(rebalance,5000);
+		
+		
+		
+		$.removeCookie = function (key, options) {
+			if ($.cookie(key) === undefined) { // this line is the problem
+				return false;
+			}
+
+			// Must not alter options, thus extending a fresh object...
+			$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+			return !$.cookie(key);
+		};
