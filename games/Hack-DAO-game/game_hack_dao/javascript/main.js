@@ -1,11 +1,11 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.23"
+var version = "v. 1.0.24"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
 var betslevel = [];
-var openkey, privkey;
+var openkey, privkey, mainet;
 var currentScreen, scrContainer;
 var ScreenGame, ScreenLevels;
 var LoadPercent = null;
@@ -302,14 +302,14 @@ function handleComplete(evt) {
 	if(document.location.hash == "#testnet"){
 		options_testnet = true;
 	}
-	if(options_mainet){
-		if(options_mainet == "on"){
+	if(mainet){
+		if(mainet == "on"){
 			options_mainet = true;
 		} else {
 			options_mainet = false;
 		}
 	} else {
-		options_mainet = true;
+		options_mainet = false;
 	}
 	options_testnet = !options_mainet;
 	if(options_testnet){
@@ -409,7 +409,7 @@ function loadData() {
 			login_obj = JSON.parse(login_str);
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';
-			options_mainet = localStorage.getItem('mainnet')
+			mainet = localStorage.getItem('mainnet')
 			openkey = localStorage.getItem('openkey')
 			privkey = localStorage.getItem('privkey')
 			checkData();
