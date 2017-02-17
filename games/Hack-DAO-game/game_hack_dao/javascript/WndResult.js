@@ -47,11 +47,11 @@ WndResult.prototype.init = function(_prnt) {
 	this.btnNext.buttonMode=true;
 	
 	this.tfDesc = addText("", 30, "#FFFFFF", "#000000", "center", 560, 4, fontTahoma)
-	this.tfDesc.y = -50;
+	this.tfDesc.y = -70;
 	this.wnd.addChild(this.tfDesc);
 	var tfTitleTime = addText("Your time:", 30, "#FFFFFF", "#000000", "right", 300, 4, fontTahoma)
 	tfTitleTime.x = 0;
-	tfTitleTime.y = 20;
+	tfTitleTime.y = 40;
 	this.wnd.addChild(tfTitleTime);
 	this.tfTime = addText("0", 30, "#00CCFF", "#000000", "left", 300, 4, fontTahoma)
 	this.tfTime.x = 0;
@@ -102,6 +102,7 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 	var seconds = obj_game["time"];
 	var valTime = get_normal_time(seconds);
 	this.tfTime.setText(valTime);
+	this.tfEth.setText(obj_game["balance"]);
 	
 	if(val == 1){
 		this.btnShare.visible = true;
@@ -121,7 +122,8 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 WndResult.prototype.shareFB = function() {	
 	if (typeof(FB) != 'undefined' && FB != null ) {
 		var urlGame = 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/';
-		var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/distr/icon_1024.png";
+		// var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/distr/icon_1024.png";
+		var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/share/bgLevel_"+ _prnt.curLevel+".png";
 		/*FB.ui({
 			method: 'share',
 			href: urlGame,

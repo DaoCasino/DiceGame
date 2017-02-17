@@ -838,7 +838,6 @@ ScrGame.prototype.resultGameEth = function(val){
 		this.bResult = true;
 		this.showWinEthereum = 10;
 		this.itemDao.dead = true;
-		this.itemDao.sprite.buttonMode=false;
 		if(this.curLevel == 1){
 			this.itemDao.setAct("Win")
 		} else if(this.curLevel == 2){
