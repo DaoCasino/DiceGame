@@ -790,7 +790,7 @@ ScrGame.prototype.startGameEth = function(){
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
-		options.value = betEth; //  //ставка 0.2 эфира
+		options.value = betEth; //ставка
 
 		if(privkey){
 			if(buf == undefined){
