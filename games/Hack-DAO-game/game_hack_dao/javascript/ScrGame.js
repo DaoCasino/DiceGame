@@ -106,7 +106,7 @@ ScrGame.prototype.init = function() {
 		""
 	]
 	this.arDescWin = ["",
-		"30.04 contract deloyed",
+		"30.06.2016 contract deployed",
 		"You have collected enough",
 		"All proposals submitted",
 		"Hacker hacked the dao",
@@ -929,7 +929,7 @@ ScrGame.prototype.resultGame = function(val) {
 			// str = "You have passed the first level. The following levels are available on MAINNET."
 		// } else {
 			if(this._gameOverClient){
-				str = this.arDescLose[this.curLevel];
+				str = "You lose the Game, but won the money. \n Please start from the beginning."
 			} else {
 				str = this.arDescWin[this.curLevel];
 			}
