@@ -523,7 +523,7 @@ ScrGame.prototype.closeWindow = function(wnd) {
 
 ScrGame.prototype.refillBalance = function() {
 	if(openkey && options_ethereum){
-		var url = "http://platform.dao.casino/topup/?client=" + openkey;
+		var url = "http://platform.dao.casino/balance.html";
 		window.open(url, "_self"); // "_blank",  "_self"
 	}
 }
@@ -1100,7 +1100,7 @@ ScrGame.prototype.sendRequest = function(value) {
 			if(openkey){
 				var adress = openkey.replace('0x','');
 				urlBalance = urlSite+"api?module=account&action=balance&address="+
-							adress+"&tag=latest&apikey=YourApiKeyToken"
+							adress+"&tag=latest&apikey=YourApiKeyToken&rnd="+Math.random();
 				var str = urlBalance;
 				this.sendUrlRequest(str, "getBalance");
 			}
