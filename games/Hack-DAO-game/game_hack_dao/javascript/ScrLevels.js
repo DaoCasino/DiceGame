@@ -54,7 +54,8 @@ ScrLevels.prototype.createLevels = function() {
 		level.y = startY + posY*offsetY;
 		this.addChild(level);
 		var lock = true;
-		if(i == 0 || (levels[i] && options_mainet) || options_debug){
+		// if(i == 0 || (levels[i] && options_mainet) || options_debug){
+		if(i == 0 || (levels[i]) || options_debug){
 			lock = false;
 		}
 		

@@ -48,8 +48,8 @@ ItemLevel.prototype.setId = function(id, value) {
 		img.y = -2;
 		this.preview.addChild(img);
 		
-		var strW = "Win Odds: " + betslevel[id].win + "%"
-		var wOdd = addText(strW, 20, "#FFFFFF", "#000000", "center", 180, 2)
+		var strW = "Win Odds: " + toFixed(betslevel[id].win, 4) + "%"
+		var wOdd = addText(strW, 16, "#FFFFFF", "#000000", "center", 180, 2)
 		wOdd.y = -50;
 		this.addChild(wOdd);
 		var strX = "Multiplier: x" + betslevel[id].koef;

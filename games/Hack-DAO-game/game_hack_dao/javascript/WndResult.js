@@ -162,11 +162,11 @@ WndResult.prototype.clickObj = function(item_mc) {
 		}
 	} else if(name == "btnGreen"){
 		this._prnt.closeWindow(this);
-		if(options_testnet){
-			this._prnt.clickMenu();
-		} else {
+		// if(options_testnet){
+			// this._prnt.clickMenu();
+		// } else {
 			this._prnt.nextLevel();
-		}
+		// }
 		
 	} else if(name == "btnShare"){
 		this.shareFB();
