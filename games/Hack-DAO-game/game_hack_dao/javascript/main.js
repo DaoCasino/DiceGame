@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.31"
+var version = "v. 1.0.32"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -404,15 +404,15 @@ function saveData() {
 
 function loadData() {
 	if(isLocalStorageAvailable()){
+		mainet = localStorage.getItem('mainnet')
+		openkey = localStorage.getItem('openkey')
+		privkey = localStorage.getItem('privkey')
+		console.log("load openkey:", openkey)
 		if (localStorage.getItem('daocasino_hack')){
 			var login_str = localStorage.getItem('daocasino_hack')
 			login_obj = JSON.parse(login_str);
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';
-			mainet = localStorage.getItem('mainnet')
-			openkey = localStorage.getItem('openkey')
-			console.log("load openkey:", openkey)
-			privkey = localStorage.getItem('privkey')
 			checkData();
 			console.log("Loading: ok!");
 		} else {
