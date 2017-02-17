@@ -553,6 +553,9 @@ ScrGame.prototype.shareFB = function() {
 
 ScrGame.prototype.showSmartContract = function() {
 	var url = urlSite + "address/" + optionsTo
+	if(options_mainet){
+		url = "https://etherscan.io/" + "address/" + optionsTo
+	}
 	window.open(url, "_blank"); 
 }
 

@@ -34,9 +34,9 @@ ScrLevels.prototype.init = function() {
 	btnDao.buttonMode=true;
 	this.addChild(btnDao);
 	this._arButtons.push(btnDao);
-	var tfDao = addText("DAO casino", 20, "#FFFFFF", "#000000", "center", 350)
+	var tfDao = addText("DAO casino", 30, "#FFFFFF", "#000000", "center", 350)
 	tfDao.x = 0;
-	tfDao.y = - 17;
+	tfDao.y = - 22;
 	btnDao.addChild(tfDao);
 	
 	this.createLevels();
