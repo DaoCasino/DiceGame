@@ -91,11 +91,11 @@ if (localStorage.getItem("isreg")) {
 				ks.generateNewAddress(pwDerivedKey, 1);
 				var address = ks.getAddresses()[0];
 				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
+				
 				localStorage.setItem("openkey","0x"+address);
 				localStorage.setItem("privkey",prv_key);
 				localStorage.setItem("isreg",1);
-				
+				localStorage.setItem("mainnet","off");
 				console.log('address and key: ', address, prv_key);
 				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
 					
