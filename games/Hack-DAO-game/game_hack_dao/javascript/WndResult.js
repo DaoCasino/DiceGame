@@ -54,7 +54,7 @@ WndResult.prototype.init = function(_prnt) {
 	this.wnd.addChild(this.tfDesc);
 	var tfTitleTime = addText("Your time:", 30, "#FFFFFF", "#000000", "right", 300, 4, fontTahoma)
 	tfTitleTime.x = 0;
-	tfTitleTime.y = 40;
+	tfTitleTime.y = 45;
 	this.wnd.addChild(tfTitleTime);
 	this.tfTime = addText("0", 30, "#00CCFF", "#000000", "left", 300, 4, fontTahoma)
 	this.tfTime.x = 0;

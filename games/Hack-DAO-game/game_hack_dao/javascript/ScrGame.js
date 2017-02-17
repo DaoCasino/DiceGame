@@ -600,7 +600,7 @@ ScrGame.prototype.showWndClearLog = function() {
 }
 
 ScrGame.prototype.showWndStart = function() {
-	var bet = toFixed(betslevel[this.curLevel].bet, 2);
+	var bet = toFixed(betslevel[this.curLevel].bet, 4);
 	var strW = "Win Odds: " + betslevel[this.curLevel].win + "%"
 	var strX = "Multiplier: x" + betslevel[this.curLevel].koef;
 	var str = "To play the game, send " + bet + " ETH. \n " + strW + " \n " + strX;
