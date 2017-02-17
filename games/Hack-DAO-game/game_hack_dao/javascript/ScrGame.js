@@ -929,6 +929,7 @@ ScrGame.prototype.resultGame = function(val) {
 			// str = "You have passed the first level. The following levels are available on MAINNET."
 		// } else {
 			if(this._gameOverClient){
+				resetLevels();
 				str = "You lose the Game, but won the money. \n Please start from the beginning."
 			} else {
 				str = this.arDescWin[this.curLevel];

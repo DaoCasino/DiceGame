@@ -129,7 +129,7 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 
 WndResult.prototype.shareFB = function() {	
 	if (typeof(FB) != 'undefined' && FB != null ) {
-		var urlGame = 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/';
+		var urlGame = 'http://platform.dao.casino/';
 		var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/share/bgLevel_"+ obj["prnt"].curLevel+".jpg";
 		/*FB.ui({
 			method: 'share',
