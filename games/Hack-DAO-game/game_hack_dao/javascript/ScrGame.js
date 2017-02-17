@@ -1140,10 +1140,10 @@ ScrGame.prototype.response = function(command, value) {
 		// this.tfBalance.setText("balance: " + obj_game["balance"]);
 	} else if(command == "getBalance"){
 		var obj = JSON.parse(value);
-		obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 2);
+		obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
-		
+		console.log("!!!!!!!!!!!!!!:", obj_game["balance"], Number(obj.result)/1000000000000000000)
 		if(this.oldBalance == -1){
 			// записываем баланс на старте игры
 			this.oldBalance = Number(obj_game["balance"]);
