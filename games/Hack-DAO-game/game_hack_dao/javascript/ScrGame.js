@@ -587,7 +587,8 @@ ScrGame.prototype.showError = function(value) {
 }
 
 ScrGame.prototype.warningBalance = function() {
-	var str = "Refill your account in the amount of " + betGame + " ETH."
+	var bet = toFixed(betslevel[this.curLevel].bet, 4);
+	var str = "Refill your account in the amount of " + bet + " ETH."
 	var addStr = "Refill";
 	this.createWndInfo(str, this.refillBalance, addStr);
 	this.btnStart.visible = true;
@@ -872,7 +873,8 @@ ScrGame.prototype.resultGameEth = function(val){
 
 ScrGame.prototype.startGameF = function() {
 	if(privkey || options_debug){
-		if(betGame > obj_game["balance"] && options_ethereum &&
+		var bet = betslevel[this.curLevel].bet;	
+		if(bet > obj_game["balance"] && options_ethereum &&
 		options_debug == false){
 			obj_game["game"].warningBalance();
 		} else {

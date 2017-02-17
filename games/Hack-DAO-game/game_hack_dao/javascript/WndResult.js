@@ -105,8 +105,9 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 	var seconds = obj_game["time"];
 	var valTime = get_normal_time(seconds);
 	this.tfTime.setText(valTime);
-	var valBalance = toFixed(obj_game["balance"]-obj_game["oldBalance"], 4);
-	this.tfEth.setText(valBalance);
+	// var valBalance = toFixed(obj_game["balance"]-obj_game["oldBalance"], 4);
+	var valBalance = toFixed(betslevel[obj["prnt"].curLevel].bet, 4)
+	this.tfEth.setText("+"+valBalance);
 	
 	if(val == 1){
 		this.btnShare.visible = true;
@@ -161,7 +162,11 @@ WndResult.prototype.clickObj = function(item_mc) {
 		}
 	} else if(name == "btnGreen"){
 		this._prnt.closeWindow(this);
-		this._prnt.nextLevel();
+		if(options_testnet){
+			this._prnt.clickMenu();
+		} else {
+			this._prnt.nextLevel();
+		}
 		
 	} else if(name == "btnShare"){
 		this.shareFB();
