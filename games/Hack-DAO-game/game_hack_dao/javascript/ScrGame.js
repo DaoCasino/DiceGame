@@ -370,6 +370,7 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
+	// this.resultGameEth(1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
