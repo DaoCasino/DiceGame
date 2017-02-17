@@ -105,7 +105,7 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 	var seconds = obj_game["time"];
 	var valTime = get_normal_time(seconds);
 	this.tfTime.setText(valTime);
-	var valBalance = obj_game["balance"]-obj_game["oldBalance"];
+	var valBalance = toFixed(obj_game["balance"]-obj_game["oldBalance"], 4);
 	this.tfEth.setText(valBalance);
 	
 	if(val == 1){
