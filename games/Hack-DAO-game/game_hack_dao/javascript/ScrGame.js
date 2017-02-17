@@ -1145,6 +1145,7 @@ ScrGame.prototype.response = function(command, value) {
 		if(this.oldBalance == -1){
 			// записываем баланс на старте игры
 			this.oldBalance = Number(obj_game["balance"]);
+			obj_game["oldBalance"] = this.oldBalance;
 		} else {
 			// определяем результат, если баланс изменился
 			if(obj_game["balance"] != this.oldBalance){
