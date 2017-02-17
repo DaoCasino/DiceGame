@@ -250,7 +250,7 @@ div#small-dialog,
 
 #popup-open-text-after,
 #popup-open-text-before {
-    text-align: center;
+	text-align: center;
 }
 
 .dialog-window-two input,
@@ -292,6 +292,44 @@ div#small-dialog,
 
 .popup-style .table-result table tr {
 	border: 1px solid #565556;
+}
+
+#bg_popup{
+	position: fixed;
+	z-index: 99999;
+	background: rgba(0, 0, 0, 0.8);
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: none;
+}
+
+#popup {
+	background: #272647;
+	max-width: 470px;
+	margin: 21% auto;
+	width: 100%;
+	padding: 30px 25px;
+	position: relative;
+	color: #fff;
+	text-align: center;
+}
+
+.close {
+	display:block;
+	position:absolute;
+	top:5px;
+	right:5px;
+	width:20px;
+	height:20px;
+	color:#555;
+	cursor:pointer;
+}
+
+.close:hover {
+	text-decoration: none;
+	color:#555;
 }
 
 /*Fade-zoom animation for first dialog*/
