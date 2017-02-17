@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.38"
+var version = "v. 1.0.39"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -146,6 +146,7 @@ function loadManifest(){
 	preloader.add("btnDao", "images/buttons/btnDao.png");
 	preloader.add("btnDaoOver", "images/buttons/btnDaoOver.png");
 	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");
+	preloader.add("btnTweetShare", "images/buttons/btnTweetShare.png");
 	preloader.add("btnOrange", "images/buttons/btnOrange.png");
 	preloader.add("btnOrangeOver", "images/buttons/btnOrangeOver.png");
 	preloader.add("btnOrangeDown", "images/buttons/btnOrangeDown.png");
@@ -392,12 +393,6 @@ function saveData() {
 		localStorage.setItem('daocasino_hack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
-		// if(openkey){
-			// localStorage.setItem('openkey', openkey);
-		// }
-		// if(privkey){
-			// localStorage.setItem('privkey', privkey);
-		// }
 		// console.log("Saving: ok!");
 	}
 }
@@ -407,7 +402,6 @@ function loadData() {
 		mainet = localStorage.getItem('mainnet')
 		openkey = localStorage.getItem('openkey')
 		privkey = localStorage.getItem('privkey')
-		console.log("load openkey:", openkey)
 		if (localStorage.getItem('daocasino_hack')){
 			var login_str = localStorage.getItem('daocasino_hack')
 			login_obj = JSON.parse(login_str);
@@ -577,8 +571,8 @@ function addButton2(name, _x, _y, _scGr, _scaleX, _scaleY) {
 	obj.scale.y = _scGr*_scaleY;
 	obj.vX = _scaleX;
 	obj.vY = _scaleY;
-	obj.x = _x*_scGr;
-	obj.y = _y*_scGr;
+	obj.x = _x;
+	obj.y = _y;
 	obj.w = objImg.width*_scGr;
 	obj.h = objImg.height*_scGr;
 	obj.r = obj.w/2;

@@ -370,7 +370,6 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
-	// this.resultGameEth(-1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -1080,7 +1079,7 @@ ScrGame.prototype.clickObject = function(evt) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	console.log("sendRequest:", name, url)	
+	// console.log("sendRequest:", name, url)	
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
@@ -1113,7 +1112,7 @@ ScrGame.prototype.sendRequest = function(value) {
 			if(openkey){
 				var adress = openkey.replace('0x','');
 				urlBalance = urlSite+"api?module=account&action=balance&address="+
-							adress+"&tag=latest&apikey=YourApiKeyToken&rnd="+Math.random();
+							adress+"&tag=latest&apikey=YourApiKeyToken"
 				var str = urlBalance;
 				this.sendUrlRequest(str, "getBalance");
 			}
@@ -1156,7 +1155,6 @@ ScrGame.prototype.response = function(command, value) {
 		obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
-		console.log("!!!!!!!!!!!!!!:", obj_game["balance"], Number(obj.result)/1000000000000000000)
 		if(this.oldBalance == -1){
 			// записываем баланс на старте игры
 			this.oldBalance = Number(obj_game["balance"]);

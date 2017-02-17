@@ -13,6 +13,7 @@ WndResult.prototype.init = function(_prnt) {
 	this._callback = undefined;
 	this._arButtons= [];
 	obj["prnt"] = _prnt;
+	obj["main"] = this;
 	
 	var rect = new PIXI.Graphics();
 	rect.beginFill(0x000000).drawRect(-_W/2, -_H/2, _W, _H).endFill();
@@ -43,6 +44,13 @@ WndResult.prototype.init = function(_prnt) {
 	this.addChild(this.btnShare);
 	this._arButtons.push(this.btnShare);
 	this.btnShare.visible = false;
+	this.btnTweetShare = addButton2("btnTweetShare", 500, -200, 0.9);
+	this.btnTweetShare.name = "btnTweet";
+	this.btnTweetShare.interactive = true;
+	this.btnTweetShare.buttonMode=true;
+	this.addChild(this.btnTweetShare);
+	this._arButtons.push(this.btnTweetShare);
+	this.btnTweetShare.visible = false;
 	
 	this.btnOk.interactive = true;
 	this.btnOk.buttonMode=true;
@@ -111,6 +119,7 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 	
 	if(val == 1 && obj_game["gameOver"] == false){
 		this.btnShare.visible = true;
+		this.btnTweetShare.visible = true;
 		this.bgLose.visible = false;
 		this.btnOk.x = -150;
 	} else if(val == 1 && obj_game["gameOver"] == true){
@@ -125,6 +134,30 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 	}
 	
 	this.tfDesc.setText(str);
+}
+
+WndResult.prototype.tweetIntentToAnalytics = function(intentEvent) {
+	console.log("tweetIntentToAnalytics: !!!", intentEvent)
+	if (!intentEvent) return;
+	var label = "tweet";
+	pageTracker._trackEvent(
+		'twitter_web_intents',
+		intentEvent.type,
+		label
+	);
+}
+
+WndResult.prototype.shareTwitter = function() {	
+	// @daocasino @ethereumproject @edcon #blockchain #ethereum
+	if(twttr){
+		twttr.events.bind(
+			'tweet',
+			function (event) {
+				console.log("!!!:", event)
+				console.log("!!! this:", this)
+			}
+		);
+	}
 }
 
 WndResult.prototype.shareFB = function() {	
@@ -170,9 +203,10 @@ WndResult.prototype.clickObj = function(item_mc) {
 		// } else {
 			this._prnt.nextLevel();
 		// }
-		
 	} else if(name == "btnShare"){
 		this.shareFB();
+	} else if(name == "btnTweet"){
+		this.shareTwitter();
 	}
 }
 
@@ -190,6 +224,9 @@ WndResult.prototype.checkButtons = function(evt){
 					if(item_mc.name == "btnShare"){
 						item_mc.scale.x = 0.33;
 						item_mc.scale.y = item_mc.scale.x;
+					} else if(item_mc.name == "btnTweet"){
+						item_mc.scale.x = 1;
+						item_mc.scale.y = item_mc.scale.x;
 					}
 				}
 			}
@@ -201,6 +238,9 @@ WndResult.prototype.checkButtons = function(evt){
 				} else {
 					if(item_mc.name == "btnShare"){
 						item_mc.scale.x = 0.3;
+						item_mc.scale.y = item_mc.scale.x;
+					} else if(item_mc.name == "btnTweet"){
+						item_mc.scale.x = 0.9;
 						item_mc.scale.y = item_mc.scale.x;
 					}
 				}
