@@ -97,7 +97,7 @@ if (localStorage.getItem("isreg")) {
 				localStorage.setItem("isreg",1);
 				localStorage.setItem("mainnet","off");
 				console.log('address and key: ', address, prv_key);
-				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
+				$.get("http://api.dao.casino/daosite/efir.php?eth="+address,function(d){
 					
 					window.location='balance.html';
 				});
