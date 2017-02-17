@@ -148,7 +148,7 @@
 					
 					<div style='margin-top:50px' id="withdraw" >
 						<p>
-							To withdraw your ether insert your ethereum address below and click SEND
+							To withdraw your ether insert your ethereum address below and click WITHDRAW
 						</p>
 						<div class="balanse-wrap__input clearfix">
 							<div class="col-md-4">
@@ -288,20 +288,18 @@
 	<script src="libs/jquery.cookie.js"></script>
 	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
-	<script src="js/common.js"></script>
+	
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("#setCookie").click(function () {
-				$.cookie("popup", "24house", {expires: 0} );
-				$("#bg_popup").hide();
-			});
+		
 			
 			if ( $.cookie("popup") == null )
 			{
 				setTimeout(function(){
 					$("#bg_popup").show();
-				}, 4000)
+					$.cookie("popup", "24house", {expires: 0} );
+				}, 1000)
 			}
 			else { $("#bg_popup").hide();
 		}
@@ -310,129 +308,15 @@
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script>
-		if (localStorage.getItem("isreg")) {
-			$("#isreg").show();
-			$("#regbut").hide();
-		} else {
-			$("#isreg").hide();
-			$("#regbut").css("visibility","visible");
-			
-		}
-
-		var secretSeed = lightwallet.keystore.generateRandomSeed();
-		$("#seed").html(secretSeed);
-		if (!localStorage.getItem("openkey")) {
-			var secretSeed = lightwallet.keystore.generateRandomSeed();
-			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
-				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-				ks.generateNewAddress(pwDerivedKey, 1);
-				var address = ks.getAddresses()[0];
-				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
-				localStorage.setItem("openkey",address);
-				localStorage.setItem("privkey",prv_key);
-
-				console.log('address and key: ', address, prv_key);
-				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
-					console.log(d);
-				});
-			});
-		}
-		
-		function wallet_open(secretSeed) { //box aerobic sweet proof warfare alone atom snake amateur spy couple side
-			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
-				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-				ks.generateNewAddress(pwDerivedKey, 1);
-				var address = ks.getAddresses()[0];
-				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
-				localStorage.setItem("openkey","0x"+address);
-				localStorage.setItem("privkey",prv_key);
-				localStorage.setItem("isreg",1);
-				
-				console.log('address and key: ', address, prv_key);
-				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
-					console.log(d);
-					window.location='/';
-				});
-				
-			});
-		}
-		
-		
-		function setCookie(name, value, options) {
-			options = options || {};
-			options.expires = 10000000;
-			var expires = options.expires;
-
-			if (typeof expires == "number" && expires) {
-				var d = new Date();
-				d.setTime(d.getTime() + expires * 1000);
-				expires = options.expires = d;
-			}
-			if (expires && expires.toUTCString) {
-				options.expires = expires.toUTCString();
-			}
-
-			value = encodeURIComponent(value);
-
-			var updatedCookie = name + "=" + value;
-
-			for (var propName in options) {
-				updatedCookie += "; " + propName;
-				var propValue = options[propName];
-				if (propValue !== true) {
-					updatedCookie += "=" + propValue;
-				}
-			}
-
-			document.cookie = updatedCookie;
-		}
-		
-		var lochash    = location.hash.substr(1);
-		if (ref = lochash.substr(lochash.indexOf('ref_')).split('_')[1]) {
-			setCookie("ref",ref);
-		}
-
-		
-		$(".toggle-bg").click(function(){
-			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val());
-			if (!localStorage.getItem("mainnet")) {localStorage.setItem("mainnet","off");}
-			rebalance();
-		});
-		
-		
-		
-		if (localStorage.getItem("mainnet") == "on") {
-			
-			$(".free-money").addClass("free-money__enable");
-			$(".real-money").addClass("free-money__disabled");
-			rebalance();
-			$("#checked-on").click();
-			localStorage.setItem("mainnet","on");
-		} else {
-			rebalance();
-		}
-		var totalwei;
-		function rebalance() {	
-			$("#balance").html("? ETH");
-			setTimeout(function(){
-				var u='testnet.etherscan.io';
-				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
-				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
-					$("#balance").html(d.result/1000000000000000000+" ETH");
-					totalwei = d.result;
-				});
-
-			},1000);
-		}
 		
 		
 		$("#myado").html(localStorage.getItem("openkey"));
 		
 		
 	</script>
+	<script src="js/common.js"></script>
 	
 	<script src='https://rawgit.com/ethereumjs/browser-builds/master/dist/ethereumjs-all.js' async></script>
+	
 </body>
 </html>

@@ -84,23 +84,6 @@ if (localStorage.getItem("isreg")) {
 
 		var secretSeed = lightwallet.keystore.generateRandomSeed();
 		$("#seed").html(secretSeed);
-		if (!localStorage.getItem("openkey")) {
-			var secretSeed = lightwallet.keystore.generateRandomSeed();
-			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
-				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-				ks.generateNewAddress(pwDerivedKey, 1);
-				var address = ks.getAddresses()[0];
-				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
-				localStorage.setItem("openkey",address);
-				localStorage.setItem("privkey",prv_key);
-
-				console.log('address and key: ', address, prv_key);
-				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
-					console.log(d);
-				});
-			});
-		}
 		
 		function wallet_open(secretSeed) { //box aerobic sweet proof warfare alone atom snake amateur spy couple side
 			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
@@ -115,8 +98,8 @@ if (localStorage.getItem("isreg")) {
 				
 				console.log('address and key: ', address, prv_key);
 				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
-					console.log(d);
-					window.location='/';
+					
+					window.location='balance.html';
 				});
 				
 			});
