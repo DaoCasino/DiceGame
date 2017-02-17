@@ -133,7 +133,7 @@ WndResult.prototype.shareFB = function() {
 		  picture: urlImg,
 		  link: urlGame,
 		  caption: 'PLAY',
-		  description: 'I passed Level ' + _prnt.curLevel,
+		  description: 'Hack the DAO Level ' + _prnt.curLevel,
 		}, function(response){});
 	} else {
 		console.log("FB is not defined");

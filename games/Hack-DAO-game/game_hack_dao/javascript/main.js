@@ -72,16 +72,23 @@ function initGame() {
 	font2.y = -120;
 	stage.addChild(font2);
 	
-	betslevel[0] = {win:100, koef:1};
-	betslevel[1] = {win:90, koef:1.09, bet:1};
-	betslevel[2] = {win:80, koef:1.22, bet:1.09};
-	betslevel[3] = {win:70, koef:1.40, bet:1.3298};
-	betslevel[4] = {win:60, koef:1.63, bet:1.86172};
-	betslevel[5] = {win:50, koef:1.96, bet:3.0346036};
-	betslevel[6] = {win:40, koef:2.45, bet:5.947823056};
-	betslevel[7] = {win:30, koef:3.26, bet:14.5721664872};
-	betslevel[8] = {win:20, koef:4.9, bet:47.505262748272};
-	betslevel[9] = {win:10, koef:9.8, bet:232.7757874665328};
+	// eth = 1
+	// betslevel[1] = {win:90, koef:1.09, bet:1};
+	// betslevel[2] = {win:80, koef:1.22, bet:1.09};
+	// betslevel[3] = {win:70, koef:1.40, bet:1.3298};
+	// betslevel[4] = {win:60, koef:1.63, bet:1.86172};
+	// betslevel[5] = {win:50, koef:1.96, bet:3.0346036};
+	// betslevel[6] = {win:40, koef:2.45, bet:5.947823056};
+	// betslevel[7] = {win:30, koef:3.26, bet:14.5721664872};
+	// betslevel[8] = {win:20, koef:4.9, bet:47.505262748272};
+	// betslevel[9] = {win:10, koef:9.8, bet:232.7757874665328};
+	
+	// eth = 0.2
+	betslevel[1] = {win:90, koef:1.09, bet:0.2};
+	betslevel[2] = {win:80, koef:1.22, bet:0.2105};
+	betslevel[3] = {win:70, koef:1.40, bet:0.2606};
+	betslevel[4] = {win:60, koef:1.63, bet:0.3612};
+	betslevel[5] = {win:50, koef:1.96, bet:0.58};
 	
 	// soundManager = new SoundManager();
 	// soundManager.currentMusic = "none";
