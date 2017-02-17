@@ -15,7 +15,7 @@ var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
 var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
-var optionsTo = "0xcd3e727275bc2f511822dc9a26bd7b0bbf161784";
+var optionsTo = "0";//"0xcd3e727275bc2f511822dc9a26bd7b0bbf161784";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
