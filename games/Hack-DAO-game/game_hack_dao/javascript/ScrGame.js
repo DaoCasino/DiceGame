@@ -68,9 +68,8 @@ ScrGame.prototype.init = function() {
 	this.countOld = 0;
 	
 	if(options_testnet){
-		// поменял с 15.02 , старый "0xE8B4B0C645B28999c33e527236185B01E4b89F3a";
 		urlSite = "https://testnet.etherscan.io/";
-		optionsTo = "0xA14a73EEd098123fA38cA49c64DCb0a34B02e5a1";
+		optionsTo = "0x404acb3e7b1f0a2c2ea452f027f28e65f75d8e15";
 	} else {
 		betEth = 200000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
