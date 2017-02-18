@@ -308,7 +308,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.barDao.visible = false;
 			this.itemDao.x = _W/2;
 			this.itemDao.y = 500;
-			this.valueLevelMax = 5000;
+			this.valueLevelMax = 15000;
 			this.tfTitleLevel.setText("Lost money: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
 		case 3:
