@@ -1108,11 +1108,13 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 			  if (i.transactionHash == resultTxid) {
 					if (i.data.match(/77696e/i)) {
 						console.log("MATCH !!!! 1");
-						return 1;
+						obj_game["game"].getResponseResult(1);
+						return false;
 					}
 					if (i.data.match(/6c6f7365/i)) {
 						console.log("MATCH !!!! -1");
-						return -1;
+						obj_game["game"].getResponseResult(-1);
+						return false;
 					}
 			  }
 		});
@@ -1120,7 +1122,7 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 		});
     },"json");
 	
-	return 0;
+	obj_game["game"].getResponseResult(0);
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
@@ -1166,9 +1168,7 @@ ScrGame.prototype.sendRequest = function(value) {
 				// var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 				// var str = urlResult + "=" + this.idGame;
 				// this.sendUrlRequest(str, "resultGame");
-				var val = this.getResult(this.idGame, optionsTo, urlSite)
-				console.log("val getResult:", val);
-				this.getResponseResult(val);
+				this.getResult(this.idGame, optionsTo, urlSite)
 				// this.sendRequest("getBalance");
 			}
 		} else if(value == "getBalance"){
