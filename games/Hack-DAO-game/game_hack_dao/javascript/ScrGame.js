@@ -1085,8 +1085,9 @@ ScrGame.prototype.clickObject = function(evt) {
 
 ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {   
 	console.log("getResult", txid,optionsTo,urlSite)
+	var resultTxid = undefined;
     $.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0xd8cfd15a18acf055da86af88b707b6b949547c68600ee3545bf254a1261bc3c7&topic1=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
-		var resultTxid = undefined;
+		console.log("each 1");
 		$.each(d.result,function(v,i){
 			if (i.transactionHash == txid) {
 				var idgame = i.data; //id игры
@@ -1101,6 +1102,7 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 
 		$.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
 
+		console.log("each 2");
 		$.each(d.result,function(v,i){
 			  if (i.transactionHash == resultTxid) {
 					console.log(i.data);
