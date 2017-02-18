@@ -1104,6 +1104,7 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 
 		console.log("each 2");
 		$.each(d.result,function(v,i){
+			console.log(v, i.transactionHash, resultTxid);
 			  if (i.transactionHash == resultTxid) {
 					if (i.data.match(/77696e/i)) {
 						console.log("MATCH !!!! 1");
