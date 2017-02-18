@@ -1083,36 +1083,29 @@ ScrGame.prototype.clickObject = function(evt) {
 	}
 }
 
-ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {   
-	console.log("getResult", txid,optionsTo,urlSite)
+ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 	var resultTxid = undefined;
     $.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0xd8cfd15a18acf055da86af88b707b6b949547c68600ee3545bf254a1261bc3c7&topic1=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
-		console.log("each 1");
 		$.each(d.result,function(v,i){
 			if (i.transactionHash == txid) {
 				var idgame = i.data; //id игры
 				$.each(d.result,function(v,i){
 					if (i.transactionHash != txid && i.data == idgame) {
 						resultTxid = i.transactionHash;
-						console.log("resultTxid: "+resultTxid);
 					}
 				});
 			}
 		});
 
 		$.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
-
-		console.log("each 2");
+		
 		$.each(d.result,function(v,i){
-			console.log(v, i.transactionHash, resultTxid);
 			  if (i.transactionHash == resultTxid) {
 					if (i.data.match(/77696e/i)) {
-						console.log("MATCH !!!! 1");
 						obj_game["game"].getResponseResult(1);
 						return false;
 					}
 					if (i.data.match(/6c6f7365/i)) {
-						console.log("MATCH !!!! -1");
 						obj_game["game"].getResponseResult(-1);
 						return false;
 					}
@@ -1143,7 +1136,6 @@ ScrGame.prototype.sendUrlRequest = function(url, name) {
 }
 
 ScrGame.prototype.getResponseResult = function(value) {
-	console.log("getResponseResult:", value)
 	var val = Number(value);
 	if(val == 0){
 		this.clickDAO = true
@@ -1163,7 +1155,6 @@ ScrGame.prototype.sendRequest = function(value) {
 			}
 		} else if(value == "idGame"){
 			if(this.idGame){
-				console.log("!!!!!!!!!!!!!!!!!!!!!: send getResult")
 				this.clickDAO = false;
 				// var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 				// var str = urlResult + "=" + this.idGame;
