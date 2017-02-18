@@ -1152,6 +1152,8 @@ ScrGame.prototype.sendRequest = function(value) {
 		} else if(value == "idGame"){
 			if(this.idGame){
 				this.clickDAO = false;
+				console.log("sendRequest: getResult")
+				this.sendRequest("getBalance");
 				// var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 				// var str = urlResult + "=" + this.idGame;
 				// this.sendUrlRequest(str, "resultGame");
@@ -1509,7 +1511,7 @@ ScrGame.prototype.update = function() {
 		this.bSendRequest == false){
 			this.bSendRequest = true;
 			this.timeGetResult = 0;
-			this.sendRequest("getBalance");
+			this.sendRequest("idGame");
 		}
 	}
 	
