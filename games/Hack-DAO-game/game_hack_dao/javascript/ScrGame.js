@@ -1105,13 +1105,15 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 		console.log("each 2");
 		$.each(d.result,function(v,i){
 			  if (i.transactionHash == resultTxid) {
-					console.log(i.data);
+					console.log("i.data:", i.data);
 					console.log("!!!! 1:", i.data.match(/77696e/i));
 					console.log("!!!! -1:",i.data.match(/6c6f7365/i));
 					if (i.data.match(/77696e/i)) {
+						console.log("MATCH !!!! 1");
 						return 1;
 					}
 					if (i.data.match(/6c6f7365/i)) {
+						console.log("MATCH !!!! -1");
 						return -1;
 					}
 			  }
@@ -1162,13 +1164,14 @@ ScrGame.prototype.sendRequest = function(value) {
 			}
 		} else if(value == "idGame"){
 			if(this.idGame){
+				console.log("!!!!!!!!!!!!!!!!!!!!!: send getResult")
 				this.clickDAO = false;
-				this.sendRequest("getBalance");
 				// var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 				// var str = urlResult + "=" + this.idGame;
 				// this.sendUrlRequest(str, "resultGame");
 				var val = this.getResult(this.idGame, optionsTo, urlSite)
 				this.getResponseResult(val);
+				this.sendRequest("getBalance");
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
@@ -1516,6 +1519,7 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
+	console.log("update:", login_obj["startGame"], this.bSendRequest, this.timeGetResult+"/"+TIME_GET_RESULT);
 	if(this.idGame && login_obj["startGame"]){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
