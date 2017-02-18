@@ -12,10 +12,10 @@ var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 1000;
 var TIME_RESPAWN_MINER = 5000;
 var TIME_RESPAWN_HACKER = 1500;
-var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
+var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
-var optionsTo = "0xcd3e727275bc2f511822dc9a26bd7b0bbf161784";
+var optionsTo = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
