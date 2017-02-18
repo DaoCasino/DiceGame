@@ -1,3 +1,46 @@
+/*
+	сергей когда получаешь id игры , вместо проверки по балансу делай проверку через эту функцию, только optionsTo и urlSite передавай корректные в зависимости от тестнета
+	optionsTo в тестнете = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
+	
+	пример использования getResult("0x3adbcc77231273bf718a3f38f129b421cc9fecdc987fec46d19326e37ed816fa","0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498","https://testnet.etherscan.io/",alert)
+	
+	function getResult(txid,optionsTo,urlSite,callback) {
+    
+    $.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0xd8cfd15a18acf055da86af88b707b6b949547c68600ee3545bf254a1261bc3c7&topic1=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
+    $.each(d.result,function(v,i){
+        if (i.transactionHash == txid) {
+            var idgame = i.data; //id игры
+            $.each(d.result,function(v,i){
+                if (i.transactionHash != txid && i.data == idgame) {
+                    resultTxid = i.transactionHash;
+                    console.log("resultTxid: "+resultTxid);
+
+                }
+            });
+        }
+
+    });
+
+    $.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
+
+    $.each(d.result,function(v,i){
+          if (i.transactionHash == resultTxid) {
+                console.log(i.data);
+                if (i.data.match(/77696e/i)) callback(1);
+                if (i.data.match(/6c6f7365/i)) callback(-1);
+          }
+    });
+	
+    });
+
+
+    },"json");
+
+}
+
+
+	*/
+
 function ScrGame() {
 	PIXI.Container.call( this );
 	this.init();
@@ -11,8 +54,6 @@ var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 1000;
 var TIME_RESPAWN_MINER = 5000;
 var TIME_RESPAWN_HACKER = 1500;
-var urlRequest = "http://92.243.94.148/daohack/api.php?a=start";
-var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
 var optionsTo = "0";//"0xcd3e727275bc2f511822dc9a26bd7b0bbf161784";
@@ -21,6 +62,8 @@ var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
 var _mouseX;
 var _mouseY;
+var blockNumber;
+
 	
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
@@ -70,11 +113,13 @@ ScrGame.prototype.init = function() {
 	
 	if(options_testnet){
 		urlSite = "https://testnet.etherscan.io/";
-		optionsTo = "0x404acb3e7b1f0a2c2ea452f027f28e65f75d8e15";
+		optionsTo = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 	} else {
 		betEth = 200000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
 	}
+	
+
 	
 	// если идет еще старая сессия, загружаем её
 	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
