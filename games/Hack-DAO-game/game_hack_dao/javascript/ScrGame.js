@@ -1083,7 +1083,8 @@ ScrGame.prototype.clickObject = function(evt) {
 	}
 }
 
-ScrGame.prototype.getResult = function(txid,optionsTo,urlSite,callback) {    
+ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {   
+	console.log("getResult", txid,optionsTo,urlSite)
     $.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0xd8cfd15a18acf055da86af88b707b6b949547c68600ee3545bf254a1261bc3c7&topic1=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
 		var resultTxid = undefined;
 		$.each(d.result,function(v,i){
@@ -1097,11 +1098,6 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite,callback) {
 				});
 			}
 		});
-		
-		if(resultTxid == undefined){
-			callback(0);
-			return false;
-		}
 
 		$.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
 
@@ -1109,20 +1105,18 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite,callback) {
 			  if (i.transactionHash == resultTxid) {
 					console.log(i.data);
 					if (i.data.match(/77696e/i)) {
-						callback(1);
-						return false;
+						return 1;
 					}
 					if (i.data.match(/6c6f7365/i)) {
-						callback(-1);
-						return false;
+						return -1;
 					}
 			  }
 		});
 		
-		callback(0);
-		
 		});
     },"json");
+	
+	return 0;
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
@@ -1165,12 +1159,12 @@ ScrGame.prototype.sendRequest = function(value) {
 		} else if(value == "idGame"){
 			if(this.idGame){
 				this.clickDAO = false;
-				console.log("sendRequest: getResult")
 				this.sendRequest("getBalance");
 				// var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
 				// var str = urlResult + "=" + this.idGame;
 				// this.sendUrlRequest(str, "resultGame");
-				this.getResult(this.idGame, optionsTo, urlSite, this.getResponseResult)
+				var val = this.getResult(this.idGame, optionsTo, urlSite)
+				this.getResponseResult(val);
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
