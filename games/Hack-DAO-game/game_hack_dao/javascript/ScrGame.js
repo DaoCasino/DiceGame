@@ -1146,7 +1146,6 @@ ScrGame.prototype.getResponseResult = function(value) {
 		this.clickDAO = true
 		this.timeGetResult = 0;
 		this.bSendRequest = false;
-		this.sendRequest("getBalance");
 	} else {
 		this.resultGameEth(val);
 	}
@@ -1169,7 +1168,7 @@ ScrGame.prototype.sendRequest = function(value) {
 				var val = this.getResult(this.idGame, optionsTo, urlSite)
 				console.log("val getResult:", val);
 				this.getResponseResult(val);
-				this.sendRequest("getBalance");
+				// this.sendRequest("getBalance");
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
