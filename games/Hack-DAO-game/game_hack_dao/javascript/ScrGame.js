@@ -1105,9 +1105,6 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 		console.log("each 2");
 		$.each(d.result,function(v,i){
 			  if (i.transactionHash == resultTxid) {
-					console.log("i.data:", i.data);
-					console.log("!!!! 1:", i.data.match(/77696e/i));
-					console.log("!!!! -1:",i.data.match(/6c6f7365/i));
 					if (i.data.match(/77696e/i)) {
 						console.log("MATCH !!!! 1");
 						return 1;
@@ -1170,6 +1167,7 @@ ScrGame.prototype.sendRequest = function(value) {
 				// var str = urlResult + "=" + this.idGame;
 				// this.sendUrlRequest(str, "resultGame");
 				var val = this.getResult(this.idGame, optionsTo, urlSite)
+				console.log("val getResult:", val);
 				this.getResponseResult(val);
 				this.sendRequest("getBalance");
 			}
@@ -1519,7 +1517,6 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	console.log("update:", login_obj["startGame"], this.bSendRequest, this.timeGetResult+"/"+TIME_GET_RESULT);
 	if(this.idGame && login_obj["startGame"]){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
