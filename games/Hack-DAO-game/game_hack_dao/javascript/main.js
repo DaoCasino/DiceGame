@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.53"
+var version = "v. 1.0.54"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -157,7 +157,7 @@ function loadManifest(){
 	preloader.add("itemHero", "images/items/itemHero.png");
 	preloader.add("itemHeroW", "images/items/itemHeroW.png");
 	preloader.add("itemDao", "images/items/itemDao.png");
-	preloader.add("itemEgg", "images/items/itemEgg.png");
+	preloader.add("eggPart", "images/items/eggPart.png");
 	preloader.add("iconEthereum", "images/items/iconEthereum.png");
 	preloader.add("cloud1", "images/items/cloud1.png");
 	preloader.add("cloud2", "images/items/cloud2.png");

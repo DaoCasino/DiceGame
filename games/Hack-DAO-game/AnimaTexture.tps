@@ -221,54 +221,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">anima/daoCure/daoCure_0001.png</key>
-            <key type="filename">anima/daoCure/daoCure_0002.png</key>
-            <key type="filename">anima/daoCure/daoCure_0003.png</key>
-            <key type="filename">anima/daoCure/daoCure_0004.png</key>
-            <key type="filename">anima/daoCure/daoCure_0005.png</key>
-            <key type="filename">anima/daoCure/daoCure_0006.png</key>
-            <key type="filename">anima/daoCure/daoCure_0007.png</key>
-            <key type="filename">anima/daoCure/daoCure_0008.png</key>
-            <key type="filename">anima/daoCure/daoCure_0009.png</key>
-            <key type="filename">anima/daoCure/daoCure_0010.png</key>
-            <key type="filename">anima/daoCure/daoCure_0011.png</key>
-            <key type="filename">anima/daoCure/daoCure_0012.png</key>
-            <key type="filename">anima/daoCure/daoCure_0013.png</key>
-            <key type="filename">anima/daoCure/daoCure_0014.png</key>
-            <key type="filename">anima/daoCure/daoCure_0015.png</key>
-            <key type="filename">anima/daoCure/daoCure_0016.png</key>
-            <key type="filename">anima/daoCure/daoCure_0017.png</key>
-            <key type="filename">anima/daoCure/daoCure_0018.png</key>
-            <key type="filename">anima/daoCure/daoCure_0019.png</key>
-            <key type="filename">anima/daoCure/daoCure_0020.png</key>
-            <key type="filename">anima/daoCure/daoCure_0021.png</key>
-            <key type="filename">anima/daoCure/daoCure_0022.png</key>
-            <key type="filename">anima/daoCure/daoCure_0023.png</key>
-            <key type="filename">anima/daoCure/daoCure_0024.png</key>
-            <key type="filename">anima/daoCure/daoCure_0025.png</key>
-            <key type="filename">anima/daoCure/daoCure_0026.png</key>
-            <key type="filename">anima/daoCure/daoCure_0027.png</key>
-            <key type="filename">anima/daoCure/daoCure_0028.png</key>
-            <key type="filename">anima/daoCure/daoCure_0029.png</key>
-            <key type="filename">anima/daoCure/daoCure_0030.png</key>
-            <key type="filename">anima/daoCure/daoCure_0031.png</key>
-            <key type="filename">anima/daoCure/daoCure_0032.png</key>
-            <key type="filename">anima/daoCure/daoCure_0033.png</key>
-            <key type="filename">anima/daoCure/daoCure_0034.png</key>
-            <key type="filename">anima/daoCure/daoCure_0035.png</key>
-            <key type="filename">anima/daoCure/daoCure_0036.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>40,58,81,117</rect>
-                <key>scale9Paddings</key>
-                <rect>40,58,81,117</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">anima/daoDamage/daoDamage_0001.png</key>
             <key type="filename">anima/daoDamage/daoDamage_0002.png</key>
             <key type="filename">anima/daoDamage/daoDamage_0003.png</key>
@@ -319,14 +271,6 @@
             <key type="filename">anima/daoRunMoney/daoRunMoney_0010.png</key>
             <key type="filename">anima/daoRunMoney/daoRunMoney_0011.png</key>
             <key type="filename">anima/daoRunMoney/daoRunMoney_0012.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0013.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0014.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0015.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0016.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0017.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0018.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0019.png</key>
-            <key type="filename">anima/daoRunMoney/daoRunMoney_0020.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -336,6 +280,51 @@
                 <rect>26,58,52,116</rect>
                 <key>scale9Paddings</key>
                 <rect>26,58,52,116</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">anima/daoStay2/daoStay2_0001.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0002.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0003.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0004.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0005.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0006.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0007.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0008.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0009.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0010.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0011.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0012.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0013.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0014.png</key>
+            <key type="filename">anima/daoStay2/daoStay2_0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>30,65,60,130</rect>
+                <key>scale9Paddings</key>
+                <rect>30,65,60,130</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">anima/daoStay3/daoStay3_0001.png</key>
+            <key type="filename">anima/daoStay3/daoStay3_0002.png</key>
+            <key type="filename">anima/daoStay3/daoStay3_0003.png</key>
+            <key type="filename">anima/daoStay3/daoStay3_0004.png</key>
+            <key type="filename">anima/daoStay3/daoStay3_0005.png</key>
+            <key type="filename">anima/daoStay3/daoStay3_0006.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>38,63,77,125</rect>
+                <key>scale9Paddings</key>
+                <rect>38,63,77,125</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

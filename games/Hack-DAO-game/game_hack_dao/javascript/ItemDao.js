@@ -22,6 +22,8 @@ ItemDao.prototype.init = function() {
 	this.speed = 15;
 	this.rr = 50*50;
 	this._move = false;
+	this._weary = false;
+	this.timeRun = 0;
 	this._ptMove;
 	this._angleMove = 0;
 	
@@ -91,19 +93,19 @@ ItemDao.prototype.initMove = function(point){
 	if(this.sprite){}else{
 		return false;
 	}
-	if (Math.abs(this.x - point.x) < this.speed){
+	if (Math.abs(this.x - point.x) < this.speed*5 || this._weary){
 		return false;
 	}
-	// this.setAct("Run");
+	this.setAct("RunMoney");
 	this._move = true;
 	this._ptMove = point;
 	this._angleMove = Math.atan2(this._ptMove.y-(this.y), this._ptMove.x-(this.x));
 	
-	// if(this._ptMove.x < this.x){
-		// this.sprite.scale.x = 1*Math.abs(this.sprite.scale.x);
-	// } else {
-		// this.sprite.scale.x = -1*Math.abs(this.sprite.scale.x);
-	// }
+	if(this._ptMove.x < this.x){
+		this.sprite.scale.x = 1*Math.abs(this.sprite.scale.x);
+	} else {
+		this.sprite.scale.x = -1*Math.abs(this.sprite.scale.x);
+	}
 }
 
 ItemDao.prototype.move = function(){
@@ -115,13 +117,12 @@ ItemDao.prototype.move = function(){
 	var yMov = speed*sinAngle;
 	this.x += Math.round(xMov);
 	// this.y += Math.round(yMov);
-	if (Math.abs(this.x - this._ptMove.x) < this.speed && 
-	Math.abs(this.y - this._ptMove.y) < this.speed) {
+	if (Math.abs(this.x - this._ptMove.x) < this.speed) {
 		this._move = false;
 		if(this.sprite){
-			// if(this.act == "RunMoney"){
-				// this.sprite.img.gotoAndStop(1);
-			// }
+			if(this.act == "RunMoney"){
+				this.setAct("Stay2");
+			}
 		}
 	}
 }
@@ -154,6 +155,19 @@ ItemDao.prototype.update = function(diffTime) {
 	}
 	
 	if(this._move){
+		this.timeRun += diffTime;
 		this.move();
+		if(this.timeRun > 10000){
+			this._move = false;
+			this._weary = true;
+			this.setAct("Stay3");
+			this.timeRun = 2000;
+		}
+	} else {
+		if(this.timeRun > 0){
+			this.timeRun -= diffTime;
+		} else {
+			this._weary = false;
+		}
 	}
 }

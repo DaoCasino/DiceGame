@@ -331,28 +331,6 @@ ScrGame.prototype.createLevel = function() {
 			this.groundY = 425;
 			this.damage = 10;
 			this.tfTitleLevel.setText("Stolen money: $" + this.valueLevel + "/" + this.valueLevelMax);
-			
-			
-			/*this.itemDao.setSkin("dao");
-			this.itemDao.setAct("Stay")
-			this.itemDao.dead = false;
-			this.itemDao.visible = true;
-			this.itemDao.barDao.visible = true;
-			this.itemDao.sprite.interactive = true;
-			this.hintArrow.visible = true;
-			this.itemDao.x = 900;
-			this.itemDao.y = 500;
-			this.damage = 150;
-			var str = "itemHero";
-			// if(this.curLevel == 5){
-				// str = "itemHeroW";
-				// this.damage = 20;
-			// }
-			
-			this.hero = addObj(str, 660, 500, 1, -1);
-			this.game_mc.addChild(this.hero);
-			this.valueLevelMax = 10;
-			this.tfTitleLevel.setText("Old contract: " + this.valueLevel + "/" + this.valueLevelMax);*/
 			break;
 		case 5:
 			this.groundY = 600;
@@ -617,13 +595,19 @@ ScrGame.prototype.showWndStart = function() {
 	this.createWndInfo(str, this.startGameF, addStr);
 }
 
-ScrGame.prototype.createIcoEthereum = function() {
+ScrGame.prototype.createIcoEthereum = function(name) {
 	var dX = 100
+	var dY = 100
 	var _x = this.itemDao.x + Math.random()*dX - dX/2
 	var _y = this.itemDao.y - 50
+	if(name == "eggPart"){
+		dX = 150
+		_x = this.itemDao.x + Math.random()*dX - dX/2
+		_y = this.itemDao.y + Math.random()*dY - dY/2 - 50
+	}
 	var pt = {x:_x, y:_y}
 	var str = "-"+String(this.damage)
-	this.createObj(pt, "iconEthereum");
+	this.createObj(pt, name);
 }
 
 ScrGame.prototype.createText = function(point, str, color, t) {
@@ -765,6 +749,20 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		mc.tLife = 300000;
 		mc.health = mc.healthMax;
 		mc.refreshHealth();
+	} else if(mc.name == "eggPart"){
+		mc.alpha = 1;
+		mc.speed = 5;
+		mc.angleMove = Math.atan2(point.y-(this.itemDao.y), point.x-(this.itemDao.x));
+		mc.cosAngle = Math.cos(mc.angleMove);
+		mc.sinAngle = Math.sin(mc.angleMove);
+		mc.vX = 1;
+		mc.tLife = 650;
+		mc.rotation = rad(Math.random()*360);
+		mc.scale.x = (Math.random()*8+2)/10;
+		mc.scale.y = mc.scale.x;
+		if(Math.random() < 0.5){
+			mc.vX = -1;
+		}
 	}
 	
 	if(mc.tLife == undefined){
@@ -960,7 +958,10 @@ ScrGame.prototype.clickHeroDao = function() {
 			this.itemDao.setAct("Cure")
 		}
 	}
-	this.createIcoEthereum();
+	this.createIcoEthereum("iconEthereum");
+	this.createIcoEthereum("eggPart");
+	this.createIcoEthereum("eggPart");
+	this.createIcoEthereum("eggPart");
 }
 
 ScrGame.prototype.healthDao = function() {
@@ -1363,7 +1364,7 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					} else {
 						mc.y += mc.speed
 					}
-					mc.x += mc.speed/3*mc.vX
+					mc.x += mc.speed/2*mc.vX
 				} else if(this.curLevel == 2){
 					mc.y += mc.speed
 					mc.x += mc.speed/5*mc.vX
@@ -1395,6 +1396,13 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					var t = Math.ceil(Math.random()*2)
 					this.createObj({x:-400, y:50+Math.random()*100}, "cloud"+t)
 				}
+			} else if(mc.name == "eggPart"){
+				if(mc.alpha > 0.05){
+					mc.alpha -=0.02
+				}
+				mc.x += mc.speed*mc.cosAngle;
+				mc.y += mc.speed*mc.sinAngle;
+				mc.rotation +=rad(5)*mc.vX;
 			} else if(mc.name == "daoAppear"){
 				if(mc.img.currentFrame >= mc.img.totalFrames - 1){
 					mc.img.stop();
@@ -1547,7 +1555,7 @@ ScrGame.prototype.update = function() {
 		if(this.showTimeEthereum < 0){
 			this.showTimeEthereum = 100;
 			this.showWinEthereum --;
-			this.createIcoEthereum();
+			this.createIcoEthereum("iconEthereum");
 		}
 	}
 	
