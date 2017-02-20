@@ -7,7 +7,7 @@ function error(mes) {
 var urlSite = "https://api.etherscan.io/";
 urlSite = "https://testnet.etherscan.io/";
 var urlBalance = "";
-var optionsTo = "0x692a70d2e424a56d2c6c27aa97d1a86395877b3a"; // cotract
+var optionsTo = "0xb8b53caa3ff81699f4641e028f1561cbd5ef2577 "; // cotract
 var betEth = 200000000000000000; //ставка эфира
 var obj_game = {};
 obj_game["game"] = this;
