@@ -786,8 +786,6 @@ ScrGame.prototype.startGameEth = function(){
 		obj_game["game"].showError(ERROR_KEY);
 		return false;
 	}
-	// To play the game send 1 ether [confirm]
-	// win odds ... mult...
 	var openKey = openkey.substr(2);
 	
 	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",function(d){

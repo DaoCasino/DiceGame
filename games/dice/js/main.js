@@ -5,13 +5,9 @@ urlSite = "https://testnet.etherscan.io/";
 var urlBalance = ""; //balance
 var optionsTo = "0x517d81ed7e87f4ccca98066eeb5133d18616fed9"; // cotract
 var betEth = 200000000000000000; //0,2 ставка эфира
-//var obj_game = {};
-//obj_game["game"] = this;
 var mainet, openkey, privkey;
 var FirstRequest = true;
 var OldBalance;
-
-
 
 /*
 * value - Дробное число.
@@ -20,6 +16,18 @@ var OldBalance;
 function toFixed(value, precision){
     precision = Math.pow(10, precision);
     return Math.ceil(value * precision) / precision;
+}
+
+function numToHex(num) {
+	return num.toString(16);
+}
+function hexToNum(str) {
+	return parseInt(str, 16);
+}
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
 }
 
 function isLocalStorageAvailable() {
@@ -52,7 +60,6 @@ function loadData() {
 	console.log("openkey:", openkey)
 	console.log("privkey:", privkey)
 }
-
 
 function sendUrlRequest(url, name) {
     // console.log("sendRequest:", name, url) 

@@ -363,6 +363,18 @@ function toFixed(value, precision){
 	return Math.ceil(value * precision) / precision;
 }
 
+function numToHex(num) {
+	return num.toString(16);
+}
+function hexToNum(str) {
+	return parseInt(str, 16);
+}
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
 function removeAllScreens() {
 	if(ScreenGame){
 		scrContainer.removeChild(ScreenGame);
