@@ -169,7 +169,7 @@
 								<div class="wrapper-slider">
 									<label for="profit-on-win">Profit on Win</label>
 									<input type="text" value="4.85401395" id="profit-on-win">
-									<label for="roll-dice">
+									<label id="label" for="roll-dice">
 										Click Roll Dice to place your bet:
 									</label>
 									<button id="roll-dice" class="disclaimer-btn registr-now">Roll Dice</button>
@@ -325,6 +325,7 @@
 	<script src="js/eth_api.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/common.js"></script>
+	<script src="js/scrGame.js"></script>
 
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
@@ -440,6 +441,7 @@
 				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
 				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
 					$("#balance").html(d.result/1000000000000000000+" ETH");
+					$("#your-balance").val(d.result/1000000000000000000);
 				});
 
 			},1000);

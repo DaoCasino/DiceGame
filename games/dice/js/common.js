@@ -9,7 +9,7 @@ $(document).ready(function() {
 			min: 1,
 			max: 100,
 			slide: function( event, ui ) {
-				$( "#amount-one" ).val( ui.value );
+				$( "#amount-one" ).val( "50" );
 			}
 		});
 		$( "#amount-one" ).val( $( "#slider-dice-one" ).slider( "value" ) );
@@ -18,11 +18,14 @@ $(document).ready(function() {
 			range: "min",
 			value: 37,
 			min: 1,
-			max: 700,
+			max: 99,
 			slide: function( event, ui ) {
 				$( "#amount-two" ).val( ui.value + "%" );
+				$( "#less-than-wins" ).val( ui.value*100 );
 			}
 		});
+        
+
 		$( "#amount-two" ).val( $( "#slider-dice-two" ).slider( "value" ) + "%" );
 	});
 

@@ -1,17 +1,26 @@
-function error(mes) {
-    
-    alert(mes)
-}
-
-
+var _balance = 0;
+var _idGame = "";
 var urlSite = "https://api.etherscan.io/";
 urlSite = "https://testnet.etherscan.io/";
-var urlBalance = "";
+var urlBalance = ""; //balance
 var optionsTo = "0xb8b53caa3ff81699f4641e028f1561cbd5ef2577"; // cotract
-var betEth = 200000000000000000; //ставка эфира
-var obj_game = {};
-obj_game["game"] = this;
+var betEth = 200000000000000000; //0,2 ставка эфира
+//var obj_game = {};
+//obj_game["game"] = this;
 var mainet, openkey, privkey;
+var FirstRequest = true;
+var OldBalance;
+
+
+
+/*
+* value - Дробное число.
+* precision - Количество знаков после запятой.
+*/
+function toFixed(value, precision){
+    precision = Math.pow(10, precision);
+    return Math.ceil(value * precision) / precision;
+}
 
 function isLocalStorageAvailable() {
     try {
@@ -19,6 +28,17 @@ function isLocalStorageAvailable() {
     } catch (e) {
 		console.log("localStorage_failed:",e);
         return false;
+    }
+}
+
+function initGame() {
+    loadData();
+    
+    if (openkey) {
+        var adress = openkey.replace('0x', '');
+        urlBalance = urlSite + "api?module=account&action=balance&address=" + adress + "&tag=latest&apikey=YourApiKeyToken"
+        var str = urlBalance;
+        this.sendUrlRequest(str, "getBalance");
     }
 }
 
@@ -31,46 +51,40 @@ function loadData() {
 	console.log("mainet:", mainet)
 	console.log("openkey:", openkey)
 	console.log("privkey:", privkey)
-	startGameEth();
 }
 
-// START
-function startGameEth() {
-	if(openkey == undefined){
-		obj_game["game"].showError(ERROR_KEY);
-		return false;
-	}
-	// To play the game send 1 ether [confirm]
-	// win odds ... mult...
-	var openKey = openkey.substr(2);
-	console.log("startGameEth:", openKey)
-	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",function(d){
-		console.log("получили nonce "+d.result);
-		var options = {};
-		options.nonce = d.result;
-		
-		options.to = optionsTo; //адрес нашего смарт контракта
-		options.data = '0xacfff3770000000000000000000000000000000000000000000000000000000000000032';
-		options.gasPrice="0x737be7600";
-		options.gasLimit=0x927c0;
-		options.value = betEth; //ставка
 
-		if(privkey){
-			if(buf == undefined){
-				console.log("ERROR_TRANSACTION");
-			} else {
-				var tx = new EthereumTx(options);
-				tx.sign(new buf(privkey, 'hex')); //приватный ключ игрока, подписываем транзакцию
+function sendUrlRequest(url, name) {
+    // console.log("sendRequest:", name, url) 
+    var xhr = new XMLHttpRequest();
+    var str = url;
+    xhr.open("GET", str, true);
+    xhr.send(null);
+    xhr.onreadystatechange = function () { // (3)
+        if (xhr.readyState != 4) return;
+        if (xhr.status != 200) {
+            console.log("err:" + xhr.status + ': ' + xhr.statusText);
+        }
+        else {
+           response(name, xhr.responseText)
+        }
+    }
+}
 
-				var serializedTx = tx.serialize().toString('hex');
-				
-				console.log("Транзакция подписана: "+serializedTx);
-				$.getJSON(urlSite+"api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
-					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
-					// obj_game["game"].response("idGame", d.result) 
-					console.log("Транзакция отправлена в сеть:", d.result);
-				});
-			}
-		}
-	}, "json");
+
+function response(command, value) {
+    if (value == undefined) {
+        return false;
+    }
+    console.log("response:", command, value)
+    if (command == "getBalance") {
+        var obj = JSON.parse(value);
+       _balance = toFixed((Number(obj.result) / 1000000000000000000), 4);
+        CheckBalance();
+        FirstRequest = false;
+        
+    }
+    else if (command=="idGame"){
+        _idGame = value;
+    }
 }

@@ -796,6 +796,7 @@ ScrGame.prototype.startGameEth = function(){
 		options.nonce = d.result;
 		
 		options.to = optionsTo; //адрес нашего смарт контракта
+		// call function game() in contract
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
