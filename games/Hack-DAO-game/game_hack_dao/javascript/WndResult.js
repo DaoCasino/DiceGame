@@ -139,8 +139,9 @@ WndResult.prototype.show = function(val, str, callback, obj_game) {
 WndResult.prototype.shareTwitter = function() {	
 	// @daocasino @ethereumproject @edcon #blockchain #ethereum
 	if(twttr){
+		var urlGame = 'http://platform.dao.casino/';
 		var url="https://twitter.com/intent/tweet";
-		var str='Hack the DAO Level ' + obj["prnt"].curLevel;
+		var str='Hack the DAO Level ' + obj["prnt"].curLevel + " " + urlGame;
 		var hashtags="blockchain,ethereum";
 		var via="daocasino";
 		window.open(url+"?text="+str+";hashtags="+hashtags+";via="+via,"","width=500,height=300");

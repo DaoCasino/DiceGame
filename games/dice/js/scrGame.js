@@ -17,14 +17,14 @@ function startGameEth() {
 	var callData = "0xacfff3770000000000000000000000000000000000000000000000000000000000000000"
     var openKey = openkey.substr(2);
     callData = callData.substr(0, 8);
-	var bet = 50;
+	var chance = 50;
     console.log("startGameEth:", openKey)
     $.get(urlSite + "api?module=proxy&action=eth_getTransactionCount&address=" + openkey + "&tag=latest&apikey=YourApiKeyToken", function (d) {
         console.log("получили nonce " + d.result);
         var options = {};
         options.nonce = d.result;
         options.to = optionsTo; //адрес нашего смарт контракта
-        options.data = callData + pad(numToHex(bet), 64); //шанс 
+        options.data = callData + pad(numToHex(chance), 64); //шанс 
         options.gasPrice = "0x737be7600";
         options.gasLimit = 0x927c0;
         options.value = betEth; //ставка

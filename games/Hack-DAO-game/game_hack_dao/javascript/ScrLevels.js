@@ -40,7 +40,7 @@ ScrLevels.prototype.init = function() {
 	btnDao.addChild(tfDao);
 	
 	this.createLevels();
-	
+		
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
 	this.on('mousemove', this.touchHandler);

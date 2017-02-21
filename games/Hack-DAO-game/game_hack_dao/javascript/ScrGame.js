@@ -282,18 +282,13 @@ ScrGame.prototype.createLevel = function() {
 	this.itemDao.act = ""
 	this.itemDao.skin = ""
 	
-	if(this.curLevel > 1){
-		this.createObj({x:700, y:150}, "cloud1")
-		this.createObj({x:150, y:200}, "cloud2")
-		this.createObj({x:-400, y:100}, "cloud1")
-	}
-	
 	switch (this.curLevel){
 		case 1:
 			this.itemDao.setSkin("egg");
 			this.itemDao.setAct("Stay")
 			this.itemDao.dead = false;
 			this.itemDao.sprite.interactive = true;
+			this.itemDao.sprite.buttonMode=true;
 			this.itemDao.visible = true;
 			this.hintArrow.visible = true;
 			this.itemDao.x = _W/2-10;
@@ -314,12 +309,13 @@ ScrGame.prototype.createLevel = function() {
 		case 3:
 			this.itemDao.dead = true;
 			this.itemDao.visible = true;
-			this.itemWall = addObj("itemWall", 660, 428);
+			this.itemWall = addObj("itemWall", 660, 500);
+			this.itemWall.visible = false;
 			this.game_mc.addChild(this.itemWall);
-			this.itemHome = addObj("itemHome", 1204, 364);
+			this.itemHome = addObj("itemHome", 1252, 500);
 			this.gfx_mc.addChild(this.itemHome);
 			this.valueLevelMax = 10;
-			this.groundY = 425;
+			this.groundY = 500;
 			this.tfTitleLevel.setText("Bad proposal: " + this.valueLevel + "/" + this.valueLevelMax);
 			break;
 		case 4:
@@ -719,11 +715,12 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		}
 	} else if(mc.name == "itemProposal"){
 		if(Math.random() > 0.5){
-			mc.setBody("Red");
+			mc.setAct("proposalRedRun");
+			mc.color = "Red";
 		} else {
-			mc.setBody("Green");
+			mc.setAct("proposalGreenRun");
+			mc.color = "Green";
 		}
-		mc.setAct("Run");
 		mc.setScaleX(-1);
 		mc.action = "run";
 		mc.state = 1;
@@ -731,7 +728,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		mc.speed = 4;
 		mc.tLife = 300000;
 		mc.showMark = false;
-		mc.mark.visible = false;
+		mc.setMark(1);
 	} else if(mc.name == "itemMiner"){
 		mc.setScale(0.6);
 		mc.setScaleX(-1);
@@ -829,7 +826,6 @@ ScrGame.prototype.resultGameEth = function(val){
 		return false;
 	}
 	this._gameOver = true;
-	var strB = "";
 	
 	// если собрали мало форка
 	if(this.curLevel == 5){
@@ -840,17 +836,12 @@ ScrGame.prototype.resultGameEth = function(val){
 			val = -1;
 		}
 	}
+	this.itemDao.dead = true;
 	
 	if(val == 1){
-		strB = "";
 		this.bResult = true;
 		this.showWinEthereum = 10;
-		this.itemDao.dead = true;
-		if(this.curLevel == 1){
-			this.itemDao.setAct("Win")
-		} else if(this.curLevel == 2){
-			this.itemDao.setAct("Win")
-		}
+		
 		if(this.curLevel < 9){
 		} else {
 			console.log("YOU WIN!");
@@ -858,15 +849,12 @@ ScrGame.prototype.resultGameEth = function(val){
 		addWinLevel(this.curLevel);
 		// this.tfTitleLevel.setText(this.arTitle[this.curLevel]);
 	} else {
-		strB = "";
-		this.itemDao.dead = true;
 		resetLevels();
 	}
 	login_obj["startGame"] = false;
 	login_obj["curLevel"] = false;
 	obj_game["time"] = this.timeTotal;
 	
-	this.itemResult.tfBalance.setText(strB);
 	this.sendRequest("getBalance");
 	this.itemResult.visible = true;
 	this.startGame = false;
@@ -918,6 +906,14 @@ ScrGame.prototype.resultGame = function(val) {
 				dao.img.play();
 				this.game_mc.addChild(dao);
 				this._arHolder.push(dao);
+				createjs.Tween.get(star,{loop:true}).to({rotation:rad(22)},500)
+				createjs.Tween.get(star).to({alpha:1},500)
+				break;
+			case 2:
+				this.itemDao.setAct("Appear")
+				var star = addObj("starAppear", this.itemDao.x, this.itemDao.y);
+				star.alpha = 0;
+				this.back_mc.addChild(star);
 				createjs.Tween.get(star,{loop:true}).to({rotation:rad(22)},500)
 				createjs.Tween.get(star).to({alpha:1},500)
 				break;
@@ -1062,7 +1058,7 @@ ScrGame.prototype.clickObject = function(evt) {
 						if(mc.action == "run" && mc.sprite.scale.x == -1){
 							mc.action = "climb";
 							mc.showMark = true;
-							mc.mark.visible = true;
+							mc.setMark(2);
 							break;
 						}
 					} else if(this.curLevel == 4){
@@ -1156,11 +1152,7 @@ ScrGame.prototype.sendRequest = function(value) {
 		} else if(value == "idGame"){
 			if(this.idGame){
 				this.clickDAO = false;
-				// var urlResult = "http://92.243.94.148/daohack/api.php?a=getreuslt&id";
-				// var str = urlResult + "=" + this.idGame;
-				// this.sendUrlRequest(str, "resultGame");
 				this.getResult(this.idGame, optionsTo, urlSite)
-				// this.sendRequest("getBalance");
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
@@ -1213,11 +1205,6 @@ ScrGame.prototype.response = function(command, value) {
 		} else {
 			// определяем результат, если баланс изменился
 			if(obj_game["balance"] != this.oldBalance){
-				// if(obj_game["balance"]>this.oldBalance){
-					// this.resultGameEth(1);
-				// } else {
-					// this.resultGameEth(-1);
-				// }
 			} else {
 				// повторно запросим баланс через TIME_GET_RESULT мс
 				this.clickDAO = true
@@ -1437,16 +1424,21 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						if(mc.action == "run"){
 							mc.vX = -mc.vX;
 							mc.setScaleX(1);
+							mc.setMark(3)
 						} else if(mc.action == "climb"){
 							mc.state = 2;
-							mc.setAct("Climb");
+							mc.setAct("proposal"+mc.color+"Climb");
+							mc.mark.visible = false;
+							mc.hand.visible = false;
 						}
 					}
 				} else if(mc.state == 2){
 					mc.y -= mc.speed;
 					if(mc.y+mc.h/2 < this.itemWall.y - this.itemWall.h/2){
 						mc.state = 3;
-						mc.setAct("Run");
+						mc.setAct("proposal"+mc.color+"Run");
+						mc.mark.visible = true;
+						mc.hand.visible = true;
 					}
 				} else if(mc.state == 3){
 					mc.x += mc.speed;
@@ -1577,7 +1569,7 @@ ScrGame.prototype.update = function() {
 			this.timeProposal += diffTime;
 			if(this.timeProposal >= TIME_RESPAWN_PROPOSAL){
 				this.timeProposal = 0;
-				this.createObj({x:-60, y:425}, "itemProposal")
+				this.createObj({x:-60, y:500}, "itemProposal")
 			}
 		} else if(this.curLevel == 4){
 			this.timeHacker += diffTime;

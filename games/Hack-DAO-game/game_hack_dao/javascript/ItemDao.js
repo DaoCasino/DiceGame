@@ -59,18 +59,13 @@ ItemDao.prototype.setAct = function(act) {
 	
 	var _x = 0;
 	var _y = 0;
-	if(act == "Cure"){
-		_x = -19;
-	} else if(act == "Win"){
-		_x = -12;
-	}
+	
 	this.sprite = addObj(this.skin+this.act, _x, _y);
-	this.sprite.buttonMode=true;
 	this.item.addChild(this.sprite);
 	this.w = this.sprite.w;
 	this.h = this.sprite.h;
 	
-	if(this.act == "Stay" || this.act == "Lose"){
+	if(this.act == "Stay"){
 	} else {
 		this.sprite.img.play();
 		this.sprite.img.animationSpeed = 0.5;
@@ -90,6 +85,9 @@ ItemDao.prototype.initjiggle = function() {
 }
 
 ItemDao.prototype.initMove = function(point){
+	if(this.dead){
+		return false;
+	}
 	if(this.sprite){}else{
 		return false;
 	}
@@ -133,7 +131,7 @@ ItemDao.prototype.update = function(diffTime) {
 			if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
 				this.setAct("Stay")
 			}
-		} else if(this.act == "Win"){
+		} else if(this.act == "Appear"){
 			if(this.sprite.img.currentFrame >= this.sprite.img.totalFrames - 1){
 				this.sprite.img.stop();
 			}
