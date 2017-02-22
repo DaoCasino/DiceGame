@@ -5,28 +5,37 @@ $(document).ready(function() {
 	$( function() {
 		$( "#slider-dice-one" ).slider({
 			range: "min",
-			value: 50,
+			value: 10,
 			min: 1,
-			max: 100,
+			max: 20,
 			slide: function( event, ui ) {
-				$( "#amount-one" ).val( "50" );
+                betEth = ui.value/10;
+                CheckBet();
+				$( "#amount-one" ).val( ui.value/10 );
+                Refresh();
 			}
 		});
-		$( "#amount-one" ).val( $( "#slider-dice-one" ).slider( "value" ) );
+        
+//        data("#slider-dice-two").slide();
+//        
+//		$( "#amount-one" ).val( $( "#slider-dice-one" ).slider( "value" ) );
 
 		$( "#slider-dice-two" ).slider({
 			range: "min",
-			value: 37,
+			value: 50,
 			min: 1,
 			max: 99,
 			slide: function( event, ui ) {
+                chance = ui.value;
 				$( "#amount-two" ).val( ui.value + "%" );
 				$( "#less-than-wins" ).val( ui.value*100 );
+                Refresh();
 			}
 		});
         
 
 		$( "#amount-two" ).val( $( "#slider-dice-two" ).slider( "value" ) + "%" );
+		$( "#amount-one" ).val( $( "#slider-dice-one" ).slider( "value" )/10 );
 	});
 
 	/* END SLIDER UI */
