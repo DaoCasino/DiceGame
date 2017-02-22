@@ -46,6 +46,12 @@ function isLocalStorageAvailable() {
 }
 
 function initGame() {
+    if (betEth > _balance) {
+                    EnableButton(false);
+                }
+                else {
+                    EnableButton(true);
+                }
     Refresh();
     loadData();
     if (openkey) {
@@ -63,6 +69,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
+    console.log("version 0.02")
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -98,7 +105,7 @@ function response(command, value) {
     else if (command == "idGame") {
         _idGame = value;
     }
-    CheckBet();
+//    CheckBet();
 }
 
 

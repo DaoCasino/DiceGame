@@ -1,4 +1,14 @@
 $(document).ready(initGame());
+
+//function CheckBet() {
+//    if (betEth > _balance) {
+//        EnableButton(false);
+//    }
+//    else {
+//        EnableButton(true);
+//    }
+//};
+
 $("#roll-dice").click(function () { //действие при нажатии
     //    if (betEth > _balance) {
     //        console.log("sorry"); //ответ при недостатке средств
@@ -7,11 +17,10 @@ $("#roll-dice").click(function () { //действие при нажатии
     OldBalance = _balance;
     FirstRequest = false;
     startGameEth();
+    EnableButton(false);
     var Timer = setInterval(function () {
-        EnableButton(false);
-        CheckBalance();
         sendUrlRequest(urlBalance, "getBalance");
-        if (OldBalance > _balance) {
+        if (OldBalance < _balance) {
             EnableButton(true);
             FirstRequest = true;
             console.log("you Win!");
@@ -21,7 +30,7 @@ $("#roll-dice").click(function () { //действие при нажатии
             $("#balance").html(_balance);
             $("#your-balance").val(_balance);
         }
-        else if (OldBalance < _balance) {
+        else if (OldBalance > _balance) {
             EnableButton(true);
             FirstRequest = true;
             console.log("You Lose!")
@@ -34,7 +43,7 @@ $("#roll-dice").click(function () { //действие при нажатии
         else {
             console.log("пока ничего");
         }
-    }, 1000);
+    }, 10000);
     //    }
 });
 // START
@@ -81,31 +90,21 @@ function CheckBalance() {
     };
 };
 
-
-
 function EnableButton(status) {
     if (status) {
         $("#roll-dice").removeAttr("style");
-//        $("#label").text("Click Roll Dice to place your bet:");
+        //        $("#label").text("Click Roll Dice to place your bet:");
         $("#roll-dice").attr('disabled', false);
     }
     else {
         $("#roll-dice").css("background", "gray");
-//        $("#label").text("Sorry!");
+        //        $("#label").text("Sorry!");
         $("#roll-dice").attr('disabled', true);
     }
 };
 
 function Refresh() {
-    
     $("#profit-on-win").val(betEth * 100 / chance);
 };
 
-function CheckBet() {
-    if (betEth > _balance) {
-        EnableButton(false);
-    }
-    else {
-        EnableButton(true);
-    }
-};
+
