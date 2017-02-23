@@ -16,12 +16,14 @@ var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
 var addressContract = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
+var topicsResultLog = "0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
 var _mouseX;
 var _mouseY;
 var blockNumber;
+var idOraclizeGame = undefined;
 
 	
 ScrGame.prototype.init = function() {
@@ -1084,7 +1086,6 @@ ScrGame.prototype.clickObject = function(evt) {
 }
 
 ScrGame.prototype.getLogs = function() {
-	var idOraclizeGame = undefined;
 	var resultTxid = undefined;
 	var objOrcl = undefined;
 	$.get(urlSite + 
@@ -1114,7 +1115,7 @@ ScrGame.prototype.getLogs = function() {
 				for (var j = index; j < len; j ++) {
 					var objC = arLogs[j];
 					if (objC.transactionHash != obj_game["game"].gameTxHash 
-					&& objC.data == idOraclizeGame) {
+					&& objC.data == idOraclizeGame && objC.topics[0] == topicsResultLog) {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
 						console.log("--------------------------------------")
