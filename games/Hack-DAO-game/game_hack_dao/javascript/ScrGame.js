@@ -1111,15 +1111,31 @@ ScrGame.prototype.getLogs = function() {
 			}
 			if(idOraclizeGame){
 				for (var j = index; j < len; j ++) {
-					var obj = arLogs[j];
-					if (obj.transactionHash != obj_game["game"].gameTxHash 
-					&& obj.data == idOraclizeGame) {
-						resultTxid = obj.transactionHash;
+					var objC = arLogs[j];
+					if (objC.transactionHash != obj_game["game"].gameTxHash 
+					&& objC.data == idOraclizeGame) {
+						resultTxid = objC.transactionHash;
 						console.log("resultTxid:", resultTxid);
-						if (obj.data.match(/77696e/i)) {
+						// if (objC.data.match(/77696e/i)) {
+							// console.log("result:", 1);
+						// }
+						// if (objC.data.match(/6c6f7365/i)) {
+							// console.log("result:", -1);
+						// }
+						break;
+					}
+				}
+			}
+			
+			if(resultTxid){
+				for (var i = index; i < len; i ++) {
+					var objC = arLogs[i];
+					console.log("i:", objC.transactionHash, resultTxid)
+					if (objC.transactionHash == resultTxid) {
+						if (objC.data.match(/77696e/i)) {
 							console.log("result:", 1);
 						}
-						if (obj.data.match(/6c6f7365/i)) {
+						if (objC.data.match(/6c6f7365/i)) {
 							console.log("result:", -1);
 						}
 						break;
@@ -1146,7 +1162,6 @@ ScrGame.prototype.getResult = function(txid,addressContract,urlSite) {
 				$.each(d.result,function(v,i){
 					if (i.transactionHash != txid && i.data == idgame) {
 						resultTxid = i.transactionHash;
-						
 					}
 				});
 			}
