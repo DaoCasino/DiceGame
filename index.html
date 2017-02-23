@@ -303,32 +303,15 @@
 						<div class="col-md-6">
 							<div class="table-result">
 								<h3>Recent winners</h3>
-								<table>
-									<tr>
-										<td>PRETTYDIAMOND</td>
-										<td>BLACKJACK</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
+								<table id='resentwinners'>
+									<tr style='display:none'>
 										<td>FATASSDAB</td>
-										<td>BLACKJACK</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>OBI</td>
-										<td>BLACKJACK</td>
-										<td>BTC</td>
-										<td>0.00001901</td>
-									</tr>
-									<tr>
-										<td>FATASSDAB</td>
-										<td>BLACKJACK</td>
+										<td>Dice</td>
 										<td>BTC</td>
 										<td>0.00001901</td>
 									</tr>
 								</table>
+								
 							</div>
 						</div>
 					</div>
@@ -418,5 +401,26 @@
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<script src="js/common.js"></script>
+	
+	<Script>
+	
+
+	function addGame(gamer,game,cur,pay) {
+	$('#resentwinners tr:first').before('<tr><td>'+gamer+'</td><td>'+game+'</td><td>'+cur+'</td><td>'+pay+'</td></tr>');
+	}
+		
+	$.get("//api.dao.casino/daohack/lastgames.php",function(d){
+		console.log(d);
+		var h = 0;
+		$.each(d,function(i,x){
+			console.log(i,x);
+			if (x.pay > 0.01) { 
+				if (h++<4) addGame(x.addr,'HackDAO',"ETH",x.pay);
+			}
+		});
+		//if (d.addr == '')
+		
+	},"json");
+								</script>
 </body>
 </html>
