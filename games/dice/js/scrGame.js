@@ -60,7 +60,7 @@ function startGameEth() {
         console.log("получили nonce " + d.result);
         var options = {};
         options.nonce = d.result;
-        options.to = optionsTo; //адрес нашего смарт контракта
+        options.to = addressContract; //адрес нашего смарт контракта
         options.data = callData + pad(numToHex(chance), 64); //шанс 
         options.gasPrice = "0x737be7600";
         options.gasLimit = 0x927c0;
@@ -104,7 +104,9 @@ function EnableButton(status) {
 };
 
 function Refresh() {
-    $("#profit-on-win").val(betEth * 100 / chance);
+    $("#profit-on-win").val((betEth * 100 / chance)-betEth);
+    $("#payout").val(((betEth * 100 / chance)-betEth)/betEth);
+    
 };
 
 
