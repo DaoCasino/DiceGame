@@ -1087,7 +1087,7 @@ ScrGame.prototype.getLogs = function() {
 	var idOraclizeGame = undefined;
 	var resultTxid = undefined;
 	var objOrcl = undefined;
-	
+	console.log("GET LOGS")
 	$.get(urlSite + 
 		"api?module=logs"+
 		"&action=getLogs"+
