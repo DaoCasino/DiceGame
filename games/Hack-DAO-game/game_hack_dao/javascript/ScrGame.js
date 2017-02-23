@@ -1129,7 +1129,7 @@ ScrGame.prototype.getLogs = function() {
 				for (var i = 0; i < arLogs.length; i ++) {
 					var obj = arLogs[i];
 					if (obj.transactionHash == resultTxid) {
-						console.log("!!!", obj.data.match(/77696e/i), iobj.data.match(/6c6f7365/i));
+						console.log("!!!", i, obj.data.match(/77696e/i), obj.data.match(/6c6f7365/i));
 						if (obj.data.match(/77696e/i)) {
 							console.log("match: win");
 						}
