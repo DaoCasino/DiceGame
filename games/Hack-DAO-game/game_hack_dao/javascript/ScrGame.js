@@ -321,7 +321,7 @@ ScrGame.prototype.createLevel = function() {
 		case 4:
 			this.itemDao.dead = true;
 			this.itemDao.visible = true;
-			this.itemHome = addObj("itemHome2", 1206, 364);
+			this.itemHome = addObj("itemHome2", 1247, 496);
 			this.gfx_mc.addChild(this.itemHome);
 			this.valueLevelMax = 500000;
 			this.groundY = 425;
