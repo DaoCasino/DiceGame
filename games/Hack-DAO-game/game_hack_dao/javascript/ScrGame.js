@@ -1105,6 +1105,7 @@ ScrGame.prototype.getLogs = function() {
 					if (arLogs[i].transactionHash == obj_game["game"].gameTxHash) {
 						obj = arLogs[i];
 						idOraclizeGame = obj.data; //id Oraclize
+						console.log("idOraclizeGame:", idOraclizeGame);
 						break;
 					}
 				}
