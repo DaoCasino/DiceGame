@@ -1086,7 +1086,7 @@ ScrGame.prototype.clickObject = function(evt) {
 	}
 }
 
-ScrGame.prototype.getLogs = function() {
+ScrGame.prototype.getResult = function() {
 	var objOrcl = undefined;
 	$.get(urlSite + 
 		"api?module=logs"+
@@ -1115,10 +1115,9 @@ ScrGame.prototype.getLogs = function() {
 				for (var j = index; j < len; j ++) {
 					var objC = arLogs[j];
 					if (objC.transactionHash != obj_game["game"].gameTxHash 
-					&& objC.data == idOraclizeGame /*&& objC.topics[0] == topicsResultLog*/) {
+					&& objC.data == idOraclizeGame) {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
-						console.log("resultTxid:", resultTxid);
 						break;
 					}
 				}
@@ -1126,33 +1125,27 @@ ScrGame.prototype.getLogs = function() {
 			
 			if(resultTxid){
 				console.log("arLogs:", arLogs.length);
-				for (var i = 0; i < arLogs.length; i ++) {
+				for (var i = index; i < len; i ++) {
 					var obj = arLogs[i];
 					if (obj.transactionHash == resultTxid) {
-						console.log("!!!", i, obj.data.match(/77696e/i), obj.data.match(/6c6f7365/i));
 						if (obj.data.match(/77696e/i)) {
 							console.log("match: win");
+							obj_game["game"].getResponseResult(1);
+							return false;
 						}
 						if (obj.data.match(/6c6f7365/i)) {
 							console.log("match: lose");
+							obj_game["game"].getResponseResult(-1);
+							return false;
 						}
 					}
 				}
-				// $.each(d.result,function(v,i){
-					  // if (i.transactionHash == resultTxid) {
-							// console.log("!!!", i.data.match(/77696e/i), i.data.match(/6c6f7365/i));
-							// if (i.data.match(/77696e/i)) {
-								// console.log("match: win");
-							// }
-							// if (i.data.match(/6c6f7365/i)) {
-								// console.log("match: lose");
-							// }
-					  // }
-				// })
 			}
 	}, "json");
+	
+	obj_game["game"].getResponseResult(0);
 }
-
+/*
 ScrGame.prototype.getResult = function(txid,addressContract,urlSite) {
 	var resultTxid = undefined;
     $.get(urlSite+"/api?module=logs"+
@@ -1202,7 +1195,7 @@ ScrGame.prototype.getResult = function(txid,addressContract,urlSite) {
 	
 	obj_game["game"].getResponseResult(0);
 }
-
+*/
 ScrGame.prototype.sendUrlRequest = function(url, name) {
 	// console.log("sendRequest:", name, url)	
 	var xhr = new XMLHttpRequest();
@@ -1241,8 +1234,8 @@ ScrGame.prototype.sendRequest = function(value) {
 		} else if(value == "gameTxHash"){
 			if(this.gameTxHash){
 				this.clickDAO = false;
-				this.getResult(this.gameTxHash, addressContract, urlSite);
-				this.getLogs();
+				// this.getResult(this.gameTxHash, addressContract, urlSite);
+				this.getResult();
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
