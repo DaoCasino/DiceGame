@@ -1091,10 +1091,7 @@ ScrGame.prototype.getLogs = function() {
 		"&toBlock=latest"+
 		"&address="+addressContract+
 		"&apikey=YourApiKeyToken", function (d) {
-			console.log("d:" + d.result[0].data);
-			console.log("------------------");
-			var obj = JSON.parse(d.result[0].data);
-			console.log("получены логи" + obj);
+			console.log("d:" + d.result);
 			var data = {};
 	}, "json");
 }
