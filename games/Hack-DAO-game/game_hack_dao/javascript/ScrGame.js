@@ -45,7 +45,7 @@ ScrGame.prototype.init = function() {
 	this.timeMoney = 0;
 	this.timeProposal = 0;
 	this.timeHacker = 0;
-	this.idGame = undefined;
+	this.gameTxHash = undefined;
 	this.clickDAO = false;
 	this.startGame = false;
 	this._gameOver = false;
@@ -81,7 +81,7 @@ ScrGame.prototype.init = function() {
 
 	
 	// если идет еще старая сессия, загружаем её
-	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
+	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["gameTxHash"]){
 		login_obj["level"] = login_obj["curLevel"];
 		var tfOldGame = addText("Loaded previous session game", 40, "#FF8611", "#000000", "center", 800)
 		tfOldGame.x = _W/2;
@@ -176,9 +176,9 @@ ScrGame.prototype.init = function() {
 	this.showWndStart();
 	
 	// если идет игра, дожидаемся ее результата
-	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["idGame"]){
+	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["gameTxHash"]){
 		this.btnStart.visible = false;
-		this.idGame = login_obj["idGame"];
+		this.gameTxHash = login_obj["gameTxHash"];
 		this.createLevel();
 	}*/
 	
@@ -817,7 +817,7 @@ ScrGame.prototype.startGameEth = function(){
 				"&hex="+serializedTx+
 				"&apikey=YourApiKeyToken",function(d){
 					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
-					obj_game["game"].response("idGame", d.result) 
+					obj_game["game"].response("gameTxHash", d.result) 
 					console.log("Транзакция отправлена в сеть:", d.result);
 				});
 			}
@@ -1094,14 +1094,38 @@ ScrGame.prototype.getLogs = function() {
 			var arLogs = d.result;
 			var len = arLogs.length;
 			var index = 0;
+			var idOraclizeGame = undefined;
+			var resultTxid = undefined;
+			var obj = undefined;
 			if(len > 50){
 				index = len-50;
 			}
-			console.log("getLogs-----------------");
-			for (var i = index; i < len; i ++) {
-				console.log("log:", i, arLogs[i]);
+			if(idOraclizeGame == undefined){
+				for (var i = index; i < len; i ++) {
+					if (arLogs[i].transactionHash == obj_game["game"].gameTxHash) {
+						obj = arLogs[i];
+						idOraclizeGame = obj.data; //id Oraclize
+						break;
+					}
+				}
 			}
-			var data = {};
+			if(idOraclizeGame){
+				for (var j = index; j < len; j ++) {
+					var obj = arLogs[j];
+					if (obj.transactionHash != obj_game["game"].gameTxHash 
+					&& obj.data == idOraclizeGame) {
+						resultTxid = obj.transactionHash;
+						console.log("resultTxid:", resultTxid);
+						if (obj.data.match(/77696e/i)) {
+							console.log("result:", 1);
+						}
+						if (obj.data.match(/6c6f7365/i)) {
+							console.log("result:", -1);
+						}
+						break;
+					}
+				}
+			}
 	}, "json");
 }
 
@@ -1122,6 +1146,7 @@ ScrGame.prototype.getResult = function(txid,addressContract,urlSite) {
 				$.each(d.result,function(v,i){
 					if (i.transactionHash != txid && i.data == idgame) {
 						resultTxid = i.transactionHash;
+						
 					}
 				});
 			}
@@ -1188,12 +1213,13 @@ ScrGame.prototype.sendRequest = function(value) {
 		if(value == "game"){
 			if(this.clickDAO == false){
 				this.clickDAO = true;
-				this.sendUrlRequest(urlRequest, "idGame");
+				this.sendUrlRequest(urlRequest, "gameTxHash");
 			}
-		} else if(value == "idGame"){
-			if(this.idGame){
+		} else if(value == "gameTxHash"){
+			if(this.gameTxHash){
 				this.clickDAO = false;
-				this.getResult(this.idGame, addressContract, urlSite)
+				this.getResult(this.gameTxHash, addressContract, urlSite);
+				this.getLogs();
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
@@ -1213,12 +1239,11 @@ ScrGame.prototype.response = function(command, value) {
 	}
 	
 	console.log("response:", command, value)	
-	if(command == "idGame"){
-		obj_game["idGame"] = value;
-		login_obj["idGame"] = value;
-		this.idGame = obj_game["idGame"];
+	if(command == "gameTxHash"){
+		obj_game["gameTxHash"] = value;
+		login_obj["gameTxHash"] = value;
+		this.gameTxHash = obj_game["gameTxHash"];
 		this.timeGetResult = 0;
-		this.getLogs();
 		this.sendRequest("getBalance");
 		login_obj["startGame"] = true;
 		login_obj["curLevel"] = this.curLevel;
@@ -1545,13 +1570,13 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	if(this.idGame && login_obj["startGame"]){
+	if(this.gameTxHash && login_obj["startGame"]){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
 		this.bSendRequest == false){
 			this.bSendRequest = true;
 			this.timeGetResult = 0;
-			this.sendRequest("idGame");
+			this.sendRequest("gameTxHash");
 		}
 	}
 	
