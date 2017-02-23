@@ -1097,6 +1097,7 @@ ScrGame.prototype.getLogs = function() {
 			var idOraclizeGame = undefined;
 			var resultTxid = undefined;
 			var obj = undefined;
+			var objOrcl = undefined;
 			if(len > 50){
 				index = len-50;
 			}
@@ -1116,26 +1117,10 @@ ScrGame.prototype.getLogs = function() {
 					if (objC.transactionHash != obj_game["game"].gameTxHash 
 					&& objC.data == idOraclizeGame) {
 						resultTxid = objC.transactionHash;
+						objOrcl = objC;
 						console.log("resultTxid:", resultTxid);
+						console.log("objC.data:", objC.data);
 						console.log("--------:", j, objC.data.match(/77696e/i),
-									objC.data.match(/6c6f7365/i))
-						// if (objC.data.match(/77696e/i)) {
-							// console.log("result:", 1);
-						// }
-						// if (objC.data.match(/6c6f7365/i)) {
-							// console.log("result:", -1);
-						// }
-						break;
-					}
-				}
-			}
-			
-			if(resultTxid){
-				for (var i = index; i < len; i ++) {
-					var objC = arLogs[i];
-					if (objC.transactionHash == resultTxid) {
-						console.log("objC.data:", i, objC.data)
-						console.log("!!!!!!!!!:", objC.data.match(/77696e/i),
 									objC.data.match(/6c6f7365/i))
 						if (objC.data.match(/77696e/i)) {
 							console.log("result:", 1);
@@ -1147,6 +1132,24 @@ ScrGame.prototype.getLogs = function() {
 					}
 				}
 			}
+			
+			/*if(resultTxid){
+				for (var i = index; i < len; i ++) {
+					var objC = arLogs[i];
+					if (objC.transactionHash == resultTxid) {
+						console.log("objC.data:", i, objC.data)
+						console.log("!!!!!!!!!:", objOrcl.data.match(/77696e/i),
+									objOrcl.data.match(/6c6f7365/i))
+						if (objOrcl.data.match(/77696e/i)) {
+							console.log("result:", 1);
+						}
+						if (objOrcl.data.match(/6c6f7365/i)) {
+							console.log("result:", -1);
+						}
+						break;
+					}
+				}
+			}*/
 	}, "json");
 }
 
