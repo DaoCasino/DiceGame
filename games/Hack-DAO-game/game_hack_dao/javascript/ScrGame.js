@@ -15,7 +15,7 @@ var TIME_RESPAWN_HACKER = 1500;
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlSite = "https://api.etherscan.io/";
 var urlBalance = "";
-var optionsTo = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
+var addressContract = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
@@ -72,7 +72,7 @@ ScrGame.prototype.init = function() {
 	
 	if(options_testnet){
 		urlSite = "https://testnet.etherscan.io/";
-		optionsTo = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
+		addressContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 	} else {
 		betEth = 200000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
@@ -348,7 +348,6 @@ ScrGame.prototype.createLevel = function() {
 		this.hintArrow.x = this.itemDao.x + 70;
 		this.hintArrow.y = this.itemDao.y - 90;
 	}
-	// this.resultGameEth(1)
 }
 
 ScrGame.prototype.createLevel5 = function() {
@@ -530,9 +529,9 @@ ScrGame.prototype.shareFB = function() {
 }
 
 ScrGame.prototype.showSmartContract = function() {
-	var url = urlSite + "address/" + optionsTo
+	var url = urlSite + "address/" + addressContract
 	if(options_mainet){
-		url = "https://etherscan.io/" + "address/" + optionsTo
+		url = "https://etherscan.io/" + "address/" + addressContract
 	}
 	window.open(url, "_blank"); 
 }
@@ -785,17 +784,20 @@ ScrGame.prototype.startGameEth = function(){
 	}
 	var openKey = openkey.substr(2);
 	
-	$.get(urlSite+"api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",function(d){
-		console.log("получили nonce "+d.result);
+	$.get(urlSite+"api?module=proxy"+
+	"&action=eth_getTransactionCount"+
+	"&address="+openkey+
+	"&tag=latest"+
+	"&apikey=YourApiKeyToken",function(d){
+		console.log("get nonce "+d.result);
 		var options = {};
 		options.nonce = d.result;
-		
-		options.to = optionsTo; //адрес нашего смарт контракта
+		options.to = addressContract;
 		// call function game() in contract
 		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
 		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 		options.gasLimit=0x927c0; //web3.toHex('600000');
-		options.value = betEth; //ставка
+		options.value = betEth;
 
 		if(privkey){
 			if(buf == undefined){
@@ -809,8 +811,11 @@ ScrGame.prototype.startGameEth = function(){
 				obj_game["game"].bSendRequest = false;
 				obj_game["game"].startGame = true;
 				
-				console.log("Транзакция подписана: "+serializedTx);
-				$.getJSON(urlSite+"api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
+				console.log("The transaction was signed: "+serializedTx);
+				$.getJSON(urlSite+"api?module=proxy"+
+				"&action=eth_sendRawTransaction"+
+				"&hex="+serializedTx+
+				"&apikey=YourApiKeyToken",function(d){
 					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
 					obj_game["game"].response("idGame", d.result) 
 					console.log("Транзакция отправлена в сеть:", d.result);
@@ -977,7 +982,6 @@ ScrGame.prototype.healthDao = function() {
 			this.itemDao.health += this.resurrection;
 		} else {
 			if(this.bHealthDao09 && this.curLevel > 1){
-				// this.resultGameEth(-1);
 				this._gameOverClient = true;
 			}
 		}
@@ -1079,9 +1083,33 @@ ScrGame.prototype.clickObject = function(evt) {
 	}
 }
 
-ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
+ScrGame.prototype.getLogs = function() {
+	$.get(urlSite + 
+		"api?module=logs"+
+		"&action=getLogs"+
+		"&fromBlock=379224"+
+		"&toBlock=latest"+
+		"&address="+addressContract+
+		"&apikey=YourApiKeyToken", function (d) {
+			console.log("d:" + d.result[0]);
+			console.log("------------------");
+			var obj = JSON.parse(d.result[0]);
+			console.log("получены логи" + obj);
+			var data = {};
+	}, "json");
+}
+
+ScrGame.prototype.getResult = function(txid,addressContract,urlSite) {
 	var resultTxid = undefined;
-    $.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0xd8cfd15a18acf055da86af88b707b6b949547c68600ee3545bf254a1261bc3c7&topic1=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
+    $.get(urlSite+"/api?module=logs"+
+		"&action=getLogs"+
+		"&fromBlock=379224"+
+		"&toBlock=latest"+
+		"&address="+addressContract+
+		"&topic0=0xd8cfd15a18acf055da86af88b707b6b949547c68600ee3545bf254a1261bc3c7"+
+		"&topic1=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab"+
+		"&apikey=YourApiKeyToken"+
+		"&topic0_1_opr=or",function(d){
 		$.each(d.result,function(v,i){
 			if (i.transactionHash == txid) {
 				var idgame = i.data; //id игры
@@ -1093,7 +1121,14 @@ ScrGame.prototype.getResult = function(txid,optionsTo,urlSite) {
 			}
 		});
 
-		$.get(urlSite+"/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address="+optionsTo+"&topic0=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab&apikey=YourApiKeyToken&topic0_1_opr=or",function(d){
+		$.get(urlSite+"/api?module=logs"+
+			"&action=getLogs"+
+			"&fromBlock=379224"+
+			"&toBlock=latest"+
+			"&address="+addressContract+
+			"&topic0=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab"+
+			"&apikey=YourApiKeyToken"+
+			"&topic0_1_opr=or",function(d){
 		
 		$.each(d.result,function(v,i){
 			  if (i.transactionHash == resultTxid) {
@@ -1152,7 +1187,7 @@ ScrGame.prototype.sendRequest = function(value) {
 		} else if(value == "idGame"){
 			if(this.idGame){
 				this.clickDAO = false;
-				this.getResult(this.idGame, optionsTo, urlSite)
+				this.getResult(this.idGame, addressContract, urlSite)
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
@@ -1177,6 +1212,7 @@ ScrGame.prototype.response = function(command, value) {
 		login_obj["idGame"] = value;
 		this.idGame = obj_game["idGame"];
 		this.timeGetResult = 0;
+		this.getLogs();
 		this.sendRequest("getBalance");
 		login_obj["startGame"] = true;
 		login_obj["curLevel"] = this.curLevel;
@@ -1367,7 +1403,6 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						this.tfTitleLevel.setText("Lost ethereum: " + this.valueLevel + "/" + this.valueLevelMax);
 						this.createText(mc, "- 100");
 						if(this.valueLevel >= this.valueLevelMax){
-							// this.resultGameEth(-1);
 							this._gameOverClient = true;
 							this.itemDao.sprite.img.stop();
 						}
@@ -1400,7 +1435,6 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						this.valueLevel += 50000;
 						this.tfTitleLevel.setText("Stolen money: $" + this.valueLevel + "/" + this.valueLevelMax);
 						if(this.valueLevel >= this.valueLevelMax){
-							// this.resultGameEth(-1);
 							this._gameOverClient = true;
 						}
 					}
@@ -1459,7 +1493,6 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						this.valueLevel += 1;
 						this.tfTitleLevel.setText("Bad proposal: " + this.valueLevel + "/" + this.valueLevelMax);
 						if(this.valueLevel >= this.valueLevelMax){
-							// this.resultGameEth(-1);
 							this._gameOverClient = true;
 						}
 					}
@@ -1481,7 +1514,6 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					this.tfTitleLevel.setText("Lost money: " + this.valueLevel + "/" + this.valueLevelMax);
 					this.createText(mc, "- 100");
 					if(this.valueLevel >= this.valueLevelMax){
-						// this.resultGameEth(-1);
 						this._gameOverClient = true;
 						this.itemDao.sprite.img.stop();
 					}
