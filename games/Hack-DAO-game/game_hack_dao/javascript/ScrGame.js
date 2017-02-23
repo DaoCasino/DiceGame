@@ -1106,7 +1106,7 @@ ScrGame.prototype.getResult = function() {
 					if (arLogs[i].transactionHash == obj_game["game"].gameTxHash) {
 						var obj = arLogs[i];
 						idOraclizeGame = obj.data; //id Oraclize
-						console.log("idOraclizeGame:", idOraclizeGame);
+						// console.log("idOraclizeGame:", idOraclizeGame);
 						break;
 					}
 				}
@@ -1124,17 +1124,14 @@ ScrGame.prototype.getResult = function() {
 			}
 			
 			if(resultTxid){
-				console.log("arLogs:", arLogs.length);
 				for (var i = index; i < len; i ++) {
 					var obj = arLogs[i];
 					if (obj.transactionHash == resultTxid) {
 						if (obj.data.match(/77696e/i)) {
-							console.log("match: win");
 							obj_game["game"].getResponseResult(1);
 							return false;
 						}
 						if (obj.data.match(/6c6f7365/i)) {
-							console.log("match: lose");
 							obj_game["game"].getResponseResult(-1);
 							return false;
 						}
@@ -1145,57 +1142,7 @@ ScrGame.prototype.getResult = function() {
 	
 	obj_game["game"].getResponseResult(0);
 }
-/*
-ScrGame.prototype.getResult = function(txid,addressContract,urlSite) {
-	var resultTxid = undefined;
-    $.get(urlSite+"/api?module=logs"+
-		"&action=getLogs"+
-		"&fromBlock=379224"+
-		"&toBlock=latest"+
-		"&address="+addressContract+
-		"&topic0=0xd8cfd15a18acf055da86af88b707b6b949547c68600ee3545bf254a1261bc3c7"+
-		"&topic1=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab"+
-		"&apikey=YourApiKeyToken"+
-		"&topic0_1_opr=or",function(d){
-		$.each(d.result,function(v,i){
-			if (i.transactionHash == txid) {
-				var idgame = i.data; //id игры
-				$.each(d.result,function(v,i){
-					if (i.transactionHash != txid && i.data == idgame) {
-						resultTxid = i.transactionHash;
-					}
-				});
-			}
-		});
 
-		$.get(urlSite+"/api?module=logs"+
-			"&action=getLogs"+
-			"&fromBlock=379224"+
-			"&toBlock=latest"+
-			"&address="+addressContract+
-			"&topic0=0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab"+
-			"&apikey=YourApiKeyToken"+
-			"&topic0_1_opr=or",function(d){
-		
-		$.each(d.result,function(v,i){
-			  if (i.transactionHash == resultTxid) {
-					if (i.data.match(/77696e/i)) {
-						obj_game["game"].getResponseResult(1);
-						return false;
-					}
-					if (i.data.match(/6c6f7365/i)) {
-						obj_game["game"].getResponseResult(-1);
-						return false;
-					}
-			  }
-		});
-		
-		});
-    },"json");
-	
-	obj_game["game"].getResponseResult(0);
-}
-*/
 ScrGame.prototype.sendUrlRequest = function(url, name) {
 	// console.log("sendRequest:", name, url)	
 	var xhr = new XMLHttpRequest();
@@ -1234,7 +1181,6 @@ ScrGame.prototype.sendRequest = function(value) {
 		} else if(value == "gameTxHash"){
 			if(this.gameTxHash){
 				this.clickDAO = false;
-				// this.getResult(this.gameTxHash, addressContract, urlSite);
 				this.getResult();
 			}
 		} else if(value == "getBalance"){
