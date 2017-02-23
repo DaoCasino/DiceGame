@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.69"
+var version = "v. 1.0.70"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -17,8 +17,8 @@ var fontTahoma = "Tahoma";
 var fontGothic = "Century Gothic";
 var stats; //для вывода статистики справа
 
-var options_debug = false;
-var options_ethereum = true;
+var options_debug = true;
+var options_ethereum = false;
 var options_mainet = false;
 var options_testnet = false;
 var options_music = true;
@@ -183,6 +183,7 @@ function loadManifest(){
 	preloader.add("itemBlank1", "images/items/itemBlank1.png");
 	preloader.add("itemBlank2", "images/items/itemBlank2.png");
 	preloader.add("itemBlank3", "images/items/itemBlank3.png");
+	preloader.add("tfBoom", "images/items/tfBoom.png");
 	
 	preloader.add("images/texture/AnimaTexture.json");
 	preloader.add("images/texture/Anima2Texture.json");
@@ -446,6 +447,58 @@ function isLocalStorageAvailable() {
     }
 }
 
+function getArTh(objData, thId) {
+    var array = [];
+	if(objData.result == undefined){
+		return undefined;
+	}
+    var mainObj = objData.result;
+    for (var i = 0; i < objData.result.length; i++){
+        var obj = objData.result[i];
+        if(thId == obj.transactionHash){
+			console.log(i, obj)
+            array.push(obj.transactionHash);
+        }
+    }
+    
+    return array;
+}
+
+function parseData(objData) {
+    var arGame = [];
+    var thId = ""
+	var len = objData.result.length;
+	var index = 0;
+	if(len > 5){
+		index = len-5;
+	}
+    for (var i = index; i < len; i++){
+        var obj = objData.result[i];
+        if(thId != obj.transactionHash){
+            thId = obj.transactionHash;
+            var ar = getArTh(objData, thId);
+			if(ar){
+				arGame[thId] = ar;
+			}
+        }
+    }
+}
+
+function getLogs() {
+	var objOrcl = undefined;
+	$.get("https://testnet.etherscan.io/" + 
+		"api?module=logs"+
+		"&action=getLogs"+
+		"&fromBlock=379224"+
+		"&toBlock=latest"+
+		"&address="+"0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498"+
+		"&apikey=YourApiKeyToken", function (d) {
+			var objData = d;
+			parseData(objData);
+		}, 
+	"json");
+}
+
 function removeSelf(obj) {
 	if (obj) {
 		if (obj.parent.contains(obj)) {
@@ -458,7 +511,6 @@ function start() {
 	if(LoadBack){
 		stage.removeChild(LoadBack);
 	}
-	
 	addScreen("menu");
 }
 

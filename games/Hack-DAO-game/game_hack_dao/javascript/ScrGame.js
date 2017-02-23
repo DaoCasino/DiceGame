@@ -742,12 +742,20 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	} else if(mc.name == "itemHacker"){
 		mc.setScale(0.6);
 		mc.setScaleX(-1);
+		mc.setAct("hackerRun");
 		mc.vX = 1;
-		mc.speed = 2;
+		mc.speedMax = 2;
+		mc.speed = mc.speedMax;
 		mc.timeHit = 0;
 		mc.tLife = 300000;
 		mc.health = mc.healthMax;
 		mc.refreshHealth();
+	} else if(mc.name == "tfBoom"){
+		mc.tLife = 3000;
+		mc.scale.x = 0.5;
+		mc.scale.y = mc.scale.x;
+		mc.alpha = 0.1;
+		mc.vA = 1;
 	} else if(mc.name == "eggPart"){
 		mc.alpha = 1;
 		mc.speed = 5;
@@ -1072,6 +1080,11 @@ ScrGame.prototype.clickObject = function(evt) {
 						if(!mc.dead){
 							mc.health -= this.damage;
 							mc.refreshHealth();
+							mc.setAct("hackerHurt");
+							mc.speed = mc.speedMax/2;
+							if(Math.random()>0.7){
+								this.createObj(mc, "tfBoom");
+							}
 							if(mc.health <= 0){
 								this.addHolderObj(mc);
 							}
@@ -1423,10 +1436,16 @@ ScrGame.prototype.updateHolder = function(diffTime){
 				}
 			} else if(mc.name == "itemHacker"){
 				mc.x += mc.speed*mc.vX;
+				if(mc.act == "hackerHurt"){
+					if(mc.body.img.currentFrame >= mc.body.img.totalFrames - 1){
+						mc.speed = mc.speedMax;
+						mc.setAct("hackerRun");
+					}
+				}
 				if(mc.x > 1220 || mc.x < -120){
 					if(mc.x > 1220){
-						this.valueLevel += 50000;
-						this.tfTitleLevel.setText("Stolen money: $" + this.valueLevel + "/" + this.valueLevelMax);
+						this.valueLevel += 100000;
+						this.tfTitleLevel.setText("Stolen money: " + this.valueLevel + "/" + this.valueLevelMax);
 						if(this.valueLevel >= this.valueLevelMax){
 							this._gameOverClient = true;
 						}
@@ -1490,6 +1509,21 @@ ScrGame.prototype.updateHolder = function(diffTime){
 						}
 					}
 					mc.tLife = 0;
+				}
+			} else if(mc.name == "tfBoom"){
+				if(mc.alpha > 0.05){
+					mc.alpha += mc.vA*0.075;
+					mc.scale.x += mc.vA*0.05;
+					mc.scale.y = mc.scale.x;
+				} else {
+					mc.tLife = 0;
+				}
+				if(mc.vA == 1){
+					// mc.scale.x += mc.vA*0.05;
+					// mc.scale.y = mc.scale.x;
+				}
+				if(mc.alpha >=1){
+					mc.vA = -1;
 				}
 			} else if(mc.name == "itemMoney"){
 				mc.y += mc.speed
@@ -1600,7 +1634,8 @@ ScrGame.prototype.update = function() {
 			this.timeHacker += diffTime;
 			if(this.timeHacker >= TIME_RESPAWN_HACKER){
 				this.timeHacker = 0;
-				this.createObj({x:-60, y:455}, "itemHacker")
+				var posY = 510 + Math.random()*30;
+				this.createObj({x:-60, y:posY}, "itemHacker")
 			}
 		} else if(this.curLevel == 5){
 			this.timeProposal += diffTime;

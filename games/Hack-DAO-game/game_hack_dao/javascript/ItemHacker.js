@@ -8,10 +8,10 @@ ItemHacker.prototype.constructor = ItemHacker;
 
 ItemHacker.prototype.init = function() {
 	this.name = "itemHacker";
-	this.color = "Black";
 	this.act = "Run";
-	this.wMax = 120*1.5;
-	this.hMax = 170*1.5;
+	this.idMark = 1;
+	this.wMax = 107;
+	this.hMax = 156;
 	this.w = this.wMax;
 	this.h = this.hMax;
 	this.healthMax = 80;
@@ -20,36 +20,17 @@ ItemHacker.prototype.init = function() {
 	
 	this.sprite = new PIXI.Container();
 	this.addChild(this.sprite);
-	this.item = new PIXI.Container();
-	this.sprite.addChild(this.item);
 	
-	var bag = addObj("bagMoney", 26, 30);
-	this.sprite.addChild(bag);
-	this.legL = addObj("legRun", -37, 104, 0.6, 1.5);
-	this.sprite.addChild(this.legL);
-	this.legL.img.play();
-	this.legL.img.animationSpeed = 0.5;
-	this.legR = addObj("legRun", 16, 104, 0.6, -1.5);
-	this.sprite.addChild(this.legR);
-	this.legR.img.gotoAndPlay(8);
-	this.legR.img.animationSpeed = 0.5;
-	var bodyX = 0;
-	var bodyY = 14;
-	this.body = addObj("itemBodyBlack", bodyX, bodyY);
-	this.item.addChild(this.body);
-	var headX = 0;
-	var headY = -13;
-	this.head = addObj("itemHeadMiner", headX, headY);
-	this.sprite.addChild(this.head);
-	this.sign = addText("H", 30, "#FFFFFF", undefined, "center", 50, 1, fontTahoma)
-	this.sign.x = 8;
-	this.sign.y = -8;
-	this.addChild(this.sign);
+	this.body = addObj("hackerRun");
+	this.body.x = -10;
+	this.body.img.play();
+	this.body.img.animationSpeed = 0.5;
+	this.sprite.addChild(this.body);
 	
 	var w = 100
 	var h = 10
 	this.barDao = new PIXI.Container();
-	this.barDao.x = - w/2
+	this.barDao.x = - w/2+20
 	this.barDao.y = - 50
     this.addChild(this.barDao);
 	var bg = new PIXI.Graphics();
@@ -62,7 +43,6 @@ ItemHacker.prototype.init = function() {
 	this.barDao.w = w;
 	this.barDao.h = h;
 	
-	
 	this.zone = new PIXI.Graphics();
     this.zone.beginFill(0xCC0000).drawRect(-this.w/2, -this.h/2, this.w, this.h).endFill();
 	this.zone.alpha = 0.5;
@@ -72,22 +52,11 @@ ItemHacker.prototype.init = function() {
 
 ItemHacker.prototype.setScaleX = function(scX) {
 	this.sprite.scale.x = scX*Math.abs(this.sprite.scale.x);
-	if(this.act == "Run"){
-		if(scX == 1){
-			this.sign.x = -8*this.sign.scale.x;
-			this.barDao.x = 50*this.barDao.scale.x;
-		} else {
-			this.sign.x = 8*this.sign.scale.x;
-			this.barDao.x = -50*this.barDao.scale.x;
-		}
-	}
 }
 
 ItemHacker.prototype.setScale = function(sc) {
 	this.sprite.scale.x = sc;
 	this.sprite.scale.y = sc;
-	this.sign.scale.x = sc;
-	this.sign.scale.y = sc;
 	this.barDao.scale.x = sc;
 	this.barDao.scale.y = sc;
 	this.zone.scale.x = sc;
@@ -101,6 +70,16 @@ ItemHacker.prototype.setAct = function(act) {
 		return false;
 	}
 	this.act = act
+	if(this.body){
+		this.sprite.removeChild(this.body);
+	}
+	this.body = addObj(act);
+	if(this.body){
+		this.body.x = -10;
+		this.body.img.play();
+		this.body.img.animationSpeed = 0.5;
+		this.sprite.addChild(this.body);
+	}
 }
 
 ItemHacker.prototype.refreshHealth = function() {

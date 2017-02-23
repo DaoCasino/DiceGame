@@ -4,9 +4,9 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.2.3</string>
+        <string>4.3.3</string>
         <key>fileName</key>
-        <string>D:/Flash/работа/JavaScript-Blockchain/dao_casino/Platform/games/Hack-DAO-game/AnimaTexture.tps</string>
+        <string>C:/Work/DaoCasino/Platform/games/Hack-DAO-game/AnimaTexture.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -47,6 +47,8 @@
         <uint>32768</uint>
         <key>etc1CompressionQuality</key>
         <enum type="SettingsBase::Etc1CompressionQuality">ETC1_QUALITY_LOW_PERCEPTUAL</enum>
+        <key>etc2CompressionQuality</key>
+        <enum type="SettingsBase::Etc2CompressionQuality">ETC2_QUALITY_LOW_PERCEPTUAL</enum>
         <key>dxtCompressionMode</key>
         <enum type="SettingsBase::DxtCompressionMode">DXT_PERCEPTUAL</enum>
         <key>jxrColorFormat</key>
@@ -78,6 +80,8 @@
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
+        <string></string>
+        <key>atfFormats</key>
         <string></string>
         <key>textureFormat</key>
         <enum type="SettingsBase::TextureFormat">png</enum>
@@ -118,6 +122,11 @@
                 <enum type="AlgorithmBasicSettings::SortBy">Best</enum>
                 <key>order</key>
                 <enum type="AlgorithmBasicSettings::Order">Ascending</enum>
+            </struct>
+            <key>polygon</key>
+            <struct type="AlgorithmPolygonSettings">
+                <key>alignToGrid</key>
+                <uint>1</uint>
             </struct>
         </struct>
         <key>andEngine</key>
@@ -200,6 +209,18 @@
             <key type="filename">anima/daoAppear/daoAppear_0010.png</key>
             <key type="filename">anima/daoAppear/daoAppear_0011.png</key>
             <key type="filename">anima/daoAppear/daoAppear_0012.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>65,79,129,158</rect>
+                <key>scale9Paddings</key>
+                <rect>65,79,129,158</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/daoRunMoney/daoRunMoney_0001.png</key>
             <key type="filename">anima/daoRunMoney/daoRunMoney_0002.png</key>
             <key type="filename">anima/daoRunMoney/daoRunMoney_0003.png</key>
@@ -212,7 +233,31 @@
             <key type="filename">anima/daoRunMoney/daoRunMoney_0010.png</key>
             <key type="filename">anima/daoRunMoney/daoRunMoney_0011.png</key>
             <key type="filename">anima/daoRunMoney/daoRunMoney_0012.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>47,68,94,137</rect>
+                <key>scale9Paddings</key>
+                <rect>47,68,94,137</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/daoStay/daoStay_0001.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>35,66,70,132</rect>
+                <key>scale9Paddings</key>
+                <rect>35,66,70,132</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/daoStay2/daoStay2_0001.png</key>
             <key type="filename">anima/daoStay2/daoStay2_0002.png</key>
             <key type="filename">anima/daoStay2/daoStay2_0003.png</key>
@@ -228,12 +273,36 @@
             <key type="filename">anima/daoStay2/daoStay2_0013.png</key>
             <key type="filename">anima/daoStay2/daoStay2_0014.png</key>
             <key type="filename">anima/daoStay2/daoStay2_0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>30,65,60,130</rect>
+                <key>scale9Paddings</key>
+                <rect>30,65,60,130</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/daoStay3/daoStay3_0001.png</key>
             <key type="filename">anima/daoStay3/daoStay3_0002.png</key>
             <key type="filename">anima/daoStay3/daoStay3_0003.png</key>
             <key type="filename">anima/daoStay3/daoStay3_0004.png</key>
             <key type="filename">anima/daoStay3/daoStay3_0005.png</key>
             <key type="filename">anima/daoStay3/daoStay3_0006.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>38,63,77,125</rect>
+                <key>scale9Paddings</key>
+                <rect>38,63,77,125</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/eggStay/eggStay_0001.png</key>
             <key type="filename">anima/eggStay/eggStay_0002.png</key>
             <key type="filename">anima/eggStay/eggStay_0003.png</key>
@@ -245,6 +314,62 @@
             <key type="filename">anima/eggStay/eggStay_0009.png</key>
             <key type="filename">anima/eggStay/eggStay_0010.png</key>
             <key type="filename">anima/eggWin/eggWin_0001.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>47,65,95,130</rect>
+                <key>scale9Paddings</key>
+                <rect>47,65,95,130</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">anima/hackerHurt/hackerHurt_0001.png</key>
+            <key type="filename">anima/hackerHurt/hackerHurt_0002.png</key>
+            <key type="filename">anima/hackerHurt/hackerHurt_0003.png</key>
+            <key type="filename">anima/hackerHurt/hackerHurt_0004.png</key>
+            <key type="filename">anima/hackerHurt/hackerHurt_0005.png</key>
+            <key type="filename">anima/hackerHurt/hackerHurt_0006.png</key>
+            <key type="filename">anima/hackerHurt/hackerHurt_0007.png</key>
+            <key type="filename">anima/hackerHurt/hackerHurt_0008.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>25,39,50,78</rect>
+                <key>scale9Paddings</key>
+                <rect>25,39,50,78</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">anima/hackerRun/hackerRun_0001.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0002.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0003.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0004.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0005.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0006.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0007.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0008.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0009.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0010.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0011.png</key>
+            <key type="filename">anima/hackerRun/hackerRun_0012.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>31,39,61,77</rect>
+                <key>scale9Paddings</key>
+                <rect>31,39,61,77</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/handClimb/handClimb_0001.png</key>
             <key type="filename">anima/handClimb/handClimb_0002.png</key>
             <key type="filename">anima/handClimb/handClimb_0003.png</key>
@@ -260,6 +385,18 @@
             <key type="filename">anima/handClimb/handClimb_0013.png</key>
             <key type="filename">anima/handClimb/handClimb_0014.png</key>
             <key type="filename">anima/handClimb/handClimb_0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,15,15,31</rect>
+                <key>scale9Paddings</key>
+                <rect>8,15,15,31</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/legRun/legRun_0001.png</key>
             <key type="filename">anima/legRun/legRun_0002.png</key>
             <key type="filename">anima/legRun/legRun_0003.png</key>
@@ -275,6 +412,18 @@
             <key type="filename">anima/legRun/legRun_0013.png</key>
             <key type="filename">anima/legRun/legRun_0014.png</key>
             <key type="filename">anima/legRun/legRun_0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>6,13,12,27</rect>
+                <key>scale9Paddings</key>
+                <rect>6,13,12,27</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">anima/proposalGreenClimb/proposalGreenClimb_0001.png</key>
             <key type="filename">anima/proposalGreenClimb/proposalGreenClimb_0002.png</key>
             <key type="filename">anima/proposalGreenClimb/proposalGreenClimb_0003.png</key>
@@ -287,18 +436,6 @@
             <key type="filename">anima/proposalGreenClimb/proposalGreenClimb_0010.png</key>
             <key type="filename">anima/proposalGreenClimb/proposalGreenClimb_0011.png</key>
             <key type="filename">anima/proposalGreenClimb/proposalGreenClimb_0012.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0001.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0002.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0003.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0004.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0005.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0006.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0007.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0008.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0009.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0010.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0011.png</key>
-            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0012.png</key>
             <key type="filename">anima/proposalRedClimb/proposalRedClimb_0001.png</key>
             <key type="filename">anima/proposalRedClimb/proposalRedClimb_0002.png</key>
             <key type="filename">anima/proposalRedClimb/proposalRedClimb_0003.png</key>
@@ -311,6 +448,30 @@
             <key type="filename">anima/proposalRedClimb/proposalRedClimb_0010.png</key>
             <key type="filename">anima/proposalRedClimb/proposalRedClimb_0011.png</key>
             <key type="filename">anima/proposalRedClimb/proposalRedClimb_0012.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>26,36,52,72</rect>
+                <key>scale9Paddings</key>
+                <rect>26,36,52,72</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0001.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0002.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0003.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0004.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0005.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0006.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0007.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0008.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0009.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0010.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0011.png</key>
+            <key type="filename">anima/proposalGreenRun/proposalGreenRun_0012.png</key>
             <key type="filename">anima/proposalRedRun/proposalRedRun_0001.png</key>
             <key type="filename">anima/proposalRedRun/proposalRedRun_0002.png</key>
             <key type="filename">anima/proposalRedRun/proposalRedRun_0003.png</key>
@@ -326,6 +487,14 @@
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>29,39,58,77</rect>
+                <key>scale9Paddings</key>
+                <rect>29,39,58,77</rect>
+                <key>scale9FromFile</key>
+                <false/>
             </struct>
         </map>
         <key>fileList</key>
@@ -352,5 +521,7 @@
         <string></string>
         <key>normalMapSheetFileName</key>
         <filename></filename>
+        <key>exporterProperties</key>
+        <map type="ExporterProperties"/>
     </struct>
 </data>
