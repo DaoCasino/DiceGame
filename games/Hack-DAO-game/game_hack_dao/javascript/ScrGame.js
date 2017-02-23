@@ -1087,7 +1087,6 @@ ScrGame.prototype.getLogs = function() {
 	var idOraclizeGame = undefined;
 	var resultTxid = undefined;
 	var objOrcl = undefined;
-	console.log("GET LOGS")
 	$.get(urlSite + 
 		"api?module=logs"+
 		"&action=getLogs"+
@@ -1119,10 +1118,8 @@ ScrGame.prototype.getLogs = function() {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
 						console.log("--------------------------------------")
-						console.log("objC.transactionHash:", objC.transactionHash);
-						console.log("gameTxHash:", obj_game["game"].gameTxHash);
 						console.log("resultTxid:", resultTxid);
-						console.log("objC.data:", objC.data);
+						console.log("objC:", objC);
 						console.log("--------:", j, objC.data.match(/77696e/i),
 									objC.data.match(/6c6f7365/i))
 						if (objC.data.match(/77696e/i)) {
