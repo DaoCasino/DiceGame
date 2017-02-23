@@ -1092,7 +1092,15 @@ ScrGame.prototype.getLogs = function() {
 		"&address="+addressContract+
 		"&apikey=YourApiKeyToken", function (d) {
 			var arLogs = d.result;
-			console.log("d:", arLogs.length);
+			var len = arLogs.length;
+			var index = 0;
+			if(len > 50){
+				index = len-50;
+			}
+			console.log("getLogs-----------------");
+			for (var i = index; i < len; i ++) {
+				console.log("log:", i, arLogs[i]);
+			}
 			var data = {};
 	}, "json");
 }
