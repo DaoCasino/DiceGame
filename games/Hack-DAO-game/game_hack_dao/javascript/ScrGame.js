@@ -24,6 +24,7 @@ var _mouseX;
 var _mouseY;
 var blockNumber;
 var idOraclizeGame = undefined;
+var resultTxid = undefined;
 
 	
 ScrGame.prototype.init = function() {
@@ -1086,7 +1087,6 @@ ScrGame.prototype.clickObject = function(evt) {
 }
 
 ScrGame.prototype.getLogs = function() {
-	var resultTxid = undefined;
 	var objOrcl = undefined;
 	$.get(urlSite + 
 		"api?module=logs"+
@@ -1111,46 +1111,32 @@ ScrGame.prototype.getLogs = function() {
 					}
 				}
 			}
-			if(idOraclizeGame){
+			if(idOraclizeGame && resultTxid == undefined){
 				for (var j = index; j < len; j ++) {
 					var objC = arLogs[j];
 					if (objC.transactionHash != obj_game["game"].gameTxHash 
 					&& objC.data == idOraclizeGame /*&& objC.topics[0] == topicsResultLog*/) {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
-						console.log("--------------------------------------")
 						console.log("resultTxid:", resultTxid);
-						console.log("objC:", objC);
-						console.log("--------:", j, objC.data.match(/77696e/i),
-									objC.data.match(/6c6f7365/i))
-						if (objC.data.match(/77696e/i)) {
-							console.log("result:", 1);
-						}
-						if (objC.data.match(/6c6f7365/i)) {
-							console.log("result:", -1);
-						}
-						// break;
+						break;
 					}
 				}
 			}
 			
-			/*if(resultTxid){
-				for (var i = index; i < len; i ++) {
-					var objC = arLogs[i];
-					if (objC.transactionHash == resultTxid) {
-						console.log("objC.data:", i, objC.data)
-						console.log("!!!!!!!!!:", objOrcl.data.match(/77696e/i),
-									objOrcl.data.match(/6c6f7365/i))
-						if (objOrcl.data.match(/77696e/i)) {
-							console.log("result:", 1);
-						}
-						if (objOrcl.data.match(/6c6f7365/i)) {
-							console.log("result:", -1);
-						}
-						break;
-					}
-				}
-			}*/
+			if(resultTxid){
+				$.each(d.result,function(v,i){
+					  if (i.transactionHash == resultTxid) {
+							console.log("!!!", i.data.match(/77696e/i), i.data.match(/6c6f7365/i));
+							if (i.data.match(/77696e/i)) {
+								console.log("match: win");
+							}
+							if (i.data.match(/6c6f7365/i)) {
+								console.log("match: lose");
+							}
+					  }
+				})
+			}
 	}, "json");
 }
 
