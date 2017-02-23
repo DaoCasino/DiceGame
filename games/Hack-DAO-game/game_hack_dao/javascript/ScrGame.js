@@ -1084,6 +1084,10 @@ ScrGame.prototype.clickObject = function(evt) {
 }
 
 ScrGame.prototype.getLogs = function() {
+	var idOraclizeGame = undefined;
+	var resultTxid = undefined;
+	var objOrcl = undefined;
+	
 	$.get(urlSite + 
 		"api?module=logs"+
 		"&action=getLogs"+
@@ -1094,17 +1098,13 @@ ScrGame.prototype.getLogs = function() {
 			var arLogs = d.result;
 			var len = arLogs.length;
 			var index = 0;
-			var idOraclizeGame = undefined;
-			var resultTxid = undefined;
-			var obj = undefined;
-			var objOrcl = undefined;
 			if(len > 50){
 				index = len-50;
 			}
 			if(idOraclizeGame == undefined){
 				for (var i = index; i < len; i ++) {
 					if (arLogs[i].transactionHash == obj_game["game"].gameTxHash) {
-						obj = arLogs[i];
+						var obj = arLogs[i];
 						idOraclizeGame = obj.data; //id Oraclize
 						console.log("idOraclizeGame:", idOraclizeGame);
 						break;
@@ -1118,6 +1118,9 @@ ScrGame.prototype.getLogs = function() {
 					&& objC.data == idOraclizeGame) {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
+						console.log("--------------------------------------")
+						console.log("objC.transactionHash:", objC.transactionHash);
+						console.log("gameTxHash:", obj_game["game"].gameTxHash);
 						console.log("resultTxid:", resultTxid);
 						console.log("objC.data:", objC.data);
 						console.log("--------:", j, objC.data.match(/77696e/i),
