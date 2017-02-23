@@ -1116,6 +1116,8 @@ ScrGame.prototype.getLogs = function() {
 					&& objC.data == idOraclizeGame) {
 						resultTxid = objC.transactionHash;
 						console.log("resultTxid:", resultTxid);
+						console.log("--------:", j, objC.data.match(/77696e/i),
+									objC.data.match(/6c6f7365/i))
 						// if (objC.data.match(/77696e/i)) {
 							// console.log("result:", 1);
 						// }
@@ -1130,8 +1132,10 @@ ScrGame.prototype.getLogs = function() {
 			if(resultTxid){
 				for (var i = index; i < len; i ++) {
 					var objC = arLogs[i];
-					console.log("i:", objC.transactionHash, resultTxid)
 					if (objC.transactionHash == resultTxid) {
+						console.log("objC.data:", i, objC.data)
+						console.log("!!!!!!!!!:", objC.data.match(/77696e/i),
+									objC.data.match(/6c6f7365/i))
 						if (objC.data.match(/77696e/i)) {
 							console.log("result:", 1);
 						}
