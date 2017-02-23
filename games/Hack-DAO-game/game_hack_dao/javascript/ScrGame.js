@@ -1125,17 +1125,30 @@ ScrGame.prototype.getLogs = function() {
 			}
 			
 			if(resultTxid){
-				$.each(d.result,function(v,i){
-					  if (i.transactionHash == resultTxid) {
-							console.log("!!!", i.data.match(/77696e/i), i.data.match(/6c6f7365/i));
-							if (i.data.match(/77696e/i)) {
-								console.log("match: win");
-							}
-							if (i.data.match(/6c6f7365/i)) {
-								console.log("match: lose");
-							}
-					  }
-				})
+				console.log("arLogs:", arLogs.length);
+				for (var i = 0; i < arLogs.length; i ++) {
+					var obj = arLogs[i];
+					if (obj.transactionHash == resultTxid) {
+						console.log("!!!", obj.data.match(/77696e/i), iobj.data.match(/6c6f7365/i));
+						if (obj.data.match(/77696e/i)) {
+							console.log("match: win");
+						}
+						if (obj.data.match(/6c6f7365/i)) {
+							console.log("match: lose");
+						}
+					}
+				}
+				// $.each(d.result,function(v,i){
+					  // if (i.transactionHash == resultTxid) {
+							// console.log("!!!", i.data.match(/77696e/i), i.data.match(/6c6f7365/i));
+							// if (i.data.match(/77696e/i)) {
+								// console.log("match: win");
+							// }
+							// if (i.data.match(/6c6f7365/i)) {
+								// console.log("match: lose");
+							// }
+					  // }
+				// })
 			}
 	}, "json");
 }
