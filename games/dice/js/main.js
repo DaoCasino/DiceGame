@@ -3,7 +3,7 @@ var _idGame = "";
 var urlSite = "https://api.etherscan.io/";
 urlSite = "https://testnet.etherscan.io/";
 var urlBalance = ""; //balance
-var addressContract = "0x3bbe1fd16ffb5ac8511b0ef9cbed28b6eac89ed3"; // cotract
+var addressContract = "0xb7c90df0888fee75ecfc8e85ed35fcd6ea1f3370"; // cotract
 var betEth = 1; //0,2 ставка эфира
 var mainet, openkey, privkey;
 var FirstRequest = true;
@@ -54,6 +54,7 @@ function initGame() {
                 }
     Refresh();
     loadData();
+    RefreshTable();
     if (openkey) {
         var adress = openkey.replace('0x', '');
         urlBalance = urlSite + "api?module=account&action=balance&address=" + adress + "&tag=latest&apikey=YourApiKeyToken"
@@ -69,7 +70,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.03")
+    console.log("version 0.04")// VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)

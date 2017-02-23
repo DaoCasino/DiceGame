@@ -14,6 +14,7 @@ $("#roll-dice").click(function () { //действие при нажатии
     //        console.log("sorry"); //ответ при недостатке средств
     //    }
     //    else {
+    
     OldBalance = _balance;
     FirstRequest = false;
     startGameEth();
@@ -21,6 +22,7 @@ $("#roll-dice").click(function () { //действие при нажатии
     var Timer = setInterval(function () {
         sendUrlRequest(urlBalance, "getBalance");
         if (OldBalance < _balance) {
+            RefreshTable();
             EnableButton(true);
             FirstRequest = true;
             console.log("you Win!");
@@ -31,6 +33,7 @@ $("#roll-dice").click(function () { //действие при нажатии
             $("#your-balance").val(_balance);
         }
         else if (OldBalance > _balance) {
+            RefreshTable();
             EnableButton(true);
             FirstRequest = true;
             console.log("You Lose!")
