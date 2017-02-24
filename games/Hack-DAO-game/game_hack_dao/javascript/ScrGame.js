@@ -751,10 +751,9 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 		mc.health = mc.healthMax;
 		mc.refreshHealth();
 	} else if(mc.name == "tfBoom"){
-		mc.tLife = 3000;
+		mc.tLife = 300;
 		mc.scale.x = 0.5;
 		mc.scale.y = mc.scale.x;
-		mc.alpha = 0.1;
 		mc.vA = 1;
 	} else if(mc.name == "eggPart"){
 		mc.alpha = 1;
@@ -1082,10 +1081,8 @@ ScrGame.prototype.clickObject = function(evt) {
 							mc.refreshHealth();
 							mc.setAct("hackerHurt");
 							mc.speed = mc.speedMax/2;
-							if(Math.random()>0.7){
-								this.createObj(mc, "tfBoom");
-							}
 							if(mc.health <= 0){
+								this.createObj(mc, "tfBoom");
 								this.addHolderObj(mc);
 							}
 						}
@@ -1511,19 +1508,9 @@ ScrGame.prototype.updateHolder = function(diffTime){
 					mc.tLife = 0;
 				}
 			} else if(mc.name == "tfBoom"){
-				if(mc.alpha > 0.05){
-					mc.alpha += mc.vA*0.075;
-					mc.scale.x += mc.vA*0.05;
+				if(mc.scale.x < 1){
+					mc.scale.x += mc.vA*0.1;
 					mc.scale.y = mc.scale.x;
-				} else {
-					mc.tLife = 0;
-				}
-				if(mc.vA == 1){
-					// mc.scale.x += mc.vA*0.05;
-					// mc.scale.y = mc.scale.x;
-				}
-				if(mc.alpha >=1){
-					mc.vA = -1;
 				}
 			} else if(mc.name == "itemMoney"){
 				mc.y += mc.speed
