@@ -1,13 +1,13 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.70"
+var version = "v. 1.1.0"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
 var betslevel = [];
 var openkey, privkey, mainet;
 var currentScreen, scrContainer;
-var ScreenGame, ScreenLevels;
+var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
@@ -18,6 +18,7 @@ var fontGothic = "Century Gothic";
 var stats; //для вывода статистики справа
 
 var options_debug = false;
+var options_test = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
@@ -213,9 +214,11 @@ function spritesLoad() {
 }
 
 function textureLoad() {
-	iniSet("images/texture/AnimaTexture.json");
-	iniSet("images/texture/Anima2Texture.json");
-	// iniSetArt("images/buttons/ButtonsTexture.json");
+	if(!options_test){
+		iniSet("images/texture/AnimaTexture.json");
+		iniSet("images/texture/Anima2Texture.json");
+		// iniSetArt("images/buttons/ButtonsTexture.json");
+	}
 }
 
 function iniSet(set_name) {
@@ -385,6 +388,10 @@ function removeAllScreens() {
 		scrContainer.removeChild(ScreenLevels);
 		ScreenLevels = null;
 	}
+	if(ScreenMenu){
+		scrContainer.removeChild(ScreenMenu);
+		ScreenMenu = null;
+	}
 	if(currentScreen){
 		scrContainer.removeChild(currentScreen);
 		currentScreen = null;
@@ -415,6 +422,7 @@ function loadData() {
 		mainet = localStorage.getItem('mainnet')
 		openkey = localStorage.getItem('openkey')
 		privkey = localStorage.getItem('privkey')
+		// console.log("openkey:", openkey);
 		if (localStorage.getItem('daocasino_hack')){
 			var login_str = localStorage.getItem('daocasino_hack')
 			login_obj = JSON.parse(login_str);
@@ -511,7 +519,11 @@ function start() {
 	if(LoadBack){
 		stage.removeChild(LoadBack);
 	}
-	addScreen("menu");
+	if(options_test){
+		addScreen("test");
+	} else {
+		addScreen("menu");
+	}
 }
 
 function showMenu() {
@@ -522,6 +534,9 @@ function showGame() {
 }
 function showLevels() {
 	addScreen("levels");
+}
+function showTest() {
+	addScreen("test");
 }
 
 function addScreen(name) {
@@ -539,6 +554,10 @@ function addScreen(name) {
 		ScreenLevels = new ScrLevels();
 		scrContainer.addChild(ScreenLevels);
 		currentScreen = ScreenLevels;
+	} else if(name == "test"){
+		ScreenTest = new ScrTest();
+		scrContainer.addChild(ScreenTest);
+		currentScreen = ScreenTest;
 	}
 	currentScreen.name = name;
 }

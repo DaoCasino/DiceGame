@@ -13,7 +13,8 @@ var TIME_RESPAWN_PROPOSAL = 1000;
 var TIME_RESPAWN_MINER = 5000;
 var TIME_RESPAWN_HACKER = 1500;
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
-var urlSite = "https://api.etherscan.io/";
+var urlEtherscan = "https://api.etherscan.io/";
+var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
 var addressContract = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
 var topicsResultLog = "0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab";
@@ -74,14 +75,13 @@ ScrGame.prototype.init = function() {
 	this.countOld = 0;
 	
 	if(options_testnet){
-		urlSite = "https://testnet.etherscan.io/";
+		urlEtherscan = "https://testnet.etherscan.io/";
+		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		addressContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 	} else {
 		betEth = 200000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
 	}
-	
-
 	
 	// если идет еще старая сессия, загружаем её
 	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["gameTxHash"]){
@@ -532,7 +532,7 @@ ScrGame.prototype.shareFB = function() {
 }
 
 ScrGame.prototype.showSmartContract = function() {
-	var url = urlSite + "address/" + addressContract
+	var url = urlEtherscan + "address/" + addressContract
 	if(options_mainet){
 		url = "https://etherscan.io/" + "address/" + addressContract
 	}
@@ -786,15 +786,69 @@ ScrGame.prototype.addHolderObj = function(obj){
 	obj.y = _H + 50;
 }
 
-// STAR
+// START
 ScrGame.prototype.startGameEth = function(){
 	if(openkey == undefined){
 		obj_game["game"].showError(ERROR_KEY);
 		return false;
 	}
-	var openKey = openkey.substr(2);
 	
-	$.get(urlSite+"api?module=proxy"+
+	$.ajax({
+		type: "POST",
+		url: urlInfura,
+		dataType: 'json',
+		async: false,
+		data: JSON.stringify({"jsonrpc":"2.0",
+							"method":"eth_getTransactionCount",
+							"params":[openkey,"latest"],
+							"id":1}),
+		success: function (d) {
+			console.log("get nonce "+d.result);
+			var options = {};
+			options.nonce = d.result;
+			options.to = addressContract;
+			// call function game() in contract
+			options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
+			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+			options.gasLimit=0x927c0; //web3.toHex('600000');
+			options.value = betEth;
+			
+			if(privkey){
+				if(buf == undefined){
+					obj_game["game"].showError(ERROR_TRANSACTION);
+				} else {
+					//приватный ключ игрока, подписываем транзакцию
+					var tx = new EthereumTx(options);
+					tx.sign(new buf(privkey, 'hex'));
+
+					var serializedTx = tx.serialize().toString('hex');
+					obj_game["game"].createLevel();
+					obj_game["game"].bSendRequest = false;
+					obj_game["game"].startGame = true;
+					console.log("The transaction was signed: "+serializedTx);
+					
+					$.ajax({
+						type: "POST",
+						url: urlInfura,
+						dataType: 'json',
+						async: false,
+						data: JSON.stringify({"id":0,
+											"jsonrpc":'2.0',
+											"method":'eth_sendRawTransaction',
+											"params":["0x"+String(serializedTx)]}),
+						success: function (d) {
+							obj_game["game"].response("gameTxHash", d.result) 
+							console.log("Транзакция отправлена в сеть:", d.result);
+						}
+					})
+				}
+			}
+		}
+	})
+	
+	/*var openKey = openkey.substr(2);
+	
+	$.get(urlEtherscan+"api?module=proxy"+
 	"&action=eth_getTransactionCount"+
 	"&address="+openkey+
 	"&tag=latest"+
@@ -822,7 +876,7 @@ ScrGame.prototype.startGameEth = function(){
 				obj_game["game"].startGame = true;
 				
 				console.log("The transaction was signed: "+serializedTx);
-				$.getJSON(urlSite+"api?module=proxy"+
+				$.getJSON(urlEtherscan+"api?module=proxy"+
 				"&action=eth_sendRawTransaction"+
 				"&hex="+serializedTx+
 				"&apikey=YourApiKeyToken",function(d){
@@ -832,7 +886,7 @@ ScrGame.prototype.startGameEth = function(){
 				});
 			}
 		}
-	}, "json");
+	}, "json");*/
 }
 
 // RESULT
@@ -1098,7 +1152,7 @@ ScrGame.prototype.clickObject = function(evt) {
 
 ScrGame.prototype.getResult = function() {
 	var objOrcl = undefined;
-	$.get(urlSite + 
+	$.get(urlEtherscan + 
 		"api?module=logs"+
 		"&action=getLogs"+
 		"&fromBlock=379224"+
@@ -1153,6 +1207,29 @@ ScrGame.prototype.getResult = function() {
 	obj_game["game"].getResponseResult(0);
 }
 
+ScrGame.prototype.sendInfuraRequest = function(name, params) {
+	var method = "";
+	switch(name){
+		case "getBalance":
+			method = "eth_getBalance";
+			break;
+	}
+	
+	$.ajax({
+		type: "POST",
+		url: urlInfura,
+		dataType: 'json',
+		async: false,
+		data: JSON.stringify({"id":0,
+							"jsonrpc":'2.0',
+							"method":method,
+							"params":[params, "latest"]}),
+		success: function (d) {
+			obj_game["game"].response(name, d.result);
+		}
+	})
+}
+
 ScrGame.prototype.sendUrlRequest = function(url, name) {
 	// console.log("sendRequest:", name, url)	
 	var xhr = new XMLHttpRequest();
@@ -1195,11 +1272,7 @@ ScrGame.prototype.sendRequest = function(value) {
 			}
 		} else if(value == "getBalance"){
 			if(openkey){
-				var adress = openkey.replace('0x','');
-				urlBalance = urlSite+"api?module=account&action=balance&address="+
-							adress+"&tag=latest&apikey=YourApiKeyToken"
-				var str = urlBalance;
-				this.sendUrlRequest(str, "getBalance");
+				this.sendInfuraRequest("getBalance", openkey);
 			}
 		}
 	}
@@ -1233,8 +1306,7 @@ ScrGame.prototype.response = function(command, value) {
 		var obj = JSON.parse(value);
 		console.log("getEthereum:", obj);
 	} else if(command == "getBalance"){
-		var obj = JSON.parse(value);
-		obj_game["balance"] = toFixed((Number(obj.result)/1000000000000000000), 4);
+		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
 		if(this.oldBalance == -1){
