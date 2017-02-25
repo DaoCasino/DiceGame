@@ -82,7 +82,6 @@ ScrGame.prototype.init = function() {
 		betEth = 200000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
 	}
-	
 	// если идет еще старая сессия, загружаем её
 	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["gameTxHash"]){
 		login_obj["level"] = login_obj["curLevel"];
@@ -845,48 +844,6 @@ ScrGame.prototype.startGameEth = function(){
 			}
 		}
 	})
-	
-	/*var openKey = openkey.substr(2);
-	
-	$.get(urlEtherscan+"api?module=proxy"+
-	"&action=eth_getTransactionCount"+
-	"&address="+openkey+
-	"&tag=latest"+
-	"&apikey=YourApiKeyToken",function(d){
-		console.log("get nonce "+d.result);
-		var options = {};
-		options.nonce = d.result;
-		options.to = addressContract;
-		// call function game() in contract
-		options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
-		options.gasPrice="0x737be7600";//web3.toHex('31000000000');
-		options.gasLimit=0x927c0; //web3.toHex('600000');
-		options.value = betEth;
-
-		if(privkey){
-			if(buf == undefined){
-				obj_game["game"].showError(ERROR_TRANSACTION);
-			} else {
-				var tx = new EthereumTx(options);
-				tx.sign(new buf(privkey, 'hex')); //приватный ключ игрока, подписываем транзакцию
-
-				var serializedTx = tx.serialize().toString('hex');
-				obj_game["game"].createLevel();
-				obj_game["game"].bSendRequest = false;
-				obj_game["game"].startGame = true;
-				
-				console.log("The transaction was signed: "+serializedTx);
-				$.getJSON(urlEtherscan+"api?module=proxy"+
-				"&action=eth_sendRawTransaction"+
-				"&hex="+serializedTx+
-				"&apikey=YourApiKeyToken",function(d){
-					//здесь будет ethereum txid по которому мы позже сможем вытащить результат.
-					obj_game["game"].response("gameTxHash", d.result) 
-					console.log("Транзакция отправлена в сеть:", d.result);
-				});
-			}
-		}
-	}, "json");*/
 }
 
 // RESULT
