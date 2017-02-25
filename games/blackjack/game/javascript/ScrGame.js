@@ -105,7 +105,7 @@ ScrGame.prototype.init = function() {
 	this.addChild(this.face_mc);
 	
 	this.createGUI();
-	// this.sendRequest("getBalance");
+	this.sendRequest("getBalance");
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -168,7 +168,7 @@ ScrGame.prototype.createGUI = function() {
 	this._arButtons.push(btnHit);
 	var tf = addText("Hit", 40, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
-	tf.y = - 24;
+	tf.y = - 26;
 	btnHit.addChild(tf);
 	this.btnHit = btnHit;
 	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200, 0.7);
@@ -180,7 +180,7 @@ ScrGame.prototype.createGUI = function() {
 	this._arButtons.push(btnStand);
 	var tf = addText("Stand", 40, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
-	tf.y = - 24;
+	tf.y = - 26;
 	btnStand.addChild(tf);
 	this.btnStand = btnStand;
 }
@@ -391,25 +391,10 @@ ScrGame.prototype.response = function(command, value, index) {
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
 	} else if(command == "getPlayerCard"){
-		// switch(index){
-			// case 0:
-				// this.bCardP0 = true;
-				// break;
-			// case 1:
-				// this.bCardP1 = true;
-				// break;
-		// }
-		
 		var card = hexToNum(value);
-		console.log("card:", index, card);
 		this.showPlayerCard(this.getCard(card));
-		
-		// if(this.bCardP0 && this.bCardP1){
-			// this.bSendRequest = true;
-		// }
 	} else if(command == "getHouseCard"){		
 		var card = hexToNum(value);
-		console.log("card:", index, card);
 		this.showHouseCard(this.getCard(card));
 	}
 }
