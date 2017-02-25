@@ -105,7 +105,7 @@ ScrGame.prototype.init = function() {
 	this.addChild(this.face_mc);
 	
 	this.createGUI();
-	this.sendRequest("getBalance");
+	// this.sendRequest("getBalance");
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -210,10 +210,11 @@ ScrGame.prototype.showPlayerCard = function(card){
   dealedCards.push(card);
 }
 
-ScrGame.prototype.showHouseCard = function(card){{
+ScrGame.prototype.showHouseCard = function(card){
   // if (!oldState && !gameIsGoingOn) return;
   card.x = _W/2 - card.w/2 + lastHouseCard*card.w/3;
   card.y = _H/2 + 100;
+  this.game_mc.addChild(card);
   lastHouseCard++;
   dealedCards.push(card);
 }
