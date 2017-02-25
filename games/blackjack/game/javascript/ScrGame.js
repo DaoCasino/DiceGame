@@ -372,7 +372,7 @@ ScrGame.prototype.response = function(command, value, index) {
 		
 		var card = hexToNum(value);
 		console.log("card:", index, card);
-		this.showPlayerCard(getCard(card));
+		this.showPlayerCard(this.getCard(card));
 		
 		if(this.bCardP0 && this.bCardP1){
 			this.bSendRequest = true;
