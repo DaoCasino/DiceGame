@@ -86,7 +86,7 @@ ScrGame.prototype.init = function() {
 			}
 		}
 	}
-	
+	saveData();
 	if(options_testnet){
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -166,9 +166,9 @@ ScrGame.prototype.createGUI = function() {
 	btnHit.visible = false;
 	this.addChild(btnHit);
 	this._arButtons.push(btnHit);
-	var tf = addText("Hit", 48, "#FFFFFF", undefined, "center", 350, 2)
+	var tf = addText("Hit", 40, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
-	tf.y = - 17;
+	tf.y = - 24;
 	btnHit.addChild(tf);
 	this.btnHit = btnHit;
 	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200, 0.7);
@@ -178,9 +178,9 @@ ScrGame.prototype.createGUI = function() {
 	btnStand.visible = false;
 	this.addChild(btnStand);
 	this._arButtons.push(btnStand);
-	var tf = addText("Stand", 48, "#FFFFFF", undefined, "center", 350, 2)
+	var tf = addText("Stand", 40, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
-	tf.y = - 17;
+	tf.y = - 24;
 	btnStand.addChild(tf);
 	this.btnStand = btnStand;
 }
