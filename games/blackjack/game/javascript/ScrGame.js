@@ -514,6 +514,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		if(options_debug){
 			this.getPlayerCard(0);
 			this.getPlayerCard(1);
+			this.getPlayerCard(2);
+			this.getPlayerCard(3);
 			this.getHouseCard(0);
 			this.showSuitCard();
 			this.createGame();
