@@ -59,9 +59,7 @@ ScrGame.prototype.init = function() {
 	this._gameOver = false;
 	this.bSendRequest = false;
 	this.bWindow = false;
-	this.bCardP0 = false;
-	this.bCardP1 = false;
-	this.bCardH0 = false;
+	this.bHit = false;
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
@@ -278,6 +276,7 @@ ScrGame.prototype.getHouseCard = function(value){
 }
 
 ScrGame.prototype.clickHit = function(){
+	this.bHit = true;
 	this.showButtons(false);
     var data = "0x2ae3594a";
 	this.sendInfuraAction("hit", data);
@@ -467,13 +466,16 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getPlayerCard"){
 		var card = hexToNum(value);
 		this.showPlayerCard(this.getCard(card));
+		this.showButtons(true);
+		this.bHit = false;
+		this.timeGetCards = 0;
 	} else if(command == "getHouseCard"){
 		var card = hexToNum(value);
 		this.showHouseCard(this.getCard(card));
 	} else if(command == "hit"){
-		this.showButtons(true);
+		// this.showButtons(true);
 	} else if(command == "stand"){
-		this.showButtons(true);
+		// this.showButtons(true);
 	}
 }
 
@@ -488,11 +490,11 @@ ScrGame.prototype.update = function(){
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	if(this.gameTxHash){
+	if(this.bHit){
 		this.timeGetCards += diffTime;
-		if(this.timeGetCards >= TIME_GET_CARDS &&
-		this.bSendRequest == false){
+		if(this.timeGetCards >= TIME_GET_CARDS){
 			this.timeGetCards = 0;
+			this.getPlayerCard(lastPlayerCard);
 		}
 	}
 	
