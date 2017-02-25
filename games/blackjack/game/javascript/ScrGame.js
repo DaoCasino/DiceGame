@@ -66,6 +66,7 @@ ScrGame.prototype.init = function() {
 	this.bHit = false;
 	this.bStand = false;
 	this.bGameLoad = false;
+	this.bInitFirst = false;
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
@@ -165,6 +166,10 @@ ScrGame.prototype.createGUI = function() {
 	this.tfTotalTime.x = icoTime.x + 24;
 	this.tfTotalTime.y = icoTime.y - 12;
 	this.face_mc.addChild(this.tfTotalTime);
+	this.tfResult = addText("", 20, "#ffffff", "#000000", "center", 400, 4)
+	this.tfResult.x = _W/2;
+	this.tfResult.y = _H/2;
+	this.face_mc.addChild(this.tfResult);
 	
 	if(openkey){
 		this.tfIdUser.setText(openkey);
@@ -292,7 +297,6 @@ ScrGame.prototype.getHouseCardsNumber = function() {
 }
 
 ScrGame.prototype.checkGameState = function() {
-	console.log("Checking game state");
 	// 0 Run
 	// 1 Player
 	// 2 House
@@ -520,18 +524,39 @@ ScrGame.prototype.response = function(command, value, index) {
 		this.countPlayerCard = hexToNum(value);
 		if(this.countPlayerCard > 0 && this.countHouseCard > 0){
 			this.loadGame();
+		} else if(this.bGameLoad){
+			for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
+				this.getPlayerCard(i);
+			}
 		}
 	} else if(command == "getHouseCardsNumber"){
 		this.countHouseCard = hexToNum(value);
 		if(this.countPlayerCard > 0 && this.countHouseCard > 0){
 			this.loadGame();
+		} else if(this.bGameLoad){
+			for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
+				this.getHouseCard(i);
+			}
+			this.showSuitCard();
 		}
 	} else if(command == "getGameState"){
 		stateNow = hexToNum(value);
 		console.log("stateNow:", stateNow);
 		if(stateNow > 0){
-			this.btnStart.visible = true;
-			
+			if(!this.bInitFirst){
+				this.btnStart.visible = true;
+			}
+			switch (stateNow){
+				case 1:
+					this.tfResult.setText("You won!");
+					break;
+				case 2:
+					this.tfResult.setText("House won!");
+					break;
+				case 3:
+					this.tfResult.setText("Tie!");
+					break;
+			}
 		} else if(stateNow == 0){
 			this.getPlayerCardsNumber();
 			this.getHouseCardsNumber();
@@ -582,6 +607,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
+		this.bInitFirst = true;
 		this.startGameEth();
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();
