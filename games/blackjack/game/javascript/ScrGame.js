@@ -254,9 +254,9 @@ ScrGame.prototype.getPlayerCard = function(value){
     callData = callData.substr(0, 10);
 	var data = callData + pad(numToHex(value), 64);
 	console.log("data:", data);
-	var params = ["from":openkey,
+	var params = {"from":openkey,
 				"to":addressContract,
-				"data":data];
+				"data":data};
 	this.sendInfuraRequest("getPlayerCard", params);
 }
 
