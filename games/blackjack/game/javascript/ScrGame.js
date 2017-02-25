@@ -13,7 +13,7 @@ var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var betEth = 200000000000000000; //ставка эфира
+var betEth = 50000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
 var _mouseX;
@@ -27,6 +27,7 @@ var accounts;
 var account;
 var gameInited = false;
 var gameIsGoingOn;
+var dealedCards = new Array();
 var suit = {0: 'Hearts', 1: 'Diamonds', 2: 'Spades', 3: 'Clubs'};
 var cardType = {0: 'King', 1: 'Ace', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10',
                 11: 'Jacket', 12: 'Queen'};
@@ -53,12 +54,14 @@ ScrGame.prototype.init = function() {
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
 	this.gameTxHash = undefined;
+	this.cardSuit = undefined;
 	this.startGame = false;
 	this._gameOver = false;
 	this.bSendRequest = false;
 	this.bWindow = false;
 	this.bCardP0 = false;
 	this.bCardP1 = false;
+	this.bCardH0 = false;
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
@@ -74,13 +77,13 @@ ScrGame.prototype.init = function() {
 		
 		if(openkey && privkey){
 		} else {
-			if(options_testnet){
-				openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
-				privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
-			} else {
-				openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
-				privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
-			}
+			// if(options_testnet){
+				// openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
+				// privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
+			// } else {
+				// openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
+				// privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
+			// }
 		}
 	}
 	
@@ -89,7 +92,7 @@ ScrGame.prototype.init = function() {
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		addressContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 	} else {
-		betEth = 200000000000000000; //ставка эфира
+		betEth = 50000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
 	}
 	
@@ -156,7 +159,7 @@ ScrGame.prototype.createGUI = function() {
 	tf.x = 0;
 	tf.y = - 17;
 	btnStart.addChild(tf);
-	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200, 0.5);
+	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200, 0.7);
 	btnHit.name = "btnHit";
 	btnHit.interactive = true;
 	btnHit.buttonMode=true;
@@ -168,7 +171,7 @@ ScrGame.prototype.createGUI = function() {
 	tf.y = - 17;
 	btnHit.addChild(tf);
 	this.btnHit = btnHit;
-	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200, 0.5);
+	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200, 0.7);
 	btnStand.name = "btnStand";
 	btnStand.interactive = true;
 	btnStand.buttonMode=true;
@@ -204,8 +207,24 @@ ScrGame.prototype.showPlayerCard = function(card){
   card.y = _H/2 + 100;
   this.game_mc.addChild(card);
   lastPlayerCard++;
-  // dealedCards.push(card);
-  // renderer.render(stage);
+  dealedCards.push(card);
+}
+
+ScrGame.prototype.showHouseCard = function(card){{
+  // if (!oldState && !gameIsGoingOn) return;
+  card.x = _W/2 - card.w/2 + lastHouseCard*card.w/3;
+  card.y = _H/2 + 100;
+  lastHouseCard++;
+  dealedCards.push(card);
+}
+
+ScrGame.prototype.showSuitCard = function(){
+	if(this.cardSuit){} else {
+		this.cardSuit = addObj("suit");
+		this.gfx_mc.addChild(cardSuit);
+	}
+  this.cardSui.x = _W/2 - this.cardSui.w/2 + lastHouseCard*this.cardSui.w/3;
+  this.cardSui.y = _H/2 + 100;
 }
 
 ScrGame.prototype.getCard = function(cardIndex){
@@ -241,6 +260,17 @@ ScrGame.prototype.getPlayerCard = function(value){
 				"to":addressContract,
 				"data":data};
 	this.sendInfuraRequest("getPlayerCard", params, value);
+}
+
+ScrGame.prototype.getHouseCard = function(value){
+    var callData = "0xd02d13820000000000000000000000000000000000000000000000000000000000000000";
+    callData = callData.substr(0, 10);
+	var data = callData + pad(numToHex(value), 64);
+	console.log("data:", data);
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	this.sendInfuraRequest("getHouseCard", params, value);
 }
 
 // START
@@ -311,6 +341,7 @@ ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
 			method = "eth_getBalance";
 			break;
 		case "getPlayerCard":
+		case "getHouseCard":
 			method = "eth_call";
 			break;
 	}
@@ -349,34 +380,36 @@ ScrGame.prototype.response = function(command, value, index) {
 	if(command == "gameTxHash"){
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
-		this.gameTxHash = obj_game["gameTxHash"];	
-		if(!this.bCardP0){
-			this.getPlayerCard(0);
-		}
-		if(!this.bCardP1){
-			this.getPlayerCard(1);
-		}
+		this.gameTxHash = obj_game["gameTxHash"];
+		this.getPlayerCard(0);
+		this.getPlayerCard(1);
+		this.getHouseCard(0);
+		this.showSuitCard();
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
 	} else if(command == "getPlayerCard"){
-		switch(index){
-			case 0:
-				this.bCardP0 = true;
-				break;
-			case 1:
-				this.bCardP1 = true;
-				break;
-		}
+		// switch(index){
+			// case 0:
+				// this.bCardP0 = true;
+				// break;
+			// case 1:
+				// this.bCardP1 = true;
+				// break;
+		// }
 		
 		var card = hexToNum(value);
 		console.log("card:", index, card);
 		this.showPlayerCard(this.getCard(card));
 		
-		if(this.bCardP0 && this.bCardP1){
-			this.bSendRequest = true;
-		}
+		// if(this.bCardP0 && this.bCardP1){
+			// this.bSendRequest = true;
+		// }
+	} else if(command == "getHouseCard"){		
+		var card = hexToNum(value);
+		console.log("card:", index, card);
+		this.showHouseCard(this.getCard(card));
 	}
 }
 
