@@ -494,16 +494,11 @@ ScrGame.prototype.response = function(command, value, index) {
 		return false;
 	}
 	
-	console.log("response:", command, value)
+	// console.log("response:", command, value)
 	if(command == "gameTxHash"){
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
 		this.gameTxHash = obj_game["gameTxHash"];
-		this.createGame();
-		this.getPlayerCard(0);
-		this.getPlayerCard(1);
-		this.getHouseCard(0);
-		this.showSuitCard();
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
@@ -533,8 +528,10 @@ ScrGame.prototype.response = function(command, value, index) {
 		}
 	} else if(command == "getGameState"){
 		stateNow = hexToNum(value);
+		console.log("stateNow:", stateNow);
 		if(stateNow > 0){
 			this.btnStart.visible = true;
+			
 		} else if(stateNow == 0){
 			this.getPlayerCardsNumber();
 			this.getHouseCardsNumber();
