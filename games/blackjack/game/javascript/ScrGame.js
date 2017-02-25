@@ -201,6 +201,11 @@ ScrGame.prototype.showGameButtons = function() {
   }
 }
 
+ScrGame.prototype.showButtons = function(value) {
+    this.btnHit.visible = value;
+    this.btnStand.visible = value;
+}
+
 ScrGame.prototype.showPlayerCard = function(card){
   // if (!oldState && !gameIsGoingOn) return;
   card.x = _W/2 - 80 + lastPlayerCard*50;
@@ -221,7 +226,7 @@ ScrGame.prototype.showHouseCard = function(card){
 
 ScrGame.prototype.showSuitCard = function(){
 	if(this.cardSuit){} else {
-		this.cardSuit = addObj("suit", 0, 0, 0.5);
+		this.cardSuit = addObj("suit", 0, 0, 0.52);
 		this.gfx_mc.addChild(this.cardSuit);
 	}
   this.cardSuit.x = _W/2 - 80 + lastHouseCard*50;
@@ -273,14 +278,13 @@ ScrGame.prototype.getHouseCard = function(value){
 }
 
 ScrGame.prototype.clickHit = function(){
+	this.showButtons(false);
     var data = "0x2ae3594a";
-	var params = {"from":openkey,
-				"to":addressContract,
-				"data":data};
-	this.sendInfuraRequest("hit", params);
+	this.sendInfuraAction("hit", data);
 }
 
 ScrGame.prototype.clickStand = function(){
+	this.showButtons(false);
     var data = "0xc2897b10";
 	var params = {"from":openkey,
 				"to":addressContract,
@@ -324,7 +328,6 @@ ScrGame.prototype.startGameEth = function(){
 					tx.sign(new buf(privkey, 'hex'));
 
 					var serializedTx = tx.serialize().toString('hex');
-					obj_game["game"].createGame();
 					obj_game["game"].bSendRequest = false;
 					obj_game["game"].startGame = true;
 					console.log("The transaction was signed: "+serializedTx);
@@ -349,6 +352,58 @@ ScrGame.prototype.startGameEth = function(){
 	})
 }
 
+ScrGame.prototype.sendInfuraAction = function(name, data) {
+	$.ajax({
+		type: "POST",
+		url: urlInfura,
+		dataType: 'json',
+		async: false,
+		data: JSON.stringify({"jsonrpc":"2.0",
+							"method":"eth_getTransactionCount",
+							"params":[openkey,"latest"],
+							"id":1}),
+		success: function (d) {
+			console.log("get nonce action "+d.result);
+			var options = {};
+			options.nonce = d.result;
+			options.to = addressContract;
+			// call function game() in contract
+			options.data = data; // method from contact
+			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+			options.gasLimit=0x927c0; //web3.toHex('600000');
+			options.value = 0;
+			
+			if(privkey){
+				if(buf == undefined){
+					console.log("ERROR_TRANSACTION");
+				} else {
+					//приватный ключ игрока, подписываем транзакцию
+					var tx = new EthereumTx(options);
+					tx.sign(new buf(privkey, 'hex'));
+
+					var serializedTx = tx.serialize().toString('hex');
+					console.log("The transaction was signed: "+serializedTx);
+					
+					$.ajax({
+						type: "POST",
+						url: urlInfura,
+						dataType: 'json',
+						async: false,
+						data: JSON.stringify({"id":0,
+											"jsonrpc":'2.0',
+											"method":'eth_sendRawTransaction',
+											"params":["0x"+String(serializedTx)]}),
+						success: function (d) {
+							obj_game["game"].response(name, d.result) 
+							console.log("Транзакция отправлена в сеть:", d.result);
+						}
+					})
+				}
+			}
+		}
+	})
+}
+
 ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
 	var method = name;
 	switch(name){
@@ -357,9 +412,11 @@ ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
 			break;
 		case "getPlayerCard":
 		case "getHouseCard":
+			method = "eth_call";
+			break;
 		case "hit":
 		case "stand":
-			method = "eth_call";
+			
 			break;
 	}
 	
@@ -398,6 +455,7 @@ ScrGame.prototype.response = function(command, value, index) {
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
 		this.gameTxHash = obj_game["gameTxHash"];
+		this.createGame();
 		this.getPlayerCard(0);
 		this.getPlayerCard(1);
 		this.getHouseCard(0);
@@ -413,9 +471,9 @@ ScrGame.prototype.response = function(command, value, index) {
 		var card = hexToNum(value);
 		this.showHouseCard(this.getCard(card));
 	} else if(command == "hit"){
-		
+		this.showButtons(true);
 	} else if(command == "stand"){
-		
+		this.showButtons(true);
 	}
 }
 
