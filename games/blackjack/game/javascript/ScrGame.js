@@ -66,24 +66,24 @@ ScrGame.prototype.init = function() {
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
 	
+		
+	options_mainet = true; // REMOVE
+	options_testnet = false; // REMOVE
 	if(options_debug){
 		var tfDebug = addText("Debug", 20, "#FF0000", "#000000", "right", 400)
 		tfDebug.x = _W-20;
 		tfDebug.y = 10;
 		this.face_mc.addChild(tfDebug);
 		
-		options_mainet = true;
-		options_testnet = false
-		
 		if(openkey && privkey){
 		} else {
-			// if(options_testnet){
-				// openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
-				// privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
-			// } else {
-				// openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
-				// privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
-			// }
+			if(options_testnet){
+				openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
+				privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
+			} else {
+				openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
+				privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
+			}
 		}
 	}
 	
@@ -256,7 +256,6 @@ ScrGame.prototype.getPlayerCard = function(value){
     var callData = "0xd02d13820000000000000000000000000000000000000000000000000000000000000000";
     callData = callData.substr(0, 10);
 	var data = callData + pad(numToHex(value), 64);
-	console.log("data:", data);
 	var params = {"from":openkey,
 				"to":addressContract,
 				"data":data};
@@ -267,11 +266,26 @@ ScrGame.prototype.getHouseCard = function(value){
     var callData = "0x7b61b2010000000000000000000000000000000000000000000000000000000000000000";
     callData = callData.substr(0, 10);
 	var data = callData + pad(numToHex(value), 64);
-	console.log("data:", data);
 	var params = {"from":openkey,
 				"to":addressContract,
 				"data":data};
 	this.sendInfuraRequest("getHouseCard", params, value);
+}
+
+ScrGame.prototype.clickHit = function(){
+    var data = "0x2ae3594a";
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	this.sendInfuraRequest("hit", params);
+}
+
+ScrGame.prototype.clickStand = function(){
+    var data = "0xc2897b10";
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	this.sendInfuraRequest("stand", params);
 }
 
 // START
@@ -343,6 +357,8 @@ ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
 			break;
 		case "getPlayerCard":
 		case "getHouseCard":
+		case "hit":
+		case "stand":
 			method = "eth_call";
 			break;
 	}
@@ -393,9 +409,13 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getPlayerCard"){
 		var card = hexToNum(value);
 		this.showPlayerCard(this.getCard(card));
-	} else if(command == "getHouseCard"){		
+	} else if(command == "getHouseCard"){
 		var card = hexToNum(value);
 		this.showHouseCard(this.getCard(card));
+	} else if(command == "hit"){
+		
+	} else if(command == "stand"){
+		
 	}
 }
 
@@ -431,12 +451,19 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
-		this.startGameEth();
-		
-		// this.getPlayerCard(0);
-		// this.getPlayerCard(1);
-		// this.getHouseCard(0);
-		// this.showSuitCard();
+		if(options_debug){
+			this.getPlayerCard(0);
+			this.getPlayerCard(1);
+			this.getHouseCard(0);
+			this.showSuitCard();
+			this.createGame();
+		} else {
+			this.startGameEth();
+		}
+	} else if(item_mc.name == "btnHit"){
+		this.clickHit();
+	} else if(item_mc.name == "btnStand"){
+		this.clickStand();
 	}
 }
 

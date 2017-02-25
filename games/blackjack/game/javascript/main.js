@@ -17,7 +17,7 @@ var fontTahoma = "Tahoma";
 var fontGothic = "Century Gothic";
 var stats; //для вывода статистики справа
 
-var options_debug = true;
+var options_debug = false;
 var options_test = false;
 var options_ethereum = true;
 var options_mainet = false;
@@ -531,11 +531,7 @@ function start() {
 	if(LoadBack){
 		stage.removeChild(LoadBack);
 	}
-	if(options_test){
-		addScreen("test");
-	} else {
-		addScreen("menu");
-	}
+	addScreen("menu");
 }
 
 function showMenu() {
