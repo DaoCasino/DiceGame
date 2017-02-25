@@ -249,6 +249,10 @@ ScrGame.prototype.showGameButtons = function() {
   }
 }
 
+function test(value){
+	this.getPlayerCard(value);
+}
+
 ScrGame.prototype.getPlayerCard = function(value){
     var callData = "0xd02d13820000000000000000000000000000000000000000000000000000000000000000";
     callData = callData.substr(0, 10);
