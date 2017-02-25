@@ -507,14 +507,18 @@ ScrGame.prototype.response = function(command, value, index) {
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
 	} else if(command == "getPlayerCard"){
-		var card = hexToNum(value);
-		this.showPlayerCard(this.getCard(card));
-		this.showButtons(true);
-		this.bHit = false;
-		this.timeGetCards = 0;
+		if(value != "0x"){
+			var card = hexToNum(value);
+			this.showPlayerCard(this.getCard(card));
+			this.showButtons(true);
+			this.bHit = false;
+			this.timeGetCards = 0;
+		}
 	} else if(command == "getHouseCard"){
-		var card = hexToNum(value);
-		this.showHouseCard(this.getCard(card));
+		if(value != "0x"){
+			var card = hexToNum(value);
+			this.showHouseCard(this.getCard(card));
+		}
 	} else if(command == "getPlayerCardsNumber"){
 		this.countPlayerCard = hexToNum(value);
 		if(this.countPlayerCard > 0 && this.countHouseCard > 0){
