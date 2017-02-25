@@ -77,13 +77,13 @@ ScrGame.prototype.init = function() {
 		
 		if(openkey && privkey){
 		} else {
-			// if(options_testnet){
-				// openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
-				// privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
-			// } else {
-				// openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
-				// privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
-			// }
+			if(options_testnet){
+				openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
+				privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
+			} else {
+				openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
+				privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
+			}
 		}
 	}
 	
@@ -203,7 +203,7 @@ ScrGame.prototype.showGameButtons = function() {
 
 ScrGame.prototype.showPlayerCard = function(card){
   // if (!oldState && !gameIsGoingOn) return;
-  card.x = _W/2 - card.w/2 + lastPlayerCard*card.w/3;
+  card.x = _W/2 - 80 + lastPlayerCard*50;
   card.y = _H/2 + 100;
   this.game_mc.addChild(card);
   lastPlayerCard++;
@@ -212,8 +212,8 @@ ScrGame.prototype.showPlayerCard = function(card){
 
 ScrGame.prototype.showHouseCard = function(card){
   // if (!oldState && !gameIsGoingOn) return;
-  card.x = _W/2 - card.w/2 + lastHouseCard*card.w/3;
-  card.y = _H/2 + 100;
+  card.x = _W/2 - 80 + lastHouseCard*50;
+  card.y = _H/2 - 100;
   this.game_mc.addChild(card);
   lastHouseCard++;
   dealedCards.push(card);
@@ -221,11 +221,11 @@ ScrGame.prototype.showHouseCard = function(card){
 
 ScrGame.prototype.showSuitCard = function(){
 	if(this.cardSuit){} else {
-		this.cardSuit = addObj("suit");
-		this.gfx_mc.addChild(cardSuit);
+		this.cardSuit = addObj("suit", 0, 0, 0.5);
+		this.gfx_mc.addChild(this.cardSuit);
 	}
-  this.cardSui.x = _W/2 - this.cardSui.w/2 + lastHouseCard*this.cardSui.w/3;
-  this.cardSui.y = _H/2 + 100;
+  this.cardSuit.x = _W/2 - 80 + lastHouseCard*50;
+  this.cardSuit.y = _H/2 - 100;
 }
 
 ScrGame.prototype.getCard = function(cardIndex){
@@ -264,7 +264,7 @@ ScrGame.prototype.getPlayerCard = function(value){
 }
 
 ScrGame.prototype.getHouseCard = function(value){
-    var callData = "0xd02d13820000000000000000000000000000000000000000000000000000000000000000";
+    var callData = "0x7b61b2010000000000000000000000000000000000000000000000000000000000000000";
     callData = callData.substr(0, 10);
 	var data = callData + pad(numToHex(value), 64);
 	console.log("data:", data);
@@ -430,12 +430,6 @@ ScrGame.prototype.update = function(){
 		if(this.timeGetCards >= TIME_GET_CARDS &&
 		this.bSendRequest == false){
 			this.timeGetCards = 0;
-			if(!this.bCardP0){
-				this.getPlayerCard(0);
-			}
-			if(!this.bCardP1){
-				this.getPlayerCard(1);
-			}
 		}
 	}
 	
@@ -453,6 +447,11 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
 		this.startGameEth();
+		
+		// this.getPlayerCard(0);
+		// this.getPlayerCard(1);
+		// this.getHouseCard(0);
+		// this.showSuitCard();
 	}
 }
 
