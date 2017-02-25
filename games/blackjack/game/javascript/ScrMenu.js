@@ -30,7 +30,7 @@ ScrMenu.prototype.init = function() {
 	
 	var tf3 = addText(str3, 16, "#FFFFFF", undefined, "center", _W, 2, fontTahoma)
 	tf3.x = _W/2;
-	tf3.y = _H - tf3.height-10;
+	tf3.y = _H - tf3.height-120;
 	this.addChild(tf3);
 	var tf2 = addText(str2, 16, "#FFFFFF", undefined, "center", _W, 2, fontTahoma)
 	tf2.x = _W/2;

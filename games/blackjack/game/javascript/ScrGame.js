@@ -156,26 +156,26 @@ ScrGame.prototype.createGUI = function() {
 	tf.x = 0;
 	tf.y = - 17;
 	btnStart.addChild(tf);
-	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200);
+	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200, 0.5);
 	btnHit.name = "btnHit";
 	btnHit.interactive = true;
 	btnHit.buttonMode=true;
 	btnHit.visible = false;
 	this.addChild(btnHit);
 	this._arButtons.push(btnHit);
-	var tf = addText("Hit", 24, "#FFFFFF", undefined, "center", 350, 2)
+	var tf = addText("Hit", 48, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
 	tf.y = - 17;
 	btnHit.addChild(tf);
 	this.btnHit = btnHit;
-	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200);
+	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200, 0.5);
 	btnStand.name = "btnStand";
 	btnStand.interactive = true;
 	btnStand.buttonMode=true;
 	btnStand.visible = false;
 	this.addChild(btnStand);
 	this._arButtons.push(btnStand);
-	var tf = addText("Stand", 24, "#FFFFFF", undefined, "center", 350, 2)
+	var tf = addText("Stand", 48, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
 	tf.y = - 17;
 	btnStand.addChild(tf);
@@ -185,59 +185,6 @@ ScrGame.prototype.createGUI = function() {
 ScrGame.prototype.checkGameState = function() {
 	console.log("Checking game state");
   
-	/*$.ajax({
-		type: "POST",
-		url: urlInfura,
-		dataType: 'json',
-		async: false,
-		data: JSON.stringify({"id":0,
-							"jsonrpc":'2.0',
-							"method":'eth_call',
-							"params":["from":openkey,
-									"to":addressContract,
-									"data":"0xb7d0628b"]}),
-		success: function (d) {
-			obj_game["game"].response("getGameState", d.result) 
-			console.log("Транзакция отправлена в сеть:", d.result);
-		}
-	})*/
-
-    /*return game.getGameState.call({from: account}).then(function(state) {
-      oldState = gameIsGoingOn;
-      state = parseInt(state)
-      console.log(gameState[state])
-      switch(state) {
-        case 0:
-          gameIsGoingOn = true;
-          break;
-        case 1:
-          gameIsGoingOn = false;
-          break;
-        case 2:
-          gameIsGoingOn = false;
-          break;
-        case 3:
-          gameIsGoingOn = false;
-          break;
-      }
-      if (oldState != gameIsGoingOn && gameIsGoingOn == false) {
-        console.log("Show the result of the game");
-        resultText.setText(gameState[state]);
-        updateBlockchainData();
-        renderer.render(stage);
-      }
-      updateScene();
-    });
-  }).catch(function(err) {
-    // the game doesn't exist at all
-    console.log("Exception", err);
-    if (err.name !== 'TypeError') {
-      oldState = gameIsGoingOn;
-      gameIsGoingOn = false;
-      lastPlayerCard = 0;
-      lastHouseCard = 0;
-      return updateScene();
-    }*/
 }
 
 ScrGame.prototype.showGameButtons = function() {	
@@ -249,6 +196,40 @@ ScrGame.prototype.showGameButtons = function() {
     this.btnHit.visible = false;
     this.btnStand.visible = false;
   }
+}
+
+ScrGame.prototype.showPlayerCard = function(card){
+  // if (!oldState && !gameIsGoingOn) return;
+  card.x = _W/2 - card.w/2 + lastPlayerCard*card.w/3;
+  card.y = _H/2 + 100;
+  this.game_mc.addChild(card);
+  lastPlayerCard++;
+  // dealedCards.push(card);
+  // renderer.render(stage);
+}
+
+ScrGame.prototype.getCard = function(cardIndex){
+  var cardType = Math.floor(cardIndex / 4);
+  var cardSymbol = String(cardType);
+  switch (cardType) {
+    case 0:
+      cardSymbol = "K";
+      break;
+    case 1:
+      cardSymbol = "A";
+      break;
+    case 11:
+      cardSymbol = "J";
+      break;
+    case 12:
+      cardSymbol = "Q";
+      break;
+  }
+  var suit = String(cardIndex % 4 + 1);
+  var spriteName = suit + "_" + cardSymbol;
+  var newCard = addObj(spriteName, 0, 0, 0.5);
+  newCard.zIndex = 10;
+  return newCard;
 }
 
 ScrGame.prototype.getPlayerCard = function(value){
@@ -369,12 +350,17 @@ ScrGame.prototype.response = function(command, value, index) {
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
 		this.gameTxHash = obj_game["gameTxHash"];	
+		if(!this.bCardP0){
+			this.getPlayerCard(0);
+		}
+		if(!this.bCardP1){
+			this.getPlayerCard(1);
+		}
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
 	} else if(command == "getPlayerCard"){
-		console.log("card:", index, hexToNum(value));
 		switch(index){
 			case 0:
 				this.bCardP0 = true;
@@ -383,6 +369,10 @@ ScrGame.prototype.response = function(command, value, index) {
 				this.bCardP1 = true;
 				break;
 		}
+		
+		var card = hexToNum(value);
+		console.log("card:", index, card);
+		this.showPlayerCard(getCard(card));
 		
 		if(this.bCardP0 && this.bCardP1){
 			this.bSendRequest = true;
@@ -405,7 +395,6 @@ ScrGame.prototype.update = function(){
 		this.timeGetCards += diffTime;
 		if(this.timeGetCards >= TIME_GET_CARDS &&
 		this.bSendRequest == false){
-			// this.bSendRequest = true;
 			this.timeGetCards = 0;
 			if(!this.bCardP0){
 				this.getPlayerCard(0);
