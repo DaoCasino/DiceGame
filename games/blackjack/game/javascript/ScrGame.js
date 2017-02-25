@@ -252,10 +252,11 @@ ScrGame.prototype.showGameButtons = function() {
 ScrGame.prototype.getPlayerCard = function(value){
     var callData = "0xd02d13820000000000000000000000000000000000000000000000000000000000000000";
     callData = callData.substr(0, 10);
-	var data = callData + pad(numToHex(chance), 64);
+	var data = callData + pad(numToHex(value), 64);
+	console.log("data:", data);
 	var params = ["from":openkey,
 				"to":addressContract,
-				"data":data]
+				"data":data];
 	this.sendInfuraRequest("getPlayerCard", params);
 }
 
