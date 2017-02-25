@@ -71,7 +71,6 @@ ScrGame.prototype.init = function() {
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
 	
-		
 	options_mainet = true; // REMOVE
 	options_testnet = false; // REMOVE
 	if(options_debug){
@@ -79,17 +78,6 @@ ScrGame.prototype.init = function() {
 		tfDebug.x = _W-20;
 		tfDebug.y = 10;
 		this.face_mc.addChild(tfDebug);
-		
-		if(openkey && privkey){
-		} else {
-			if(options_testnet){
-				openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
-				privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
-			} else {
-				openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
-				privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
-			}
-		}
 	}
 	
 	if(options_testnet){
@@ -560,6 +548,7 @@ ScrGame.prototype.response = function(command, value, index) {
 		} else if(stateNow == 0){
 			this.getPlayerCardsNumber();
 			this.getHouseCardsNumber();
+			this.tfResult.setText("");
 		}
 	} else if(command == "hit"){
 		
