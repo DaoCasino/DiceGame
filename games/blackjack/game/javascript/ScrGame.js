@@ -383,6 +383,10 @@ ScrGame.prototype.response = function(command, value, index) {
 				this.bCardP1 = true;
 				break;
 		}
+		
+		if(this.bCardP0 && this.bCardP1){
+			this.bSendRequest = true;
+		}
 	}
 }
 
@@ -398,11 +402,11 @@ ScrGame.prototype.update = function(){
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
 	if(this.gameTxHash){
-		this.timeGetResult += diffTime;
-		if(this.timeGetResult >= TIME_GET_CARDS &&
+		this.timeGetCards += diffTime;
+		if(this.timeGetCards >= TIME_GET_CARDS &&
 		this.bSendRequest == false){
 			// this.bSendRequest = true;
-			this.timeGetResult = 0;
+			this.timeGetCards = 0;
 			if(!this.bCardP0){
 				this.getPlayerCard(0);
 			}
