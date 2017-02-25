@@ -57,6 +57,8 @@ ScrGame.prototype.init = function() {
 	this._gameOver = false;
 	this.bSendRequest = false;
 	this.bWindow = false;
+	this.bCardP0 = false;
+	this.bCardP1 = false;
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
@@ -249,10 +251,6 @@ ScrGame.prototype.showGameButtons = function() {
   }
 }
 
-function test(value){
-	this.getPlayerCard(value);
-}
-
 ScrGame.prototype.getPlayerCard = function(value){
     var callData = "0xd02d13820000000000000000000000000000000000000000000000000000000000000000";
     callData = callData.substr(0, 10);
@@ -325,7 +323,7 @@ ScrGame.prototype.startGameEth = function(){
 	})
 }
 
-ScrGame.prototype.sendInfuraRequest = function(name, params) {
+ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
 	var method = name;
 	switch(name){
 		case "getBalance":
@@ -346,7 +344,7 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 							"method":method,
 							"params":[params, "latest"]}),
 		success: function (d) {
-			obj_game["game"].response(name, d.result);
+			obj_game["game"].response(name, d.result, ind);
 		}
 	})
 }
@@ -361,7 +359,7 @@ ScrGame.prototype.sendRequest = function(value) {
 	}
 }
 
-ScrGame.prototype.response = function(command, value) {
+ScrGame.prototype.response = function(command, value, index) {
 	if(value == undefined){
 		return false;
 	}
@@ -375,8 +373,16 @@ ScrGame.prototype.response = function(command, value) {
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
-	} else if(command == "getGameState"){
-		
+	} else if(command == "getPlayerCard"){
+		console.log("card:", index, hexToNum(value));
+		switch(index){
+			case 0:
+				this.bCardP0 = true;
+				break;
+			case 1:
+				this.bCardP1 = true;
+				break;
+		}
 	}
 }
 
@@ -395,10 +401,14 @@ ScrGame.prototype.update = function(){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_CARDS &&
 		this.bSendRequest == false){
-			this.bSendRequest = true;
+			// this.bSendRequest = true;
 			this.timeGetResult = 0;
-			// this.getPlayerCard(0);
-			// this.getPlayerCard(1);
+			if(!this.bCardP0){
+				this.getPlayerCard(0);
+			}
+			if(!this.bCardP1){
+				this.getPlayerCard(1);
+			}
 		}
 	}
 	
