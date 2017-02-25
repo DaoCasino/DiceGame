@@ -40,6 +40,7 @@ var gameState = {
 }
 var lastPlayerCard = 0;
 var lastHouseCard = 0;
+var stateNow = -1;
 
 	
 ScrGame.prototype.init = function() {
@@ -53,6 +54,8 @@ ScrGame.prototype.init = function() {
 	this._arButtons = [];
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
+	this.countPlayerCard = 0;
+	this.countHouseCard = 0;
 	this.gameTxHash = undefined;
 	this.cardSuit = undefined;
 	this.startGame = false;
@@ -60,6 +63,7 @@ ScrGame.prototype.init = function() {
 	this.bSendRequest = false;
 	this.bWindow = false;
 	this.bHit = false;
+	this.bGameLoad = false;
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
@@ -104,6 +108,7 @@ ScrGame.prototype.init = function() {
 	
 	this.createGUI();
 	this.sendRequest("getBalance");
+	this.checkGameState();
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -118,6 +123,22 @@ ScrGame.prototype.createGame = function(){
 	oldState = gameIsGoingOn;
 	gameIsGoingOn = true;
 	this.showGameButtons();
+}
+
+ScrGame.prototype.loadGame = function(){
+	if(!this.bGameLoad){
+		this.bGameLoad = true;
+		this.createGame();
+		var i = 0;
+		
+		for (i = 0; i < this.countPlayerCard; i++) {
+			this.getPlayerCard(i);
+		}
+		for (i = 0; i < this.countHouseCard; i++) {
+			this.getHouseCard(i);
+		}
+		this.showSuitCard();
+	}
 }
 
 ScrGame.prototype.createGUI = function() {	
@@ -157,6 +178,8 @@ ScrGame.prototype.createGUI = function() {
 	tf.x = 0;
 	tf.y = - 17;
 	btnStart.addChild(tf);
+	btnStart.visible = false;
+	this.btnStart = btnStart;
 	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200, 0.7);
 	btnHit.name = "btnHit";
 	btnHit.interactive = true;
@@ -181,11 +204,6 @@ ScrGame.prototype.createGUI = function() {
 	tf.y = - 26;
 	btnStand.addChild(tf);
 	this.btnStand = btnStand;
-}
-
-ScrGame.prototype.checkGameState = function() {
-	console.log("Checking game state");
-  
 }
 
 ScrGame.prototype.showGameButtons = function() {	
@@ -255,6 +273,35 @@ ScrGame.prototype.getCard = function(cardIndex){
   return newCard;
 }
 
+ScrGame.prototype.getPlayerCardsNumber = function() {
+	var data = "0xd572fd99";
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	this.sendInfuraRequest("getPlayerCardsNumber", params);
+}
+
+ScrGame.prototype.getHouseCardsNumber = function() {
+	var data = "0x7f601a50";
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	this.sendInfuraRequest("getHouseCardsNumber", params);
+}
+
+ScrGame.prototype.checkGameState = function() {
+	console.log("Checking game state");
+	// 0 Run
+	// 1 Player
+	// 2 House
+	// 3 Tie
+	var data = "0xb7d0628b";
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	this.sendInfuraRequest("getGameState", params);
+}
+
 ScrGame.prototype.getPlayerCard = function(value){
     var callData = "0xd02d13820000000000000000000000000000000000000000000000000000000000000000";
     callData = callData.substr(0, 10);
@@ -285,10 +332,7 @@ ScrGame.prototype.clickHit = function(){
 ScrGame.prototype.clickStand = function(){
 	this.showButtons(false);
     var data = "0xc2897b10";
-	var params = {"from":openkey,
-				"to":addressContract,
-				"data":data};
-	this.sendInfuraRequest("stand", params);
+	this.sendInfuraAction("stand", data);
 }
 
 // START
@@ -411,11 +455,10 @@ ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
 			break;
 		case "getPlayerCard":
 		case "getHouseCard":
+		case "getGameState":
+		case "getPlayerCardsNumber":
+		case "getHouseCardsNumber":
 			method = "eth_call";
-			break;
-		case "hit":
-		case "stand":
-			
 			break;
 	}
 	
@@ -472,10 +515,26 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getHouseCard"){
 		var card = hexToNum(value);
 		this.showHouseCard(this.getCard(card));
+	} else if(command == "getPlayerCardsNumber"){
+		this.countPlayerCard = hexToNum(value);
+		if(this.countPlayerCard > 0 && this.countHouseCard > 0){
+			this.loadGame();
+		}
+	} else if(command == "getHouseCardsNumber"){
+		this.countHouseCard = hexToNum(value);
+		if(this.countPlayerCard > 0 && this.countHouseCard > 0){
+			this.loadGame();
+		}
+	} else if(command == "getGameState"){
+		stateNow = hexToNum(value);
+		if(stateNow > 0){
+			this.btnStart.visible = true;
+		} else if(stateNow == 0){
+			this.getPlayerCardsNumber();
+			this.getHouseCardsNumber();
+		}
 	} else if(command == "hit"){
-		// this.showButtons(true);
 	} else if(command == "stand"){
-		// this.showButtons(true);
 	}
 }
 
@@ -511,17 +570,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
-		if(options_debug){
-			this.getPlayerCard(0);
-			this.getPlayerCard(1);
-			this.getPlayerCard(2);
-			this.getPlayerCard(3);
-			this.getHouseCard(0);
-			this.showSuitCard();
-			this.createGame();
-		} else {
-			this.startGameEth();
-		}
+		this.startGameEth();
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();
 	} else if(item_mc.name == "btnStand"){
