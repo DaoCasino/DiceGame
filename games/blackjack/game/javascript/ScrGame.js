@@ -259,7 +259,7 @@ ScrGame.prototype.getPlayerCard = function(value){
 	var params = {"from":openkey,
 				"to":addressContract,
 				"data":data};
-	this.sendInfuraRequest("getPlayerCard", params);
+	this.sendInfuraRequest("getPlayerCard", params, value);
 }
 
 // START
