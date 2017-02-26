@@ -54,7 +54,6 @@ ScrGame.prototype.init = function() {
 	this.gameTime = getTimer();
 	this._arButtons = [];
 	this.timeGetState = 0;
-	this.timeGetCards = 0;
 	this.timeTotal = 0;
 	this.timeWait = 0;
 	this.countPlayerCard = 0;
@@ -66,7 +65,6 @@ ScrGame.prototype.init = function() {
 	this._gameOver = false;
 	this.bSendRequest = false;
 	this.bWindow = false;
-	this.bHit = false;
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = false;
@@ -213,6 +211,10 @@ ScrGame.prototype.createGUI = function() {
 	tf.y = - 26;
 	btnStand.addChild(tf);
 	this.btnStand = btnStand;
+	
+	if(options_debug){
+		btnStart.visible = true;
+	}
 }
 
 ScrGame.prototype.showButtons = function(value) {
@@ -234,6 +236,7 @@ ScrGame.prototype.showHouseCard = function(card){
   this.cards_mc.addChild(card);
   lastHouseCard++;
   dealedCards.push(card);
+  this.showSuitCard();
 }
 
 ScrGame.prototype.showSuitCard = function(){
@@ -303,16 +306,29 @@ ScrGame.prototype.checkGameState = function() {
 ScrGame.prototype.addPlayerCard = function(){
 	console.log("addPlayerCard:", lastPlayerCard, this.countPlayerCard);
 	for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
-		this.getPlayerCard(i);
+		if(options_debug){
+			var card = Math.ceil(Math.random()*52);
+			this.showPlayerCard(this.getCard(card));
+			this.showButtons(true);
+			this.bWait = false;
+			this.tfResult.setText("");
+		} else {
+			this.getPlayerCard(i);
+		}
 	}
 }
 
 ScrGame.prototype.addHouseCard = function(){
 	console.log("addHouseCard:", lastHouseCard, this.countHouseCard);
 	for (var i = lastHouseCard; i < this.countHouseCard; i++) {
-		this.getHouseCard(i);
+		if(options_debug){
+			var card = Math.ceil(Math.random()*52);
+			this.showHouseCard(this.getCard(card));
+			this.showSuitCard();
+		} else {
+			this.getHouseCard(i);
+		}
 	}
-	this.showSuitCard();
 }
 
 ScrGame.prototype.getPlayerCard = function(value){
@@ -336,18 +352,27 @@ ScrGame.prototype.getHouseCard = function(value){
 }
 
 ScrGame.prototype.clickHit = function(){
-	this.bHit = true;
 	this.showButtons(false);
-    var data = "0x2ae3594a";
-	this.sendInfuraAction("hit", data);
 	this.bWait = true;
+	if(options_debug){
+		this.countPlayerCard ++;
+		this.addPlayerCard();
+	} else {
+		var data = "0x2ae3594a";
+		this.sendInfuraAction("hit", data);
+	}
 }
 
 ScrGame.prototype.clickStand = function(){
 	this.showButtons(false);
-    var data = "0xc2897b10";
-	this.sendInfuraAction("stand", data);
 	this.bWait = true;
+	if(options_debug){
+		this.countHouseCard ++;
+		this.addHouseCard();
+	} else {
+		var data = "0xc2897b10";
+		this.sendInfuraAction("stand", data);
+	}
 }
 
 // START
@@ -411,85 +436,89 @@ ScrGame.prototype.startGameEth = function(){
 }
 
 ScrGame.prototype.sendInfuraAction = function(name, data) {
-	$.ajax({
-		type: "POST",
-		url: urlInfura,
-		dataType: 'json',
-		async: false,
-		data: JSON.stringify({"jsonrpc":"2.0",
-							"method":"eth_getTransactionCount",
-							"params":[openkey,"latest"],
-							"id":1}),
-		success: function (d) {
-			console.log("get nonce action "+d.result);
-			var options = {};
-			options.nonce = d.result;
-			options.to = addressContract;
-			// call function game() in contract
-			options.data = data; // method from contact
-			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
-			options.gasLimit=0x927c0; //web3.toHex('600000');
-			options.value = 0;
-			
-			if(privkey){
-				if(buf == undefined){
-					console.log("ERROR_TRANSACTION");
-				} else {
-					//приватный ключ игрока, подписываем транзакцию
-					var tx = new EthereumTx(options);
-					tx.sign(new buf(privkey, 'hex'));
+	if(options_ethereum && openkey){
+		$.ajax({
+			type: "POST",
+			url: urlInfura,
+			dataType: 'json',
+			async: false,
+			data: JSON.stringify({"jsonrpc":"2.0",
+								"method":"eth_getTransactionCount",
+								"params":[openkey,"latest"],
+								"id":1}),
+			success: function (d) {
+				console.log("get nonce action "+d.result);
+				var options = {};
+				options.nonce = d.result;
+				options.to = addressContract;
+				// call function game() in contract
+				options.data = data; // method from contact
+				options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+				options.gasLimit=0x927c0; //web3.toHex('600000');
+				options.value = 0;
+				
+				if(privkey){
+					if(buf == undefined){
+						console.log("ERROR_TRANSACTION");
+					} else {
+						//приватный ключ игрока, подписываем транзакцию
+						var tx = new EthereumTx(options);
+						tx.sign(new buf(privkey, 'hex'));
 
-					var serializedTx = tx.serialize().toString('hex');
-					console.log("The transaction was signed: "+serializedTx);
-					
-					$.ajax({
-						type: "POST",
-						url: urlInfura,
-						dataType: 'json',
-						async: false,
-						data: JSON.stringify({"id":0,
-											"jsonrpc":'2.0',
-											"method":'eth_sendRawTransaction',
-											"params":["0x"+String(serializedTx)]}),
-						success: function (d) {
-							obj_game["game"].response(name, d.result) 
-							console.log("Транзакция отправлена в сеть:", d.result);
-						}
-					})
+						var serializedTx = tx.serialize().toString('hex');
+						console.log("The transaction was signed: "+serializedTx);
+						
+						$.ajax({
+							type: "POST",
+							url: urlInfura,
+							dataType: 'json',
+							async: false,
+							data: JSON.stringify({"id":0,
+												"jsonrpc":'2.0',
+												"method":'eth_sendRawTransaction',
+												"params":["0x"+String(serializedTx)]}),
+							success: function (d) {
+								obj_game["game"].response(name, d.result) 
+								console.log("Транзакция отправлена в сеть:", d.result);
+							}
+						})
+					}
 				}
 			}
-		}
-	})
+		})
+	}
 }
 
 ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
-	var method = name;
-	switch(name){
-		case "getBalance":
-			method = "eth_getBalance";
-			break;
-		case "getPlayerCard":
-		case "getHouseCard":
-		case "getGameState":
-		case "getPlayerCardsNumber":
-		case "getHouseCardsNumber":
-			method = "eth_call";
-			break;
-	}
-	
-	$.ajax({
-		type: "POST",
-		url: urlInfura,
-		dataType: 'json',
-		async: false,
-		data: JSON.stringify({"id":0,
-							"jsonrpc":'2.0',
-							"method":method,
-							"params":[params, "latest"]}),
-		success: function (d) {
-			obj_game["game"].response(name, d.result, ind);
+	if(options_ethereum && openkey){
+		var method = name;
+		switch(name){
+			case "getBalance":
+				method = "eth_getBalance";
+				break;
+			case "getPlayerCard":
+			case "getHouseCard":
+			case "getGameState":
+			case "getPlayerCardsNumber":
+			case "getHouseCardsNumber":
+				method = "eth_call";
+				break;
 		}
-	})
+		
+		$.ajax({
+			type: "POST",
+			url: urlInfura,
+			dataType: 'json',
+			async: false,
+			data: JSON.stringify({"id":0,
+								"jsonrpc":'2.0',
+								"method":method,
+								"params":[params, "latest"]}),
+			success: function (d) {
+				obj_game["game"].response(name, d.result, ind);
+			}
+		})
+	}
 }
 
 ScrGame.prototype.sendRequest = function(value) {
@@ -519,17 +548,17 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getPlayerCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
-			this.bWait = false;
 			this.showPlayerCard(this.getCard(card));
+			this.bWait = false;
+			this.tfResult.setText("");
 			this.showButtons(true);
-			this.bHit = false;
-			this.timeGetCards = 0;
 		}
 	} else if(command == "getHouseCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
-			this.bWait = false;
 			this.showHouseCard(this.getCard(card));
+			this.bWait = false;
+			this.tfResult.setText("");
 		}
 	} else if(command == "getPlayerCardsNumber"){
 		this.countPlayerCard = hexToNum(value);
@@ -636,7 +665,15 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
 		this.clearGame();
-		this.startGameEth();
+		if(options_debug){
+			this.countPlayerCard = 2;
+			this.countHouseCard = 1;
+			this.addPlayerCard();
+			this.addHouseCard();
+			this.showButtons(true);
+		} else {
+			this.startGameEth();
+		}
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();
 	} else if(item_mc.name == "btnStand"){
