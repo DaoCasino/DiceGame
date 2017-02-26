@@ -82,6 +82,14 @@ ScrGame.prototype.init = function() {
 	}
 	
 	if(options_testnet){
+		openkey = "0x746DCDC5541fe2d9CA9b65F4cA1A15a816e14F3c";
+		privkey = "deef4f0a38670685083201329b1d31e3d593c76779fc56a3489096757838f0f8";
+	} else {
+		openkey = "0x04df40420e808a5e6abc670049126ba60cfa4c2d";
+		privkey = "962f2a988d0f0eb4b2a0664deb3cfd4af449d13ecd6739a0f1ffd54435d594ae";
+	}
+	
+	if(options_testnet){
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		addressContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
@@ -563,33 +571,18 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getPlayerCardsNumber"){
 		this.countPlayerCard = hexToNum(value);
 		this.addPlayerCard();
-		// if(this.countPlayerCard > 0 && this.countHouseCard > 0){
-			// this.loadGame();
-		// } else if(this.bGameLoad){
-			// for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
-				// this.getPlayerCard(i);
-			// }
-		// }
 	} else if(command == "getHouseCardsNumber"){
 		this.countHouseCard = hexToNum(value);
 		this.addHouseCard();
-		// if(this.countPlayerCard > 0 && this.countHouseCard > 0){
-			// this.loadGame();
-		// } else if(this.bGameLoad){
-			// for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
-				// this.getHouseCard(i);
-			// }
-			// this.showSuitCard();
-		// }
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("stateNow:", value, stateNow);
+			console.log("stateNow:", stateNow);
 			if(stateNow > 0){
 				this.bWait = false;
+				this.btnStart.visible = true;
 				switch (stateNow){
 					case 1:
-						this.btnStart.visible = true;
 						if(stateOld == -1){
 							this.tfResult.setText("Bet 0.05 eth");
 						} else if(stateOld == 0){
