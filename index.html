@@ -230,7 +230,7 @@
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="#popup-games" class="item-games popup-with-move-anim">
+							<a href="//platform.dao.casino/games/blackjack/game/" class="item-games popup-with-move-anim">
 								<img src="img/img-game3.jpg" alt="">
 								<span>BLACKJACK</span>
 							</a>
@@ -399,7 +399,7 @@
 
 	<script src="libs/jquery.cookie.js"></script>
 	
-	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
+	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script> <!-- DEV VERSION !! -->
 	<script src="js/common.js"></script>
 	
 	<Script>
@@ -413,7 +413,7 @@
 		console.log(d);
 		var h = 0;
 		$.each(d,function(i,x){
-			console.log(i,x);
+			
 			if (x.pay > 0.01) { 
 				if (h++<4) addGame(x.addr,'HackDAO',"ETH",x.pay);
 			}
