@@ -8,6 +8,7 @@ ScrGame.prototype = Object.create(PIXI.Container.prototype);
 ScrGame.prototype.constructor = ScrGame;
 
 var TIME_GET_CARDS = 10000;
+var TIME_WITE = 500;
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -25,7 +26,6 @@ var gasAmount = 4000000;
 
 var accounts;
 var account;
-var gameInited = false;
 var gameIsGoingOn;
 var dealedCards = new Array();
 var suit = {0: 'Hearts', 1: 'Diamonds', 2: 'Spades', 3: 'Clubs'};
@@ -41,12 +41,13 @@ var gameState = {
 var lastPlayerCard = 0;
 var lastHouseCard = 0;
 var stateNow = -1;
+var stateOld = -1;
 
-	
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
 	this.back_mc = new PIXI.Container();
 	this.game_mc = new PIXI.Container();
+	this.cards_mc = new PIXI.Container();
 	this.gfx_mc = new PIXI.Container();
 	
 	this.startTime = getTimer();
@@ -55,8 +56,10 @@ ScrGame.prototype.init = function() {
 	this.timeGetState = 0;
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
+	this.timeWait = 0;
 	this.countPlayerCard = 0;
 	this.countHouseCard = 0;
+	this.countWait = 0;
 	this.gameTxHash = undefined;
 	this.cardSuit = undefined;
 	this.startGame = false;
@@ -66,7 +69,7 @@ ScrGame.prototype.init = function() {
 	this.bHit = false;
 	this.bStand = false;
 	this.bGameLoad = false;
-	this.bInitFirst = false;
+	this.bWait = false;
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
@@ -92,6 +95,7 @@ ScrGame.prototype.init = function() {
 	obj_game["game"] = this;
 	obj_game["balance"] = 0;
 	
+	this.game_mc.addChild(this.cards_mc);
 	this.addChild(this.back_mc);
 	this.addChild(this.game_mc);
 	this.addChild(this.gfx_mc);
@@ -109,17 +113,24 @@ ScrGame.prototype.init = function() {
 	this.on('touchend', this.touchHandler);
 }
 
-ScrGame.prototype.createGame = function(){
-	gameInited = true;
-	oldState = gameIsGoingOn;
-	gameIsGoingOn = true;
-	this.showGameButtons();
+ScrGame.prototype.clearGame = function(){
+	lastPlayerCard = 0;
+	lastHouseCard = 0;
+	stateNow = -1;
+	stateOld = -1;
+	
+	for (var i = 0; i < dealedCards.length; i++) {
+		var card = dealedCards[i];
+		this.cards_mc.removeChild(card);
+	}
+	
+	dealedCards = [];
 }
 
 ScrGame.prototype.loadGame = function(){
 	if(!this.bGameLoad){
 		this.bGameLoad = true;
-		this.createGame();
+		this.showButtons(true);
 		var i = 0;
 		
 		for (i = lastPlayerCard; i < this.countPlayerCard; i++) {
@@ -161,6 +172,9 @@ ScrGame.prototype.createGUI = function() {
 	
 	if(openkey){
 		this.tfIdUser.setText(openkey);
+		this.bWait = false;;
+	} else {
+		this.tfResult.setText("key undefined");
 	}
 	
 	var btnStart = addButton2("btnDefault", _W/2, _H/2+250);
@@ -201,36 +215,23 @@ ScrGame.prototype.createGUI = function() {
 	this.btnStand = btnStand;
 }
 
-ScrGame.prototype.showGameButtons = function() {	
-  if (!gameInited) return;
-  if (gameIsGoingOn) {
-    this.btnHit.visible = true;
-    this.btnStand.visible = true;
-  } else {
-    this.btnHit.visible = false;
-    this.btnStand.visible = false;
-  }
-}
-
 ScrGame.prototype.showButtons = function(value) {
     this.btnHit.visible = value;
     this.btnStand.visible = value;
 }
 
 ScrGame.prototype.showPlayerCard = function(card){
-  // if (!oldState && !gameIsGoingOn) return;
   card.x = _W/2 - 80 + lastPlayerCard*50;
   card.y = _H/2 + 100;
-  this.game_mc.addChild(card);
+  this.cards_mc.addChild(card);
   lastPlayerCard++;
   dealedCards.push(card);
 }
 
 ScrGame.prototype.showHouseCard = function(card){
-  // if (!oldState && !gameIsGoingOn) return;
   card.x = _W/2 - 80 + lastHouseCard*50;
   card.y = _H/2 - 100;
-  this.game_mc.addChild(card);
+  this.cards_mc.addChild(card);
   lastHouseCard++;
   dealedCards.push(card);
 }
@@ -285,6 +286,9 @@ ScrGame.prototype.getHouseCardsNumber = function() {
 }
 
 ScrGame.prototype.checkGameState = function() {
+	if(openkey == undefined){
+		return false;
+	}
 	// 0 Run
 	// 1 Player
 	// 2 House
@@ -294,6 +298,21 @@ ScrGame.prototype.checkGameState = function() {
 				"to":addressContract,
 				"data":data};
 	this.sendInfuraRequest("getGameState", params);
+}
+
+ScrGame.prototype.addPlayerCard = function(){
+	console.log("addPlayerCard:", lastPlayerCard, this.countPlayerCard);
+	for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
+		this.getPlayerCard(i);
+	}
+}
+
+ScrGame.prototype.addHouseCard = function(){
+	console.log("addHouseCard:", lastHouseCard, this.countHouseCard);
+	for (var i = lastHouseCard; i < this.countHouseCard; i++) {
+		this.getHouseCard(i);
+	}
+	this.showSuitCard();
 }
 
 ScrGame.prototype.getPlayerCard = function(value){
@@ -321,12 +340,14 @@ ScrGame.prototype.clickHit = function(){
 	this.showButtons(false);
     var data = "0x2ae3594a";
 	this.sendInfuraAction("hit", data);
+	this.bWait = true;
 }
 
 ScrGame.prototype.clickStand = function(){
 	this.showButtons(false);
     var data = "0xc2897b10";
 	this.sendInfuraAction("stand", data);
+	this.bWait = true;
 }
 
 // START
@@ -498,6 +519,7 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getPlayerCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
+			this.bWait = false;
 			this.showPlayerCard(this.getCard(card));
 			this.showButtons(true);
 			this.bHit = false;
@@ -506,49 +528,58 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getHouseCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
+			this.bWait = false;
 			this.showHouseCard(this.getCard(card));
 		}
 	} else if(command == "getPlayerCardsNumber"){
 		this.countPlayerCard = hexToNum(value);
-		if(this.countPlayerCard > 0 && this.countHouseCard > 0){
-			this.loadGame();
-		} else if(this.bGameLoad){
-			for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
-				this.getPlayerCard(i);
-			}
-		}
+		this.addPlayerCard();
+		// if(this.countPlayerCard > 0 && this.countHouseCard > 0){
+			// this.loadGame();
+		// } else if(this.bGameLoad){
+			// for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
+				// this.getPlayerCard(i);
+			// }
+		// }
 	} else if(command == "getHouseCardsNumber"){
 		this.countHouseCard = hexToNum(value);
-		if(this.countPlayerCard > 0 && this.countHouseCard > 0){
-			this.loadGame();
-		} else if(this.bGameLoad){
-			for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
-				this.getHouseCard(i);
-			}
-			this.showSuitCard();
-		}
+		this.addHouseCard();
+		// if(this.countPlayerCard > 0 && this.countHouseCard > 0){
+			// this.loadGame();
+		// } else if(this.bGameLoad){
+			// for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
+				// this.getHouseCard(i);
+			// }
+			// this.showSuitCard();
+		// }
 	} else if(command == "getGameState"){
-		stateNow = hexToNum(value);
-		console.log("stateNow:", stateNow);
-		if(stateNow > 0){
-			if(!this.bInitFirst){
-				this.btnStart.visible = true;
+		if(value != "0x"){
+			stateNow = hexToNum(value);
+			console.log("stateNow:", value, stateNow);
+			if(stateNow > 0){
+				this.bWait = false;
+				switch (stateNow){
+					case 1:
+						this.btnStart.visible = true;
+						if(stateOld == -1){
+							this.tfResult.setText("Bet 0.05 eth");
+						} else if(stateOld == 0){
+							this.tfResult.setText("You won!");
+						}
+						break;
+					case 2:
+						this.tfResult.setText("House won!");
+						break;
+					case 3:
+						this.tfResult.setText("Tie!");
+						break;
+				}
+			} else if(stateNow == 0){
+				stateOld = stateNow;
+				this.getPlayerCardsNumber();
+				this.getHouseCardsNumber();
+				this.tfResult.setText("");
 			}
-			switch (stateNow){
-				case 1:
-					this.tfResult.setText("You won!");
-					break;
-				case 2:
-					this.tfResult.setText("House won!");
-					break;
-				case 3:
-					this.tfResult.setText("Tie!");
-					break;
-			}
-		} else if(stateNow == 0){
-			this.getPlayerCardsNumber();
-			this.getHouseCardsNumber();
-			this.tfResult.setText("");
 		}
 	} else if(command == "hit"){
 		
@@ -575,13 +606,21 @@ ScrGame.prototype.update = function(){
 		this.checkGameState();
 	}
 	
-	/*if(this.bHit){
-		this.timeGetCards += diffTime;
-		if(this.timeGetCards >= TIME_GET_CARDS){
-			this.timeGetCards = 0;
-			this.getPlayerCard(lastPlayerCard);
+	if(this.bWait){
+		this.timeWait += diffTime;
+		if(this.timeWait >= TIME_WITE){
+			this.timeWait = 0;
+			var str = "";
+			for (var i = 0; i < this.countWait; i++) {
+				str += ".";
+			}
+			this.tfResult.setText("Wait"+str);
+			this.countWait ++;
+			if(this.countWait > 3){
+				this.countWait = 0;
+			}
 		}
-	}*/
+	}
 	
 	this.startTime = getTimer();
 }
@@ -596,7 +635,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
-		this.bInitFirst = true;
+		this.clearGame();
 		this.startGameEth();
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();
