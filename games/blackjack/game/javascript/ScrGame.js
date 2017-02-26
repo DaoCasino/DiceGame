@@ -68,6 +68,7 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = false;
+	this.version = 1;
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
@@ -115,7 +116,7 @@ ScrGame.prototype.clearGame = function(){
 	lastPlayerCard = 0;
 	lastHouseCard = 0;
 	stateNow = -1;
-	stateOld = -1;
+	this.timeTotal = 0;
 	
 	for (var i = 0; i < dealedCards.length; i++) {
 		var card = dealedCards[i];
@@ -163,6 +164,10 @@ ScrGame.prototype.createGUI = function() {
 	this.tfTotalTime.x = icoTime.x + 24;
 	this.tfTotalTime.y = icoTime.y - 12;
 	this.face_mc.addChild(this.tfTotalTime);
+	this.tfVers= addText("v. " + this.version, 20, "#ffffff", "#000000", "left", 400, 4, fontMain)
+	this.tfVers.x = icoTime.x + 24;
+	this.tfVers.y = this.tfTotalTime.y + 40;
+	this.face_mc.addChild(this.tfVers);
 	this.tfResult = addText("", 20, "#ffffff", "#000000", "center", 400, 4)
 	this.tfResult.x = _W/2;
 	this.tfResult.y = _H/2;
@@ -304,7 +309,6 @@ ScrGame.prototype.checkGameState = function() {
 }
 
 ScrGame.prototype.addPlayerCard = function(){
-	console.log("addPlayerCard:", lastPlayerCard, this.countPlayerCard);
 	for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
 		if(options_debug){
 			var card = Math.ceil(Math.random()*52);
@@ -319,7 +323,6 @@ ScrGame.prototype.addPlayerCard = function(){
 }
 
 ScrGame.prototype.addHouseCard = function(){
-	console.log("addHouseCard:", lastHouseCard, this.countHouseCard);
 	for (var i = lastHouseCard; i < this.countHouseCard; i++) {
 		if(options_debug){
 			var card = Math.ceil(Math.random()*52);
@@ -571,22 +574,34 @@ ScrGame.prototype.response = function(command, value, index) {
 			stateNow = hexToNum(value);
 			console.log("stateNow:", stateNow);
 			if(stateNow > 0){
-				this.bWait = false;
-				this.btnStart.visible = true;
+				this.getPlayerCardsNumber();
+				this.getHouseCardsNumber();
+				if(stateOld == -1){
+					this.tfResult.setText("Bet 0.05 eth");
+				}
 				switch (stateNow){
 					case 1:
-						if(stateOld == -1){
-							this.tfResult.setText("Bet 0.05 eth");
-						} else if(stateOld == 0){
+						if(stateOld == 0){
 							this.tfResult.setText("You won!");
 						}
 						break;
 					case 2:
-						this.tfResult.setText("House won!");
+						if(stateOld == 0){
+							this.tfResult.setText("House won!");
+						}
 						break;
 					case 3:
-						this.tfResult.setText("Tie!");
+						if(stateOld == 0){
+							this.tfResult.setText("Tie!");
+						}
 						break;
+				}
+				if(stateOld == -1 || stateOld == 0){
+					this.bWait = false;
+					this.startGame = false;
+					this.btnStart.visible = true;
+					this.sendRequest("getBalance");
+					stateOld = stateNow;
 				}
 			} else if(stateNow == 0){
 				stateOld = stateNow;
@@ -649,6 +664,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
+		this.bWait = true;
 		this.clearGame();
 		if(options_debug){
 			this.countPlayerCard = 2;
