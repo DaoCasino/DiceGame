@@ -1149,10 +1149,12 @@ ScrGame.prototype.getResult = function() {
 					var obj = arLogs[i];
 					if (obj.transactionHash == resultTxid) {
 						if (obj.data.match(/77696e/i)) {
+							console.log("!!!! result 1");
 							obj_game["game"].getResponseResult(1);
 							return false;
 						}
 						if (obj.data.match(/6c6f7365/i)) {
+							console.log("!!!! result -1");
 							obj_game["game"].getResponseResult(-1);
 							return false;
 						}
