@@ -69,8 +69,8 @@ ScrGame.prototype.init = function() {
 	this.bWindow = false;
 	this.bStand = false;
 	this.bGameLoad = false;
-	this.bWait = false;
-	this.version = 2;
+	this.bWait = true;
+	this.version = 3;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -220,10 +220,29 @@ ScrGame.prototype.createGUI = function() {
 	tf.y = - 26;
 	btnStand.addChild(tf);
 	this.btnStand = btnStand;
+	var btnSmart = this.createButton("btnSmart", 100, 660, "Check contract", 17, 12)
 	
 	if(options_debug){
 		btnStart.visible = true;
 	}
+}
+
+ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {	
+	if(size){}else{size=22}
+	if(offset){}else{offset=17}
+	
+	var btn = addButton2("btnDefault", x, y);
+	btn.name = name;
+	btn.interactive = true;
+	btn.buttonMode=true;
+	this.face_mc.addChild(btn);
+	this._arButtons.push(btn);
+	var tf = addText(label, size, "#FFFFFF", "#000000", "center", 350)
+	tf.x = 0;
+	tf.y = - offset;
+	btn.addChild(tf);
+	
+	return btn;
 }
 
 ScrGame.prototype.showButtons = function(value) {
@@ -380,6 +399,14 @@ ScrGame.prototype.clickStand = function(){
 		var data = "0xc2897b10";
 		this.sendInfuraAction("stand", data);
 	}
+}
+
+ScrGame.prototype.showSmartContract = function() {
+	var url = urlEtherscan + "address/" + addressContract
+	if(options_mainet){
+		url = "https://etherscan.io/" + "address/" + addressContract
+	}
+	window.open(url, "_blank"); 
 }
 
 // START
@@ -613,6 +640,10 @@ ScrGame.prototype.response = function(command, value, index) {
 				// this.getHouseCardsNumber();
 				this.tfResult.setText("");
 			}
+		} else {
+			this.bWait = false;
+			this.startGame = false;
+			this.btnStart.visible = true;
 		}
 	} else if(command == "hit"){
 		
@@ -685,6 +716,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		} else {
 			this.startGameEth();
 		}
+	} else if(item_mc.name == "btnSmart"){
+		this.showSmartContract();
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();
 	} else if(item_mc.name == "btnStand"){
