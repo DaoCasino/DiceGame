@@ -547,6 +547,7 @@ ScrGame.prototype.startGameEth = function(){
 							"id":1}),
 		success: function (d) {
 			console.log("get nonce "+d.result);
+			console.log("!!!!!!!!!!!!!!!!!!!!!!!!!:", betEth);
 			var options = {};
 			options.nonce = d.result;
 			options.to = addressContract;
