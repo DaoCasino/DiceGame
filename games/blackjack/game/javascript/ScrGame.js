@@ -70,7 +70,7 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = true;
-	this.version = 5;
+	this.version = 6;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -89,7 +89,7 @@ ScrGame.prototype.init = function() {
 		this.strTest = " (testnet)";
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		addressContract = "0xf6ac4b3c4003eeff113228094c0ec0886430a0b2";
+		addressContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423";
 	} else {
 		betEth = 50000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
