@@ -74,6 +74,10 @@ ScrGame.prototype.init = function() {
 	this.countNew = 0;
 	this.countOld = 0;
 	
+	obj_game = {};
+	idOraclizeGame = undefined;
+	resultTxid = undefined;
+	
 	if(options_testnet){
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -1124,10 +1128,11 @@ ScrGame.prototype.getResult = function() {
 			}
 			if(idOraclizeGame == undefined){
 				for (var i = index; i < len; i ++) {
-					if (arLogs[i].transactionHash == obj_game["game"].gameTxHash) {
+					if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
 						var obj = arLogs[i];
 						idOraclizeGame = obj.data; //id Oraclize
-						// console.log("idOraclizeGame:", idOraclizeGame);
+						console.log("idOraclizeGame:", idOraclizeGame);
+						console.log("transactionHash:", obj.transactionHash);
 						break;
 					}
 				}
@@ -1135,10 +1140,12 @@ ScrGame.prototype.getResult = function() {
 			if(idOraclizeGame && resultTxid == undefined){
 				for (var j = index; j < len; j ++) {
 					var objC = arLogs[j];
-					if (objC.transactionHash != obj_game["game"].gameTxHash 
+					if (objC.transactionHash != obj_game["gameTxHash"];
 					&& objC.data == idOraclizeGame) {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
+						console.log("resultTxid:", resultTxid);
+						console.log("transactionHash:", obj.transactionHash);
 						break;
 					}
 				}
@@ -1149,12 +1156,10 @@ ScrGame.prototype.getResult = function() {
 					var obj = arLogs[i];
 					if (obj.transactionHash == resultTxid) {
 						if (obj.data.match(/77696e/i)) {
-							console.log("!!!! result 1");
 							obj_game["game"].getResponseResult(1);
 							return false;
 						}
 						if (obj.data.match(/6c6f7365/i)) {
-							console.log("!!!! result -1");
 							obj_game["game"].getResponseResult(-1);
 							return false;
 						}
@@ -1251,6 +1256,7 @@ ScrGame.prototype.response = function(command, value) {
 		this.sendRequest("getBalance");
 		login_obj["startGame"] = true;
 		login_obj["curLevel"] = this.curLevel;
+		console.log("gameTxHash:", obj_game["gameTxHash"]);
 	} else if(command == "resultGame"){
 		var val = Number(value);
 		if(val == 0){
