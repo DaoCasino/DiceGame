@@ -7,7 +7,8 @@ function ScrGame() {
 ScrGame.prototype = Object.create(PIXI.Container.prototype);
 ScrGame.prototype.constructor = ScrGame;
 
-var TIME_GET_CARDS = 10000;
+var TIME_GET_STATE = 10000;
+var TIME_GET_CARDS = 3000;
 var TIME_WITE = 500;
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
@@ -54,6 +55,7 @@ ScrGame.prototype.init = function() {
 	this.gameTime = getTimer();
 	this._arButtons = [];
 	this.timeGetState = 0;
+	this.timeGetCards = 0;
 	this.timeTotal = 0;
 	this.timeWait = 0;
 	this.countPlayerCard = 0;
@@ -68,13 +70,14 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = false;
-	this.version = 1;
+	this.version = 2;
+	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
 	
-	options_mainet = true; // REMOVE
-	options_testnet = false; // REMOVE
+	// options_mainet = true; // REMOVE
+	// options_testnet = false; // REMOVE
 	if(options_debug){
 		var tfDebug = addText("Debug", 20, "#FF0000", "#000000", "right", 400)
 		tfDebug.x = _W-20;
@@ -83,9 +86,10 @@ ScrGame.prototype.init = function() {
 	}
 	
 	if(options_testnet){
+		this.strTest = " (testnet)";
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		addressContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
+		addressContract = "0xf6ac4b3c4003eeff113228094c0ec0886430a0b2";
 	} else {
 		betEth = 50000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
@@ -164,7 +168,7 @@ ScrGame.prototype.createGUI = function() {
 	this.tfTotalTime.x = icoTime.x + 24;
 	this.tfTotalTime.y = icoTime.y - 12;
 	this.face_mc.addChild(this.tfTotalTime);
-	this.tfVers= addText("v. " + this.version, 20, "#ffffff", "#000000", "left", 400, 4, fontMain)
+	this.tfVers= addText("v. " + this.version + this.strTest, 20, "#ffffff", "#000000", "left")
 	this.tfVers.x = icoTime.x + 24;
 	this.tfVers.y = this.tfTotalTime.y + 40;
 	this.face_mc.addChild(this.tfVers);
@@ -605,8 +609,8 @@ ScrGame.prototype.response = function(command, value, index) {
 				}
 			} else if(stateNow == 0){
 				stateOld = stateNow;
-				this.getPlayerCardsNumber();
-				this.getHouseCardsNumber();
+				// this.getPlayerCardsNumber();
+				// this.getHouseCardsNumber();
 				this.tfResult.setText("");
 			}
 		}
@@ -630,9 +634,15 @@ ScrGame.prototype.update = function(){
 	}
 	
 	this.timeGetState += diffTime;
-	if(this.timeGetState >= TIME_GET_CARDS){
+	if(this.timeGetState >= TIME_GET_STATE){
 		this.timeGetState = 0;
 		this.checkGameState();
+	}
+	this.timeGetCards += diffTime;
+	if(this.timeGetCards >= TIME_GET_CARDS){
+		this.timeGetCards = 0;
+		this.getPlayerCardsNumber();
+		this.getHouseCardsNumber();
 	}
 	
 	if(this.bWait){
