@@ -15,6 +15,7 @@ var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
+var	addressTestContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423";
 var betEth = 50000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
@@ -86,7 +87,7 @@ ScrGame.prototype.init = function() {
 		this.strTest = " (testnet)";
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		addressContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423";
+		addressContract = addressTestContract;
 	} else {
 		betEth = 50000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
@@ -232,7 +233,11 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 	btn.name = name;
 	btn.interactive = true;
 	btn.buttonMode=true;
-	this.face_mc.addChild(btn);
+	if(name == "btnSmart"){
+		this.addChild(btn);
+	} else {
+		this.face_mc.addChild(btn);
+	}
 	this._arButtons.push(btn);
 	var tf = addText(label, size, "#FFFFFF", "#000000", "center", 350)
 	tf.x = 0;
