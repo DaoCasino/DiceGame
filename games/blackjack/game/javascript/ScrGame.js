@@ -67,10 +67,9 @@ ScrGame.prototype.init = function() {
 	this._gameOver = false;
 	this.bSendRequest = false;
 	this.bWindow = false;
-	this.bStand = false;
 	this.bGameLoad = false;
-	this.bWait = true;
-	this.version = 8;
+	this.bWait = false;
+	this.version = 9;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -177,7 +176,7 @@ ScrGame.prototype.createGUI = function() {
 	
 	if(openkey){
 		this.tfIdUser.setText(openkey);
-		this.bWait = false;;
+		this.bWait = true;
 	} else {
 		this.tfResult.setText("key undefined");
 	}
@@ -646,9 +645,7 @@ ScrGame.prototype.response = function(command, value, index) {
 			this.btnStart.visible = true;
 		}
 	} else if(command == "hit"){
-		
 	} else if(command == "stand"){
-		this.bStand = true;
 	}
 }
 

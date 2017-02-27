@@ -434,7 +434,7 @@ function loadData() {
 		mainet = localStorage.getItem('mainnet')
 		openkey = localStorage.getItem('openkey')
 		privkey = localStorage.getItem('privkey')
-		// console.log("openkey:", openkey);
+		console.log("openkey:", openkey);
 		if (localStorage.getItem('daocasino_blackjack')){
 			var login_str = localStorage.getItem('daocasino_blackjack')
 			login_obj = JSON.parse(login_str);
