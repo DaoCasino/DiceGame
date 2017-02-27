@@ -172,13 +172,6 @@ ScrGame.prototype.init = function() {
 	this.sendRequest("getBalance");
 	this.showWndStart();
 	
-	// если идет игра, дожидаемся ее результата
-	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["gameTxHash"]){
-		this.btnStart.visible = false;
-		this.gameTxHash = login_obj["gameTxHash"];
-		this.createLevel();
-	}*/
-	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
 	this.on('mousemove', this.touchHandler);
@@ -1247,7 +1240,6 @@ ScrGame.prototype.response = function(command, value) {
 		this.sendRequest("getBalance");
 		login_obj["startGame"] = true;
 		login_obj["curLevel"] = this.curLevel;
-		console.log("gameTxHash:", obj_game["gameTxHash"]);
 	} else if(command == "resultGame"){
 		var val = Number(value);
 		if(val == 0){
