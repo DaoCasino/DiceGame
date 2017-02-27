@@ -86,15 +86,6 @@ ScrGame.prototype.init = function() {
 		betEth = 200000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир
 	}
-	// если идет еще старая сессия, загружаем её
-	/*if(login_obj["curLevel"] && login_obj["startGame"] && login_obj["gameTxHash"]){
-		login_obj["level"] = login_obj["curLevel"];
-		var tfOldGame = addText("Loaded previous session game", 40, "#FF8611", "#000000", "center", 800)
-		tfOldGame.x = _W/2;
-		tfOldGame.y = 150;
-		this.face_mc.addChild(tfOldGame);
-		createjs.Tween.get(tfOldGame).wait(3000).to({alpha:0},500)
-	}*/
 	this.curLevel = Number(login_obj["level"]) || 1;
 	
 	if(options_debug){
@@ -224,7 +215,11 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 	btn.name = name;
 	btn.interactive = true;
 	btn.buttonMode=true;
-	this.face_mc.addChild(btn);
+	if(name == "btnSmart"){
+		this.addChild(btn);
+	} else {
+		this.face_mc.addChild(btn);
+	}
 	this._arButtons.push(btn);
 	var tf = addText(label, size, "#FFFFFF", "#000000", "center", 350)
 	tf.x = 0;
@@ -1131,8 +1126,6 @@ ScrGame.prototype.getResult = function() {
 					if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
 						var obj = arLogs[i];
 						idOraclizeGame = obj.data; //id Oraclize
-						console.log("idOraclizeGame:", idOraclizeGame);
-						console.log("transactionHash:", obj.transactionHash);
 						break;
 					}
 				}
@@ -1144,8 +1137,6 @@ ScrGame.prototype.getResult = function() {
 					&& objC.data == idOraclizeGame) {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
-						console.log("resultTxid:", resultTxid);
-						console.log("transactionHash:", objC.transactionHash);
 						break;
 					}
 				}
