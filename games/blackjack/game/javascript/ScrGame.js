@@ -520,7 +520,7 @@ ScrGame.prototype.clickСhip = function(name){
 		}
 	}
 	
-	betEth = betGame*1000000000000000000;
+	betEth = betGame*1000000000000000000/10;
 }
 
 ScrGame.prototype.showSmartContract = function() {
