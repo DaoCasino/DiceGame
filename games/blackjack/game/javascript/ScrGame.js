@@ -831,6 +831,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	if(item_mc.name == "btnStart"){
 		item_mc.visible = false;
 		this.bWait = true;
+		this.showChips(false);
 		this.clearGame();
 		if(options_debug){
 			this.countPlayerCard = 2;
