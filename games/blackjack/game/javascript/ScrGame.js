@@ -19,6 +19,7 @@ var	addressTestContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423";
 var betEth = 0; //ставка эфира
 var betGame = 0;
 var betGameOld = 0;
+var minBet = 50000000000000000;
 var obj_game = {};
 var _mouseX;
 var _mouseY;
@@ -78,7 +79,7 @@ ScrGame.prototype.init = function() {
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bWait = false;
-	this.version = 14;
+	this.version = 15;
 	this.strTest = "";
 	
 	obj_game = {};
@@ -474,6 +475,7 @@ ScrGame.prototype.clickStand = function(){
 }
 
 ScrGame.prototype.clickСhip = function(name){
+	console.log("clickСhip:", betEth);
 	var value = chipVale[Number(name.substr(6))];
 	var oldBet = betGame;
 	betGame += value;
@@ -516,6 +518,7 @@ ScrGame.prototype.clickСhip = function(name){
 	}
 	
 	betEth = betGame*1000000000000000000;
+	console.log("betEth:", betEth);
 }
 
 ScrGame.prototype.showSmartContract = function() {
@@ -829,18 +832,20 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	}
 	
 	if(item_mc.name == "btnStart"){
-		item_mc.visible = false;
-		this.bWait = true;
-		this.showChips(false);
-		this.clearGame();
-		if(options_debug){
-			this.countPlayerCard = 2;
-			this.countHouseCard = 1;
-			this.addPlayerCard();
-			this.addHouseCard();
-			this.showButtons(true);
-		} else {
-			this.startGameEth();
+		if(betEth > minBet){
+			item_mc.visible = false;
+			this.bWait = true;
+			this.showChips(false);
+			this.clearGame();
+			if(options_debug){
+				this.countPlayerCard = 2;
+				this.countHouseCard = 1;
+				this.addPlayerCard();
+				this.addHouseCard();
+				this.showButtons(true);
+			} else {
+				this.startGameEth();
+			}
 		}
 	} else if(item_mc.name == "btnSmart"){
 		this.showSmartContract();
