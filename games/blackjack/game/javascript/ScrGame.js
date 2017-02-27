@@ -70,7 +70,7 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = true;
-	this.version = 4;
+	this.version = 5;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -481,6 +481,7 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 								"params":[openkey,"latest"],
 								"id":1}),
 			success: function (d) {
+				console.log("urlInfura:", urlInfura);
 				console.log("get nonce action "+d.result);
 				var options = {};
 				options.nonce = d.result;
