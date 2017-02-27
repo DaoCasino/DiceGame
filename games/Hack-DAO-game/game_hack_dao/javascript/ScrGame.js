@@ -1145,7 +1145,7 @@ ScrGame.prototype.getResult = function() {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
 						console.log("resultTxid:", resultTxid);
-						console.log("transactionHash:", obj.transactionHash);
+						console.log("transactionHash:", objC.transactionHash);
 						break;
 					}
 				}
