@@ -592,7 +592,7 @@ ScrGame.prototype.response = function(command, value, index) {
 			var card = hexToNum(value);
 			this.showPlayerCard(this.getCard(card));
 			this.bWait = false;
-			this.tfResult.setText("");
+			// this.tfResult.setText("");
 			this.showButtons(true);
 		}
 	} else if(command == "getHouseCard"){
@@ -600,7 +600,7 @@ ScrGame.prototype.response = function(command, value, index) {
 			var card = hexToNum(value);
 			this.showHouseCard(this.getCard(card));
 			this.bWait = false;
-			this.tfResult.setText("");
+			// this.tfResult.setText("");
 		}
 	} else if(command == "getPlayerCardsNumber"){
 		this.countPlayerCard = hexToNum(value);
@@ -634,6 +634,7 @@ ScrGame.prototype.response = function(command, value, index) {
 						break;
 				}
 				if(stateOld == 0){
+					this.startGame = false;
 					this.getPlayerCardsNumber();
 					this.getHouseCardsNumber();
 				}
