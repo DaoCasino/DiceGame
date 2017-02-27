@@ -69,7 +69,7 @@ ScrGame.prototype.init = function() {
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bWait = false;
-	this.version = 12;
+	this.version = 13;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -641,6 +641,7 @@ ScrGame.prototype.response = function(command, value, index) {
 				}
 				this.showButtons(false);
 			} else if(stateNow == 0){
+				this.startGame = true;
 				this.btnStart.visible = false;
 				stateOld = stateNow;
 				this.getPlayerCardsNumber();
