@@ -70,7 +70,7 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = true;
-	this.version = 7;
+	this.version = 8;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -604,8 +604,6 @@ ScrGame.prototype.response = function(command, value, index) {
 			stateNow = hexToNum(value);
 			// console.log("stateNow:", stateNow);
 			if(stateNow > 0){
-				this.getPlayerCardsNumber();
-				this.getHouseCardsNumber();
 				if(stateOld == -1){
 					this.tfResult.setText("Bet 0.05 eth");
 				}
@@ -629,6 +627,8 @@ ScrGame.prototype.response = function(command, value, index) {
 				if(stateOld == -1 || stateOld == 0){
 					this.bWait = false;
 					this.startGame = false;
+					this.getPlayerCardsNumber();
+					this.getHouseCardsNumber();
 					this.btnStart.visible = true;
 					this.sendRequest("getBalance");
 					stateOld = stateNow;
@@ -636,8 +636,8 @@ ScrGame.prototype.response = function(command, value, index) {
 			} else if(stateNow == 0){
 				this.btnStart.visible = false;
 				stateOld = stateNow;
-				// this.getPlayerCardsNumber();
-				// this.getHouseCardsNumber();
+				this.getPlayerCardsNumber();
+				this.getHouseCardsNumber();
 				this.tfResult.setText("");
 			}
 		} else {
@@ -662,18 +662,18 @@ ScrGame.prototype.update = function(){
 	if(this.startGame){
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
+		// this.timeGetCards += diffTime;
+		// if(this.timeGetCards >= TIME_GET_CARDS){
+			// this.timeGetCards = 0;
+			// this.getPlayerCardsNumber();
+			// this.getHouseCardsNumber();
+		// }
 	}
 	
 	this.timeGetState += diffTime;
 	if(this.timeGetState >= TIME_GET_STATE){
 		this.timeGetState = 0;
 		this.checkGameState();
-	}
-	this.timeGetCards += diffTime;
-	if(this.timeGetCards >= TIME_GET_CARDS){
-		this.timeGetCards = 0;
-		this.getPlayerCardsNumber();
-		this.getHouseCardsNumber();
 	}
 	
 	if(this.bWait){

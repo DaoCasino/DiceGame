@@ -422,7 +422,7 @@ function update() {
 function saveData() {
 	if(isLocalStorageAvailable()){
 		var login_str = JSON.stringify(login_obj);
-		localStorage.setItem('daocasino_hack', login_str);
+		localStorage.setItem('daocasino_blackjack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
 		// console.log("Saving: ok!");
@@ -435,16 +435,16 @@ function loadData() {
 		openkey = localStorage.getItem('openkey')
 		privkey = localStorage.getItem('privkey')
 		// console.log("openkey:", openkey);
-		if (localStorage.getItem('daocasino_hack')){
-			var login_str = localStorage.getItem('daocasino_hack')
+		if (localStorage.getItem('daocasino_blackjack')){
+			var login_str = localStorage.getItem('daocasino_blackjack')
 			login_obj = JSON.parse(login_str);
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';
 			checkData();
-			console.log("Loading: ok!");
+			// console.log("Loading: ok!");
 		} else {
 			checkData();
-			console.log("Loading: fail!");
+			// console.log("Loading: fail!");
 		}
 	}
 }
