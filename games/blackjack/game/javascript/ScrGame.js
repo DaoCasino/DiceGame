@@ -69,7 +69,7 @@ ScrGame.prototype.init = function() {
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bWait = false;
-	this.version = 9;
+	this.version = 10;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -243,6 +243,9 @@ ScrGame.prototype.createButton = function(name, x, y, label, size, offset) {
 }
 
 ScrGame.prototype.showButtons = function(value) {
+	if(!this.startGame){
+		value = false;
+	}
     this.btnHit.visible = value;
     this.btnStand.visible = value;
 }
@@ -601,7 +604,7 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			// console.log("stateNow:", stateNow);
+			console.log("stateNow:", stateNow);
 			if(stateNow > 0){
 				if(stateOld == -1){
 					this.tfResult.setText("Bet 0.05 eth");
@@ -623,11 +626,13 @@ ScrGame.prototype.response = function(command, value, index) {
 						}
 						break;
 				}
+				if(stateOld == 0){
+					this.getPlayerCardsNumber();
+					this.getHouseCardsNumber();
+				}
 				if(stateOld == -1 || stateOld == 0){
 					this.bWait = false;
 					this.startGame = false;
-					this.getPlayerCardsNumber();
-					this.getHouseCardsNumber();
 					this.btnStart.visible = true;
 					this.sendRequest("getBalance");
 					stateOld = stateNow;
