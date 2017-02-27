@@ -70,7 +70,7 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = true;
-	this.version = 3;
+	this.version = 4;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -596,9 +596,11 @@ ScrGame.prototype.response = function(command, value, index) {
 		}
 	} else if(command == "getPlayerCardsNumber"){
 		this.countPlayerCard = hexToNum(value);
+		console.log("countPlayerCard:", this.countPlayerCard);
 		this.addPlayerCard();
 	} else if(command == "getHouseCardsNumber"){
 		this.countHouseCard = hexToNum(value);
+		console.log("countHouseCard:", this.countHouseCard);
 		this.addHouseCard();
 	} else if(command == "getGameState"){
 		if(value != "0x"){
