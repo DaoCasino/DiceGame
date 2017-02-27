@@ -1664,7 +1664,8 @@ ScrGame.prototype.checkButtons = function(evt){
 	for (var i = 0; i < this._arButtons.length; i++) {
 		var item_mc = this._arButtons[i];
 		if(hit_test_rec(item_mc, item_mc.w, item_mc.h, _mouseX, _mouseY) &&
-		item_mc.visible && item_mc.dead != true){
+		item_mc.visible && item_mc.dead != true && 
+		(!this.bWindow || item_mc.name == "btnSmart")){
 			if(item_mc._selected == false){
 				item_mc._selected = true;
 				if(item_mc.over){
@@ -1683,9 +1684,6 @@ ScrGame.prototype.checkButtons = function(evt){
 }
 
 ScrGame.prototype.touchHandler = function(evt){
-	if(this.bWindow){
-		return false;
-	}
 	var phase = evt.type;
 	
 	if(phase=='mousemove' || phase == 'touchmove' || phase == 'touchstart'){
