@@ -69,7 +69,7 @@ ScrGame.prototype.init = function() {
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bWait = false;
-	this.version = 10;
+	this.version = 11;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -338,7 +338,9 @@ ScrGame.prototype.addPlayerCard = function(){
 			this.showPlayerCard(this.getCard(card));
 			this.showButtons(true);
 			this.bWait = false;
-			this.tfResult.setText("");
+			if(this.startGame){
+				this.tfResult.setText("");
+			}
 		} else {
 			this.getPlayerCard(i);
 		}
@@ -637,12 +639,14 @@ ScrGame.prototype.response = function(command, value, index) {
 					this.sendRequest("getBalance");
 					stateOld = stateNow;
 				}
+				this.showButtons(false);
 			} else if(stateNow == 0){
 				this.btnStart.visible = false;
 				stateOld = stateNow;
 				this.getPlayerCardsNumber();
 				this.getHouseCardsNumber();
 				this.tfResult.setText("");
+				this.showButtons(false);
 			}
 		} else {
 			this.bWait = false;
