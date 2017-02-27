@@ -1140,7 +1140,7 @@ ScrGame.prototype.getResult = function() {
 			if(idOraclizeGame && resultTxid == undefined){
 				for (var j = index; j < len; j ++) {
 					var objC = arLogs[j];
-					if (objC.transactionHash != obj_game["gameTxHash"];
+					if (objC.transactionHash != obj_game["gameTxHash"]
 					&& objC.data == idOraclizeGame) {
 						resultTxid = objC.transactionHash;
 						objOrcl = objC;
