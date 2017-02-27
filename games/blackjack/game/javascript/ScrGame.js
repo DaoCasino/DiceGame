@@ -69,7 +69,7 @@ ScrGame.prototype.init = function() {
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bWait = false;
-	this.version = 11;
+	this.version = 12;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -448,7 +448,6 @@ ScrGame.prototype.startGameEth = function(){
 
 					var serializedTx = tx.serialize().toString('hex');
 					obj_game["game"].bSendRequest = false;
-					obj_game["game"].startGame = true;
 					console.log("The transaction was signed: "+serializedTx);
 					
 					$.ajax({
@@ -577,6 +576,7 @@ ScrGame.prototype.response = function(command, value, index) {
 	if(command == "gameTxHash"){
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
+		this.startGame = true;
 		this.gameTxHash = obj_game["gameTxHash"];
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
@@ -646,7 +646,6 @@ ScrGame.prototype.response = function(command, value, index) {
 				this.getPlayerCardsNumber();
 				this.getHouseCardsNumber();
 				this.tfResult.setText("");
-				this.showButtons(false);
 			}
 		} else {
 			this.bWait = false;
