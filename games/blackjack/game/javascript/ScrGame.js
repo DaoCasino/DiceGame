@@ -83,6 +83,7 @@ ScrGame.prototype.init = function() {
 	this.strTest = "";
 	
 	obj_game = {};
+	this.clearBet();
 	this.clearGame();
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
@@ -128,9 +129,6 @@ ScrGame.prototype.init = function() {
 ScrGame.prototype.clearGame = function(){
 	idOraclizeGame = undefined;
 	resultTxid = undefined;
-	betEth = 0;
-	betGame = 0;
-	betGameOld = 0;
 	lastPlayerCard = 0;
 	lastHouseCard = 0;
 	stateNow = -1;
@@ -146,6 +144,12 @@ ScrGame.prototype.clearGame = function(){
 	
 	dealedCards = [];
 	this.clearChips();
+}
+
+ScrGame.prototype.clearBet = function(){
+	betEth = 0;
+	betGame = 0;
+	betGameOld = 0;
 }
 
 ScrGame.prototype.clearChips = function(){
@@ -475,7 +479,6 @@ ScrGame.prototype.clickStand = function(){
 }
 
 ScrGame.prototype.clickСhip = function(name){
-	console.log("clickСhip:", betEth);
 	var value = chipVale[Number(name.substr(6))];
 	var oldBet = betGame;
 	betGame += value;
@@ -734,16 +737,19 @@ ScrGame.prototype.response = function(command, value, index) {
 					case 1:
 						if(stateOld == 0){
 							this.tfResult.setText("You won!");
+							this.clearBet();
 						}
 						break;
 					case 2:
 						if(stateOld == 0){
 							this.tfResult.setText("House won!");
+							this.clearBet();
 						}
 						break;
 					case 3:
 						if(stateOld == 0){
 							this.tfResult.setText("Tie!");
+							this.clearBet();
 						}
 						break;
 				}
