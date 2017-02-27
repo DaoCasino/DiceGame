@@ -8,6 +8,12 @@ ScrMenu.prototype.constructor = ScrMenu;
 
 
 ScrMenu.prototype.init = function() {
+	if(openkey){}else{
+		var url = "/";
+		window.open(url, "_self"); // "_blank",  "_self"
+		return false;
+	}
+	
 	this._arButtons = [];
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);

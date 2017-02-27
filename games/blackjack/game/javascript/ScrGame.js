@@ -79,7 +79,6 @@ ScrGame.prototype.init = function() {
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bWait = false;
-	this.version = 15;
 	this.strTest = "";
 	
 	obj_game = {};
@@ -189,7 +188,7 @@ ScrGame.prototype.createGUI = function() {
 	
 	var offsetY = 25;
 	var strUser = 'id'
-	var strVer = "v. " + this.version + this.strTest;
+	var strVer = version + this.strTest;
 	this.tfIdUser = addText(strUser, 20, "#ffffff", "#000000", "left", 1000, 4)
 	this.tfIdUser.x = icoKey.x + 24;
 	this.tfIdUser.y = icoKey.y - 12;
