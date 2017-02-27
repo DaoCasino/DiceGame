@@ -131,6 +131,10 @@ function loadManifest(){
 	preloader.add("icoKey", "images/items/icoKey.png");
 	preloader.add("icoEthereum", "images/items/icoEthereum.png");
 	preloader.add("icoTime", "images/items/icoTime.png");
+	preloader.add("fiche_0", "images/items/fiche_0.png");
+	preloader.add("fiche_1", "images/items/fiche_1.png");
+	preloader.add("fiche_2", "images/items/fiche_2.png");
+	preloader.add("seat", "images/items/seat.png");
 	
 	preloader.add("1_A", "images/cards/1_A.png")
 	preloader.add("1_2", "images/cards/1_2.png")
