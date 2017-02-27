@@ -186,6 +186,7 @@ ScrGame.prototype.createGUI = function() {
 	this.back_mc.addChild(seat);
 	this.arrow = addObj("hintArrow", _W/2, _H/2+150);
 	this.arrow.rotation = rad(90);
+	this.arrow.visible = false;
 	this.game_mc.addChild(this.arrow);
 	
 	var offsetY = 25;
@@ -492,7 +493,7 @@ ScrGame.prototype.clickСhip = function(name){
 	
 	if(betGame > 0){
 		this.btnStart.visible = true;
-		this.arrow.visible = false;
+		// this.arrow.visible = false;
 	}
 	
 	if(betGameOld == betGame){
@@ -760,7 +761,7 @@ ScrGame.prototype.response = function(command, value, index) {
 					this.bWait = false;
 					this.startGame = false;
 					this.showChips(true);
-					this.arrow.visible = true;
+					// this.arrow.visible = true;
 					this.sendRequest("getBalance");
 					stateOld = stateNow;
 				}
@@ -777,7 +778,7 @@ ScrGame.prototype.response = function(command, value, index) {
 		} else {
 			this.bWait = false;
 			this.startGame = false;
-			this.arrow.visible = true;
+			// this.arrow.visible = true;
 			this.showChips(true);
 		}
 	} else if(command == "hit"){
