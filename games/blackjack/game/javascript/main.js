@@ -135,6 +135,7 @@ function loadManifest(){
 	preloader.add("fiche_1", "images/items/fiche_1.png");
 	preloader.add("fiche_2", "images/items/fiche_2.png");
 	preloader.add("seat", "images/items/seat.png");
+	preloader.add("hintArrow", "images/items/hintArrow.png");
 	
 	preloader.add("1_A", "images/cards/1_A.png")
 	preloader.add("1_2", "images/cards/1_2.png")
