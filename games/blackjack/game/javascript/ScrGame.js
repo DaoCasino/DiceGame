@@ -70,14 +70,12 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bGameLoad = false;
 	this.bWait = true;
-	this.version = 6;
+	this.version = 7;
 	this.strTest = "";
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
 	this.addChild(this.bg);
 	
-	// options_mainet = true; // REMOVE
-	// options_testnet = false; // REMOVE
 	if(options_debug){
 		var tfDebug = addText("Debug", 20, "#FF0000", "#000000", "right", 400)
 		tfDebug.x = _W-20;
@@ -169,7 +167,7 @@ ScrGame.prototype.createGUI = function() {
 	this.tfTotalTime.y = icoTime.y - 12;
 	this.face_mc.addChild(this.tfTotalTime);
 	this.tfVers= addText("v. " + this.version + this.strTest, 20, "#ffffff", "#000000", "left")
-	this.tfVers.x = icoTime.x + 24;
+	this.tfVers.x = icoTime.x;
 	this.tfVers.y = this.tfTotalTime.y + 40;
 	this.face_mc.addChild(this.tfVers);
 	this.tfResult = addText("", 20, "#ffffff", "#000000", "center", 400, 4)
@@ -597,16 +595,14 @@ ScrGame.prototype.response = function(command, value, index) {
 		}
 	} else if(command == "getPlayerCardsNumber"){
 		this.countPlayerCard = hexToNum(value);
-		console.log("countPlayerCard:", this.countPlayerCard);
 		this.addPlayerCard();
 	} else if(command == "getHouseCardsNumber"){
 		this.countHouseCard = hexToNum(value);
-		console.log("countHouseCard:", this.countHouseCard);
 		this.addHouseCard();
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("stateNow:", stateNow);
+			// console.log("stateNow:", stateNow);
 			if(stateNow > 0){
 				this.getPlayerCardsNumber();
 				this.getHouseCardsNumber();
@@ -638,6 +634,7 @@ ScrGame.prototype.response = function(command, value, index) {
 					stateOld = stateNow;
 				}
 			} else if(stateNow == 0){
+				this.btnStart.visible = false;
 				stateOld = stateNow;
 				// this.getPlayerCardsNumber();
 				// this.getHouseCardsNumber();
