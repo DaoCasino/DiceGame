@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.4"
+var version = "v. 1.1.5"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -155,8 +155,6 @@ function loadManifest(){
 	preloader.add("btnGreenOver", "images/buttons/btnGreenOver.png");
 	preloader.add("btnGreenDown", "images/buttons/btnGreenDown.png");
 	
-	preloader.add("itemHero", "images/items/itemHero.png");
-	preloader.add("itemHeroW", "images/items/itemHeroW.png");
 	preloader.add("itemDao", "images/items/itemDao.png");
 	preloader.add("eggPart", "images/items/eggPart.png");
 	preloader.add("iconEthereum", "images/items/iconEthereum.png");
@@ -170,17 +168,17 @@ function loadManifest(){
 	preloader.add("itemBodyGreen", "images/items/itemBodyGreen.png");
 	preloader.add("itemBodyRed", "images/items/itemBodyRed.png");
 	preloader.add("itemBodyBlack", "images/items/itemBodyBlack.png");
-	preloader.add("iconCheckMark", "images/items/iconCheckMark.png");
 	preloader.add("itemPlatform", "images/items/itemPlatform.png");
 	preloader.add("itemTeleport", "images/items/itemTeleport.png");
 	preloader.add("contractNew", "images/items/contractNew.png");
 	preloader.add("contractOld", "images/items/contractOld.png");
+	preloader.add("doorOld", "images/items/doorOld.png");
+	preloader.add("doorNew", "images/items/doorNew.png");
 	preloader.add("itemHeadMiner", "images/items/itemHeadMiner.png");
 	preloader.add("icoKey", "images/items/icoKey.png");
 	preloader.add("icoEthereum", "images/items/icoEthereum.png");
 	preloader.add("icoTime", "images/items/icoTime.png");
 	preloader.add("starAppear", "images/items/starAppear.png");
-	preloader.add("bagMoney", "images/items/bagMoney.png");
 	preloader.add("itemBlank1", "images/items/itemBlank1.png");
 	preloader.add("itemBlank2", "images/items/itemBlank2.png");
 	preloader.add("itemBlank3", "images/items/itemBlank3.png");

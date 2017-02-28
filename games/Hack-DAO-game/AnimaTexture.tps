@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.3.3</string>
         <key>fileName</key>
-        <string>C:/Work/DaoCasino/Platform/games/Hack-DAO-game/AnimaTexture.tps</string>
+        <string>C:/WebServers/home/test1.ru/Platform/games/Hack-DAO-game/AnimaTexture.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -421,6 +421,30 @@
                 <rect>6,13,12,27</rect>
                 <key>scale9Paddings</key>
                 <rect>6,13,12,27</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">anima/minerRun/minerRun_0001.png</key>
+            <key type="filename">anima/minerRun/minerRun_0002.png</key>
+            <key type="filename">anima/minerRun/minerRun_0003.png</key>
+            <key type="filename">anima/minerRun/minerRun_0004.png</key>
+            <key type="filename">anima/minerRun/minerRun_0005.png</key>
+            <key type="filename">anima/minerRun/minerRun_0006.png</key>
+            <key type="filename">anima/minerRun/minerRun_0007.png</key>
+            <key type="filename">anima/minerRun/minerRun_0008.png</key>
+            <key type="filename">anima/minerRun/minerRun_0009.png</key>
+            <key type="filename">anima/minerRun/minerRun_0010.png</key>
+            <key type="filename">anima/minerRun/minerRun_0011.png</key>
+            <key type="filename">anima/minerRun/minerRun_0012.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>26,31,52,63</rect>
+                <key>scale9Paddings</key>
+                <rect>26,31,52,63</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
