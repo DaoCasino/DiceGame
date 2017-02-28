@@ -175,30 +175,33 @@
 							if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
 
 							$.get("https://"+u+"/api?module=proxy&action=eth_getTransactionCount&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function(d){
-
+						
+						console.log("getNonce",d);
 								var options = {};
 								options.nonce = d.result; 
 						//options.data = '0xa9059cbb000000000000000000000000'+to.replace('0x','')+''+pad(amount.toString(16),64);
-						console.log(options.data);
+						//console.log(options.data);
 						options.to = to; 
 						options.gasPrice="0x737be7600";
 						options.gasLimit=0x927c0; 
+						
 						
 						if (!$("#amount").val()) $("#amount").val(totalwei/1000000000000000000);
 						
 						options.value = $("#amount").val()*1000000000000000000-20000000000000000;  //отнимем на комиссию
 						
-
+						console.log("options",options);
 
 						var tx = new EthJS.Tx(options);
 						tx.sign(EthJS.Buffer.Buffer(localStorage.getItem("privkey"), 'hex')); 
 
 						var serializedTx = tx.serialize().toString('hex');
-
-						console.log(serializedTx);
+						
+						console.log("getNonce",d);
+						
+						//console.log(serializedTx);
 						$.getJSON("https://"+u+"/api?module=proxy&action=eth_sendRawTransaction&hex="+serializedTx+"&apikey=YourApiKeyToken",function(d){
-
-							console.log(d);
+							console.log("eth_sendRawTransaction",d);
 							$("#result1").html("<a href='https://"+((localStorage.getItem("mainnet")=="on")?"":"testnet.")+"etherscan.io/tx/"+d.result+"'>"+d.result+"</a>");
 						}); 
 
