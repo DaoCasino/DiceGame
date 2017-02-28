@@ -265,7 +265,22 @@ ScrGame.prototype.createGUI = function() {
 	tf.y = - 26;
 	btnStand.addChild(tf);
 	this.btnStand = btnStand;
-	var btnSmart = this.createButton("btnSmart", 100, 660, "Check contract", 17, 12)
+	var btnSmart = this.createButton("btnSmart", 100, 660, "Check contract", 17, 12);
+	
+	this.btnShare = addButton2("btnFacebookShare", 1160, 50);
+	this.btnShare.name = "btnShare";
+	this.btnShare.interactive = true;
+	this.btnShare.buttonMode=true;
+	this.addChild(this.btnShare);
+	this._arButtons.push(this.btnShare);
+	// this.btnShare.visible = false;
+	this.btnTweetShare = addButton2("btnTweetShare", 1160, 130);
+	this.btnTweetShare.name = "btnTweet";
+	this.btnTweetShare.interactive = true;
+	this.btnTweetShare.buttonMode=true;
+	this.addChild(this.btnTweetShare);
+	this._arButtons.push(this.btnTweetShare);
+	// this.btnTweetShare.visible = false;
 	
 	this.addBtnChip("fiche_0", _W/2-270, _H/2+170);
 	this.addBtnChip("fiche_1", _W/2-200, _H/2+170);
@@ -548,6 +563,37 @@ ScrGame.prototype.showSmartContract = function() {
 		url = "https://etherscan.io/" + "address/" + addressContract
 	}
 	window.open(url, "_blank"); 
+}
+
+
+ScrGame.prototype.shareTwitter = function() {
+	// @daocasino @ethereumproject @edcon #blockchain #ethereum
+	if(twttr){
+		var urlGame = 'http://platform.dao.casino/';
+		var url="https://twitter.com/intent/tweet";
+		var str='Play blackjack for ether '+ " " + urlGame;
+		var hashtags="blockchain,ethereum";
+		var via="daocasino";
+		window.open(url+"?text="+str+";hashtags="+hashtags+";via="+via,"","width=500,height=300");
+	}
+}
+
+ScrGame.prototype.shareFB = function() {	
+	console.log("shareFB:", FB);
+	if (typeof(FB) != 'undefined' && FB != null ) {
+		var urlGame = 'http://platform.dao.casino/';
+		var urlImg = "http://platform.dao.casino/games/blackjack/game/images/share/bgGame.jpg";
+		
+		FB.ui({
+		  method: 'feed',
+		  picture: urlImg,
+		  link: urlGame,
+		  caption: 'PLAY',
+		  description: 'Play blackjack for ether',
+		}, function(response){});
+	} else {
+		console.log("FB is not defined");
+	}
 }
 
 // START
@@ -848,6 +894,7 @@ ScrGame.prototype.update = function(){
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {
+	var name = item_mc.name;
 	if(item_mc.name.search("btn") != -1){
 		item_mc._selected = false;
 		if(item_mc.over){
@@ -878,6 +925,10 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.clickStand();
 	} else if(item_mc.name.search("fiche") != -1){
 		this.clickСhip(item_mc.name);
+	} else if(item_mc.name == "btnShare"){
+		this.shareFB();
+	} else if(item_mc.name == "btnTweet"){
+		this.shareTwitter();
 	}
 }
 
