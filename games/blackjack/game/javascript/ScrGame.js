@@ -565,7 +565,6 @@ ScrGame.prototype.showSmartContract = function() {
 	window.open(url, "_blank"); 
 }
 
-
 ScrGame.prototype.shareTwitter = function() {
 	// @daocasino @ethereumproject @edcon #blockchain #ethereum
 	if(twttr){
@@ -578,8 +577,7 @@ ScrGame.prototype.shareTwitter = function() {
 	}
 }
 
-ScrGame.prototype.shareFB = function() {	
-	console.log("shareFB:", FB);
+ScrGame.prototype.shareFB = function() {
 	if (typeof(FB) != 'undefined' && FB != null ) {
 		var urlGame = 'http://platform.dao.casino/';
 		var urlImg = "http://platform.dao.casino/games/blackjack/game/images/share/bgGame.jpg";
