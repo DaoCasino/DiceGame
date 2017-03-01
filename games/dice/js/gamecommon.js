@@ -1,6 +1,25 @@
 $(document).ready(function () {
     /* SLIDER UI */
     $(function () {
+
+        $("input#minCost").change(function(){
+    var value1=+jQuery("input#minCost").val()||min_max[0];
+    var value2=+jQuery("input#maxCost").val()||min_max[1];
+    if(value1 > value2){value1 = value2};
+    if(value1 < min_max[0]){value1 = min_max[0]};
+    jQuery("input#minCost").val(value1);
+    jQuery("#slider").slider("values",0,value1);
+});
+
+
+        $('#less-than-wins').change(function(){
+            var value = $("#less-than-wins").val();
+            if(value > 9999){value=9999};
+            if(value < 1){value=1};
+            $("#less-than-wins").val(value);
+            $("#slider-dice-two").slider("value",value);
+        })
+
         $("#slider-dice-one").slider({
             range: "min"
             , value: 10
@@ -30,7 +49,7 @@ $(document).ready(function () {
             , slide: function (event, ui) {
                 chance = ui.value;
                 $("#amount-two").val(ui.value + "%");
-                $("#less-than-wins").val(ui.value * 100);
+                $("#less-than-wins").val(ui.value*100);
                 Refresh();
             }
         });
