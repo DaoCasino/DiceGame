@@ -848,6 +848,7 @@ ScrGame.prototype.response = function(command, value, index) {
 		this.tfBalance.setText(obj_game["balance"]);
 	} else if(command == "getBalanceBank"){
 		obj_game["balanceBank"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
+		console.log("getBalanceBank:", obj_game["balanceBank"])
 	} else if(command == "getPlayerCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
@@ -987,7 +988,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	}
 	console.log("name:", name);
 	if(item_mc.name == "btnStart"){
-		if(betEth > minBet && obj_game["balanceBank"] >= betEth*2.5){
+		var curBet = betEth/1000000000000000000;
+		if(betEth > minBet && obj_game["balanceBank"] >= curBet*2.5){
 			item_mc.visible = false;
 			this.bWait = true;
 			this.showChips(false);
@@ -1001,8 +1003,12 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				this.startGameEth();
 			}
 		} else {
-			if(obj_game["balanceBank"] < betEth*2.5){
+			var curBet = betEth/1000000000000000000;
+			
+			if(obj_game["balanceBank"] < curBet*2.5){
 				console.log("balanceBank:", obj_game["balanceBank"]);
+				console.log("betEth*2.5:", curBet*2.5);
+				console.log("betEth:", curBet);
 				obj_game["game"].showError(ERROR_BANK);
 			}
 		}
