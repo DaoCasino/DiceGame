@@ -8,7 +8,6 @@ ScrGame.prototype = Object.create(PIXI.Container.prototype);
 ScrGame.prototype.constructor = ScrGame;
 
 var TIME_GET_STATE = 10000;
-var TIME_GET_CARDS = 3000;
 var TIME_WITE = 500;
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
@@ -67,13 +66,15 @@ ScrGame.prototype.init = function() {
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
 	this.timeWait = 0;
-	this.timeNewGame = 0;
+	this.timeCloseWnd = 0;
 	this.countPlayerCard = 0;
 	this.countHouseCard = 0;
 	this.countWait = 0;
 	this.countChip = 0;
 	this.gameTxHash = undefined;
 	this.cardSuit = undefined;
+	this.wndInfo;
+	this.curWindow;
 	this.startGame = false;
 	this._gameOver = false;
 	this.bSendRequest = false;
@@ -81,6 +82,7 @@ ScrGame.prototype.init = function() {
 	this.bGameLoad = false;
 	this.bWait = false;
 	this.bStand = false;
+	this.bClear = false;
 	this.strTest = "";
 	
 	obj_game = {};
@@ -107,6 +109,7 @@ ScrGame.prototype.init = function() {
 	
 	obj_game["game"] = this;
 	obj_game["balance"] = 0;
+	obj_game["balanceBank"] = 0;
 	
 	this.game_mc.addChild(this.cards_mc);
 	this.addChild(this.back_mc);
@@ -116,6 +119,7 @@ ScrGame.prototype.init = function() {
 	
 	this.createGUI();
 	this.sendRequest("getBalance");
+	this.sendRequest("getBalanceBank");
 	this.checkGameState();
 	
 	this.interactive = true;
@@ -133,6 +137,7 @@ ScrGame.prototype.clearGame = function(){
 	lastHouseCard = 0;
 	stateNow = -1;
 	this.timeTotal = 0;
+	this.timeCloseWnd = 0;
 	this.countWait = 0;
 	this.countChip = 0;
 	this.bStand = false;
@@ -154,6 +159,12 @@ ScrGame.prototype.clearBet = function(){
 	betGame = 0;
 	betGameOld = 0;
 	this.clearChips();
+	if(this.btnClear){
+		this.btnClear.visible = false;
+		this.btnStart.visible = false;
+		this.arrow.visible = true;
+		this.tfSelBet.setText("Select bet");
+	}
 }
 
 ScrGame.prototype.clearChips = function(){
@@ -241,6 +252,18 @@ ScrGame.prototype.createGUI = function() {
 	btnStart.addChild(tf);
 	btnStart.visible = false;
 	this.btnStart = btnStart;
+	var btnClear = addButton2("btnDefault", _W/2 - 200, _H/2+230, 0.8);
+	btnClear.name = "btnClear";
+	btnClear.interactive = true;
+	btnClear.buttonMode=true;
+	this.face_mc.addChild(btnClear);
+	this._arButtons.push(btnClear);
+	var tf = addText("Clear", 24, "#FFFFFF", "#000000", "center", 350, 2)
+	tf.x = 0;
+	tf.y = - 14;
+	btnClear.addChild(tf);
+	btnClear.visible = false;
+	this.btnClear = btnClear;
 	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200, 0.7);
 	btnHit.name = "btnHit";
 	btnHit.interactive = true;
@@ -292,6 +315,30 @@ ScrGame.prototype.createGUI = function() {
 	}
 }
 
+ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
+	if(this.wndInfo == undefined){
+		this.wndInfo = new WndInfo(this);
+		this.wndInfo.x = _W/2;
+		this.wndInfo.y = _H/2;
+		this.face_mc.addChild(this.wndInfo);
+	}
+	
+	this.bWindow = true;
+	this.wndInfo.show(str, callback, addStr)
+	this.wndInfo.visible = true;
+	this.curWindow = this.bWindow;
+}
+
+ScrGame.prototype.closeWindow = function(wnd) {
+	if(false){
+		wnd.visible = false;
+		obj_game["game"].curWindow = undefined;
+	} else {
+		obj_game["game"].curWindow = wnd;
+		obj_game["game"].timeCloseWnd = 200;
+	}
+}
+
 ScrGame.prototype.addChip = function(name, x, y) {	
 	var chip = addObj(name, x, y, 1);
 	this.game_mc.addChild(chip);
@@ -340,6 +387,7 @@ ScrGame.prototype.showChips = function(value) {
 	if(value){
 		this.tfSelBet.setText("Select bet");
 		this.arrow.visible = true;
+		this.bClear = false;
 	}
 }
 
@@ -524,7 +572,13 @@ ScrGame.prototype.clickСhip = function(name){
 	
 	if(betGame > 0){
 		this.btnStart.visible = true;
+		this.btnClear.visible = true;
 		this.arrow.visible = false;
+		if(!this.bClear){
+			this.tfResult.setText("");
+			this.bClear = true;
+			this.clearGame();
+		}
 	}
 	
 	if(betGameOld == betGame){
@@ -558,11 +612,35 @@ ScrGame.prototype.clickСhip = function(name){
 }
 
 ScrGame.prototype.showSmartContract = function() {
-	var url = urlEtherscan + "address/" + addressContract
+	var url = urlEtherscan + "address/" + addressContract;
 	if(options_mainet){
-		url = "https://etherscan.io/" + "address/" + addressContract
+		url = "https://etherscan.io/" + "address/" + addressContract;
 	}
+	console.log("showSmartContract:", addressContract);
 	window.open(url, "_blank"); 
+}
+
+ScrGame.prototype.showError = function(value) {
+	var str = "ERR"
+	switch(value){
+		case ERROR_KEYTHEREUM:
+			str = "OOOPS! \n The key is not created. Try a different browser."
+			break;
+		case ERROR_TRANSACTION:
+			str = "OOOPS! \n Transaction failed."
+			this.resetGame();
+			break;
+		case ERROR_KEY:
+			str = "OOOPS! \n The key is not valid."
+			break;
+		case ERROR_BANK:
+			str = "OOOPS! \n No money in the bank."
+			break;
+		default:
+			str = "ERR: " + value;
+			break;
+	}
+	this.createWndInfo(str);
 }
 
 ScrGame.prototype.shareTwitter = function() {
@@ -597,7 +675,7 @@ ScrGame.prototype.shareFB = function() {
 // START
 ScrGame.prototype.startGameEth = function(){
 	if(openkey == undefined){
-		console.log("ERROR_KEY");
+		obj_game["game"].showError(ERROR_KEY);
 		return false;
 	}
 	
@@ -623,7 +701,7 @@ ScrGame.prototype.startGameEth = function(){
 			
 			if(privkey){
 				if(buf == undefined){
-					console.log("ERROR_TRANSACTION");
+					obj_game["game"].showError(ERROR_TRANSACTION);
 				} else {
 					//приватный ключ игрока, подписываем транзакцию
 					var tx = new EthereumTx(options);
@@ -631,7 +709,7 @@ ScrGame.prototype.startGameEth = function(){
 
 					var serializedTx = tx.serialize().toString('hex');
 					obj_game["game"].bSendRequest = false;
-					console.log("The transaction was signed: "+serializedTx);
+					console.log("The transaction was signed");
 					
 					$.ajax({
 						type: "POST",
@@ -713,6 +791,7 @@ ScrGame.prototype.sendInfuraRequest = function(name, params, ind) {
 		var method = name;
 		switch(name){
 			case "getBalance":
+			case "getBalanceBank":
 				method = "eth_getBalance";
 				break;
 			case "getPlayerCard":
@@ -746,6 +825,8 @@ ScrGame.prototype.sendRequest = function(value) {
 			
 		} else if(value == "getBalance"){
 			this.sendInfuraRequest("getBalance", openkey);
+		} else if(value == "getBalanceBank"){
+			this.sendInfuraRequest("getBalanceBank", addressContract);
 		}
 	}
 }
@@ -765,6 +846,8 @@ ScrGame.prototype.response = function(command, value, index) {
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
+	} else if(command == "getBalanceBank"){
+		obj_game["balanceBank"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 	} else if(command == "getPlayerCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
@@ -823,7 +906,6 @@ ScrGame.prototype.response = function(command, value, index) {
 					this.bWait = false;
 					this.startGame = false;
 					this.showChips(true);
-					this.timeNewGame = 2000;
 					this.sendRequest("getBalance");
 					stateOld = stateNow;
 				}
@@ -831,6 +913,7 @@ ScrGame.prototype.response = function(command, value, index) {
 			} else if(stateNow == 0){
 				this.startGame = true;
 				this.btnStart.visible = false;
+				this.btnClear.visible = false;
 				this.showChips(false);
 				stateOld = stateNow;
 				this.getPlayerCardsNumber();
@@ -841,7 +924,6 @@ ScrGame.prototype.response = function(command, value, index) {
 			this.bWait = false;
 			this.startGame = false;
 			this.showChips(true);
-			this.timeNewGame = 2000;
 		}
 	} else if(command == "hit"){
 	} else if(command == "stand"){
@@ -865,10 +947,14 @@ ScrGame.prototype.update = function(){
 		this.timeGetState = 0;
 		this.checkGameState();
 	}
-	if(this.timeNewGame > 0){
-		this.timeNewGame -= diffTime;
-		if(this.timeNewGame <= 0){
-			this.clearGame();
+	
+	if(this.timeCloseWnd > 0 && this.curWindow){
+		this.timeCloseWnd -= diffTime;
+		if(this.timeCloseWnd < 100){
+			this.timeCloseWnd = 0;
+			this.curWindow.visible = false;
+			this.curWindow = undefined;
+			this.bWindow = false;
 		}
 	}
 	
@@ -899,9 +985,9 @@ ScrGame.prototype.clickCell = function(item_mc) {
 			item_mc.over.visible = false;
 		}
 	}
-	
+	console.log("name:", name);
 	if(item_mc.name == "btnStart"){
-		if(betEth > minBet && this.timeNewGame <= 0){
+		if(betEth > minBet && obj_game["balanceBank"] >= betEth*2.5){
 			item_mc.visible = false;
 			this.bWait = true;
 			this.showChips(false);
@@ -913,6 +999,11 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				this.showButtons(true);
 			} else {
 				this.startGameEth();
+			}
+		} else {
+			if(obj_game["balanceBank"] < betEth*2.5){
+				console.log("balanceBank:", obj_game["balanceBank"]);
+				obj_game["game"].showError(ERROR_BANK);
 			}
 		}
 	} else if(item_mc.name == "btnSmart"){
@@ -927,6 +1018,9 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.shareFB();
 	} else if(item_mc.name == "btnTweet"){
 		this.shareTwitter();
+	} else if(item_mc.name == "btnClear"){
+		console.log("clearBet");
+		this.clearBet();
 	}
 }
 
