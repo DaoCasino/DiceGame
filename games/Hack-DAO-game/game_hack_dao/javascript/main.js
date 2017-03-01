@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.5"
+var version = "v. 1.1.6"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -31,6 +31,7 @@ var options_txt_offset = 0;
 var ERROR_KEYTHEREUM = 1;
 var ERROR_TRANSACTION = 2;
 var ERROR_KEY = 3;
+var ERROR_BANK = 4;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
