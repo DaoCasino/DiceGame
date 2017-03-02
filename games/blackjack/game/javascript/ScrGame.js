@@ -73,6 +73,7 @@ ScrGame.prototype.init = function() {
 	this.countHouseCard = 0;
 	this.countWait = 0;
 	this.countChip = 0;
+	this.myPoints = 0;
 	this.gameTxHash = undefined;
 	this.cardSuit = undefined;
 	this.wndInfo;
@@ -160,7 +161,6 @@ ScrGame.prototype.clearBet = function(){
 	betEth = 0;
 	betGame = 0;
 	betGameOld = 0;
-	this._arMyPoints = [];
 	this.clearChips();
 	if(this.btnClear){
 		this.btnClear.visible = false;
@@ -418,11 +418,15 @@ ScrGame.prototype.showPlayerCard = function(card){
 }
 
 ScrGame.prototype.showMyPoints = function(card){
-	var myPoints = 0;
+	this.myPoints = 0;
 	for (var i = 0; i < this._arMyPoints.length; i++) {
-		myPoints += this._arMyPoints[i];
+		this.myPoints += this._arMyPoints[i];
 	}
-	this.tfMyPoints.setText(myPoints);
+	if(this.myPoints > 0){
+		this.tfMyPoints.setText(this.myPoints);
+	} else {
+		this.tfMyPoints.setText("");
+	}
 }
 
 ScrGame.prototype.showHouseCard = function(card){
@@ -599,7 +603,7 @@ ScrGame.prototype.clickСhip = function(name){
 		this.arrow.visible = false;
 		if(!this.bClear){
 			this.tfResult.setText("");
-			this.tfMyPoints.setText("");
+			this._arMyPoints = [];
 			this.bClear = true;
 			this.clearGame();
 		}
@@ -899,6 +903,7 @@ ScrGame.prototype.response = function(command, value, index) {
 		if(value != "0x"){
 			stateNow = hexToNum(value);
 			if(stateNow > S_IN_PROGRESS){
+				this.showMyPoints();
 				if(stateOld == -1){
 					this.arrow.visible = true;
 				}
@@ -923,10 +928,12 @@ ScrGame.prototype.response = function(command, value, index) {
 						break;
 				}
 				
-				if(stateOld == S_IN_PROGRESS || this.bStand){
+				// console.log("state:", stateNow, stateOld);
+				if(stateOld == S_IN_PROGRESS || 
+				this.bStand || 
+				this.myPoints == 21){
 					this.getPlayerCardsNumber();
 					this.getHouseCardsNumber();
-					this.showMyPoints();
 				}
 				if(stateOld == -1 || stateOld == S_IN_PROGRESS){
 					this.bWait = false;
