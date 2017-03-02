@@ -41,7 +41,7 @@ function startGame() {
             , success: function (d) {
                 console.log("urlInfura:", urlInfura);
                 console.log("get nonce action " + d.result);
-                var callData = "0xacfff3770000000000000000000000000000000000000000000000000000000000000032";
+                var callData = "0x1f7b4f300000000000000000000000000000000000000000000000000000000000001388";
                 callData = callData.substr(0, 10);
                 var options = {};
                 options.nonce = d.result;
@@ -73,7 +73,7 @@ function startGame() {
                                 , "params": ["0x" + String(serializedTx)]
                             })
                             , success: function (d) {
-                                console.log("Транзакция отправлена в сеть:", d.result);
+                                console.log("Транзакция отправлена в сеть:", d);
                                 LastTx = d.result;
                             }
                         })

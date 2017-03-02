@@ -125,54 +125,134 @@ function EnableButton(status) {
 };
 
 function Refresh() {
-    $("#profit-on-win").val((betEth * 100 / chance) - betEth);
-    $("#payout").val(((betEth * 100 / chance) - betEth) / betEth);
+    $("#profit-on-win").val((betEth * 10000 / chance) - betEth);
+    $("#payout").val(((betEth * 10000 / chance)));
 };
 
 $("#roll-dice").click(function () {
     startGame();
+    EnableButton(false);
+    disabled(true);
+    $("#label").text("Please, wait . . . ");
     var Timer = setInterval(function () {
+
+
+        var data = "0xa87d942c";
+        var params = {
+            "from": openkey,
+            "to": addressContract,
+            "data": data
+        };
         $.ajax({
             type: "POST",
             url: urlInfura,
             dataType: 'json',
             async: false,
             data: JSON.stringify({
-                "id": 74,
+                "id": 0,
                 "jsonrpc": '2.0',
-                "method": 'eth_getLogs',
-                "params": [{
-                    "fromBlock": "600000",
-                    "toBlock": "latest",
-                    "address": addressContract,
-                }]
+                "method": "eth_call",
+                "params": [params, "latest"]
             }),
-            success: function (objData) {
-                var n = objData.result.length - 1;
-                obj = objData.result[n];
-                console.log("N:", objData.result[n])
-                if (obj.transactionHash = lastTx) {
-                    var result = parseInt(obj.Data.substr(2), 16);
-                    if (result) {
-                        EnableButton(true);
-                        console.log("you Win!");
-                        clearInterval(Timer);
-                        GetLogs();
-                        getBalance();
-                        $("#label").text("You Win!");
-                    } else {
-                        EnableButton(true);
-                        console.log("You Lose!")
-                        clearInterval(Timer);
-                        GetLogs();
-                        getBalance();
-                        $("#label").text("You Loser!");
-                    }
-                } else {
-                    console.log("пока ничего");
+            success: function (d) {
+                console.log("new_count",hexToNum(d.result));
+                var new_count = hexToNum(d.result);
+                if (new_count != count) {
+
+                    var data = "0x1865c57d";
+                    var params = {
+                        "from": openkey,
+                        "to": addressContract,
+                        "data": data
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: urlInfura,
+                        dataType: 'json',
+                        async: false,
+                        data: JSON.stringify({
+                            "id": 0,
+                            "jsonrpc": '2.0',
+                            "method": "eth_call",
+                            "params": [params, "latest"]
+                        }),
+                        success: function (d) {
+                            var result = hexToNum(d.result);
+                            console.log(result);
+                            if (result == 0) {
+                                console.log("идет игра");
+                            } else if (result == 1) {
+                                console.log("YOU WIN!");
+                                disabled(false);
+                                getBalance();
+                                Check();
+                                GetLogs();
+                                $("#label").text("YOU WIN!!! ");
+                                clearInterval(Timer);
+                            } else if (result == 2) {
+                                console.log("YOU LOSER!");
+                                disabled(false);
+                                getBalance();
+                                Check();
+                                GetLogs();
+                                $("#label").text("YOU LOSE!!! ");
+                                clearInterval(Timer);
+                            }
+                        }
+                    })
+                    count = new_count;
                 }
             }
-        })
+        });
+
+
+
+
+
+
+
 
     }, 5000);
 });
+
+
+// $.ajax({
+//             type: "POST",
+//             url: urlInfura,
+//             dataType: 'json',
+//             async: false,
+//             data: JSON.stringify({
+//                 "id": 74,
+//                 "jsonrpc": '2.0',
+//                 "method": 'eth_getLogs',
+//                 "params": [{
+//                     "fromBlock": "600000",
+//                     "toBlock": "latest",
+//                     "address": addressContract,
+//                 }]
+//             }),
+//             success: function (objData) {
+//                 var n = objData.result.length - 1;
+//                 obj = objData.result[n];
+//                 if (obj.transactionHash = lastTx) {
+//                     var result = parseInt(obj.Data.substr(2), 16);
+//                     if (result) {
+//                         EnableButton(true);
+//                         console.log("you Win!");
+//                         clearInterval(Timer);
+//                         GetLogs();
+//                         getBalance();
+//                         $("#label").text("You Win!");
+//                     } else {
+//                         EnableButton(true);
+//                         console.log("You Lose!")
+//                         clearInterval(Timer);
+//                         GetLogs();
+//                         getBalance();
+//                         $("#label").text("You Loser!");
+//                     }
+//                 } else {
+//                     console.log("пока ничего");
+//                 }
+//             }
+//         })
