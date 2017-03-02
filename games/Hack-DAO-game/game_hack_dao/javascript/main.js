@@ -101,7 +101,7 @@ function initGame() {
 	stage.addChild(scrContainer);
 	
 	var preload_image = document.createElement("img");
-	preload_image.src = "images/bg/bgLoading.jpg";
+	preload_image.src = "images/bg/bgMenu.jpg";
 	preload_image.onload = function() {
 		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
 		bgLoading.texture.baseTexture.on('loaded', 
@@ -127,7 +127,6 @@ function initGame() {
 function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
-	preloader.add("bgLoading", "images/bg/bgLoading.jpg");
 	preloader.add("bgMenu", "images/bg/bgMenu.jpg");
 	preloader.add("bgLevels", "images/bg/bgLevels.jpg");
 	preloader.add("bgLevel1", "images/bg/bgLevel1.jpg");

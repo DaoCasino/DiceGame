@@ -9,6 +9,12 @@ ScrGame.prototype.constructor = ScrGame;
 
 var TIME_GET_STATE = 10000;
 var TIME_WITE = 500;
+var S_IN_PROGRESS = 0;	
+var S_PLAYER_WON = 1;	
+var S_HOUSE_WON = 2;	
+var S_TIE = 3;	
+var S_IN_PROGRESS_SPLIT = 4;
+	
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -32,15 +38,10 @@ var account;
 var gameIsGoingOn;
 var dealedCards = new Array();
 var suit = {0: 'Hearts', 1: 'Diamonds', 2: 'Spades', 3: 'Clubs'};
-var cardType = {0: 'King', 1: 'Ace', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10',
+var cardType = {0: 'King', 1: 'Ace', 2: '2', 3: '3', 4: '4', 5: '5', 
+				6: '6', 7: '7', 8: '8', 9: '9', 10: '10',
                 11: 'Jacket', 12: 'Queen'};
 
-var gameState = {
-  0: "Your turn",
-  1: "You won!",
-  2: "House won!",
-  3: "Tie!"
-}
 var chipVale = [];
 chipVale[0] = 0.1;
 chipVale[1] = 1;
@@ -62,6 +63,7 @@ ScrGame.prototype.init = function() {
 	this._arButtons = [];
 	this._arBtnChips = [];
 	this._arChips = [];
+	this._arMyPoints = [];
 	this.timeGetState = 0;
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
@@ -158,6 +160,7 @@ ScrGame.prototype.clearBet = function(){
 	betEth = 0;
 	betGame = 0;
 	betGameOld = 0;
+	this._arMyPoints = [];
 	this.clearChips();
 	if(this.btnClear){
 		this.btnClear.visible = false;
@@ -232,6 +235,10 @@ ScrGame.prototype.createGUI = function() {
 	this.tfSelBet.x = _W/2-200;
 	this.tfSelBet.y = _H/2+100;
 	this.face_mc.addChild(this.tfSelBet);
+	this.tfMyPoints = addText("", 20, "#ffffff", "#000000", "right", 200, 4)
+	this.tfMyPoints.x = _W/2-125;
+	this.tfMyPoints.y = _H/2-17;
+	this.face_mc.addChild(this.tfMyPoints);
 	
 	if(openkey){
 		this.tfIdUser.setText(openkey);
@@ -400,20 +407,31 @@ ScrGame.prototype.showButtons = function(value) {
 }
 
 ScrGame.prototype.showPlayerCard = function(card){
-  card.x = _W/2 - 80 + lastPlayerCard*50;
-  card.y = _H/2 + 40;
-  this.cards_mc.addChild(card);
-  lastPlayerCard++;
-  dealedCards.push(card);
+	card.x = _W/2 - 80 + lastPlayerCard*50;
+	card.y = _H/2 + 40;
+	this.cards_mc.addChild(card);
+	lastPlayerCard++;
+	dealedCards.push(card);
+	this._arMyPoints.push(card.point);
+	
+	this.showMyPoints();
+}
+
+ScrGame.prototype.showMyPoints = function(card){
+	var myPoints = 0;
+	for (var i = 0; i < this._arMyPoints.length; i++) {
+		myPoints += this._arMyPoints[i];
+	}
+	this.tfMyPoints.setText(myPoints);
 }
 
 ScrGame.prototype.showHouseCard = function(card){
-  card.x = _W/2 - 80 + lastHouseCard*50;
-  card.y = _H/2 - 150;
-  this.cards_mc.addChild(card);
-  lastHouseCard++;
-  dealedCards.push(card);
-  this.showSuitCard();
+	card.x = _W/2 - 80 + lastHouseCard*50;
+	card.y = _H/2 - 150;
+	this.cards_mc.addChild(card);
+	lastHouseCard++;
+	dealedCards.push(card);
+	this.showSuitCard();
 }
 
 ScrGame.prototype.showSuitCard = function(){
@@ -433,24 +451,29 @@ ScrGame.prototype.showSuitCard = function(){
 ScrGame.prototype.getCard = function(cardIndex){
   var cardType = Math.floor(cardIndex / 4);
   var cardSymbol = String(cardType);
+  var point = cardType;
   switch (cardType) {
     case 0:
       cardSymbol = "K";
+	  point = 10;
       break;
     case 1:
       cardSymbol = "A";
+	  point = 11;
       break;
     case 11:
       cardSymbol = "J";
+	  point = 10;
       break;
     case 12:
       cardSymbol = "Q";
+	  point = 10;
       break;
   }
   var suit = String(cardIndex % 4 + 1);
   var spriteName = suit + "_" + cardSymbol;
   var newCard = addObj(spriteName, 0, 0, 0.5);
-  newCard.zIndex = 10;
+  newCard.point = point;
   return newCard;
 }
 
@@ -576,6 +599,7 @@ ScrGame.prototype.clickСhip = function(name){
 		this.arrow.visible = false;
 		if(!this.bClear){
 			this.tfResult.setText("");
+			this.tfMyPoints.setText("");
 			this.bClear = true;
 			this.clearGame();
 		}
@@ -722,7 +746,7 @@ ScrGame.prototype.startGameEth = function(){
 											"params":["0x"+String(serializedTx)]}),
 						success: function (d) {
 							obj_game["game"].response("gameTxHash", d.result) 
-							console.log("Транзакция отправлена в сеть:", d.result);
+							console.log("The transaction send:", d.result);
 						}
 					})
 				}
@@ -776,7 +800,7 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 												"params":["0x"+String(serializedTx)]}),
 							success: function (d) {
 								obj_game["game"].response(name, d.result) 
-								console.log("Транзакция отправлена в сеть:", d.result);
+								console.log("The transaction send:", d.result);
 							}
 						})
 					}
@@ -871,39 +895,40 @@ ScrGame.prototype.response = function(command, value, index) {
 		this.countHouseCard = hexToNum(value);
 		this.addHouseCard();
 	} else if(command == "getGameState"){
+		console.log("state:", stateNow, stateOld);
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("stateNow:", stateNow);
-			if(stateNow > 0){
+			if(stateNow > S_IN_PROGRESS){
 				if(stateOld == -1){
 					this.arrow.visible = true;
 				}
 				switch (stateNow){
 					case 1:
-						if(stateOld == 0){
+						if(stateOld == S_IN_PROGRESS){
 							this.tfResult.setText("You won!");
 							this.clearBet();
 						}
 						break;
 					case 2:
-						if(stateOld == 0){
+						if(stateOld == S_IN_PROGRESS){
 							this.tfResult.setText("House won!");
 							this.clearBet();
 						}
 						break;
 					case 3:
-						if(stateOld == 0){
+						if(stateOld == S_IN_PROGRESS){
 							this.tfResult.setText("Tie!");
 							this.clearBet();
 						}
 						break;
 				}
-				if(stateOld == 0){
-					this.startGame = false;
+				
+				if(stateOld == S_IN_PROGRESS || this.bStand){
 					this.getPlayerCardsNumber();
 					this.getHouseCardsNumber();
+					this.showMyPoints();
 				}
-				if(stateOld == -1 || stateOld == 0){
+				if(stateOld == -1 || stateOld == S_IN_PROGRESS){
 					this.bWait = false;
 					this.startGame = false;
 					this.showChips(true);
@@ -911,7 +936,7 @@ ScrGame.prototype.response = function(command, value, index) {
 					stateOld = stateNow;
 				}
 				this.showButtons(false);
-			} else if(stateNow == 0){
+			} else if(stateNow == S_IN_PROGRESS){
 				this.startGame = true;
 				this.btnStart.visible = false;
 				this.btnClear.visible = false;
@@ -986,11 +1011,12 @@ ScrGame.prototype.clickCell = function(item_mc) {
 			item_mc.over.visible = false;
 		}
 	}
-	console.log("name:", name);
+	
 	if(item_mc.name == "btnStart"){
 		var curBet = betEth/1000000000000000000;
 		if(betEth > minBet && obj_game["balanceBank"] >= curBet*2.5){
 			item_mc.visible = false;
+			this.btnClear.visible = false;
 			this.bWait = true;
 			this.showChips(false);
 			if(options_debug){
