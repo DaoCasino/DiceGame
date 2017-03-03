@@ -1,40 +1,63 @@
 $(document).ready(function () {
+
+
+    $(document).ready(function () {
+        $('input').keypress(function (e) {
+            if (!(e.which == 8 || e.which == 44 || e.which == 45 || e.which == 46 || (e.which > 47 && e.which < 58))) return false;
+        });
+    });
+    $(document).ready(function () {
+        $('input#less-than-wins').keypress(function (e) {
+            if (!(e.which == 8  || (e.which > 47 && e.which < 58))) return false;
+        });
+    });
+
+
+
     /* SLIDER UI */
     $(function () {
-            $('#less-than-wins').change(function(){
+        $('#less-than-wins').change(function () {
             var value = $("#less-than-wins").val();
-            if(value > 9999){value=9999};
-            if(value < 1){value=1};
+            if (value > 9900) {
+                value = 9900
+            };
+            if (value < 1) {
+                value = 1
+            };
             $("#less-than-wins").val(value);
-            $("#slider-dice-two").slider("value",value);
-            $("#amount-two").val(value/100 + "%");
+            $("#slider-dice-two").slider("value", value);
+            $("#amount-two").val(value / 100 + "%");
             chance = +value;
             Refresh();
         });
-        $('#amount-one').change(function(){
+        $('#amount-one').change(function () {
             var value = $("#amount-one").val();
-            betEth = +value;
-            if(value > 2000){value=2000};
-            if(value < 100){value=100};
+
+            if (value > 2) {
+                value = 2
+            };
+            if (value < 0.1) {
+                value = 0.1
+            };
             $("#amount-one").val(value);
-            $("#slider-dice-one").slider("value",value*1000);
+            $("#slider-dice-one").slider("value", value * 1000);
+            betEth = +value;
             Refresh();
         });
 
 
         $("#slider-dice-one").slider({
-            range: "min"
-            , value: 1000
-            , min: 100
-            , max: 2000
-            , slide: function (event, ui) {
+            range: "min",
+            value: 1000,
+            min: 100,
+            max: 2000,
+            slide: function (event, ui) {
                 betEth = ui.value / 1000;
                 //                CheckBet();
                 if (betEth > _balance) {
                     EnableButton(false);
                     $("#label").text(" NO MONEY ");
-                }
-                else {
+                } else {
                     EnableButton(true);
                     $("#label").text("Click Roll Dice to place your bet:");
                 }
@@ -46,19 +69,19 @@ $(document).ready(function () {
         //        
         //		$( "#amount-one" ).val( $( "#slider-dice-one" ).slider( "value" ) );
         $("#slider-dice-two").slider({
-            range: "min"
-            , value: 5000
-            , min: 1
-            , max: 9900
-            , slide: function (event, ui) {
+            range: "min",
+            value: 5000,
+            min: 1,
+            max: 9900,
+            slide: function (event, ui) {
                 chance = ui.value;
-                $("#amount-two").val(ui.value/100 + "%");
+                $("#amount-two").val(ui.value / 100 + "%");
                 $("#less-than-wins").val(ui.value);
                 Refresh();
             }
         });
-        $("#amount-two").val($("#slider-dice-two").slider("value")/100 + "%");
-        $("#amount-one").val($("#slider-dice-one").slider("value")/1000);
+        $("#amount-two").val($("#slider-dice-two").slider("value") / 100 + "%");
+        $("#amount-one").val($("#slider-dice-one").slider("value") / 1000);
         Refresh();
     });
     /* END SLIDER UI */
@@ -107,15 +130,15 @@ $(document).ready(function () {
     });
     // Popup window
     $('.popup-with-move-anim').magnificPopup({
-        type: 'inline'
-        , fixedContentPos: false
-        , fixedBgPos: true
-        , overflowY: 'auto'
-        , closeBtnInside: true
-        , preloader: false
-        , midClick: true
-        , removalDelay: 300
-        , mainClass: 'my-mfp-slide-bottom'
+        type: 'inline',
+        fixedContentPos: false,
+        fixedBgPos: true,
+        overflowY: 'auto',
+        closeBtnInside: true,
+        preloader: false,
+        midClick: true,
+        removalDelay: 300,
+        mainClass: 'my-mfp-slide-bottom'
     });
 });
 /* TABLE */
@@ -174,8 +197,7 @@ function updateTable() {
             // Show the currently visible column
             showCurrentlyVisible();
         }
-    }
-    else {
+    } else {
         if (table.getAttribute('data-comparing') == 'active') {
             // Turn off comparing    
             table.setAttribute('data-comparing', '');

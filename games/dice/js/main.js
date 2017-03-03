@@ -1,7 +1,7 @@
 var _balance = 0;
 var _idGame = "";
 var urlBalance = ""; //balance
-var addressContract = "0xb95bbe8ee98a21b5ef7778ec1bb5910ea843f8f7"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
+var addressContract = "0x4c3b529b0e8983a006ab589c21ea8a74b439025e"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
 var betEth = 1; //0,2 ставка эфира
 var mainet, openkey, privkey;
 var chance = 5000;
@@ -47,7 +47,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.05") // VERSION !
+    console.log("version 0.05b") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -68,6 +68,7 @@ function initGame() {
         EnableButton(true);
         $("#label").text("Click Roll Dice to place your bet:");
     }
+    TotalRolls();
     Refresh();
     loadData();
     GetLogs();
@@ -164,4 +165,31 @@ function Check() {
     } else {
         EnableButton(true);
     }
+};
+
+setInterval
+function TotalRolls() {
+    var data = "0x9e92c991";
+    var params = {
+        "from": openkey,
+        "to": addressContract,
+        "data": data
+    };
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [params, "latest"]
+        }),
+        success: function (d) {
+            count = hexToNum(d.result);
+            $("#total-rolls").html(count);
+        }
+    });
+
 };

@@ -126,7 +126,8 @@ function EnableButton(status) {
 
 function Refresh() {
     $("#profit-on-win").val((betEth * 10000 / chance) - betEth);
-    $("#payout").val(((betEth * 10000 / chance)));
+    $("#payout").val((betEth * 10000 / chance));
+    
 };
 
 $("#roll-dice").click(function () {
@@ -187,6 +188,7 @@ $("#roll-dice").click(function () {
                                 getBalance();
                                 Check();
                                 GetLogs();
+                                TotalRolls();
                                 $("#label").text("YOU WIN!!! ");
                                 clearInterval(Timer);
                             } else if (result == 2) {
@@ -195,6 +197,7 @@ $("#roll-dice").click(function () {
                                 getBalance();
                                 Check();
                                 GetLogs();
+                                TotalRolls();
                                 $("#label").text("YOU LOSE!!! ");
                                 clearInterval(Timer);
                             }

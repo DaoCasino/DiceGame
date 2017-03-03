@@ -41,7 +41,7 @@ $.ajax({
                  //console.log("arGame:", arGame[0][0])
             }
         }
-for (var i = 0; i <= arGame.length-1; i++) {
+for (var i = arGame.length-7; i <= arGame.length-1; i++) {
             console.log(arGame);
             var time = arGame[i][0].substr(24);
             var payout = parseInt(arGame[i][1].substr(2), 16) / 100000000000000000;
