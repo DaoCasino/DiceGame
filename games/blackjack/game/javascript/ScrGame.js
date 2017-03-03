@@ -21,6 +21,7 @@ var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 var	addressTestContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423";
+// var	addressTestContract = "0xAdeEc28e05A89B0e3F48F1d5fAe38A20026beda6";
 var betEth = 0; //ставка эфира
 var betGame = 0;
 var betGameOld = 0;
@@ -64,6 +65,7 @@ ScrGame.prototype.init = function() {
 	this._arBtnChips = [];
 	this._arChips = [];
 	this._arMyPoints = [];
+	this._arHousePoints = [];
 	this.timeGetState = 0;
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
@@ -74,6 +76,7 @@ ScrGame.prototype.init = function() {
 	this.countWait = 0;
 	this.countChip = 0;
 	this.myPoints = 0;
+	this.housePoints = 0;
 	this.gameTxHash = undefined;
 	this.cardSuit = undefined;
 	this.wndInfo;
@@ -239,6 +242,10 @@ ScrGame.prototype.createGUI = function() {
 	this.tfMyPoints.x = _W/2-125;
 	this.tfMyPoints.y = _H/2-17;
 	this.face_mc.addChild(this.tfMyPoints);
+	this.tfHousePoints = addText("", 20, "#ffffff", "#000000", "right", 200, 4)
+	this.tfHousePoints.x = _W/2-125;
+	this.tfHousePoints.y = _H/2-207;
+	this.face_mc.addChild(this.tfHousePoints);
 	
 	if(openkey){
 		this.tfIdUser.setText(openkey);
@@ -435,7 +442,22 @@ ScrGame.prototype.showHouseCard = function(card){
 	this.cards_mc.addChild(card);
 	lastHouseCard++;
 	dealedCards.push(card);
+	this._arHousePoints.push(card.point);
+	
+	this.showHousePoints();
 	this.showSuitCard();
+}
+
+ScrGame.prototype.showHousePoints = function(card){
+	this.housePoints = 0;
+	for (var i = 0; i < this._arHousePoints.length; i++) {
+		this.housePoints += this._arHousePoints[i];
+	}
+	if(this.housePoints > 0){
+		this.tfHousePoints.setText(this.housePoints);
+	} else {
+		this.tfHousePoints.setText("");
+	}
 }
 
 ScrGame.prototype.showSuitCard = function(){
@@ -603,6 +625,8 @@ ScrGame.prototype.clickСhip = function(name){
 		this.arrow.visible = false;
 		if(!this.bClear){
 			this.tfResult.setText("");
+			this.tfMyPoints.setText("");
+			this.tfHousePoints.setText("");
 			this._arMyPoints = [];
 			this.bClear = true;
 			this.clearGame();
@@ -864,7 +888,7 @@ ScrGame.prototype.response = function(command, value, index) {
 		return false;
 	}
 	
-	// console.log("response:", command, value)
+	// console.log("response:", command, value);
 	if(command == "gameTxHash"){
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
