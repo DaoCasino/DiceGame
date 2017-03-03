@@ -2,7 +2,7 @@ var _balance = 0;
 var _idGame = "";
 var urlBalance = ""; //balance
 var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
-var betEth = 1; //0,2 ставка эфира
+var betEth = 0.1; //0,2 ставка эфира
 var mainet, openkey, privkey;
 var chance = 5000;
 var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -48,7 +48,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.06") // VERSION !
+    console.log("version 0.06b") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -64,7 +64,7 @@ function setContract() {
 function initGame() {
     if (_balance * 1000 < 2000) {
         maxBet = _balance * 1000;
-        betEth = maxBet/2000;
+        //betEth = maxBet/2000;
     };
     TotalRolls();
     Refresh();
@@ -201,5 +201,5 @@ function checkMaxBet(){
     if (_balance * 1000 < 2000) {
         maxBet = _balance * 1000;
         Check();
-        $( "#slider-dice-one" ).slider( "option", "max", maxBet );
+        
     }};

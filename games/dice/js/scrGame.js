@@ -127,7 +127,7 @@ function EnableButton(status) {
 function Refresh() {
     $("#profit-on-win").val(((betEth * 10000 / chance) - betEth).toFixed(4));
    // $("#payout").val("x" + (betEth * 10000 / chance).toFixed(4));
-    $("#payout").val("x" + (10000/chance).toFixed(3));
+    $("#payout").val("x" + (9910/chance).toFixed(3));
 
 };
 

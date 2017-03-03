@@ -15,6 +15,7 @@ $(document).ready(function () {
 
 
     checkMaxBet();
+    betEth = maxBet/2000;
 
     /* SLIDER UI */
     $(function () {
@@ -54,7 +55,7 @@ $(document).ready(function () {
             range: "min",
             value: maxBet / 2,
             min: 100,
-            max: maxBet,
+            max: 2000,
             slide: function (event, ui) {
                 betEth = ui.value / 1000;
                 //                CheckBet();
