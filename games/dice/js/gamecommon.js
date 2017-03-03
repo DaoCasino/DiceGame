@@ -37,8 +37,10 @@ $(document).ready(function () {
             var value = $("#amount-one").val();
 
             if (value > 2) {
-                value = 2
-                betEth = 2
+                value = _balance
+                betEth = _balance
+                EnableButton(true);
+
             };
             if (value < 0.1) {
                 value = 0.1
@@ -53,13 +55,15 @@ $(document).ready(function () {
 
         $("#slider-dice-one").slider({
             range: "min",
-            value: 1000,
+            value: 100,
             min: 100,
             max: 2000,
             slide: function (event, ui) {
                 betEth = ui.value / 1000;
                 //                CheckBet();
                 if (betEth > _balance) {
+                    // $("#slider-dice-one").slider("value", _balance*1000);
+                    //betEth = _balance;
                     EnableButton(false);
                     $("#label").text(" NO MONEY ");
                 } else {

@@ -48,7 +48,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.06c") // VERSION !
+    console.log("version 0.07") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -66,6 +66,7 @@ function initGame() {
     //     maxBet = _balance * 1000;
     //     //betEth = maxBet/2000;
     // };
+    $("#contract").append('<a target="_blank" href="https://testnet.etherscan.io/address/'+addressContract +'">To contract</a>' )
     TotalRolls();
     Refresh();
     loadData();
