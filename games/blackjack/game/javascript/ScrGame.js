@@ -492,24 +492,8 @@ ScrGame.prototype.getCard = function(cardIndex, house){
       break;
     case 1:
 		cardSymbol = "A";
-		if(house){
-			if(this.bHouseAce){
-				point = 1;
-			} else {
-				point = 11;
-			}
-		} else {
-			if(this.bMyAce){
-				point = 1;
-			} else {
-				point = 11;
-			}
-		}
-		if(house){
-			this.bHouseAce = true;
-		} else {
-			this.bMyAce = true;
-		}
+		point = 1;
+		// point = 11;
 		break;
     case 11:
       cardSymbol = "J";
