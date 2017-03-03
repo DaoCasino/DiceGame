@@ -636,7 +636,7 @@ ScrGame.prototype.clickСhip = function(name){
 	var oldBet = betGame;
 	betGame += value;
 	betGame = toFixed(betGame, 1);
-	if(betGame > 50){
+	if(betGame > 50 || betGame > obj_game["balance"]*10){
 		betGame = oldBet;
 	} else {
 		var str = "Bet " + String(betGame/10) + " eth";
