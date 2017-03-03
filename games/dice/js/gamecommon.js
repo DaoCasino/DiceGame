@@ -8,11 +8,13 @@ $(document).ready(function () {
     });
     $(document).ready(function () {
         $('input#less-than-wins').keypress(function (e) {
-            if (!(e.which == 8  || (e.which > 47 && e.which < 58))) return false;
+            if (!(e.which == 8 || (e.which > 47 && e.which < 58))) return false;
         });
     });
 
 
+
+    checkMaxBet();
 
     /* SLIDER UI */
     $(function () {
@@ -33,11 +35,13 @@ $(document).ready(function () {
         $('#amount-one').change(function () {
             var value = $("#amount-one").val();
 
-            if (value > 2) {
-                value = 2
+            if (value > maxBet / 1000) {
+                value = maxBet / 1000
+                betEth = maxBet / 1000
             };
             if (value < 0.1) {
                 value = 0.1
+                betEth = 0.1
             };
             $("#amount-one").val(value);
             $("#slider-dice-one").slider("value", value * 1000);
@@ -48,9 +52,9 @@ $(document).ready(function () {
 
         $("#slider-dice-one").slider({
             range: "min",
-            value: 1000,
+            value: maxBet / 2,
             min: 100,
-            max: 2000,
+            max: maxBet,
             slide: function (event, ui) {
                 betEth = ui.value / 1000;
                 //                CheckBet();

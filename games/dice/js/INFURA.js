@@ -73,7 +73,7 @@ function startGame() {
                                 , "params": ["0x" + String(serializedTx)]
                             })
                             , success: function (d) {
-                                console.log("Транзакция отправлена в сеть:", d);
+                                console.log("Транзакция отправлена в сеть:", d.result);
                                 LastTx = d.result;
                             }
                         })

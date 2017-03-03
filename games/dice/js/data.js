@@ -43,19 +43,21 @@ function GetLogs() {
             }
             if (arGame.length > 4) {
                 for (var i = arGame.length - 3; i <= arGame.length - 1; i++) {
-                    console.log(arGame);
-                    var time = arGame[i][0].substr(24);
-                    var payout = parseInt(arGame[i][1].substr(2), 16) / 100000000000000000;
-                    var profit = parseInt(arGame[i][2].substr(2), 16) / 1000000000000000000;
-                    var bet = parseInt(arGame[i][3].substr(2), 16) / 1000000000000000000;
-                    var chance = parseInt(arGame[i][4].substr(2), 16) / 100;
-                    var result = parseInt(arGame[i][5].substr(2), 16);
-                    if (result) result = "win";
-                    else {
-                        result = "lose";
-                        profit = -bet;
+                    if (arGame[i].length > 5) {
+                        console.log(arGame);
+                        var time = arGame[i][0].substr(24);
+                        var payout = parseInt(arGame[i][1].substr(2), 16) / 100000000000000000;
+                        var profit = parseInt(arGame[i][2].substr(2), 16) / 1000000000000000000;
+                        var bet = parseInt(arGame[i][3].substr(2), 16) / 1000000000000000000;
+                        var chance = parseInt(arGame[i][4].substr(2), 16) / 100;
+                        var result = parseInt(arGame[i][5].substr(2), 16);
+                        if (result) result = "win";
+                        else {
+                            result = "lose";
+                            profit = -bet;
+                        }
+                        $(".dice-table").prepend('<tr><td><a>' + time.slice(2, 12) + '...</a> </td><td>' + chance + ' %</td><td>' + result + '</td><td>' + bet + ' ETH</td><td>x' + payout.toFixed(3) + '</td><td>' + profit.toFixed(3) + '</td></tr>');
                     }
-                    $(".dice-table").prepend('<tr><td><a>' + time.slice(2, 12) + '...</a> </td><td>' + chance + ' %</td><td>' + result + '</td><td>' + bet + ' ETH</td><td>x' + payout.toFixed(3) + '</td><td>' + profit.toFixed(3) + '</td></tr>');
                 }
             }
         }

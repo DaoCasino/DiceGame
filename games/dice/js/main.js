@@ -1,7 +1,7 @@
 var _balance = 0;
 var _idGame = "";
 var urlBalance = ""; //balance
-var addressContract = "0x4db524627a04c90f516b547398f816a7f112d4c0"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
+var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
 var betEth = 1; //0,2 ставка эфира
 var mainet, openkey, privkey;
 var chance = 5000;
@@ -9,6 +9,7 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx;
 var startRoll = true;
 var count;
+var maxBet = 2000;
 /*
  * value - Дробное число.
  * precision - Количество знаков после запятой.
@@ -47,7 +48,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.051c") // VERSION !
+    console.log("version 0.06") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -61,13 +62,10 @@ function setContract() {
 }
 
 function initGame() {
-    if (betEth > _balance) {
-        EnableButton(false);
-        $("#label").text(" NO MONEY ");
-    } else {
-        EnableButton(true);
-        $("#label").text("Click Roll Dice to place your bet:");
-    }
+    if (_balance * 1000 < 2000) {
+        maxBet = _balance * 1000;
+        betEth = maxBet/2000;
+    };
     TotalRolls();
     Refresh();
     loadData();
@@ -112,6 +110,7 @@ function initGame() {
             console.log("old_count", count);
         }
     });
+    Check();
 };
 // function sendUrlRequest(url, name) {
 //     // console.log("sendRequest:", name, url) 
@@ -161,13 +160,16 @@ function disabled(status) {
 function Check() {
     if (betEth > _balance) {
         EnableButton(false);
+        $("#label").text(" NO MONEY !");
 
     } else {
         EnableButton(true);
+        $("#label").text("Click Roll Dice to place your bet:");
     }
 };
 
 setInterval
+
 function TotalRolls() {
     var data = "0x9e92c991";
     var params = {
@@ -193,3 +195,11 @@ function TotalRolls() {
     });
 
 };
+
+function checkMaxBet(){
+    getBalance();
+    if (_balance * 1000 < 2000) {
+        maxBet = _balance * 1000;
+        Check();
+        $( "#slider-dice-one" ).slider( "option", "max", maxBet );
+    }};

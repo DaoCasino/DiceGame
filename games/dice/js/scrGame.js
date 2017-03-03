@@ -125,9 +125,10 @@ function EnableButton(status) {
 };
 
 function Refresh() {
-    $("#profit-on-win").val((betEth * 10000 / chance) - betEth);
-    $("#payout").val((betEth * 10000 / chance));
-    
+    $("#profit-on-win").val(((betEth * 10000 / chance) - betEth).toFixed(4));
+   // $("#payout").val("x" + (betEth * 10000 / chance).toFixed(4));
+    $("#payout").val("x" + (10000/chance).toFixed(3));
+
 };
 
 $("#roll-dice").click(function () {
@@ -156,7 +157,7 @@ $("#roll-dice").click(function () {
                 "params": [params, "latest"]
             }),
             success: function (d) {
-                console.log("new_count",hexToNum(d.result));
+                console.log("new_count", hexToNum(d.result));
                 var new_count = hexToNum(d.result);
                 if (new_count != count) {
 
@@ -189,6 +190,7 @@ $("#roll-dice").click(function () {
                                 Check();
                                 GetLogs();
                                 TotalRolls();
+                               checkMaxBet();
                                 $("#label").text("YOU WIN!!! ");
                                 clearInterval(Timer);
                             } else if (result == 2) {
@@ -198,7 +200,18 @@ $("#roll-dice").click(function () {
                                 Check();
                                 GetLogs();
                                 TotalRolls();
+                               checkMaxBet();
                                 $("#label").text("YOU LOSE!!! ");
+                                clearInterval(Timer);
+                            } else if (result == 3) {
+                                console.log("Sorry, dont money in bank");
+                                disabled(false);
+                                getBalance();
+                                Check();
+                                GetLogs();
+                                TotalRolls();
+                                checkMaxBet();
+                                $("#label").text("Sorry, dont money in bank");
                                 clearInterval(Timer);
                             }
                         }
