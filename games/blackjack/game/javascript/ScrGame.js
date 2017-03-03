@@ -20,7 +20,6 @@ var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-// var	addressTestContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423"; // old
 var	addressTestContract = "0xd1b45edac3f3758f665d126044847bddc883b6e1";
 var betEth = 0; //ставка эфира
 var betGame = 0;
@@ -703,7 +702,7 @@ ScrGame.prototype.showError = function(value, callback) {
 		case ERROR_KEYTHEREUM:
 			str = "OOOPS! \n The key is not created. Try a different browser."
 			break;
-		case ERROR_TRANSACTION:
+		case ERROR_BUF:
 			str = "OOOPS! \n Transaction failed."
 			this.resetGame();
 			break;
@@ -712,6 +711,9 @@ ScrGame.prototype.showError = function(value, callback) {
 			break;
 		case ERROR_BANK:
 			str = "OOOPS! \n No money in the bank."
+			break;
+		case ERROR_TRANSACTION:
+			str = "OOOPS! \n The transaction is not sent."
 			break;
 		default:
 			str = "ERR: " + value;
@@ -778,7 +780,8 @@ ScrGame.prototype.startGameEth = function(){
 			
 			if(privkey){
 				if(buf == undefined){
-					obj_game["game"].showError(ERROR_TRANSACTION);
+					obj_game["game"].showError(ERROR_BUF);
+					obj_game["game"].clearBet();
 				} else {
 					//приватный ключ игрока, подписываем транзакцию
 					var tx = new EthereumTx(options);
@@ -798,8 +801,13 @@ ScrGame.prototype.startGameEth = function(){
 											"method":'eth_sendRawTransaction',
 											"params":["0x"+String(serializedTx)]}),
 						success: function (d) {
-							obj_game["game"].response("gameTxHash", d.result) 
 							console.log("The transaction send:", d.result);
+							if(d.result == undefined){
+								obj_game["game"].showError(ERROR_TRANSACTION);
+								obj_game["game"].clearBet();
+							} else {
+								obj_game["game"].response("gameTxHash", d.result);
+							}
 						}
 					})
 				}
@@ -833,7 +841,8 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 				
 				if(privkey){
 					if(buf == undefined){
-						console.log("ERROR_TRANSACTION");
+						obj_game["game"].showError(ERROR_BUF);
+						obj_game["game"].clearBet();
 					} else {
 						//приватный ключ игрока, подписываем транзакцию
 						var tx = new EthereumTx(options);
@@ -852,8 +861,13 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 												"method":'eth_sendRawTransaction',
 												"params":["0x"+String(serializedTx)]}),
 							success: function (d) {
-								obj_game["game"].response(name, d.result) 
 								console.log("The transaction send:", d.result);
+								if(d.result == undefined){
+									obj_game["game"].showError(ERROR_TRANSACTION);
+									obj_game["game"].clearBet();
+								} else {
+									obj_game["game"].response(name, d.result);
+								}
 							}
 						})
 					}
