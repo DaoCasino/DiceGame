@@ -9,7 +9,7 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx;
 var startRoll = true;
 var count;
-var maxBet = 2000;
+// var maxBet = 2000;
 /*
  * value - Дробное число.
  * precision - Количество знаков после запятой.
@@ -48,7 +48,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.06b") // VERSION !
+    console.log("version 0.06c") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -62,10 +62,10 @@ function setContract() {
 }
 
 function initGame() {
-    if (_balance * 1000 < 2000) {
-        maxBet = _balance * 1000;
-        //betEth = maxBet/2000;
-    };
+    // if (_balance * 1000 < 2000) {
+    //     maxBet = _balance * 1000;
+    //     //betEth = maxBet/2000;
+    // };
     TotalRolls();
     Refresh();
     loadData();
@@ -196,10 +196,10 @@ function TotalRolls() {
 
 };
 
-function checkMaxBet(){
-    getBalance();
-    if (_balance * 1000 < 2000) {
-        maxBet = _balance * 1000;
-        Check();
+// function checkMaxBet(){
+//     getBalance();
+//     if (_balance * 1000 < 2000) {
+//         maxBet = _balance * 1000;
+//         Check();
         
-    }};
+//     }};

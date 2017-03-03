@@ -190,7 +190,7 @@ $("#roll-dice").click(function () {
                                 Check();
                                 GetLogs();
                                 TotalRolls();
-                               checkMaxBet();
+                            //    checkMaxBet();
                                 $("#label").text("YOU WIN!!! ");
                                 clearInterval(Timer);
                             } else if (result == 2) {
@@ -200,7 +200,7 @@ $("#roll-dice").click(function () {
                                 Check();
                                 GetLogs();
                                 TotalRolls();
-                               checkMaxBet();
+                            //    checkMaxBet();
                                 $("#label").text("YOU LOSE!!! ");
                                 clearInterval(Timer);
                             } else if (result == 3) {
@@ -210,7 +210,7 @@ $("#roll-dice").click(function () {
                                 Check();
                                 GetLogs();
                                 TotalRolls();
-                                checkMaxBet();
+                                // checkMaxBet();
                                 $("#label").text("Sorry, dont money in bank");
                                 clearInterval(Timer);
                             }

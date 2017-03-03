@@ -14,8 +14,8 @@ $(document).ready(function () {
 
 
 
-    checkMaxBet();
-    betEth = maxBet/2000;
+    // checkMaxBet();
+    // betEth = maxBet/2000;
 
     /* SLIDER UI */
     $(function () {
@@ -36,9 +36,9 @@ $(document).ready(function () {
         $('#amount-one').change(function () {
             var value = $("#amount-one").val();
 
-            if (value > maxBet / 1000) {
-                value = maxBet / 1000
-                betEth = maxBet / 1000
+            if (value > 2) {
+                value = 2
+                betEth = 2
             };
             if (value < 0.1) {
                 value = 0.1
@@ -53,7 +53,7 @@ $(document).ready(function () {
 
         $("#slider-dice-one").slider({
             range: "min",
-            value: maxBet / 2,
+            value: 1000,
             min: 100,
             max: 2000,
             slide: function (event, ui) {
