@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.6"
+var version = "v. 1.0.7"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -111,7 +111,7 @@ function initGame() {
 					bgLoading.y = _H/2 - bgLoading.height/2;
 				});
 		LoadBack.addChild(bgLoading);
-		var w = 270;
+		var w = 400;
 		LoadPercent = addText("Game loading", 30, "#FFFFFF", "#000000", "center", w, 2.5);
 		LoadPercent.x = _W/2;
 		LoadPercent.y = _H/2 + 120;

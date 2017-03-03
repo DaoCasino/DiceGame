@@ -177,6 +177,7 @@ ScrGame.prototype.clearBet = function(){
 		this.btnStart.visible = false;
 		this.arrow.visible = true;
 		this.tfSelBet.setText("Select bet");
+		this.tfResult.setText("");
 	}
 }
 
@@ -713,7 +714,7 @@ ScrGame.prototype.showError = function(value, callback) {
 			str = "OOOPS! \n No money in the bank."
 			break;
 		case ERROR_TRANSACTION:
-			str = "OOOPS! \n The transaction is not sent."
+			str = "OOOPS! \n The transaction is not sent. \n Try another bet."
 			break;
 		default:
 			str = "ERR: " + value;
@@ -777,11 +778,13 @@ ScrGame.prototype.startGameEth = function(){
 			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
 			options.gasLimit=0x927c0; //web3.toHex('600000');
 			options.value = betEth;
+			console.log("options.to:", options.to);
 			
 			if(privkey){
 				if(buf == undefined){
 					obj_game["game"].showError(ERROR_BUF);
 					obj_game["game"].clearBet();
+					obj_game["game"].bWait = false;
 				} else {
 					//приватный ключ игрока, подписываем транзакцию
 					var tx = new EthereumTx(options);
@@ -789,7 +792,7 @@ ScrGame.prototype.startGameEth = function(){
 
 					var serializedTx = tx.serialize().toString('hex');
 					obj_game["game"].bSendRequest = false;
-					console.log("The transaction was signed");
+					console.log("The transaction was signed:", serializedTx);
 					
 					$.ajax({
 						type: "POST",
@@ -805,6 +808,7 @@ ScrGame.prototype.startGameEth = function(){
 							if(d.result == undefined){
 								obj_game["game"].showError(ERROR_TRANSACTION);
 								obj_game["game"].clearBet();
+								obj_game["game"].bWait = false;
 							} else {
 								obj_game["game"].response("gameTxHash", d.result);
 							}
@@ -843,6 +847,7 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 					if(buf == undefined){
 						obj_game["game"].showError(ERROR_BUF);
 						obj_game["game"].clearBet();
+						obj_game["game"].bWait = false;
 					} else {
 						//приватный ключ игрока, подписываем транзакцию
 						var tx = new EthereumTx(options);
@@ -865,6 +870,7 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 								if(d.result == undefined){
 									obj_game["game"].showError(ERROR_TRANSACTION);
 									obj_game["game"].clearBet();
+									obj_game["game"].bWait = false;
 								} else {
 									obj_game["game"].response(name, d.result);
 								}
@@ -1107,6 +1113,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				console.log("betEth:", curBet);
 				obj_game["game"].showError(ERROR_BANK);
 				obj_game["game"].clearBet();
+				obj_game["game"].bWait = false;
 			}
 		}
 	} else if(item_mc.name == "btnSmart"){
