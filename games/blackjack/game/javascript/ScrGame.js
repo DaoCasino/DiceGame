@@ -437,7 +437,7 @@ ScrGame.prototype.showMyPoints = function(card){
 		this.myPoints += this._arMyPoints[i];
 	}
 	if(this.myPoints > 0){
-		this.tfMyPoints.setText(this.myPoints);
+		// this.tfMyPoints.setText(this.myPoints);
 	} else {
 		this.tfMyPoints.setText("");
 	}
@@ -461,7 +461,7 @@ ScrGame.prototype.showHousePoints = function(card){
 		this.housePoints += this._arHousePoints[i];
 	}
 	if(this.housePoints > 0){
-		this.tfHousePoints.setText(this.housePoints);
+		// this.tfHousePoints.setText(this.housePoints);
 	} else {
 		this.tfHousePoints.setText("");
 	}
@@ -710,7 +710,7 @@ ScrGame.prototype.showError = function(value, callback) {
 			str = "OOOPS! \n The key is not valid."
 			break;
 		case ERROR_BANK:
-			str = "OOOPS! \n No money in the bank."
+			str = "OOOPS! \n No money in the bank. \n Please contact to administrator."
 			break;
 		case ERROR_TRANSACTION:
 			str = "OOOPS! \n The transaction is not sent. \n Try another bet."
