@@ -177,7 +177,6 @@ ScrGame.prototype.clearBet = function(){
 		this.btnStart.visible = false;
 		this.arrow.visible = true;
 		this.tfSelBet.setText("Select bet");
-		this.tfResult.setText("");
 	}
 }
 
@@ -784,7 +783,9 @@ ScrGame.prototype.startGameEth = function(){
 				if(buf == undefined){
 					obj_game["game"].showError(ERROR_BUF);
 					obj_game["game"].clearBet();
+					obj_game["game"].tfResult.setText("");
 					obj_game["game"].bWait = false;
+					obj_game["game"].showChips(true);
 				} else {
 					//приватный ключ игрока, подписываем транзакцию
 					var tx = new EthereumTx(options);
@@ -808,7 +809,9 @@ ScrGame.prototype.startGameEth = function(){
 							if(d.result == undefined){
 								obj_game["game"].showError(ERROR_TRANSACTION);
 								obj_game["game"].clearBet();
+								obj_game["game"].tfResult.setText("");
 								obj_game["game"].bWait = false;
+								obj_game["game"].showChips(true);
 							} else {
 								obj_game["game"].response("gameTxHash", d.result);
 							}
@@ -847,7 +850,9 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 					if(buf == undefined){
 						obj_game["game"].showError(ERROR_BUF);
 						obj_game["game"].clearBet();
+						obj_game["game"].tfResult.setText("");
 						obj_game["game"].bWait = false;
+						obj_game["game"].showChips(true);
 					} else {
 						//приватный ключ игрока, подписываем транзакцию
 						var tx = new EthereumTx(options);
@@ -870,7 +875,9 @@ ScrGame.prototype.sendInfuraAction = function(name, data) {
 								if(d.result == undefined){
 									obj_game["game"].showError(ERROR_TRANSACTION);
 									obj_game["game"].clearBet();
+									obj_game["game"].tfResult.setText("");
 									obj_game["game"].bWait = false;
+									obj_game["game"].showChips(true);
 								} else {
 									obj_game["game"].response(name, d.result);
 								}
@@ -1114,6 +1121,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				obj_game["game"].showError(ERROR_BANK);
 				obj_game["game"].clearBet();
 				obj_game["game"].bWait = false;
+				obj_game["game"].showChips(true);
 			}
 		}
 	} else if(item_mc.name == "btnSmart"){
