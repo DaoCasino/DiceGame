@@ -8,11 +8,11 @@ ScrMenu.prototype.constructor = ScrMenu;
 
 
 ScrMenu.prototype.init = function() {
-	if(openkey){}else{
-		var url = "/";
-		window.open(url, "_self"); // "_blank",  "_self"
-		return false;
-	}
+	// if(openkey){}else{
+		// var url = "/";
+		// window.open(url, "_self"); // "_blank",  "_self"
+		// return false;
+	// }
 	
 	this._arButtons = [];
 	

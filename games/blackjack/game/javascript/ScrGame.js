@@ -89,6 +89,8 @@ ScrGame.prototype.init = function() {
 	this.bWait = false;
 	this.bStand = false;
 	this.bClear = false;
+	this.bMyAce = false;
+	this.bHouseAce = false;
 	this.strTest = "";
 	
 	obj_game = {};
@@ -128,6 +130,10 @@ ScrGame.prototype.init = function() {
 	this.sendRequest("getBalanceBank");
 	this.checkGameState();
 	
+	if(openkey){} else {
+		this.showError(ERROR_KEY, showHome);
+	}
+	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
 	this.on('mousemove', this.touchHandler);
@@ -147,6 +153,8 @@ ScrGame.prototype.clearGame = function(){
 	this.countWait = 0;
 	this.countChip = 0;
 	this.bStand = false;
+	this.bMyAce = false;
+	this.bHouseAce = false;
 	var i = 0;
 	
 	for (i = 0; i < dealedCards.length; i++) {
@@ -474,7 +482,7 @@ ScrGame.prototype.showSuitCard = function(){
 	}
 }
 
-ScrGame.prototype.getCard = function(cardIndex){
+ScrGame.prototype.getCard = function(cardIndex, house){
   var cardType = Math.floor(cardIndex / 4);
   var cardSymbol = String(cardType);
   var point = cardType;
@@ -484,9 +492,26 @@ ScrGame.prototype.getCard = function(cardIndex){
 	  point = 10;
       break;
     case 1:
-      cardSymbol = "A";
-	  point = 11;
-      break;
+		cardSymbol = "A";
+		if(house){
+			if(this.bHouseAce){
+				point = 1;
+			} else {
+				point = 11;
+			}
+		} else {
+			if(this.bMyAce){
+				point = 1;
+			} else {
+				point = 11;
+			}
+		}
+		if(house){
+			this.bHouseAce = true;
+		} else {
+			this.bMyAce = true;
+		}
+		break;
     case 11:
       cardSymbol = "J";
 	  point = 10;
@@ -538,7 +563,7 @@ ScrGame.prototype.addPlayerCard = function(){
 	for (var i = lastPlayerCard; i < this.countPlayerCard; i++) {
 		if(options_debug){
 			var card = Math.ceil(Math.random()*52);
-			this.showPlayerCard(this.getCard(card));
+			this.showPlayerCard(this.getCard(card, false));
 			this.showButtons(true);
 			this.bWait = false;
 			if(this.startGame){
@@ -554,7 +579,7 @@ ScrGame.prototype.addHouseCard = function(){
 	for (var i = lastHouseCard; i < this.countHouseCard; i++) {
 		if(options_debug){
 			var card = Math.ceil(Math.random()*52);
-			this.showHouseCard(this.getCard(card));
+			this.showHouseCard(this.getCard(card, true));
 			this.showSuitCard();
 		} else {
 			this.getHouseCard(i);
@@ -672,7 +697,7 @@ ScrGame.prototype.showSmartContract = function() {
 	window.open(url, "_blank"); 
 }
 
-ScrGame.prototype.showError = function(value) {
+ScrGame.prototype.showError = function(value, callback) {
 	var str = "ERR"
 	switch(value){
 		case ERROR_KEYTHEREUM:
@@ -692,7 +717,7 @@ ScrGame.prototype.showError = function(value) {
 			str = "ERR: " + value;
 			break;
 	}
-	this.createWndInfo(str);
+	this.createWndInfo(str, callback);
 }
 
 ScrGame.prototype.shareTwitter = function() {
@@ -727,7 +752,7 @@ ScrGame.prototype.shareFB = function() {
 // START
 ScrGame.prototype.startGameEth = function(){
 	if(openkey == undefined){
-		obj_game["game"].showError(ERROR_KEY);
+		obj_game["game"].showError(ERROR_KEY, showHome);
 		return false;
 	}
 	
@@ -904,7 +929,7 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getPlayerCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
-			this.showPlayerCard(this.getCard(card));
+			this.showPlayerCard(this.getCard(card, false));
 			this.bWait = false;
 			// this.tfResult.setText("");
 			this.showButtons(true);
@@ -912,7 +937,7 @@ ScrGame.prototype.response = function(command, value, index) {
 	} else if(command == "getHouseCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
-			this.showHouseCard(this.getCard(card));
+			this.showHouseCard(this.getCard(card, true));
 			this.bWait = false;
 			// this.tfResult.setText("");
 		}

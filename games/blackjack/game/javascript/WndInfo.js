@@ -49,16 +49,13 @@ WndInfo.prototype.init = function(_prnt) {
 WndInfo.prototype.show = function(str, callback, addStr) {
 	if(addStr){}else{addStr=""};
 	if(callback){
-		this._callback = callback
+		this._callback = callback;
+		this.btnOk.visible = true;
+		if(addStr=""){}else{addStr="OK"};
 	}else{
 		this._callback = undefined;
-	};
-	
-	if(callback){
-		this.btnOk.visible = true;
-	} else {
 		this.btnOk.visible = false;
-	}
+	};
 	
 	this.tf.setText(str);
 	this.tfBtn.setText(addStr);

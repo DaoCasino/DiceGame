@@ -553,6 +553,10 @@ function showLevels() {
 function showTest() {
 	addScreen("test");
 }
+function showHome() {
+	var url = "/";
+	window.open(url, "_self"); // "_blank",  "_self"
+}
 
 function addScreen(name) {
 	removeAllScreens();
