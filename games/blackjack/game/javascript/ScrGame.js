@@ -628,6 +628,7 @@ ScrGame.prototype.clickСhip = function(name){
 			this.tfMyPoints.setText("");
 			this.tfHousePoints.setText("");
 			this._arMyPoints = [];
+			this._arHousePoints = [];
 			this.bClear = true;
 			this.clearGame();
 		}
@@ -668,7 +669,6 @@ ScrGame.prototype.showSmartContract = function() {
 	if(options_mainet){
 		url = "https://etherscan.io/" + "address/" + addressContract;
 	}
-	console.log("showSmartContract:", addressContract);
 	window.open(url, "_blank"); 
 }
 
