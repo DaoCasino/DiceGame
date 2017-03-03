@@ -1,7 +1,7 @@
 var _balance = 0;
 var _idGame = "";
 var urlBalance = ""; //balance
-var addressContract = "0x4c3b529b0e8983a006ab589c21ea8a74b439025e"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
+var addressContract = "0x4db524627a04c90f516b547398f816a7f112d4c0"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
 var betEth = 1; //0,2 ставка эфира
 var mainet, openkey, privkey;
 var chance = 5000;
@@ -47,7 +47,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.05c") // VERSION !
+    console.log("version 0.051c") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
