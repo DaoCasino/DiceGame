@@ -20,7 +20,7 @@ var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var	addressTestContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423";
+var	addressTestContract = "0x1fc25284f6c9adf8ce01263c688eb28b0bf37423"; // old
 // var	addressTestContract = "0xAdeEc28e05A89B0e3F48F1d5fAe38A20026beda6";
 var betEth = 0; //ставка эфира
 var betGame = 0;
@@ -1092,6 +1092,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				console.log("betEth*2.5:", curBet*2.5);
 				console.log("betEth:", curBet);
 				obj_game["game"].showError(ERROR_BANK);
+				obj_game["game"].clearBet();
 			}
 		}
 	} else if(item_mc.name == "btnSmart"){
@@ -1107,7 +1108,6 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnTweet"){
 		this.shareTwitter();
 	} else if(item_mc.name == "btnClear"){
-		console.log("clearBet");
 		this.clearBet();
 	}
 }
