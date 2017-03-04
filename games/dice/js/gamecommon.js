@@ -12,11 +12,6 @@ $(document).ready(function () {
         });
     });
 
-
-
-    // checkMaxBet();
-    // betEth = maxBet/2000;
-
     /* SLIDER UI */
     $(function () {
         $('#less-than-wins').change(function () {
@@ -37,9 +32,8 @@ $(document).ready(function () {
             var value = $("#amount-one").val();
 
             if (value > 2) {
-                value = _balance
-                betEth = _balance
-                EnableButton(true);
+                value = balance
+                betEth = balance 
 
             };
             if (value < 0.1) {
@@ -55,28 +49,16 @@ $(document).ready(function () {
 
         $("#slider-dice-one").slider({
             range: "min",
-            value: 100,
+            value: 200,
             min: 100,
             max: 2000,
             slide: function (event, ui) {
                 betEth = ui.value / 1000;
-                //                CheckBet();
-                if (betEth > _balance) {
-                    // $("#slider-dice-one").slider("value", _balance*1000);
-                    //betEth = _balance;
-                    EnableButton(false);
-                    $("#label").text(" NO MONEY ");
-                } else {
-                    EnableButton(true);
-                    $("#label").text("Click Roll Dice to place your bet:");
-                }
                 $("#amount-one").val(ui.value / 1000);
                 Refresh();
             }
         });
-        //        data("#slider-dice-two").slide();
-        //        
-        //		$( "#amount-one" ).val( $( "#slider-dice-one" ).slider( "value" ) );
+
         $("#slider-dice-two").slider({
             range: "min",
             value: 5000,
