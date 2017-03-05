@@ -1,4 +1,4 @@
-var balance = 0;
+var balance = 2;
 var _idGame = "";
 var urlBalance = ""; //balance
 var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
@@ -63,7 +63,7 @@ function setContract() {
 }
 
 function initGame() {
-     $("#contract").append('<a target="_blank" href="https://testnet.etherscan.io/address/'+addressContract +'">To contract</a>' )
+    $("#contract").append('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">To contract</a>')
     TotalRolls();
     Refresh();
     loadData();
@@ -164,12 +164,17 @@ function TotalRolls() {
 
 setInterval(function () {
     balance = $("#balance").html();
-    balance = +balance.substr(0, 6);
+    balance = +balance.substr(0, balance.length - 4);
+    balance = +balance.toFixed(6);
     if (balance < 0.1 && !game) {
         disabled(true);
         $("#label").text(" NO MONEY ");
-    } 
+    } else if (balance > 0.1 && !game) {
+        disabled(false);
+        //$("#label").text("Click Roll Dice to place your bet:");
+
+    }
     $("#your-balance").val(balance);
-    $("#slider-dice-one").slider("option", "max", balance * 1000);
+    $("#slider-dice-one").slider("option", "max", (balance * 1000)-20);
     console.log(balance);
-}, 2000);
+}, 3000);

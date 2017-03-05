@@ -74,7 +74,7 @@ function startGame() {
                             })
                             , success: function (d) {
                                 console.log("Транзакция отправлена в сеть:", d.result);
-                                LastTx = d.result;
+                                lastTx = d.result;
                             }
                         })
                     }
