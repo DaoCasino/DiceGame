@@ -52,7 +52,7 @@ function GetLogs() {
                             result = "lose";
                             profit = -bet;
                         }
-                        $(".dice-table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/'+tx+' "> ' + tx.slice(2, 12) + '...</a> <br>' + player.slice(2,12) + '</td><td>' + chance + ' %</td><td>' + result + '</td><td>' + bet + ' ETH</td><td>x'  + (99.2/chance).toFixed(3) + '</td><td>' + profit.toFixed(3) + '</td></tr>');
+                        $(".dice-table").prepend('<tr><td><a target="_blank" href="https://kovan.etherscan.io/tx/'+tx+' "> ' + tx.slice(2, 12) + '...</a> <br>' + player.slice(2,12) + '</td><td>' + chance + ' %</td><td>' + result + '</td><td>' + bet + ' ETH</td><td>x'  + (99.2/chance).toFixed(3) + '</td><td>' + profit.toFixed(3) + '</td></tr>');
                     }
                 }
             }

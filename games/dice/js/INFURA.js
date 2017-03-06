@@ -77,7 +77,7 @@ function startGame() {
                                 if (startGame == undefined) {
         $("#label").text("Sorry, transaction failed");
     } else {
-        $("#Tx").html('<a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + '">' + lastTx + '</a>')
+        $("#Tx").html('<a target="_blank" href="https://kovan.etherscan.io/tx/' + lastTx + '">' + lastTx + '</a>')
         disabled(true);
         $("#label").text("Please, wait . . . ");
         game = true;

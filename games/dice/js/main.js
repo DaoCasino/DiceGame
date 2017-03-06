@@ -50,7 +50,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.2 kovan") // VERSION !
+    console.log("version 0.2a kovan") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -64,7 +64,7 @@ function setContract() {
 }
 
 function initGame() {
-    $("#contract").append('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">To contract</a>')
+    $("#contract").append('<a target="_blank" href="https://kovan.etherscan.io/address/' + addressContract + '">To contract</a>')
    
     TotalRolls();
     TotalPaid();
