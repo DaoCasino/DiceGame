@@ -89,7 +89,7 @@ function startGame() {
                     module: "proxy",
                     action: "eth_call",
                     address: openkey,
-                    data: "0x9288cebc00000000000000000000000036918df28343de6791c239b5d9aa913d20a24b00",
+                    data: "0x9288cebc000000000000000000000000"+openkey.substr(2),
                     to: addressContract,
                     //tag: "latest"
                 },
@@ -106,7 +106,7 @@ function startGame() {
                                 module: "proxy",
                                 action: "eth_call",
                                 //address: openkey,
-                                data: "0x0819993100000000000000000000000036918df28343de6791c239b5d9aa913d20a24b00",
+                                data: "0x08199931000000000000000000000000"+openkey.substr(2),
                                 to: addressContract,
                                 tag: "latest"
                             },
