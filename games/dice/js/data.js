@@ -4,20 +4,16 @@ function GetLogs() {
     $(".dice-table>tbody").empty();
     $.ajax({
         type: "POST",
-        url: urlInfura,
-        dataType: 'json',
-        async: false,
-        data: JSON.stringify({
-            "id": 74,
-            "jsonrpc": '2.0',
-            "method": 'eth_getLogs',
-            "params": [{
-                "fromBlock": "580000",
-                "toBlock": "latest",
-                "address": addressContract,
-            }]
-        }),
+        url: "http://kovan.etherscan.io/api",
+        data: {
+            module: "logs",
+             action: "getLogs",
+             fromBlock: 7500,
+            toBlock: "latest",
+            address: addressContract
+        },
         success: function (objData) {
+           // console.log(objData);
             function getArTh(thId) {
                 var array = [];
                 var mainObj = objData.result;
@@ -45,6 +41,7 @@ function GetLogs() {
                     if (arGame[i].length > 5) {
                         var tx = arGame[i][0]; 
                         var player = arGame[i][1].substr(24);
+                        //console.log(player);
                         var payout = parseInt(arGame[i][2].substr(2), 16) / 100000000000000000;
                         var profit = parseInt(arGame[i][3].substr(2), 16) / 1000000000000000000;
                         var bet = parseInt(arGame[i][4].substr(2), 16) / 1000000000000000000;
