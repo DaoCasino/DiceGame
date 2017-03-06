@@ -384,7 +384,7 @@ function get_normal_time(ms){
 */
 function toFixed(value, precision){
 	precision = Math.pow(10, precision);
-	return Math.ceil(value * precision) / precision;
+	return Math.round(value * precision) / precision;
 }
 
 function numToHex(num) {

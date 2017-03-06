@@ -88,8 +88,6 @@ ScrGame.prototype.init = function() {
 	this.bWait = false;
 	this.bStand = false;
 	this.bClear = false;
-	this.bMyAce = false;
-	this.bHouseAce = false;
 	this.strTest = "";
 	
 	obj_game = {};
@@ -152,8 +150,6 @@ ScrGame.prototype.clearGame = function(){
 	this.countWait = 0;
 	this.countChip = 0;
 	this.bStand = false;
-	this.bMyAce = false;
-	this.bHouseAce = false;
 	var i = 0;
 	
 	for (i = 0; i < dealedCards.length; i++) {
