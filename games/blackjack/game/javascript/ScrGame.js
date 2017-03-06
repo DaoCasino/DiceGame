@@ -431,10 +431,13 @@ ScrGame.prototype.showPlayerCard = function(card){
 	this.showMyPoints();
 }
 
-ScrGame.prototype.showMyPoints = function(){
-	this.myPoints = this.getMyPoints();
+ScrGame.prototype.showMyPoints = function(card){
+	this.myPoints = 0;
+	for (var i = 0; i < this._arMyPoints.length; i++) {
+		this.myPoints += this._arMyPoints[i];
+	}
 	if(this.myPoints > 0){
-		this.tfMyPoints.setText(this.myPoints);
+		// this.tfMyPoints.setText(this.myPoints);
 	} else {
 		this.tfMyPoints.setText("");
 	}
@@ -452,31 +455,16 @@ ScrGame.prototype.showHouseCard = function(card){
 	this.showSuitCard();
 }
 
-ScrGame.prototype.showHousePoints = function(){
-	this.housePoints = this.getHousePoints();
+ScrGame.prototype.showHousePoints = function(card){
+	this.housePoints = 0;
+	for (var i = 0; i < this._arHousePoints.length; i++) {
+		this.housePoints += this._arHousePoints[i];
+	}
 	if(this.housePoints > 0){
-		this.tfHousePoints.setText(this.housePoints);
+		// this.tfHousePoints.setText(this.housePoints);
 	} else {
 		this.tfHousePoints.setText("");
 	}
-}
-
-ScrGame.prototype.getMyPoints = function(){
-	var myPoints = 0;
-	for (var i = 0; i < this._arMyPoints.length; i++) {
-		myPoints += this._arMyPoints[i];
-	}
-	
-	return myPoints;
-}
-
-ScrGame.prototype.getHousePoints = function(){
-	var housePoints = 0;
-	for (var i = 0; i < this._arHousePoints.length; i++) {
-		housePoints += this._arHousePoints[i];
-	}
-	
-	return housePoints;
 }
 
 ScrGame.prototype.showSuitCard = function(){
@@ -504,15 +492,8 @@ ScrGame.prototype.getCard = function(cardIndex, house){
       break;
     case 1:
 		cardSymbol = "A";
-		var futScore = 11 + this.getMyPoints();
-		if(house){
-			futScore = 11 + this.getHousePoints();
-		}
-		if(futScore > 21){
-			point = 1;
-		} else {
-			point = 11;
-		}
+		point = 1;
+		// point = 11;
 		break;
     case 11:
       cardSymbol = "J";
