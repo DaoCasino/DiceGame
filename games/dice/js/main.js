@@ -49,7 +49,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.1c") // VERSION !
+    console.log("version 0.2a") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -65,6 +65,7 @@ function setContract() {
 function initGame() {
     $("#contract").append('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">To contract</a>')
     TotalRolls();
+    TotalPaid();
     Refresh();
     loadData();
     GetLogs();
@@ -161,6 +162,33 @@ function TotalRolls() {
     });
 
 };
+
+function TotalPaid() {
+    var data = "0x46f76648";
+    var params = {
+        "from": openkey,
+        "to": addressContract,
+        "data": data
+    };
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [params, "latest"]
+        }),
+        success: function (d) {
+            count = hexToNum(d.result);
+            $("#total-paid").html((count/10000000000000000000).toFixed(6) + ' ETH');
+        }
+    });
+
+};
+
 
 setInterval(function () {
     balance = $("#balance").html();

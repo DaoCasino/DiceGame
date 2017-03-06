@@ -66,6 +66,7 @@ $("#roll-dice").click(function () {
                                     game = false;
                                     GetLogs();
                                     TotalRolls();
+                                    TotalPaid();
                                     $("#label").text("YOU WIN!!! ");
                                     clearInterval(Timer);
                                 } else if (result == 2) {
@@ -74,6 +75,7 @@ $("#roll-dice").click(function () {
                                     game = false;
                                     GetLogs();
                                     TotalRolls();
+                                    TotalPaid();
                                     $("#label").text("YOU LOSE!!! ");
                                     clearInterval(Timer);
                                 } else if (result == 3) {
@@ -82,6 +84,7 @@ $("#roll-dice").click(function () {
                                     disabled(false);
                                     GetLogs();
                                     TotalRolls();
+                                    TotalPaid();
                                     $("#label").text("Sorry, dont money in bank");
                                     clearInterval(Timer);
                                 }
