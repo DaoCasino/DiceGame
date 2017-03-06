@@ -1,17 +1,16 @@
-var _balance = 0;
+var balance = 2;
 var _idGame = "";
-var urlSite = "https://api.etherscan.io/";
-urlSite = "https://testnet.etherscan.io/";
 var urlBalance = ""; //balance
-var addressContract = "0xb7c90df0888fee75ecfc8e85ed35fcd6ea1f3370"; // cotract
-var betEth = 1; //0,2 ставка эфира
+var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
+var betEth = 0.2; //0,2 ставка эфира
 var mainet, openkey, privkey;
-var FirstRequest = true;
-var OldBalance;
-var chance = 50;
-
-
-
+var chance = 5000;
+var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+var lastTx;
+var startRoll = true;
+var count;
+var game = false;
+// var maxBet = 2000;
 /*
  * value - Дробное число.
  * precision - Количество знаков после запятой.
@@ -38,30 +37,10 @@ function pad(num, size) {
 function isLocalStorageAvailable() {
     try {
         return 'localStorage' in window && window['localStorage'] !== null;
-    }
-    catch (e) {
+    } catch (e) {
         console.log("localStorage_failed:", e);
         return false;
     }
-}
-
-function initGame() {
-    if (betEth > _balance) {
-                    EnableButton(false);
-                }
-                else {
-                    EnableButton(true);
-                }
-    Refresh();
-    loadData();
-    RefreshTable();
-    if (openkey) {
-        var adress = openkey.replace('0x', '');
-        urlBalance = urlSite + "api?module=account&action=balance&address=" + adress + "&tag=latest&apikey=YourApiKeyToken"
-        var str = urlBalance;
-        this.sendUrlRequest(str, "getBalance");
-    }
-    
 }
 
 function loadData() {
@@ -70,44 +49,160 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.04")// VERSION !
+    console.log("version 0.2a") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
 }
 
-function sendUrlRequest(url, name) {
-    // console.log("sendRequest:", name, url) 
-    var xhr = new XMLHttpRequest();
-    var str = url;
-    xhr.open("GET", str, true);
-    xhr.send(null);
-    xhr.onreadystatechange = function () { // (3)
-        if (xhr.readyState != 4) return;
-        if (xhr.status != 200) {
-            console.log("err:" + xhr.status + ': ' + xhr.statusText);
-        }
-        else {
-            response(name, xhr.responseText)
-        }
+function setContract() {
+    if (mainnet == "on") {
+        urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+        addressContract = "0xb7c90df0888fee75ecfc8e85ed35fcd6ea1f3370";
     }
 }
 
-function response(command, value) {
-    if (value == undefined) {
-        return false;
+function initGame() {
+    $("#contract").append('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">To contract</a>')
+    TotalRolls();
+    TotalPaid();
+    Refresh();
+    loadData();
+    GetLogs();
+    // $.ajax({
+    //     type: "POST",
+    //     url: urlInfura,
+    //     dataType: 'json',
+    //     async: false,
+    //     data: JSON.stringify({
+    //         "id": 0,
+    //         "jsonrpc": '2.0',
+    //         "method": 'eth_getBalance',
+    //         "params": [openkey, "latest"]
+    //     }),
+    //     success: function (d) {
+    //         console.log("balance!: ", d.result, toFixed((Number(d.result) / 1000000000000000000), 4));
+    //         //_balance = toFixed((Number(d.result) / 1000000000000000000), 4);
+    //         //$("#balance").html(_balance);
+    //         //$("#your-balance").val(_balance);
+    //     }
+    // })
+    var data = "0xa87d942c";
+    var params = {
+        "from": openkey,
+        "to": addressContract,
+        "data": data
+    };
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [params, "latest"]
+        }),
+        success: function (d) {
+            count = hexToNum(d.result);
+            console.log("old_count", count);
+        }
+    });
+};
+
+function button(status) {
+    if (status) {
+        $("#roll-dice").css({
+            background: 'gray'
+        });
+    } else {
+        $("#roll-dice").removeAttr('style');
     }
-    console.log("response:", command, value)
-    if (command == "getBalance") {
-        var obj = JSON.parse(value);
-        _balance = toFixed((Number(obj.result) / 1000000000000000000), 4);
-        //        CheckBalance();
-    }
-    else if (command == "idGame") {
-        _idGame = value;
-    }
-//    CheckBet();
+}
+
+function disabled(status) {
+    $("#slider-dice-one").slider({
+        disabled: status
+    });
+    $("#slider-dice-two").slider({
+        disabled: status
+    });
+    $("#amount-one").attr('readonly', status);
+    $("#less-than-wins").attr('readonly', status);
+    $("#roll-dice").attr('disabled', status);
+    button(status);
+
 }
 
 
 
+function TotalRolls() {
+    var data = "0x9e92c991";
+    var params = {
+        "from": openkey,
+        "to": addressContract,
+        "data": data
+    };
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [params, "latest"]
+        }),
+        success: function (d) {
+            count = hexToNum(d.result);
+            $("#total-rolls").html(count);
+        }
+    });
+
+};
+
+function TotalPaid() {
+    var data = "0x46f76648";
+    var params = {
+        "from": openkey,
+        "to": addressContract,
+        "data": data
+    };
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [params, "latest"]
+        }),
+        success: function (d) {
+            count = hexToNum(d.result);
+            $("#total-paid").html((count/10000000000000000000).toFixed(6) + ' ETH');
+        }
+    });
+
+};
+
+
+setInterval(function () {
+    balance = $("#balance").html();
+    balance = +balance.substr(0, balance.length - 4);
+    balance = +balance.toFixed(6);
+    if (balance < 0.1 && !game) {
+        disabled(true);
+        $("#label").text(" NO MONEY ");
+    } else if (balance > 0.1 && !game) {
+        disabled(false);
+        //$("#label").text("Click Roll Dice to place your bet:");
+
+    }
+    $("#your-balance").val(balance);
+    $("#slider-dice-one").slider("option", "max", (balance * 1000)-20);
+    console.log(balance);
+}, 3000);

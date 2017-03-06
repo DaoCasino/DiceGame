@@ -752,7 +752,7 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-slider-horizontal .ui-slider-handle {
 	top: -.3em;
-	margin-left: -.6em;
+	margin-left: -1em;
 }
 .ui-slider-horizontal .ui-slider-range {
 	top: 0;

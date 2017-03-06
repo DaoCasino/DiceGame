@@ -1,41 +1,84 @@
 $(document).ready(function () {
+
+$('input').keypress(function(e){
+    if(e.which == 13){
+        $(this).blur();
+    }
+})
+
+    $(document).ready(function () {
+        $('input').keypress(function (e) {
+            if (!(e.which == 8 || e.which == 44 || e.which == 45 || e.which == 46 || (e.which > 47 && e.which < 58))) return false;
+        });
+    });
+    $(document).ready(function () {
+        $('input#less-than-wins').keypress(function (e) {
+            if (!(e.which == 8 || (e.which > 47 && e.which < 58))) return false;
+        });
+    });
+
     /* SLIDER UI */
     $(function () {
+        $('#less-than-wins').change(function () {
+            var value = $("#less-than-wins").val();
+            if (value > 9900) {
+                value = 9900
+            };
+            if (value < 1) {
+                value = 1
+            };
+            $("#less-than-wins").val(value);
+            $("#slider-dice-two").slider("value", value);
+            $("#amount-two").val(value / 100 + "%");
+            chance = +value;
+            Refresh();
+        });
+        $('#amount-one').change(function () {
+            var value = $("#amount-one").val();
+
+            if (value > balance) {
+                value = balance-0.02
+                betEth = balance 
+
+            };
+            if (value < 0.1) {
+                value = 0.1
+                betEth = 0.1
+            };
+            $("#amount-one").val(value);
+            $("#slider-dice-one").slider("value", value * 1000);
+            betEth = +value;
+            Refresh();
+        });
+
+
         $("#slider-dice-one").slider({
-            range: "min"
-            , value: 10
-            , min: 1
-            , max: 20
-            , slide: function (event, ui) {
-                betEth = ui.value / 10;
-                //                CheckBet();
-                if (betEth > _balance) {
-                    EnableButton(false);
-                }
-                else {
-                    EnableButton(true);
-                }
-                $("#amount-one").val(ui.value / 10);
+            range: "min",
+            value: 200,
+            min: 100,
+            max: 2000,
+            slide: function (event, ui) {
+                betEth = ui.value / 1000;
+                $("#amount-one").val(ui.value / 1000);
                 Refresh();
             }
         });
-        //        data("#slider-dice-two").slide();
-        //        
-        //		$( "#amount-one" ).val( $( "#slider-dice-one" ).slider( "value" ) );
+
         $("#slider-dice-two").slider({
-            range: "min"
-            , value: 50
-            , min: 1
-            , max: 99
-            , slide: function (event, ui) {
+            range: "min",
+            value: 5000,
+            min: 1,
+            max: 9900,
+            slide: function (event, ui) {
                 chance = ui.value;
-                $("#amount-two").val(ui.value + "%");
-                $("#less-than-wins").val(ui.value * 100);
+                $("#amount-two").val(ui.value / 100 + "%");
+                $("#less-than-wins").val(ui.value);
                 Refresh();
             }
         });
-        $("#amount-two").val($("#slider-dice-two").slider("value") + "%");
-        $("#amount-one").val($("#slider-dice-one").slider("value") / 10);
+        $("#amount-two").val($("#slider-dice-two").slider("value") / 100 + "%");
+        $("#amount-one").val($("#slider-dice-one").slider("value") / 1000);
+        Refresh();
     });
     /* END SLIDER UI */
     /* POPUP */
@@ -83,15 +126,15 @@ $(document).ready(function () {
     });
     // Popup window
     $('.popup-with-move-anim').magnificPopup({
-        type: 'inline'
-        , fixedContentPos: false
-        , fixedBgPos: true
-        , overflowY: 'auto'
-        , closeBtnInside: true
-        , preloader: false
-        , midClick: true
-        , removalDelay: 300
-        , mainClass: 'my-mfp-slide-bottom'
+        type: 'inline',
+        fixedContentPos: false,
+        fixedBgPos: true,
+        overflowY: 'auto',
+        closeBtnInside: true,
+        preloader: false,
+        midClick: true,
+        removalDelay: 300,
+        mainClass: 'my-mfp-slide-bottom'
     });
 });
 /* TABLE */
@@ -150,8 +193,7 @@ function updateTable() {
             // Show the currently visible column
             showCurrentlyVisible();
         }
-    }
-    else {
+    } else {
         if (table.getAttribute('data-comparing') == 'active') {
             // Turn off comparing    
             table.setAttribute('data-comparing', '');

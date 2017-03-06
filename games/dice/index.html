@@ -142,7 +142,19 @@
 									<div class="col-md-4">
 										<div class="player-stats">
 											<p class="label-numbers">Total Rolls Made</p>
-											<h2 class="status-numbers">456,332,817</h2>
+											<h2 class="status-numbers" id="total-rolls">.:.:.::.</h2>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="player-stats">
+											<p class="label-numbers"></p>
+											<h2 class="status-numbers" id="contract"></h2>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="player-stats">
+											<p class="label-numbers">Total Money Paid</p>
+											<h2 class="status-numbers" id="total-paid">..::. ETH</h2>
 										</div>
 									</div>
 								</div>
@@ -152,11 +164,11 @@
 									<div class="clearfix">
 										<div class="wrapper-slider__item">
 											<label for="your-balance">Your Balance</label>
-											<input type="text" value="2.00000000" id="your-balance">
+											<input type="text" value=".::::." id="your-balance" readonly>
 										</div>
 										<div class="wrapper-slider__item">
 											<label for="amount-one">Bet amount</label>
-											<input type="text" id="amount-one" readonly>
+											<input type="text" value=".::::." id="amount-one">
 										</div>
 									</div>
 									<div class="slider-dice__wrapper">
@@ -168,7 +180,7 @@
 							<div class="col-md-4">
 								<div class="wrapper-slider">
 									<label for="profit-on-win">Profit on Win</label>
-									<input type="text" value="2" id="profit-on-win">
+									<input type="text" value=".::::." id="profit-on-win" readonly>
 									<label id="label" for="roll-dice">
 										Click Roll Dice to place your bet:
 									</label>
@@ -179,8 +191,8 @@
 								<div class="wrapper-slider">
 									<div class="clearfix">
 										<div class="wrapper-slider__right-item">
-											<label for="less-than-wins">Less than wins</label>
-											<input type="text" value="32768" id="less-than-wins">
+											<label for="less-than-wins">0 - 9900</label>
+											<input type="text" value="5000" id="less-than-wins">
 										</div>
 										<div class="wrapper-slider__right-item">
 											<label for="amount-two">Win Chance</label>
@@ -188,7 +200,7 @@
 										</div>
 										<div class="wrapper-slider__right-item">
 											<label>Payout</label>
-											<input type="text" id="payout" value="x1.96200">
+											<input type="text" id="payout" value="x.::::." readonly>
 										</div>
 									</div>
 									<div class="slider-dice__wrapper">
@@ -198,14 +210,23 @@
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-4 col-md-offset-4">
+								<div class="player-stats">
+								<h3 class="status-numbers">TRANSACTION:</h3>
+								<h3 class="status-numbers" id="Tx">..:.::.</h3>
+								</div>
+							</div>
+						</div>
 					</div>
+					
 					<div class="container">
 						<div class="wrapper-dice_table">
 							<table class="dice-table">
 								<thead>
 									<tr>
-										<th>TIMESTAMP / PLAYER</th>
-										<th>BET RANGE / LUCKY NUMBER</th>
+										<th>TRANSACTION / PLAYER</th>
+										<th>WIN CHANCE</th>
 										<th>OUTCOME</th>
 										<th>BET AMOUNT</th>
 										<th>PAYOUT</th>
@@ -213,7 +234,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
+									<!--<tr>
 										<td>
 											<span class="tbl-span">less than a minute ago</span>
 											<a href="#">Alpha05358</a>
@@ -240,7 +261,7 @@
 												-0.00000500 BTC
 											</a>
 										</td>
-									</tr>
+									</tr>-->
 								</tbody>
 							</table>
 						</div>
@@ -266,6 +287,7 @@
 						<li><a href="https://daocasino.slack.com">Join Slack</a></li>
 						<li><a href="https://twitter.com/daocasino">Twitter</a></li>
 						<li><a href="https://github.com/DaoCasino">GitHub</a></li>
+						
 
 					</ul>
 				</nav>
@@ -316,7 +338,8 @@
 	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
 	<script src="libs/respond/respond.min.js"></script>
 	<![endif]-->
-    <script src="js/data.js"></script>
+	
+    <script src="js/data.js" async></script>
 	<script src="libs/jquery/jquery-1.11.2.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="libs/modernizr/modernizr.js"></script>
@@ -325,130 +348,12 @@
 	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 	<script src="js/eth_api.js"></script>
 	<script src="js/main.js"></script>
-	<script src="js/common.js"></script>
-	<script src="js/scrGame.js"></script>
-	
-
-	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
-	<script>
-		if (localStorage.getItem("isreg")) {
-			$("#isreg").show();
-			$("#regbut").hide();
-		} else {
-			$("#isreg").hide();
-			$("#regbut").css("visibility","visible");
-			
-		}
-
-		var secretSeed = lightwallet.keystore.generateRandomSeed();
-		$("#seed").html(secretSeed);
-		if (!localStorage.getItem("openkey")) {
-			var secretSeed = lightwallet.keystore.generateRandomSeed();
-			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
-				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-				ks.generateNewAddress(pwDerivedKey, 1);
-				var address = ks.getAddresses()[0];
-				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
-				localStorage.setItem("openkey",address);
-				localStorage.setItem("privkey",prv_key);
-
-				console.log('address and key: ', address, prv_key);
-				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
-					console.log(d);
-				});
-			});
-		}
-		
-		function wallet_open(secretSeed) { //box aerobic sweet proof warfare alone atom snake amateur spy couple side
-			lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
-				var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-				ks.generateNewAddress(pwDerivedKey, 1);
-				var address = ks.getAddresses()[0];
-				var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
-				localStorage.setItem("openkey","0x"+address);
-				localStorage.setItem("privkey",prv_key);
-				localStorage.setItem("isreg",1);
-				
-				console.log('address and key: ', address, prv_key);
-				$.get("http://faucet.ropsten.be:3001/donate/"+address,function(d){
-					console.log(d);
-					window.location='/';
-				});
-				
-			});
-		}
-		
-		
-		function setCookie(name, value, options) {
-			options = options || {};
-			options.expires = 10000000;
-			var expires = options.expires;
-
-			if (typeof expires == "number" && expires) {
-				var d = new Date();
-				d.setTime(d.getTime() + expires * 1000);
-				expires = options.expires = d;
-			}
-			if (expires && expires.toUTCString) {
-				options.expires = expires.toUTCString();
-			}
-
-			value = encodeURIComponent(value);
-
-			var updatedCookie = name + "=" + value;
-
-			for (var propName in options) {
-				updatedCookie += "; " + propName;
-				var propValue = options[propName];
-				if (propValue !== true) {
-					updatedCookie += "=" + propValue;
-				}
-			}
-
-			document.cookie = updatedCookie;
-		}
-		
-		var lochash    = location.hash.substr(1);
-		if (ref = lochash.substr(lochash.indexOf('ref_')).split('_')[1]) {
-			setCookie("ref",ref);
-		}
-
-		
-		$(".toggle-bg").click(function(){
-			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val());
-			if (!localStorage.getItem("mainnet")) {localStorage.setItem("mainnet","off");}
-			rebalance();
-		});
-		
-		
-		
-		if (localStorage.getItem("mainnet") == "on") {
-			
-			$(".free-money").addClass("free-money__enable");
-			$(".real-money").addClass("free-money__disabled");
-			rebalance();
-			$("#checked-on").click();
-			localStorage.setItem("mainnet","on");
-		} else {
-			rebalance();
-		}
-		
-		function rebalance() {	
-			$("#balance").html("? ETH");
-			setTimeout(function(){
-				var u='testnet.etherscan.io';
-				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
-				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
-					$("#balance").html(d.result/1000000000000000000+" ETH");
-					$("#your-balance").val(d.result/1000000000000000000);
-				});
-
-			},1000);
-		}
-		
-	</script>
+	<script src="../../js/common.js"></script>
+	<script src="js/gamecommon.js"async></script>
+	<script src="js/scrGame.js"></script>
+	<script src="js/INFURA.js"></script>
+	
+	
 </body>
 </html>

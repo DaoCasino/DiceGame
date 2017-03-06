@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.1"
+var version = "v. 1.0.8"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -29,8 +29,10 @@ var options_pause = false;
 var options_txt_offset = 0;
 
 var ERROR_KEYTHEREUM = 1;
-var ERROR_TRANSACTION = 2;
+var ERROR_BUF = 2;
 var ERROR_KEY = 3;
+var ERROR_BANK = 4;
+var ERROR_TRANSACTION = 5;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
@@ -109,7 +111,7 @@ function initGame() {
 					bgLoading.y = _H/2 - bgLoading.height/2;
 				});
 		LoadBack.addChild(bgLoading);
-		var w = 270;
+		var w = 400;
 		LoadPercent = addText("Game loading", 30, "#FFFFFF", "#000000", "center", w, 2.5);
 		LoadPercent.x = _W/2;
 		LoadPercent.y = _H/2 + 120;
@@ -127,6 +129,7 @@ function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
 	preloader.add("bgGame", "images/bg/bgGame.jpg");
+	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("icoKey", "images/items/icoKey.png");
 	preloader.add("icoEthereum", "images/items/icoEthereum.png");
@@ -381,7 +384,7 @@ function get_normal_time(ms){
 */
 function toFixed(value, precision){
 	precision = Math.pow(10, precision);
-	return Math.ceil(value * precision) / precision;
+	return Math.round(value * precision) / precision;
 }
 
 function numToHex(num) {
@@ -550,6 +553,10 @@ function showLevels() {
 }
 function showTest() {
 	addScreen("test");
+}
+function showHome() {
+	var url = "/";
+	window.open(url, "_self"); // "_blank",  "_self"
 }
 
 function addScreen(name) {

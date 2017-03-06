@@ -24,7 +24,7 @@
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
+	
 	<link rel="stylesheet" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" href="css/main.min.css" />
 	<link rel="stylesheet" href="css/fonts.css" />
@@ -224,7 +224,7 @@
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="#popup-games" class="item-games popup-with-move-anim">
+							<a href="/games/dice" class="item-games">
 								<img src="img/img-game2.jpg" alt="">
 								<span>DICE</span>
 							</a>
@@ -267,7 +267,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="container">
+				<div style='display:none' class="container">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="table-result">
@@ -408,7 +408,7 @@
 	function addGame(gamer,game,cur,pay) {
 	$('#resentwinners tr:first').before('<tr><td>'+gamer+'</td><td>'+game+'</td><td>'+cur+'</td><td>'+pay+'</td></tr>');
 	}
-		
+		/*
 	$.get("//api.dao.casino/daohack/lastgames.php",function(d){
 		console.log(d);
 		var h = 0;
@@ -418,9 +418,11 @@
 				if (h++<4) addGame(x.addr,'HackDAO',"ETH",x.pay);
 			}
 		});
+		
 		//if (d.addr == '')
 		
 	},"json");
+		*/
 								</script>
 </body>
 </html>

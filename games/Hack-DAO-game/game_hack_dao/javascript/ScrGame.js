@@ -131,6 +131,7 @@ ScrGame.prototype.init = function() {
 	
 	obj_game["game"] = this;
 	obj_game["balance"] = 0;
+	obj_game["balanceBank"] = 0;
 	
 	this.addChild(this.back_mc);
 	this.addChild(this.game_mc);
@@ -170,6 +171,7 @@ ScrGame.prototype.init = function() {
 	this.createGUI();
 	this.createAccount();
 	this.sendRequest("getBalance");
+	this.sendRequest("getBalanceBank");
 	this.showWndStart();
 	
 	this.interactive = true;
@@ -559,6 +561,9 @@ ScrGame.prototype.showError = function(value) {
 		case ERROR_KEY:
 			str = "OOOPS! \n The key is not valid."
 			break;
+		case ERROR_BANK:
+			str = "OOOPS! \n No money in the bank."
+			break;
 		default:
 			str = "ERR: " + value;
 			break;
@@ -895,6 +900,8 @@ ScrGame.prototype.startGameF = function() {
 		if(bet > obj_game["balance"] && options_ethereum &&
 		options_debug == false){
 			obj_game["game"].warningBalance();
+		} else if(betEth*2 > obj_game["balanceBank"]){
+			obj_game["game"].showError(ERROR_BANK);
 		} else {
 			if(options_ethereum){
 				obj_game["game"].startGameEth();
@@ -1166,6 +1173,7 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 	var method = "";
 	switch(name){
 		case "getBalance":
+		case "getBalanceBank":
 			method = "eth_getBalance";
 			break;
 	}
@@ -1229,6 +1237,10 @@ ScrGame.prototype.sendRequest = function(value) {
 			if(openkey){
 				this.sendInfuraRequest("getBalance", openkey);
 			}
+		} else if(value == "getBalanceBank"){
+			if(openkey){
+				this.sendInfuraRequest("getBalanceBank", openkey);
+			}
 		}
 	}
 }
@@ -1278,6 +1290,8 @@ ScrGame.prototype.response = function(command, value) {
 				this.bSendRequest = false;
 			}
 		}
+	} else if(command == "getBalanceBank"){
+		obj_game["balanceBank"] = Number(value);
 	}
 }
 
