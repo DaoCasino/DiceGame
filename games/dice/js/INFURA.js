@@ -77,7 +77,7 @@ function startGame() {
                                 if (startGame == undefined) {
         $("#label").text("Sorry, transaction failed");
     } else {
-        $("#Tx").html('<a target="_blank" href="https://kovan.etherscan.io/tx/' + lastTx + '">' + lastTx + '</a>')
+        $("#Tx").html('<a target="_blank" href="https://kovan.etherscan.io/tx/' + lastTx + '">...' + lastTx.slice(4,12) + '...</a>')
         disabled(true);
         $("#label").text("Please, wait . . . ");
         game = true;
@@ -112,7 +112,6 @@ function startGame() {
                             },
                             success: function (d) {
                                 var result = hexToNum(d.result);
-                                console.log(d);
                                 if (result == 0) {
                                     console.log("идет игра");
                                 } else if (result == 1) {

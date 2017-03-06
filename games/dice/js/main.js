@@ -1,4 +1,4 @@
-var balance = 2;
+var balance = ".::::.";
 var _idGame = "";
 var urlBalance = ""; //balance
 //var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3";
@@ -50,7 +50,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.2a kovan") // VERSION !
+    console.log("version 0.2b kovan") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -204,7 +204,7 @@ setInterval(function () {
     $("#your-balance").val(balance);
     $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
     //console.log(balance);
-}, 3000);
+}, 2000);
 
 
 
