@@ -2,7 +2,7 @@ var balance = 2;
 var _idGame = "";
 var urlBalance = ""; //balance
 var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
-var betEth = 0.1; //0,2 ставка эфира
+var betEth = 0.2; //0,2 ставка эфира
 var mainet, openkey, privkey;
 var chance = 5000;
 var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -49,7 +49,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.1") // VERSION !
+    console.log("version 0.1c") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)

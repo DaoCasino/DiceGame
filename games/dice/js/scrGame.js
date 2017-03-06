@@ -1,8 +1,8 @@
 $(document).ready(initGame());
 
 function Refresh() {
-    $("#profit-on-win").val(((betEth * 10000 / chance) - betEth).toFixed(4));
-    $("#payout").val("x" + (9900 / chance).toFixed(3));
+    $("#profit-on-win").val(((betEth * 9920 / chance) - betEth).toFixed(4));
+    $("#payout").val("x" + (9920/ chance).toFixed(3));
 
 };
 

@@ -1,5 +1,10 @@
 $(document).ready(function () {
 
+$('input').keypress(function(e){
+    if(e.which == 13){
+        $(this).blur();
+    }
+})
 
     $(document).ready(function () {
         $('input').keypress(function (e) {
@@ -31,8 +36,8 @@ $(document).ready(function () {
         $('#amount-one').change(function () {
             var value = $("#amount-one").val();
 
-            if (value > 2) {
-                value = balance
+            if (value > balance) {
+                value = balance-0.02
                 betEth = balance 
 
             };
