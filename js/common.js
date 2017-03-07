@@ -142,7 +142,9 @@ if (localStorage.getItem("isreg")) {
 		$(".toggle-bg").click(function(){
 
 			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val());
+			mainnet = localStorage.getItem('mainnet');
 			if (!localStorage.getItem("mainnet")) {localStorage.setItem("mainnet","off");}
+			
 			rebalance();
 		});
 		

@@ -20,7 +20,7 @@
 // };
 
 
-
+var Timer;
 
 
 function startGame() {
@@ -72,14 +72,14 @@ function startGame() {
                             success: function (d) {
                                 console.log("Транзакция отправлена в сеть:", d.result);
                                 lastTx = d.result;
-                                if (startGame == undefined) {
+                                if (lastTx == undefined) {
                                     $("#label").text("Sorry, transaction failed");
                                 } else {
                                     $("#Tx").html('<a target="_blank" href="https://kovan.etherscan.io/tx/' + lastTx + '">...' + lastTx.slice(4, 12) + '...</a>')
                                     disabled(true);
                                     $("#label").text("Please, wait . . . ");
                                     game = true;
-                                    var Timer = setInterval(function () {
+                                    Timer = setInterval(function () {
                                         $.ajax({
                                             method: "POST",
                                             url: "http://kovan.etherscan.io/api",
@@ -120,6 +120,7 @@ function startGame() {
                                                                 TotalPaid();
                                                                 $("#label").text("YOU WIN!!! ");
                                                                 GetLogs();
+                                                                
                                                                 clearInterval(Timer);
                                                             } else if (result == 2) {
                                                                 console.log("YOU LOSER!");
@@ -128,6 +129,7 @@ function startGame() {
                                                                 TotalRolls();
                                                                 TotalPaid();
                                                                 GetLogs();
+                                                                
                                                                 $("#label").text("YOU LOSE!!! ");
                                                                 clearInterval(Timer);
                                                             } else if (result == 3) {
@@ -137,6 +139,7 @@ function startGame() {
                                                                 TotalRolls();
                                                                 TotalPaid();
                                                                 GetLogs();
+                                                                
                                                                 $("#label").text("Sorry, dont money in bank");
                                                                 clearInterval(Timer);
                                                             }

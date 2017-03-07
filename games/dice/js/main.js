@@ -3,7 +3,7 @@ var urlBalance = ""; //balance
 //var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; TESTNET
 var addressContract = "0x7f17ce46069c05e85eee74a2ff56fb6513377389"; // KOVAN
 var betEth = 0.2; //0,2 ставка эфира
-var mainet, openkey, privkey;
+var mainnet, openkey, privkey;
 var chance = 5000;
 //var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlEtherscan = "http://kovan.etherscan.io/api";
@@ -45,32 +45,56 @@ function isLocalStorageAvailable() {
 
 function loadData() {
     if (isLocalStorageAvailable()) {
-        mainet = localStorage.getItem('mainnet')
+        mainnet = localStorage.getItem('mainnet')
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.2c kovan") // VERSION !
-    console.log("mainet:", mainet)
+    console.log("version 0.3 kovan") // VERSION !
+    console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
-}
+};
 
 function setContract() {
     if (mainnet == "on") {
-        urlEtherscan = "http://mainnet.etherscan.io/api";
-        addressContract = "0xb7c90df0888fee75ecfc8e85ed35fcd6ea1f3370";
-
-
+        urlEtherscan = "http://api.etherscan.io/api";
+        addressContract = "0xba2f1399df21c75ce578630ff9ed9285b2146b8d";
     }
-}
+    else if(mainnet == "off"){
+        urlEtherscan = "http://kovan.etherscan.io/api";
+        addressContract = "0x7f17ce46069c05e85eee74a2ff56fb6513377389";
+    }
+};
+
+function getCount(){
+     $.ajax({
+            type: "POST",
+            url: urlEtherscan,
+            data: {
+                module: "proxy",
+                action: "eth_call",
+                // address: openkey,
+                data: "0x9288cebc000000000000000000000000" + openkey.substr(2),
+                to: addressContract,
+                // tag: "latest"
+            },
+            success: function (d) {
+                count = hexToNum(d.result);
+                console.log("old_count", count);
+            }
+        });
+};
 
 function initGame() {
     $("#contract").append('<a target="_blank" href="https://kovan.etherscan.io/address/' + addressContract + '">To contract</a>')
-    TotalRolls();
-    TotalPaid();
+   
     Refresh();
     loadData();
     GetLogs();
+    setContract();
+    getCount();
+    TotalRolls();
+    TotalPaid();
     $("#openkey").append(openkey);
     // $.ajax({
     //     type: "POST",
@@ -91,23 +115,26 @@ function initGame() {
     //     }
     // })
 
-    $.ajax({
-        type: "POST",
-        url: urlEtherscan,
-        data: {
-            module: "proxy",
-            action: "eth_call",
-            // address: openkey,
-            data: "0x9288cebc000000000000000000000000" + openkey.substr(2),
-            to: addressContract,
-            // tag: "latest"
-        },
-        success: function (d) {
-            count = hexToNum(d.result);
-            console.log("old_count", count);
-        }
-    });
+    // $.ajax({
+    //     type: "POST",
+    //     url: urlEtherscan,
+    //     data: {
+    //         module: "proxy",
+    //         action: "eth_call",
+    //         // address: openkey,
+    //         data: "0x9288cebc000000000000000000000000" + openkey.substr(2),
+    //         to: addressContract,
+    //         // tag: "latest"
+    //     },
+    //     success: function (d) {
+    //         count = hexToNum(d.result);
+    //         console.log("old_count", count);
+    //     }
+    // });
 };
+
+
+
 
 function button(status) {
     if (status) {
@@ -201,10 +228,11 @@ setInterval(function () {
         $("#label").text(" NO MONEY ");
     } else if (balance > 0.1 && !game) {
         disabled(false);
-        //$("#label").text("Click Roll Dice to place your bet:");
+        $("#label").text("Click Roll Dice to place your bet:");
 
     }
     $("#your-balance").val(balance);
     $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
-    //console.log(balance);
-}, 2000);
+}, 1000);
+
+
