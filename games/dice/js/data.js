@@ -1,14 +1,12 @@
-var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-
 function GetLogs() {
     $(".dice-table>tbody").empty();
     $.ajax({
         type: "POST",
-        url: "http://kovan.etherscan.io/api",
+        url: urlEtherscan,
         data: {
             module: "logs",
              action: "getLogs",
-             fromBlock: 7500,
+             fromBlock: 75000,
             toBlock: "latest",
             address: addressContract
         },
@@ -37,7 +35,7 @@ function GetLogs() {
                 }
             }
             if (arGame.length > 10) {
-                for (var i = arGame.length - 10; i <= arGame.length - 1; i++) {
+                for (var i = arGame.length - 10; i < arGame.length; i++) {
                     if (arGame[i].length > 5) {
                         var tx = arGame[i][0]; 
                         var player = arGame[i][1].substr(24);

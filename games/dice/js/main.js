@@ -1,14 +1,13 @@
 var balance = ".::::.";
-var _idGame = "";
 var urlBalance = ""; //balance
-//var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3";
-var addressContract = "0x7f17ce46069c05e85eee74a2ff56fb6513377389"; // cotract //0x5af6988f3d44bfbe3580d25ac4f5d187486b007f
+//var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; TESTNET
+var addressContract = "0x7f17ce46069c05e85eee74a2ff56fb6513377389"; // KOVAN
 var betEth = 0.2; //0,2 ставка эфира
 var mainet, openkey, privkey;
 var chance = 5000;
-var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+//var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+var urlEtherscan = "http://kovan.etherscan.io/api";
 var lastTx;
-var startRoll = true;
 var count;
 var game = false;
 // var maxBet = 2000;
@@ -50,7 +49,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.2b kovan") // VERSION !
+    console.log("version 0.2c kovan") // VERSION !
     console.log("mainet:", mainet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -58,20 +57,21 @@ function loadData() {
 
 function setContract() {
     if (mainnet == "on") {
-        urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+        urlEtherscan = "http://mainnet.etherscan.io/api";
         addressContract = "0xb7c90df0888fee75ecfc8e85ed35fcd6ea1f3370";
+
+
     }
 }
 
 function initGame() {
     $("#contract").append('<a target="_blank" href="https://kovan.etherscan.io/address/' + addressContract + '">To contract</a>')
-   
     TotalRolls();
     TotalPaid();
     Refresh();
     loadData();
     GetLogs();
-    $("#openkey").append("openkey: "+ openkey);
+    $("#openkey").append(openkey);
     // $.ajax({
     //     type: "POST",
     //     url: urlInfura,
@@ -93,12 +93,12 @@ function initGame() {
 
     $.ajax({
         type: "POST",
-        url: "http://kovan.etherscan.io/api",
+        url: urlEtherscan,
         data: {
             module: "proxy",
             action: "eth_call",
-           // address: openkey,
-            data: "0x9288cebc000000000000000000000000"+openkey.substr(2),
+            // address: openkey,
+            data: "0x9288cebc000000000000000000000000" + openkey.substr(2),
             to: addressContract,
             // tag: "latest"
         },
@@ -136,7 +136,7 @@ function disabled(status) {
 function TotalRolls() {
     $.ajax({
         method: "POST",
-        url: "http://kovan.etherscan.io/api",
+        url: urlEtherscan,
         data: {
             module: "proxy",
             action: "eth_call",
@@ -157,7 +157,7 @@ function TotalRolls() {
 function TotalPaid() {
     $.ajax({
         method: "POST",
-        url: "http://kovan.etherscan.io/api",
+        url: urlEtherscan,
         data: {
             module: "proxy",
             action: "eth_call",
@@ -176,23 +176,26 @@ function TotalPaid() {
 
 
 setInterval(function () {
-    $.ajax({
-        method: "POST",
-        url: "http://kovan.etherscan.io/api",
-        data: {
-            module: "account",
-            action: "balance",
-            address: openkey,
-            tag: "latest"
-        }
-    
-    , success: function (d) {
-       // console.log(d.result);
-        balance = d.result/1000000000000000000;
+    // $.ajax({
+    //     method: "POST",
+    //     url: urlEtherscan,
+    //     data: {
+    //         module: "account",
+    //         action: "balance",
+    //         address: openkey,
+    //         tag: "latest"
+    //     }
 
-    }});
-    //balance = +balance.substr(0, balance.length - 4);
-    //balance = +balance.toFixed(6);
+    //     ,
+    //     success: function (d) {
+    //         // console.log(d.result);
+    //         balance = d.result / 1000000000000000000;
+
+    //     }
+    // });
+    balance = $('#balance').html();
+    balance = +balance.substr(0, balance.length - 4);
+    balance = +balance.toFixed(8);
     if (balance < 0.1 && !game) {
         disabled(true);
         $("#label").text(" NO MONEY ");
@@ -205,6 +208,3 @@ setInterval(function () {
     $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
     //console.log(balance);
 }, 2000);
-
-
-

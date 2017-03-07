@@ -14,8 +14,17 @@ $('input').keypress(function(e){
     $(document).ready(function () {
         $('input#less-than-wins').keypress(function (e) {
             if (!(e.which == 8 || (e.which > 47 && e.which < 58))) return false;
+
         });
-    });
+   
+
+    $('input').on('input keyup change', function()  {
+    var value = this.value;
+    if (/^\.|\d+\..*\.|[^\d\.{1}]/.test(value)  || value > balance )
+        this.value = value.slice(0,-1);                   
+});
+ });
+
 
     /* SLIDER UI */
     $(function () {

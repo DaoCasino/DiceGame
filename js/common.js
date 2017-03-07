@@ -140,6 +140,7 @@ if (localStorage.getItem("isreg")) {
 
 		
 		$(".toggle-bg").click(function(){
+
 			localStorage.setItem("mainnet",$("input[name=toggle]:checked").val());
 			if (!localStorage.getItem("mainnet")) {localStorage.setItem("mainnet","off");}
 			rebalance();
@@ -161,7 +162,7 @@ if (localStorage.getItem("isreg")) {
 		function rebalance() {	
 			if (!totalwei) $("#balance").html("? ETH");
 			setTimeout(function(){
-				var u='testnet.etherscan.io';
+				var u='kovan.etherscan.io';
 				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
 				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
 					totalwei = d.result;
