@@ -4,7 +4,7 @@ function GetLogs() {
     $(".dice-table>tbody").empty();
     $.ajax({
         type: "POST",
-        url: "http://kovan.etherscan.io/api",
+        url: "https://kovan.etherscan.io/api",
         data: {
             module: "logs",
              action: "getLogs",
