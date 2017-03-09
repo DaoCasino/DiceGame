@@ -1,4 +1,5 @@
 pragma solidity ^0.4.2;
+
 import "Deck.sol";
 import "Owned.sol";
 
@@ -371,6 +372,10 @@ contract BlackJack is owned {
 
 	function getHouseCardsNumber() public constant returns(uint) {
 		return games[msg.sender].houseCards.length;
+	}
+
+	function getPlayerBet() public constant returns(uint) {
+		return games[msg.sender].bet;
 	}
     
 	function getGameState() public constant returns (GameState) {
