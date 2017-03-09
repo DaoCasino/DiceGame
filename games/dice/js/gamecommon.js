@@ -6,6 +6,7 @@ $(document).ready(function () {
 			getCount();
 			 TotalPaid();
 			 TotalRolls();
+            getContractBalance()
 		});
 
 
