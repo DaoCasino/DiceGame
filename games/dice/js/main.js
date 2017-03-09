@@ -24,20 +24,27 @@ var contractTable;
  * precision - Количество знаков после запятой.
  */
 
+//0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051
+
 
 function getGameContract() {
     var arr;
     $.ajax({
-        url: "https://docs.google.com/spreadsheets/d/1hFRNifsXchhf1OR4pM6059ceuku05hf_FJPfp0wmceE/pub?output=csv",
+        type: "POST",
+        url: "https://testnet.etherscan.io/api",
+        data:{
+        module: "proxy",
+        action: "eth_call",
+        data: "0x3d185fc500000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003",
+        to:"0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051"
+        },
         success: function (d) {
-            arr = d.split("\n");
-            for (var n = 0; n < arr.length; n++) {
-                arr[n] = arr[n].split(",");
-            }
-            localStorage.setItem('testnetAddress', arr[2][1]);
-            localStorage.setItem('kovanAddress', arr[2][2]);
-            localStorage.setItem('mainnetAddress', arr[2][3]);
-            contractTable = arr;
+            var contract = d.result;
+            console.log(d, d.result);
+           // localStorage.setItem('testnetAddress', arr[2][1]);
+            localStorage.setItem('kovanAddress',"0x"+contract.substr(26));
+            //localStorage.setItem('mainnetAddress', arr[2][3]);
+            
         }
     }) 
 };
@@ -82,7 +89,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.35b Kovan") // VERSION !
+    console.log("version 0.35c Kovan") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
