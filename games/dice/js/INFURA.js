@@ -118,8 +118,9 @@ function startGame() {
                                                                 game = false;
                                                                 TotalRolls();
                                                                 TotalPaid();
-                                                                $("#label").text("YOU WIN!!! ");
+                                                                $("#random").text("YOU WIN!!! ");
                                                                 GetLogs();
+                                                                getContractBalance();
                                                                 
                                                                 clearInterval(Timer);
                                                             } else if (result == 2) {
@@ -129,8 +130,9 @@ function startGame() {
                                                                 TotalRolls();
                                                                 TotalPaid();
                                                                 GetLogs();
+                                                                getContractBalance();
                                                                 
-                                                                $("#label").text("YOU LOSE!!! ");
+                                                                $("#random").text("YOU LOSE!!! ");
                                                                 clearInterval(Timer);
                                                             } else if (result == 3) {
                                                                 console.log("Sorry, dont money in bank");
@@ -139,8 +141,8 @@ function startGame() {
                                                                 TotalRolls();
                                                                 TotalPaid();
                                                                 GetLogs();
-                                                                
-                                                                $("#label").text("Sorry, dont money in bank");
+                                                                getContractBalance();
+                                                                $("#random").text("Sorry, dont money in bank");
                                                                 clearInterval(Timer);
                                                             }
                                                         }

@@ -1,15 +1,18 @@
 var balance = ".::::.";
 var urlBalance = ""; //balance
 //var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; TESTNET
-var addressContract = "0x7f17ce46069c05e85eee74a2ff56fb6513377389"; // KOVAN
+var addressContract = "0x0cf37d2d45427a1380db12c9b352d6f083143817"; // KOVAN
+//0xba2f1399df21c75ce578630ff9ed9285b2146b8d  TESTNET ETHERSCAN
 var betEth = 0.2; //0,2 ставка эфира
 var mainnet, openkey, privkey;
 var chance = 5000;
 //var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-var urlEtherscan = "http://kovan.etherscan.io/api";
+var urlEtherscan = "https://kovan.etherscan.io/api";
 var lastTx;
 var count;
 var game = false;
+var sends;
+var paids;
 // var maxBet = 2000;
 /*
  * value - Дробное число.
@@ -49,7 +52,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.3 kovan") // VERSION !
+    console.log("version 0.35 Kovan") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -62,7 +65,7 @@ function setContract() {
     }
     else if(mainnet == "off"){
         urlEtherscan = "http://kovan.etherscan.io/api";
-        addressContract = "0x7f17ce46069c05e85eee74a2ff56fb6513377389";
+        addressContract = "0x0cf37d2d45427a1380db12c9b352d6f083143817";
     }
 };
 
@@ -85,6 +88,44 @@ function getCount(){
         });
 };
 
+function getContractBalance(){
+     $.ajax({
+            type: "POST",
+            url: urlEtherscan,
+            data: {
+                address: addressContract,
+                module: "account",
+                action: "balance",
+                tag: "latest"
+               
+            },
+            success: function (d) {
+                $('#contractBalance').html((d.result/1000000000000000000).toFixed(5));
+            }
+        });
+};
+// РАЗОБРАТЬСЯ С SHOWRND !!!!
+function ShowRnd(){
+    $.ajax({
+            type: "POST",
+            url: urlEtherscan,
+            data: {
+                module: "proxy",
+                action: "eth_call",
+                //address: openkey,
+                data: "0xeb54cd4b000000000000000000000000" + openkey.substr(2),
+                to: addressContract,
+                // tag: "latest"
+            },
+            success: function (d) {
+                count = hexToNum(d.result);
+                console.log(count, d.result, d);
+                $('#random').html(count);
+            }
+        });
+}
+
+
 function initGame() {
     $("#contract").append('<a target="_blank" href="https://kovan.etherscan.io/address/' + addressContract + '">To contract</a>')
    
@@ -95,6 +136,7 @@ function initGame() {
     getCount();
     TotalRolls();
     TotalPaid();
+    getContractBalance();
     $("#openkey").append(openkey);
     // $.ajax({
     //     type: "POST",
@@ -195,11 +237,31 @@ function TotalPaid() {
         },
         success: function (d) {
             var _count = hexToNum(d.result);
-            $("#total-paid").html((_count / 10000000000000000000).toFixed(6) + ' ETH');
+            paids = (_count / 10000000000000000000).toFixed(6);
+            $("#total-paid").html( paids + ' ETH');
+            $.ajax({
+        method: "POST",
+        url: urlEtherscan,
+        data: {
+            module: "proxy",
+            action: "eth_call",
+            address: openkey,
+            data: "0xf6353590",
+            to: addressContract,
+            tag: "latest"
+        },
+        success: function (d) {
+            var _count = hexToNum(d.result);
+            sends = (_count / 10000000000000000000).toFixed(6);
+            $("#total-send").html(sends + ' ETH ('+ ((paids/sends)*100).toFixed(2)  +'%)');
+        }
+    });
         }
     });
 
 };
+
+
 
 
 setInterval(function () {
