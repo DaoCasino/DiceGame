@@ -58,14 +58,38 @@
                         <input type='text' id='contractid' name='' placeholder='0x...' class='form-control' value=''>
                         <Br>
 
-                        <input type='button' name='' id="send" class='btn btn-primary' value='Сохранить'> <input type='button'
-                            name='' id="show" class='btn btn-success' value='показать'>
+                        <input type='button' name='' id="send" class='btn btn-primary' value='Сохранить'> 
+                        <!--<input type='button'
+                            name='' id="show" class='btn btn-success' value='показать'>-->
                         <!--По нажатию кнопки сохранить должен выполнятся sendrawtransaction к контракту list который ты вчера написал
 						при этом в аргументы передается то что выбрал чел в этой форме и ввел (не забудь убрать 0x.. в адресе). 
 						<br>-->
                     </form>
 
                     <script>
+
+                        function show() {
+                            gameid = $("#gameid").val();
+                            networkid = $("#networkid").val();
+                            contract = $("#contractid").val();
+                            $.ajax({
+                                type: "POST",
+                                url: urlApi,
+                                data: {
+                                    module: "proxy",
+                                    action: "eth_call",
+                                    data: "0x3d185fc5" + pad(numToHex(gameid), 64) + pad(numToHex(
+                                        networkid), 64),
+                                    to: "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051"
+                                },
+                                success: function (d) {
+                                    contract = d.result;
+                                    $("#contractid").val("0x"+contract.substr(26));
+                                }
+                            })
+
+                        };
+
                         urlApi = "https://testnet.etherscan.io/api";
                         var openkey, privkey;
                         var gameid, networkid, contract;
@@ -76,10 +100,12 @@
                         $('#gameid').on('input keyup change blur select', function () {
                             var value = this.value;
                             gameid = value;
+                            show();
                         });
                         $('#networkid').on('input keyup change', function () {
                             var value = this.value;
                             networkid = value;
+                            show();
                         });
 
                         $('input#contractid').on('input keyup change', function () {
@@ -127,28 +153,7 @@
                         };
                         loadData();
 
-                        $("#show").click(function () {
-                            gameid = $("#gameid").val();
-                            networkid = $("#networkid").val();
-                            contract = $("#contractid").val();
-                            $.ajax({
-                                type: "POST",
-                                url: urlApi,
-                                data: {
-                                    module: "proxy",
-                                    action: "eth_call",
-                                    data: "0x3d185fc5" + pad(numToHex(gameid), 64) + pad(numToHex(
-                                        networkid), 64),
-                                    to: "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051"
-                                },
-                                success: function (d) {
-                                    contract = d.result;
-                                    console.log(d, d.result);
-                                    $("#contractid").val(contract.substr(2));
-                                }
-                            })
-
-                        });
+                        $("#show").click();
 
                         $("#send").click(function () {
                             gameid = $("#gameid").val();
@@ -214,9 +219,7 @@
                         });
                     </script>
                     <Br><br>
-                    <a href='#' onclick='$("#iframe").toggle();$("#iframe").val($("#iframe").val().replace("{link}",window.location));return false'>For webmasters</a><br>
-                    <textarea id='iframe' style='width:100%;height:60px;display:none'><!-- insert this code to your site for enable ETC wallet feature -->
-<iframe src='{link}' border=0 style='width:100%;height:500px'></iframe></textarea>
+
                 </div>
             </div>
 
