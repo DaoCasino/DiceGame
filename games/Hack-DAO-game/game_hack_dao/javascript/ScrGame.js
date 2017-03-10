@@ -585,7 +585,12 @@ ScrGame.prototype.warningBalance = function() {
 	var bet = toFixed(betslevel[this.curLevel].bet, 4);
 	var str = "Refill your account in the amount of " + bet + " ETH."
 	var addStr = "Refill";
-	this.createWndInfo(str, this.refillBalance, addStr);
+	var func = this.refillBalance;
+	if(document.location.href == "https://dao.casino/hackdao/"){
+		addStr = "OK";
+		func = copyToClipboard;
+	}
+	this.createWndInfo(str, func, addStr);
 	this.btnStart.visible = true;
 }
 
