@@ -39,8 +39,8 @@ function GetLogs() {
                 }
             }
            
-            if (arGame.length > 7) {
-                for (var i = arGame.length - 7; i < arGame.length; i++) {
+            if (arGame.length > 9) {
+                for (var i = arGame.length - 10; i < arGame.length; i++) {
                     if (arGame[i].length > 5) {
                         var tx = arGame[i][0];
                         var player = arGame[i][2].substr(24);
