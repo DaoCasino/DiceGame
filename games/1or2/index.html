@@ -1,0 +1,242 @@
+<html>
+
+<head>
+<script src='/js/lightwallet.js'></script>
+<meta charset="utf-8"> 
+<script>
+var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="/games/Dice/js/eth_api.js"></script>
+</head>
+<body>
+
+ <input type='button' onclick='startGame();' value='Start game'>
+ 
+<div style='display:none' id='gamvca'>
+<h2>Ugaday chislo 1,2,3?</h2>
+<div id='console'></div>
+
+<form action='' method='post'>
+ <select onchange='roll()' id='mychoise'>
+	<option>select</option>
+	 <option>1</option>
+	 <option>2</option>
+	 <option>3</option>
+ </select> <- jmi suda
+ 
+</div>
+ 
+ 
+<br>
+ 
+</form>
+
+<div id='proff'>
+
+</div>
+<br><br><br><br><br>
+dev console:<br>
+<textarea style='width:500px;height:200px' id='gametable'></textarea> <br>
+<input type='submit' name='' class='btn' onclick='putRandom(openkey,$("#gametable").val())' value='Finish session'>
+<input type='text' name=''  id='rgen' class='form-control' disabled value='0x3ab348fa07fce0fa342cc0a201b019f75f21fb97'>
+<a href='' target='_blank' id='ff'>contract</a>
+<script>
+addressContract = "0x879f6148e53965128c36b3474874059fb0271625";
+$("#ff").prop("href","https://testnet.etherscan.io/address/"+addressContract);
+</script>
+<script>
+
+openkey = localStorage.getItem("openkey");
+privkey = localStorage.getItem("privkey");
+
+
+
+var number;
+var stack = new Array();
+
+function pingRandom(gamenumber) {
+	stack.push(gamenumber);
+	number = Math.floor(Math.random() * 2) + 1;
+	
+	hash1 = hashCode("123"+number);
+	
+	stack.push(hash1);
+	
+	return hash1;
+}
+
+function sendMyHash2R(hash2) {
+	stack.push(hash2);
+	stack.push(number);
+	return number;
+}
+
+function sendMyNumber2R(number2) {
+	stack.push(number2);
+	
+	$("#gametable").html($("#gametable").html()+stack.join(",")+"/");
+	stack = new Array();
+	
+	if (number2 == number) {
+		return "win";
+	} else {
+		return "lose";
+	}
+}
+
+var i=1;
+function roll() {
+	number2 = $("#mychoise").val();
+	//ping 
+	var hash1 = pingRandom(i);
+	var hash2 = hashCode(i+$("#mychoise").val());
+	var number1 = sendMyHash2R(hash2);//типа отправляем генератору рандома свой выбор, а в ответ получаем его число
+	
+	var result = sendMyNumber2R(number2);//ну и отправляем число рандома
+	$("#console").html($("#console").html()+"<Br>game "+i+", your choise "+number2+", random "+number+" = "+result);
+	$("#mychoise").val(0);
+	i++;
+	
+}
+
+function startGame() {
+
+$.ajax({
+	type: "POST",
+		url: urlInfura,
+		dataType: 'json',
+		async: false,
+		data: JSON.stringify({"jsonrpc":"2.0",
+							"method":"eth_getTransactionCount",
+							"params":[openkey,"latest"],
+							"id":1}),
+		success: function (d) {
+			console.log("get nonce "+d.result);
+			var options = {};
+			options.nonce = d.result;
+			options.to = addressContract;
+			// call function game() in contract
+			options.data = "0x5de1e224"+coder.encodeParams(["address"], [$("#rgen").val()]); // game();
+			console.log("options.data",options.data);
+			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+			options.gasLimit=0x927c0; //web3.toHex('600000');
+			options.value = 0;
+			
+			if(privkey){
+				if(buf == undefined){
+					console.log(ERROR_TRANSACTION);
+				} else {
+					//приватный ключ игрока, подписываем транзакцию
+					var tx = new EthereumTx(options);
+					tx.sign(new buf(privkey, 'hex'));
+
+					var serializedTx = tx.serialize().toString('hex');
+					//obj_game["game"].bSendRequest = false;
+					console.log("The transaction was signed",serializedTx);
+					
+					$.ajax({
+						type: "POST",
+						url: urlInfura,
+						dataType: 'json',
+						async: false,
+						data: JSON.stringify({"id":0,
+											"jsonrpc":'2.0',
+											"method":'eth_sendRawTransaction',
+											"params":["0x"+String(serializedTx)]}),
+						success: function (d) {
+							console.log("lighter sended");
+							
+							$("#gamvca").show();//gamvca
+						}
+					})
+				}
+			}
+		}
+	});
+	
+}
+
+
+function putRandom(player,table) {
+	console.log("кладем рандом в контракт");
+	$.ajax({
+	type: "POST",
+		url: urlInfura,
+		dataType: 'json',
+		async: false,
+		data: JSON.stringify({"jsonrpc":"2.0",
+							"method":"eth_getTransactionCount",
+							"params":[openkey,"latest"],
+							"id":1}),
+		success: function (d) {
+			console.log("get nonce "+d.result);
+			var options = {};
+			options.nonce = d.result;
+			options.to = addressContract;
+			// call function game() in contract
+			options.data = "0xa29c482d"+coder.encodeParams(["address",
+															"string"], 
+														[$("#rgen").val(),
+														$("#gametable").val()
+														]); // game();
+			console.log("options.data",options.data);
+			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+			options.gasLimit=0x927c0; //web3.toHex('600000');
+			options.value = 0;
+			
+			if(privkey){
+				if(buf == undefined){
+					console.log(ERROR_TRANSACTION);
+				} else {
+					//приватный ключ игрока, подписываем транзакцию
+					var tx = new EthereumTx(options);
+					tx.sign(new buf(privkey, 'hex'));
+
+					var serializedTx = tx.serialize().toString('hex');
+					//obj_game["game"].bSendRequest = false;
+					console.log("The transaction was signed",serializedTx);
+					
+					$.ajax({
+						type: "POST",
+						url: urlInfura,
+						dataType: 'json',
+						async: false,
+						data: JSON.stringify({"id":0,
+											"jsonrpc":'2.0',
+											"method":'eth_sendRawTransaction',
+											"params":["0x"+String(serializedTx)]}),
+						success: function (d) {
+							//console.log("gameTxHash", d.result) 
+							console.log("The transaction send:", d);
+							window.location.reload();
+						}
+					})
+				}
+			}
+		}
+	});
+	//1,"114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9","0xca35b7d915458ef540ade6068dfe2f44e8fa733c"
+}
+
+
+var hashCode = function(s) {
+    /* Simple hash function. */
+    var a = 1, c = 0, h, o;
+    if (s) {
+        a = 0;
+        /*jshint plusplus:false bitwise:false*/
+        for (h = s.length - 1; h >= 0; h--) {
+            o = s.charCodeAt(h);
+            a = (a<<6&268435455) + o + (o<<14);
+            c = a & 266338304;
+            a = c!==0?a^c>>21:a;
+        }
+    }
+    return String(a);
+};
+
+
+</script>
+</body>
+</html>
