@@ -40,7 +40,7 @@ function getGameContract() {
         },
         success: function (d) {
             var contract = d.result;
-            console.log(d, d.result);
+           // console.log(d, d.result);
            // localStorage.setItem('testnetAddress', arr[2][1]);
             localStorage.setItem('kovanAddress',"0x"+contract.substr(26));
             //localStorage.setItem('mainnetAddress', arr[2][3]);
@@ -89,7 +89,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.35c Kovan") // VERSION !
+    console.log("version 0.36 kovan") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -106,6 +106,7 @@ function setContract() {
 };
 
 function getCount() {
+    if(openkey){
     $.ajax({
         type: "POST",
         url: urlEtherscan,
@@ -122,7 +123,7 @@ function getCount() {
             console.log("old_count", count);
         }
     });
-};
+}};
 
 function getContractBalance() {
     $.ajax({
