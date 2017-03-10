@@ -22,6 +22,10 @@ library Deck {
 		return value;
 	}
 
+	function equalDenomination(uint8 card1, uint8 card2) internal constant returns (bool) {
+		return card1 / 4 == card2 / 4;
+	}
+
 	function isAce(uint8 card) internal constant returns (bool) {
 		return card / 4 == 1;
 	}
