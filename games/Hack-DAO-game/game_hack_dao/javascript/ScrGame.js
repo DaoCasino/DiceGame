@@ -581,6 +581,10 @@ ScrGame.prototype.showError = function(value) {
 	}
 }
 
+ScrGame.prototype.copyKey = function() {
+	copyToClipboard(openkey);
+}
+
 ScrGame.prototype.warningBalance = function() {
 	var bet = toFixed(betslevel[this.curLevel].bet, 4);
 	var str = "Refill your account in the amount of " + bet + " ETH."
@@ -588,7 +592,7 @@ ScrGame.prototype.warningBalance = function() {
 	var func = this.refillBalance;
 	if(document.location.href == "https://dao.casino/hackdao/"){
 		addStr = "OK";
-		func = copyToClipboard(openkey);
+		func = this.copyKey;
 	}
 	this.createWndInfo(str, func, addStr);
 	this.btnStart.visible = true;
