@@ -29,7 +29,7 @@ function startGame() {
     if (openkey) {
         $.ajax({
             method: "POST",
-            url: "http://kovan.etherscan.io/api",
+            url: "https://kovan.etherscan.io/api",
             data: {
                 module: "proxy",
                 async: false,
@@ -61,7 +61,7 @@ function startGame() {
                         console.log("The transaction was signed: " + serializedTx);
                         $.ajax({
                             method: "POST",
-                            url: "http://kovan.etherscan.io/api",
+                            url: "https://kovan.etherscan.io/api",
                             data: {
                                 async: false,
                                 module: "proxy",
@@ -84,7 +84,7 @@ function startGame() {
         var Timer = setInterval(function () {
             $.ajax({
                 method: "POST",
-                url: "http://kovan.etherscan.io/api",
+                url: "https://kovan.etherscan.io/api",
                 data: {
                     module: "proxy",
                     action: "eth_call",
@@ -101,7 +101,7 @@ function startGame() {
                         console.log("getStatusGame")
                         $.ajax({
                             method: "POST",
-                            url: "http://kovan.etherscan.io/api",
+                            url: "https://kovan.etherscan.io/api",
                             data: {
                                 module: "proxy",
                                 action: "eth_call",
