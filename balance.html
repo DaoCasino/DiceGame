@@ -139,7 +139,7 @@
 						<h3>
 							Your dao.casino account:
 						</h3>
-						<h1 id='myado'>0x....:::::.:::::.::::::.:::::.::::....::::.:::::....::...::....:::.::::::.:::.::::.::::.::::</h1>
+						<h1 id='myado' data-clipboard-target="#myado">0x....:::::.:::::.::::::.:::::.::::....::::.:::::....::...::....:::.::::::.:::.::::.::::.::::</h1>
 
 						<h3>
 							to deposit send your ether to this adress 
@@ -166,8 +166,10 @@
 						</form>
 						</div>
 					</div>
+					<script src="js/clipboard.min.js"></script>
 					<script>
 						
+						var clipboard = new Clipboard('#myado');
 	
 						function sendEther(to) {
 

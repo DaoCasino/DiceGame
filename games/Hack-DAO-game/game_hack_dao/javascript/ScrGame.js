@@ -439,7 +439,9 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.itemResult);
 	
 	var icoKey = addObj("icoKey", 40, 40);
+	icoKey._selected = false;
 	this.face_mc.addChild(icoKey);
+	this._arButtons.push(icoKey);
 	var icoEthereum = addObj("icoEthereum", 40, 80);
 	this.face_mc.addChild(icoEthereum);
 	var icoTime = addObj("icoTime", 40, 120);
@@ -581,11 +583,20 @@ ScrGame.prototype.showError = function(value) {
 	}
 }
 
+ScrGame.prototype.copyKey = function() {
+	copyToClipboard(openkey);
+}
+
 ScrGame.prototype.warningBalance = function() {
 	var bet = toFixed(betslevel[this.curLevel].bet, 4);
 	var str = "Refill your account in the amount of " + bet + " ETH."
 	var addStr = "Refill";
-	this.createWndInfo(str, this.refillBalance, addStr);
+	var func = this.refillBalance;
+	if(document.location.href == "https://dao.casino/hackdao/"){
+		addStr = "OK";
+		func = this.copyKey;
+	}
+	this.createWndInfo(str, func, addStr);
 	this.btnStart.visible = true;
 }
 
@@ -1066,7 +1077,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnNext"){
 		this.removeAllListener();
 		showLevels();
-	} else if(item_mc.name == "tfId"){
+	} else if(item_mc.name == "tfId" || item_mc.name == "icoKey"){
 		copyToClipboard(openkey);
 	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){

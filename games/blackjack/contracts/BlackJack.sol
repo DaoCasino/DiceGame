@@ -1,7 +1,6 @@
 pragma solidity ^0.4.2;
-
-import "Deck.sol";
-import "Owned.sol";
+import "./Deck.sol";
+import "./owned.sol";
 
 contract BlackJack is owned {
 	using Deck for *;
@@ -51,18 +50,18 @@ contract BlackJack is owned {
     );
 
     event GameStatus(
-      	uint8 houseScore,
-      	uint8 houseBigScore,
-      	uint8 playerScore,
-      	uint8 playerBigScore
+	  	uint8 houseScore,
+	  	uint8 houseBigScore,
+	  	uint8 playerScore,
+	  	uint8 playerBigScore
     );
 
     event Log(
-  	    uint8 value
+  		uint8 value
     );
 
-	function () payable {
-        
+	function () onlyOwner payable {
+
 	}
 
 	function gameInProgress(Game game)
@@ -86,7 +85,7 @@ contract BlackJack is owned {
 		if (gameInProgress(games[msg.sender])) {
 			throw;
 		}
-        
+
 		if (msg.value < minBet || msg.value > maxBet) {
 			throw; // incorrect bet
 		}
@@ -94,7 +93,7 @@ contract BlackJack is owned {
 			// Not enough money on the contract to pay the player.
 			throw;
 		}
-        
+
 		Game memory game = Game({
 			player: msg.sender,
 			bet: msg.value,
@@ -107,14 +106,14 @@ contract BlackJack is owned {
 			state: GameState.InProgress,
 			seed: 3,
 		});
-        
+
 		games[msg.sender] = game;
-        
+
 		// deal the cards
 		dealCard(true, games[msg.sender]);
 		dealCard(false, games[msg.sender]);
 		dealCard(true, games[msg.sender]);
-        
+
 		checkGameResult(games[msg.sender], false);
 	}
 
@@ -190,7 +189,11 @@ contract BlackJack is owned {
 		checkGameResult(games[msg.sender], true);
 		checkGameResult(splitGames[msg.sender], true);
 	}
-    
+
+	function BlackJack() {
+		// do nothing
+	}
+
 	function split()
 		public
 		payable
@@ -207,8 +210,6 @@ contract BlackJack is owned {
 		}
 
 		game.state = GameState.InProgressSplit;
-		// No clue how it compiles...
-		game.playerCards = [game.playerCards[0]];
 
 		Game memory splitGame = Game({
 			player: msg.sender,
@@ -226,11 +227,13 @@ contract BlackJack is owned {
 		splitGames[msg.sender] = splitGame;
 		splitGames[msg.sender].playerCards.push(game.playerCards[1]);
 
+		game.playerCards = [game.playerCards[0]];
+
 		// Deal extra cards in each game.
 		dealCard(true, games[msg.sender]);
 		dealCard(true, splitGames[msg.sender]);
 	}
-    
+
 	// @param finishGame - whether to finish the game or not (in case of Blackjack the game finishes anyway)
 	function checkGameResult(Game storage game, bool finishGame) private {
 		if (!gameInProgress(game)) {
@@ -332,7 +335,7 @@ contract BlackJack is owned {
 		}
 		return score + value;
 	}
-    
+
 	function isSplitAvailable() public constant returns (bool) {
 		return isSplitAvailable(games[msg.sender]);
 	}
@@ -340,7 +343,7 @@ contract BlackJack is owned {
 	function isSplitAvailable(Game game) private constant returns (bool) {
 		return game.state == GameState.InProgress && game.playerCards.length == 2 && Deck.equalDenomination(game.playerCards[0], game.playerCards[1]);
 	}
-    
+
 	function getPlayerCard(uint8 id) public constant returns(uint8) {
 		if (id < 0 || id > games[msg.sender].playerCards.length) {
 			throw;
@@ -348,15 +351,15 @@ contract BlackJack is owned {
 		return games[msg.sender].playerCards[id];
 	}
 
-	function getPlayerSplitCard(uint8 id) public constant returns(uint8) {
-		if (id < 0 || id > splitGames[msg.sender].playerCards.length) {
-			throw;
-		}
-		return splitGames[msg.sender].playerCards[id];
-	}
-	
 	function getHouseCard(uint8 id) public constant returns(uint8) {
 		if (id < 0 || id > games[msg.sender].houseCards.length) {
+			throw;
+		}
+		return games[msg.sender].houseCards[id];
+	}
+
+	function getSplitCard(uint8 id) public constant returns(uint8) {
+		if (id < 0 || id > splitGames[msg.sender].playerCards.length) {
 			throw;
 		}
 		return games[msg.sender].houseCards[id];
@@ -366,18 +369,14 @@ contract BlackJack is owned {
 		return games[msg.sender].playerCards.length;
 	}
 
-	function getPlayerSplitCardsNumber() public constant returns(uint) {
-		return splitGames[msg.sender].playerCards.length;
-	}
-
 	function getHouseCardsNumber() public constant returns(uint) {
 		return games[msg.sender].houseCards.length;
 	}
 
-	function getPlayerBet() public constant returns(uint) {
-		return games[msg.sender].bet;
+	function getSplitCardsNumber() public constant returns(uint) {
+		return splitGames[msg.sender].playerCards.length;
 	}
-    
+
 	function getGameState() public constant returns (GameState) {
 		Game memory game = games[msg.sender];
 
@@ -388,9 +387,32 @@ contract BlackJack is owned {
 
 		return game.state;
 	}
-	
-	function withdraw(uint amount) public onlyOwner {
-        if (msg.sender.send(amount)) {
-        }
-    }
+
+	function getSplitGameState() public constant returns (GameState) {
+		Game memory game = splitGames[msg.sender];
+
+		if (game.player == 0) {
+			// game doesn't exist
+			throw;
+		}
+
+		return game.state;
+	}
+
+	function getPlayerBet() public constant returns(uint) {
+		Game memory game = games[msg.sender];
+
+		if (game.player == 0) {
+			// game doesn't exist
+			throw;
+		}
+
+		return game.bet;
+	}
+
+	function withdraw(uint amountInWei) onlyOwner {
+		if (!msg.sender.send(amountInWei)) {
+			throw;
+		}
+	}
 }

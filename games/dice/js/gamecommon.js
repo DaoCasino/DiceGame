@@ -1,5 +1,10 @@
 $(document).ready(function () {
 
+    // $("#openkey").click(function(){
+    //     console.log("click")
+    // });
+    var clipboard = new Clipboard('#openkey');
+
 
     $(".toggle-bg").click(function(){
 			setContract();
