@@ -99,12 +99,12 @@
 							<div class="switch-block clearfix">
 								<form action="">
 									<span class="real-money switch-span">KOVAN TESTNET</span>
-									<!--<span class="toggle-bg">
+									<span class="toggle-bg">
 										<input type="radio" id="checked-off" name="toggle" value="off">
 										<input type="radio" id="checked-on" name="toggle" value="on"> 
 										<span class="switch"></span>
-									</span>-->
-									<!--<span class="free-money switch-span">MAINNET</span>-->
+									</span>
+									<span class="free-money switch-span">MAINNET</span>
 								</form>
 							</div>
 						</div>
@@ -116,12 +116,12 @@
 								
 								<div id='isreg' style='display:none'>
 									<a id="openkey"></a>
-									<!--<a class="disclaimer-btn" id='balance' href="/balance.html">
+									<a class="disclaimer-btn" id='balance' href="/balance.html">
 										? ETH
-									</a>
+									</a>-
 									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn" href="#">
 										exit
-									</a>-->
+									</a>
 								</div>
 							</div>
 							
@@ -150,6 +150,7 @@
 										<div class="player-stats">
 											<p class="label-numbers"></p>
 											<h2 class="status-numbers" id="contract"></h2>
+											<h3 id="contractBalance">..::.:.</h3>
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -214,6 +215,7 @@
 						<div class="row">
 							<div class="col-md-4 col-md-offset-4">
 								<div class="player-stats">
+								<h3 id="random"></h3>
 								<h3 class="status-numbers">TRANSACTION:</h3>
 								<h3 class="status-numbers" id="Tx">..:.::.</h3>
 								</div>
@@ -223,7 +225,7 @@
 					
 					<div class="container">
 						<div class="wrapper-dice_table">
-							<table class="dice-table">
+							<table class="dice-table" id="table">
 								<thead>
 									<tr>
 										<th>TRANSACTION / PLAYER</th>
@@ -268,6 +270,33 @@
 						</div>
 						
 					</div>
+
+<hr>
+					<div class="container">
+						<div class="col-md-12">
+							<div class="row">
+									<div class="col-md-4">
+										<div class="player-stats">
+											<p class="label-numbers">Total games in 30 days</p>
+											<h2 class="status-numbers" id="30days">.:.:.::.</h2>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="player-stats">
+											<p class="label-numbers">Total games in 24 hours</p>
+											<h2 class="status-numbers" id="24hours">..::.</h2>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="player-stats">
+											<p class="label-numbers">Paid/Send</p>
+											<h2 class="status-numbers" id="total-send">..::. ETH</h2>
+										</div>
+									</div>
+								</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</main>
@@ -350,10 +379,11 @@
 	<script src="js/eth_api.js"></script>
 	<script src="js/main.js"></script>
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
-	<script src="../../js/common.js"></script>
+	
 	<script src="js/gamecommon.js"async></script>
+<script src="../../js/common.js"></script>
 	<script src="js/scrGame.js"></script>
-	<script src="js/INFURA.js"></script>
+	<script src="js/kovan.js"></script>
 	
 	
 </body>

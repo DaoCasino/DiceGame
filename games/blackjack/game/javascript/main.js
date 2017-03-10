@@ -1,21 +1,27 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.0.9"
+var version = "v. 1.0.10"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
-var betslevel = [];
 var openkey, privkey, mainet;
 var currentScreen, scrContainer;
 var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
+var infura, soundManager;
 var fontMain = "Luckiest Guy";
 var fontImpact = "Impact";
 var fontTahoma = "Tahoma";
 var fontGothic = "Century Gothic";
 var stats; //для вывода статистики справа
+
+var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
+// var addressTestContract = "0xd1b45edac3f3758f665d126044847bddc883b6e1"; Old Work
+// var addressTestContract = "0x9a0bc269eB5be016f7b98dFf07f36b11f9d38Cf4";
+// var	addressTestContract = "0xd16ee86df8c0813195d6be3e660c0e9876c4e352"; // Split
+var	addressTestContract = "0x7c47625d69a112d56dadaf0c8c4322d4c7bfc2f4"; // Split 2
 
 var options_debug = false;
 var options_test = false;
@@ -75,26 +81,9 @@ function initGame() {
 	font2.y = -120;
 	stage.addChild(font2);
 	
-	// eth = 1
-	// betslevel[1] = {win:90, koef:1.09, bet:1};
-	// betslevel[2] = {win:80, koef:1.22, bet:1.09};
-	// betslevel[3] = {win:70, koef:1.40, bet:1.3298};
-	// betslevel[4] = {win:60, koef:1.63, bet:1.86172};
-	// betslevel[5] = {win:50, koef:1.96, bet:3.0346036};
-	// betslevel[6] = {win:40, koef:2.45, bet:5.947823056};
-	// betslevel[7] = {win:30, koef:3.26, bet:14.5721664872};
-	// betslevel[8] = {win:20, koef:4.9, bet:47.505262748272};
-	// betslevel[9] = {win:10, koef:9.8, bet:232.7757874665328};
-	
-	// eth = 0.2
-	betslevel[1] = {win:90, koef:1.09, bet:0.2, prize:0.018};
-	betslevel[2] = {win:80, koef:1.22, bet:0.214, prize:0.04708};
-	betslevel[3] = {win:70, koef:1.40, bet:0.25708, prize:0.102832};
-	betslevel[4] = {win:60, koef:1.63, bet:0.355912, prize:0.22422456};
-	betslevel[5] = {win:50, koef:1.96, bet:0.57613656, prize:0.5530910976};
-	
 	// soundManager = new SoundManager();
 	// soundManager.currentMusic = "none";
+	infura = new Infura();
 	
 	LoadBack = new PIXI.Container();
 	stage.addChild(LoadBack);

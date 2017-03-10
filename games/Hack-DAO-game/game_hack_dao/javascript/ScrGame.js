@@ -17,6 +17,7 @@ var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
 var addressContract = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
+var	addressTestContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 var topicsResultLog = "0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
@@ -81,7 +82,7 @@ ScrGame.prototype.init = function() {
 	if(options_testnet){
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		addressContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
+		addressContract = addressTestContract;
 	} else {
 		betEth = 200000000000000000; //ставка эфира
 		betGame = betEth/1000000000000000000; //ставка 1 эфир

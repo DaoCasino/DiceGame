@@ -1,7 +1,9 @@
 pragma solidity ^0.4.2;
-import "./Deck.sol";
 
-contract BlackJack {
+import "Deck.sol";
+import "Owned.sol";
+
+contract BlackJack is owned {
 	using Deck for *;
 
 	uint public minBet = 50 finney;
@@ -9,7 +11,13 @@ contract BlackJack {
 
 	uint8 BLACKJACK = 21;
 
-  enum GameState { Ongoing, Player, Tie, House }
+    enum GameState {
+		InProgress,
+		PlayerWon,
+		HouseWon,
+		Tie,
+		InProgressSplit
+	}
 
 	struct Game {
 		address player;
@@ -18,15 +26,21 @@ contract BlackJack {
 		uint8[] houseCards;
 		uint8[] playerCards;
 
+		uint8 playerScore;
+		uint8 playerBigScore;
+		uint8 houseScore;
+		uint8 houseBigScore;
+
 		GameState state;
-		uint8 cardsDealt;
+		uint8 seed;
 	}
 
 	mapping (address => Game) public games;
+	mapping (address => Game) public splitGames;
 
-	modifier gameIsGoingOn() {
-		if (games[msg.sender].player == 0 || games[msg.sender].state != GameState.Ongoing) {
-			throw; // game doesn't exist or already finished
+	modifier gameIsInProgress() {
+		if (!gameInProgress(games[msg.sender])) {
+			throw;
 		}
 		_;
 	}
@@ -37,105 +51,207 @@ contract BlackJack {
     );
 
     event GameStatus(
-    	uint8 houseScore,
-    	uint8 houseScoreBig,
-    	uint8 playerScore,
-    	uint8 playerScoreBig
+      	uint8 houseScore,
+      	uint8 houseBigScore,
+      	uint8 playerScore,
+      	uint8 playerBigScore
     );
 
     event Log(
-    	uint8 value
+  	    uint8 value
     );
 
-	function BlackJack() {
-
+	function () payable {
+        
 	}
 
-	function () payable {
-		
+	function gameInProgress(Game game)
+		constant
+		private
+		returns (bool)
+	{
+		if (game.player == 0) {
+			return false;
+		}
+		if (game.state == GameState.InProgress || game.state == GameState.InProgressSplit) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	// starts a new game
 	function deal() public payable {
-		if (games[msg.sender].player != 0 && games[msg.sender].state == GameState.Ongoing) {
-			throw; // game is already going on
+		if (gameInProgress(games[msg.sender])) {
+			throw;
 		}
-
+        
 		if (msg.value < minBet || msg.value > maxBet) {
 			throw; // incorrect bet
 		}
-
-		uint8[] memory houseCards = new uint8[](1);
-		uint8[] memory playerCards = new uint8[](2);
-
-		// deal the cards
-		playerCards[0] = Deck.deal(msg.sender, 0);
-		Deal(true, playerCards[0]);
-		houseCards[0] = Deck.deal(msg.sender, 1);
-		Deal(false, houseCards[0]);
-		playerCards[1] = Deck.deal(msg.sender, 2);
-		Deal(true, playerCards[1]);
-
-		games[msg.sender] = Game({
+		if (msg.value * 5 > this.balance * 2) {
+			// Not enough money on the contract to pay the player.
+			throw;
+		}
+        
+		Game memory game = Game({
 			player: msg.sender,
 			bet: msg.value,
-			houseCards: houseCards,
-			playerCards: playerCards,
-			state: GameState.Ongoing,
-			cardsDealt: 3,
+			houseCards: new uint8[](0),
+			playerCards: new uint8[](0),
+			playerScore: 0,
+			playerBigScore: 0,
+			houseScore: 0,
+			houseBigScore: 0,
+			state: GameState.InProgress,
+			seed: 3,
 		});
-
+        
+		games[msg.sender] = game;
+        
+		// deal the cards
+		dealCard(true, games[msg.sender]);
+		dealCard(false, games[msg.sender]);
+		dealCard(true, games[msg.sender]);
+        
 		checkGameResult(games[msg.sender], false);
 	}
 
-	// deals one more card to the player
-	function hit() public gameIsGoingOn {
-		uint8 nextCard = games[msg.sender].cardsDealt;
-		games[msg.sender].playerCards.push(Deck.deal(msg.sender, nextCard));
-		games[msg.sender].cardsDealt = nextCard + 1;
-		Deal(true, games[msg.sender].playerCards[games[msg.sender].playerCards.length - 1]);
-		checkGameResult(games[msg.sender], false);
+	function dealCard(bool player, Game storage storageGame)
+		private
+	{
+		Game memory game = storageGame;
+		uint8[] storage cards = storageGame.houseCards;
+		if (player) {
+			cards = storageGame.playerCards;
+		}
+		cards.push(Deck.deal(msg.sender, game.seed));
+		if (player) {
+			// cards[cards.length - 1] might be further optimized by accessing local game copy.
+			storageGame.playerScore = recalculateScore(cards[cards.length - 1], game.playerScore, false);
+			storageGame.playerBigScore = recalculateScore(cards[cards.length - 1], game.playerBigScore, true);
+		} else {
+			storageGame.houseScore = recalculateScore(cards[cards.length - 1], game.houseScore, false);
+			storageGame.houseBigScore = recalculateScore(cards[cards.length - 1], game.houseBigScore, true);
+		}
+		Deal(player, cards[cards.length - 1]);
+		storageGame.seed = game.seed + 1;
 	}
 
-	// finishes the game
-	function stand() public gameIsGoingOn {
+	// Deals one more card to the player
+	function hit() public gameIsInProgress {
+		if (games[msg.sender].state == GameState.InProgress) {
+			dealCard(true, games[msg.sender]);
+			checkGameResult(games[msg.sender], false);
+		} else {
+			throw;
+		}
+	}
 
-		var (houseScore, houseScoreBig) = calculateScore(games[msg.sender].houseCards);
+	// TODO: test it
+	function hit(bool isMain) public gameIsInProgress {
+		if (games[msg.sender].state != GameState.InProgressSplit) {
+			throw;
+		}
+		if (isMain) {
+			dealCard(true, games[msg.sender]);
+			checkGameResult(games[msg.sender], false);
+		} else {
+			Game storage splitGame = splitGames[msg.sender];
+			if (splitGame.state == GameState.InProgress) {
+				dealCard(true, splitGame);
+				checkGameResult(splitGame, false);
+			}
+		}
+	}
 
-		while (houseScoreBig < 17) {
-			uint8 nextCard = games[msg.sender].cardsDealt;
-			uint8 newCard = Deck.deal(msg.sender, nextCard);
-			games[msg.sender].houseCards.push(newCard);
-			games[msg.sender].cardsDealt = nextCard + 1;
-			houseScoreBig += Deck.valueOf(newCard, true);
-			Deal(false, newCard);
+	// Makes a "stand" move
+	function stand()
+		public
+		gameIsInProgress
+	{
+		Game storage game = games[msg.sender];
+
+		if (game.state == GameState.InProgressSplit) {
+			// If there is a split
+			Game storage splitGame = splitGames[msg.sender];
+			if (splitGame.state != GameState.InProgressSplit) {
+				// Stand in split game and wait for the stand / bust in the main game.
+				splitGame.state = GameState.InProgressSplit;
+				return;
+			}
+
+		}
+		while (game.houseBigScore < 17) {
+			dealCard(false, game);
+		}
+		splitGames[msg.sender].houseCards = games[msg.sender].houseCards;
+		checkGameResult(games[msg.sender], true);
+		checkGameResult(splitGames[msg.sender], true);
+	}
+    
+	function split()
+		public
+		payable
+		gameIsInProgress
+	{
+		Game storage game = games[msg.sender];
+		if (msg.value != game.bet) {
+			// Should double the bet
+			throw;
 		}
 
-		checkGameResult(games[msg.sender], true);
+		if (!isSplitAvailable(game)) {
+			throw;
+		}
+
+		game.state = GameState.InProgressSplit;
+		// No clue how it compiles...
+		game.playerCards = [game.playerCards[0]];
+
+		Game memory splitGame = Game({
+			player: msg.sender,
+			bet: msg.value,
+			houseCards: game.houseCards,
+			playerCards: new uint8[](0),
+			playerScore: Deck.valueOf(game.playerCards[1], false),
+			playerBigScore: Deck.valueOf(game.playerCards[1], true),
+			houseScore: game.houseScore,
+			houseBigScore: game.houseBigScore,
+			state: GameState.InProgress,
+			seed: 128,
+		});
+
+		splitGames[msg.sender] = splitGame;
+		splitGames[msg.sender].playerCards.push(game.playerCards[1]);
+
+		// Deal extra cards in each game.
+		dealCard(true, games[msg.sender]);
+		dealCard(true, splitGames[msg.sender]);
 	}
-
+    
 	// @param finishGame - whether to finish the game or not (in case of Blackjack the game finishes anyway)
-	function checkGameResult(Game game, bool finishGame) private {
-		// calculate house score
-		var (houseScore, houseScoreBig) = calculateScore(game.houseCards);
-		// calculate player score
-		var (playerScore, playerScoreBig) = calculateScore(game.playerCards);
+	function checkGameResult(Game storage game, bool finishGame) private {
+		if (!gameInProgress(game)) {
+			return;
+		}
+		// TODO: rewrite this function it is scary.
+		GameStatus(game.houseScore, game.houseBigScore, game.playerScore, game.playerBigScore);
 
-		GameStatus(houseScore, houseScoreBig, playerScore, playerScoreBig);
-
-		if (houseScoreBig == BLACKJACK || houseScore == BLACKJACK) {
-			if (playerScore == BLACKJACK || playerScoreBig == BLACKJACK) {
+		if (game.houseBigScore == BLACKJACK || game.houseScore == BLACKJACK) {
+			if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
 				// TIE
 				if (!msg.sender.send(game.bet)) throw; // return bet to the player
-				games[msg.sender].state = GameState.Tie; // finish the game
+				game.state = GameState.Tie; // finish the game
 				return;
 			} else {
 				// HOUSE WON
-				games[msg.sender].state = GameState.House; // simply finish the game
+				game.state = GameState.HouseWon; // simply finish the game
 				return;
 			}
 		} else {
-			if (playerScore == BLACKJACK || playerScoreBig == BLACKJACK) {
+			if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
 				// PLAYER WON
 				if (game.playerCards.length == 2 && (Deck.isTen(game.playerCards[0]) || Deck.isTen(game.playerCards[1]))) {
 					// Natural blackjack => return x2.5
@@ -144,14 +260,14 @@ contract BlackJack {
 					// Usual blackjack => return x2
 					if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
 				}
-				games[msg.sender].state = GameState.Player; // finish the game
+				game.state = GameState.PlayerWon; // finish the game
 				return;
 			} else {
 
-				if (playerScore > BLACKJACK) {
+				if (game.playerScore > BLACKJACK) {
 					// BUST, HOUSE WON
 					Log(1);
-					games[msg.sender].state = GameState.House; // finish the game
+					game.state = GameState.HouseWon; // finish the game
 					return;
 				}
 
@@ -163,103 +279,118 @@ contract BlackJack {
 				uint8 houseShortage = 0;
 
 				// player decided to finish the game
-				if (playerScoreBig > BLACKJACK) {
-					if (playerScore > BLACKJACK) {
+				if (game.playerBigScore > BLACKJACK) {
+					if (game.playerScore > BLACKJACK) {
 						// HOUSE WON
-						games[msg.sender].state = GameState.House; // simply finish the game
+						game.state = GameState.HouseWon; // simply finish the game
 						return;
 					} else {
-						playerShortage = BLACKJACK - playerScore;
+						playerShortage = BLACKJACK - game.playerScore;
 					}
 				} else {
-					playerShortage = BLACKJACK - playerScoreBig;
+					playerShortage = BLACKJACK - game.playerBigScore;
 				}
 
-				if (houseScoreBig > BLACKJACK) {
-					if (houseScore > BLACKJACK) {
+				if (game.houseBigScore > BLACKJACK) {
+					if (game.houseScore > BLACKJACK) {
 						// PLAYER WON
 						if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
-						games[msg.sender].state = GameState.Player;
+						game.state = GameState.PlayerWon;
 						return;
 					} else {
-						houseShortage = BLACKJACK - houseScore;
+						houseShortage = BLACKJACK - game.houseScore;
 					}
 				} else {
-					houseShortage = BLACKJACK - houseScoreBig;
+					houseShortage = BLACKJACK - game.houseBigScore;
 				}
 
 				if (houseShortage == playerShortage) {
 					// TIE
 					if (!msg.sender.send(game.bet)) throw; // return bet to the player
-					games[msg.sender].state = GameState.Tie;
+					game.state = GameState.Tie;
 				} else if (houseShortage > playerShortage) {
 					// PLAYER WON
 					if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
-					games[msg.sender].state = GameState.Player;
+					game.state = GameState.PlayerWon;
 				} else {
-					games[msg.sender].state = GameState.House;
+					game.state = GameState.HouseWon;
 				}
 			}
 		}
 	}
 
-	function calculateScore(uint8[] cards) private constant returns (uint8, uint8) {
-		uint8 score = 0;
-		uint8 scoreBig = 0; // in case of Ace there could be 2 different scores
-		bool bigAceUsed = false;
-		for (uint i = 0; i < cards.length; ++i) {
-			uint8 card = cards[i];
-			if (Deck.isAce(card) && !bigAceUsed) { // doesn't make sense to use the second Ace as 11, because it leads to the losing
-				scoreBig += Deck.valueOf(card, true);
-				bigAceUsed = true;
-			} else {
-				scoreBig += Deck.valueOf(card, false);
+	function recalculateScore(uint8 newCard, uint8 score, bool big)
+		private
+		constant
+		returns (uint8)
+	{
+		uint8 value = Deck.valueOf(newCard, big);
+		if (big && Deck.isAce(newCard)) {
+			if (score + value > BLACKJACK) {
+				return score + Deck.valueOf(newCard, false);
 			}
-			score += Deck.valueOf(card, false);
 		}
-		return (score, scoreBig);
+		return score + value;
+	}
+    
+	function isSplitAvailable() public constant returns (bool) {
+		return isSplitAvailable(games[msg.sender]);
 	}
 
-	function getPlayerCard(uint8 id) public gameIsGoingOn constant returns(uint8) {
+	function isSplitAvailable(Game game) private constant returns (bool) {
+		return game.state == GameState.InProgress && game.playerCards.length == 2 && Deck.equalDenomination(game.playerCards[0], game.playerCards[1]);
+	}
+    
+	function getPlayerCard(uint8 id) public constant returns(uint8) {
 		if (id < 0 || id > games[msg.sender].playerCards.length) {
 			throw;
 		}
 		return games[msg.sender].playerCards[id];
 	}
 
-	function getHouseCard(uint8 id) public gameIsGoingOn constant returns(uint8) {
+	function getPlayerSplitCard(uint8 id) public constant returns(uint8) {
+		if (id < 0 || id > splitGames[msg.sender].playerCards.length) {
+			throw;
+		}
+		return splitGames[msg.sender].playerCards[id];
+	}
+	
+	function getHouseCard(uint8 id) public constant returns(uint8) {
 		if (id < 0 || id > games[msg.sender].houseCards.length) {
 			throw;
 		}
 		return games[msg.sender].houseCards[id];
 	}
 
-	function getPlayerCardsNumber() public gameIsGoingOn constant returns(uint) {
+	function getPlayerCardsNumber() public constant returns(uint) {
 		return games[msg.sender].playerCards.length;
 	}
 
-	function getHouseCardsNumber() public gameIsGoingOn constant returns(uint) {
+	function getPlayerSplitCardsNumber() public constant returns(uint) {
+		return splitGames[msg.sender].playerCards.length;
+	}
+
+	function getHouseCardsNumber() public constant returns(uint) {
 		return games[msg.sender].houseCards.length;
 	}
 
-	function getGameState() public constant returns (uint8) {
-		if (games[msg.sender].player == 0) {
-			throw; // game doesn't exist
-		}
-
-		Game game = games[msg.sender];
-
-		if (game.state == GameState.Player) {
-			return 1;
-		}
-		if (game.state == GameState.House) {
-			return 2;
-		}
-		if (game.state == GameState.Tie) {
-			return 3;
-		}
-
-		return 0; // the game is still going on
+	function getPlayerBet() public constant returns(uint) {
+		return games[msg.sender].bet;
 	}
+    
+	function getGameState() public constant returns (GameState) {
+		Game memory game = games[msg.sender];
 
+		if (game.player == 0) {
+			// game doesn't exist
+			throw;
+		}
+
+		return game.state;
+	}
+	
+	function withdraw(uint amount) public onlyOwner {
+        if (msg.sender.send(amount)) {
+        }
+    }
 }
