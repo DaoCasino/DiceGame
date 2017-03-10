@@ -21,6 +21,7 @@ var C_HOUSE_CARDS = "7f601a50";
 var C_GET_BET = "62d67aec";
 var C_PLAYER_CARD = "d02d1382";
 var C_PLAYER_CARDS = "d572fd99";
+var C_SPLIT_CARDS = "f3d4c67c";
 var C_HIT = "2ae3594a";
 var C_HIT_B = "e56c61b3";
 var C_SPLIT = "f7654176";
@@ -106,7 +107,7 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bClear = false;
 	this.bSplit = false;
-	this.strTest = "";
+	this.nameGame = ""; // main, split
 	
 	obj_game = {};
 	this.clearBet();
@@ -540,8 +541,18 @@ ScrGame.prototype.showHousePoints = function(){
 
 ScrGame.prototype.getMyPoints = function(){
 	var myPoints = 0;
+	var countAce = 0;
 	for (var i = 0; i < this._arMyPoints.length; i++) {
-		myPoints += this._arMyPoints[i];
+		var curPoint = this._arMyPoints[i];
+		myPoints += curPoint;
+		if(curPoint == 11){
+			countAce ++;
+		}
+	}
+	
+	while(myPoints > 21 && countAce > 0){
+		countAce --;
+		myPoints -= 10;
 	}
 	
 	return myPoints;
@@ -626,6 +637,14 @@ ScrGame.prototype.getPlayerCardsNumber = function() {
 				"to":addressContract,
 				"data":data};
 	infura.sendRequest("getPlayerCardsNumber", params, _callback);
+}
+
+ScrGame.prototype.getPlayerSplitCardsNumber = function() {
+	var data = "0x"+C_SPLIT_CARDS;
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	infura.sendRequest("getPlayerSplitCardsNumber", params, _callback);
 }
 
 ScrGame.prototype.getPlayerBet = function() {
@@ -750,7 +769,11 @@ ScrGame.prototype.clickHit = function(){
 	} else {
 		this.bWait = true;
 		if(this.bSplit){
-			// infura.sendRequest("hitB", openkey, _callback);
+			if(this.nameGame == "split"){
+				infura.sendRequest("hitB", openkey, _callback, {bool:0});
+			} else {
+				infura.sendRequest("hitB", openkey, _callback, {bool:1});
+			}
 		} else {
 			infura.sendRequest("hit", openkey, _callback);
 		}
@@ -961,7 +984,7 @@ ScrGame.prototype.startGameEth = function(){
 	infura.sendRequest("deal", openkey, _callback);
 }
 
-ScrGame.prototype.responseTransaction = function(name, value) {
+ScrGame.prototype.responseTransaction = function(name, value, obj) {
 	console.log("get nonce action "+value);
 	var data = "";
 	var price = 0;
@@ -974,14 +997,19 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		data = "0x"+C_HIT;
 	} else if(name == "hitB"){
 		data = "0x"+C_HIT_B;
-		// var data = data + pad(numToHex(value), 64);
+		if(obj){
+			var val = obj.bool;
+			data = data + pad(numToHex(val), 64);
+			console.log(name, val);
+		}
 	} else if(name == "stand"){
 		data = "0x"+C_STAND;
 	} else if(name == "split"){
 		data = "0x"+C_SPLIT;
 		price = betEth;
+		obj_game["game"].nameGame = "split";
 	}
-	console.log("responseTransaction:", price);
+	
 	var options = {};
 	options.nonce = value;
 	options.to = addressContract;
@@ -1011,7 +1039,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	}
 }
 
-ScrGame.prototype.response = function(command, value) {
+ScrGame.prototype.response = function(command, value, obj) {
 	var prnt = obj_game["game"];
 	if(value == undefined || options_debug){
 		if(command == "sendRaw" && !options_debug){
@@ -1040,7 +1068,6 @@ ScrGame.prototype.response = function(command, value) {
 			var card = hexToNum(value);
 			prnt.showPlayerCard(prnt.getCard(card, false));
 			prnt.bWait = false;
-			// prnt.tfResult.setText("");
 			prnt.showButtons(true);
 		}
 	} else if(command == "getHouseCard"){
@@ -1048,10 +1075,12 @@ ScrGame.prototype.response = function(command, value) {
 			var card = hexToNum(value);
 			prnt.showHouseCard(prnt.getCard(card, true));
 			prnt.bWait = false;
-			// prnt.tfResult.setText("");
 		}
 	} else if(command == "getPlayerCardsNumber"){
 		prnt.countPlayerCard = hexToNum(value);
+		prnt.addPlayerCard();
+	} else if(command == "getPlayerSplitCardsNumber"){
+		prnt.countPlayerSplitCard = hexToNum(value);
 		prnt.addPlayerCard();
 	} else if(command == "getHouseCardsNumber"){
 		prnt.countHouseCard = hexToNum(value);
@@ -1064,8 +1093,22 @@ ScrGame.prototype.response = function(command, value) {
 		// console.log("state:", stateNow, stateOld);
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			if(stateNow > S_IN_PROGRESS){
+			
+			if(stateNow == S_IN_PROGRESS ||
+			stateNow == S_IN_PROGRESS_SPLIT){
+				prnt.startGame = true;
+				prnt.btnStart.visible = false;
+				prnt.btnClear.visible = false;
+				prnt.showChips(false);
+				stateOld = stateNow;
+				prnt.getPlayerCardsNumber();
+				prnt.getPlayerSplitCardsNumber();
+				prnt.getHouseCardsNumber();
+				prnt.getPlayerBet();
+				prnt.tfResult.setText("");				
+			} else {
 				prnt.showMyPoints();
+				prnt.showMySplitPoints();
 				if(stateOld == -1 && betEth == 0){
 					prnt.arrow.visible = true;
 				}
@@ -1074,18 +1117,24 @@ ScrGame.prototype.response = function(command, value) {
 						if(stateOld == S_IN_PROGRESS){
 							prnt.tfResult.setText("You won!");
 							prnt.clearBet();
+						} else if(stateOld == S_IN_PROGRESS_SPLIT){
+							prnt.nameGame = "";
 						}
 						break;
 					case 2:
 						if(stateOld == S_IN_PROGRESS){
 							prnt.tfResult.setText("House won!");
 							prnt.clearBet();
+						} else if(stateOld == S_IN_PROGRESS_SPLIT){
+							prnt.nameGame = "";
 						}
 						break;
 					case 3:
 						if(stateOld == S_IN_PROGRESS){
 							prnt.tfResult.setText("Tie!");
 							prnt.clearBet();
+						} else if(stateOld == S_IN_PROGRESS_SPLIT){
+							prnt.nameGame = "";
 						}
 						break;
 				}
@@ -1095,6 +1144,7 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.bStand || 
 				prnt.myPoints == 21){
 					prnt.getPlayerCardsNumber();
+					prnt.getPlayerSplitCardsNumber();
 					prnt.getHouseCardsNumber();
 				}
 				if(prnt.myPoints == 21){
@@ -1108,16 +1158,6 @@ ScrGame.prototype.response = function(command, value) {
 					stateOld = stateNow;
 				}
 				prnt.showButtons(false);
-			} else if(stateNow == S_IN_PROGRESS){
-				prnt.startGame = true;
-				prnt.btnStart.visible = false;
-				prnt.btnClear.visible = false;
-				prnt.showChips(false);
-				stateOld = stateNow;
-				prnt.getPlayerCardsNumber();
-				prnt.getHouseCardsNumber();
-				prnt.getPlayerBet();
-				prnt.tfResult.setText("");
 			}
 		} else {
 			prnt.bWait = false;
@@ -1129,7 +1169,7 @@ ScrGame.prototype.response = function(command, value) {
 			command == "hitB" ||
 			command == "stand" ||
 			command == "split"){
-		prnt.responseTransaction(command, value);
+		prnt.responseTransaction(command, value, obj);
 	} else if(command == "sendRaw"){
 	}
 }

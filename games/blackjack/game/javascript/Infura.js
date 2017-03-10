@@ -11,7 +11,7 @@ var Infura = function() {
 	}
 };
 
-Infura.prototype.sendRequest = function(name, params, callback){
+Infura.prototype.sendRequest = function(name, params, callback, obj){
 	if(options_ethereum && openkey){
 		var method = name;
 		switch(name){
@@ -50,7 +50,7 @@ Infura.prototype.sendRequest = function(name, params, callback){
 									"params":arParams,
 									"id":1}),
 			success: function (d) {
-				callback(name, d.result);
+				callback(name, d.result, obj);
 			}
 		})
 	}

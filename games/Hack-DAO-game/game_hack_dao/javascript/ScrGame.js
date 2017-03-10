@@ -464,9 +464,14 @@ ScrGame.prototype.createGUI = function() {
 	var offsetY = 25;
 	var strUser = 'id'
 	this.tfIdUser = addText(strUser, 20, "#ffffff", "#000000", "left", 1000, 4, fontMain)
+	this.tfIdUser.name = "tfId";
+	this.tfIdUser._selected = false;
 	this.tfIdUser.x = icoKey.x + 24;
 	this.tfIdUser.y = icoKey.y - 12;
+	this.tfIdUser.w = 1000;
+	this.tfIdUser.h = 24;
 	this.face_mc.addChild(this.tfIdUser);
+	this._arButtons.push(this.tfIdUser);
 	this.tfBalance = addText("0", 20, "#ffffff", "#000000", "left", 400, 4, fontMain)
 	this.tfBalance.x = icoEthereum.x + 24;
 	this.tfBalance.y = icoEthereum.y - 12;
@@ -507,15 +512,15 @@ ScrGame.prototype.closeWindow = function(wnd) {
 
 ScrGame.prototype.refillBalance = function() {
 	if(openkey && options_ethereum){
-		var url = "http://platform.dao.casino/balance.html";
+		var url = "https://platform.dao.casino/balance.html";
 		window.open(url, "_self"); // "_blank",  "_self"
 	}
 }
 
 ScrGame.prototype.shareFB = function() {	
 	if (typeof(FB) != 'undefined' && FB != null ) {
-		var urlGame = 'http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/';
-		var urlImg = "http://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/distr/icon_1024.png";
+		var urlGame = 'https://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/';
+		var urlImg = "https://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/distr/icon_1024.png";
 		/*FB.ui({
 			method: 'share',
 			href: urlGame,
@@ -544,7 +549,7 @@ ScrGame.prototype.showSmartContract = function() {
 
 ScrGame.prototype.exportKeys = function() {
 	if(openkey && options_ethereum){
-		var url = "http://platform.dao.casino/export/?privkey="+privkey+"&openkey="+openkey
+		var url = "https://platform.dao.casino/export/?privkey="+privkey+"&openkey="+openkey
 		window.open(url, "_blank"); 
 	}
 }
@@ -1061,6 +1066,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnNext"){
 		this.removeAllListener();
 		showLevels();
+	} else if(item_mc.name == "tfId"){
+		copyToClipboard(openkey);
 	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){
 			return false;
