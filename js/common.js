@@ -164,7 +164,7 @@ if (localStorage.getItem("isreg")) {
 		function rebalance() {	
 			if (!totalwei) $("#balance").html("? ETH");
 			setTimeout(function(){
-				var u='kovan.etherscan.io';
+				var u='testnet.etherscan.io';
 				if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
 				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
 					totalwei = d.result;
