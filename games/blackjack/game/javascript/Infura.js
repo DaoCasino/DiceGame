@@ -7,7 +7,7 @@ var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var Infura = function() {
     if(options_testnet){
 		// urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		urlInfura = "46.101.244.101:8546/";
+		urlInfura = "http://46.101.244.101:8546/";
 		addressContract = addressTestContract;
 	}
 };
