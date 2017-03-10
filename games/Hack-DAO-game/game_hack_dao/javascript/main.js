@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.6"
+var version = "v. 1.1.7"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -301,7 +301,6 @@ function handleComplete(evt) {
 	spritesLoad();
 	textureLoad();
     onResize();
-	
 	if(document.location.hash == "#testnet"){
 		options_testnet = true;
 	}
@@ -375,6 +374,9 @@ function pad(num, size) {
     var s = num+"";
     while (s.length < size) s = "0" + s;
     return s;
+}
+function copyToClipboard(value) {
+  window.prompt("Copy to clipboard: Ctrl+C", value);
 }
 
 function removeAllScreens() {
