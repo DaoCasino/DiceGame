@@ -172,9 +172,9 @@ function initGame() {
     TotalRolls();
     TotalPaid();
     getContractBalance();
-    GetLogs();
     $("#openkey").append(openkey);
      $("#contract").append('<a target="_blank" href="https://kovan.etherscan.io/address/' + addressContract + '">To contract</a>')
+    GetLogs();
     // $.ajax({
     //     type: "POST",
     //     url: urlInfura,

@@ -4,11 +4,7 @@ var _countBy30Days = 0;
 function GetLogs() {
     $.ajax({
         type: "POST",
-<<<<<<< HEAD
-        url: "https://kovan.etherscan.io/api",
-=======
         url: urlEtherscan,
->>>>>>> refs/remotes/origin/develop
         data: {
             module: "logs",
             action: "getLogs",
