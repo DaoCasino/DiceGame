@@ -439,7 +439,9 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.itemResult);
 	
 	var icoKey = addObj("icoKey", 40, 40);
+	icoKey._selected = false;
 	this.face_mc.addChild(icoKey);
+	this._arButtons.push(ticoKey);
 	var icoEthereum = addObj("icoEthereum", 40, 80);
 	this.face_mc.addChild(icoEthereum);
 	var icoTime = addObj("icoTime", 40, 120);
@@ -1075,7 +1077,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnNext"){
 		this.removeAllListener();
 		showLevels();
-	} else if(item_mc.name == "tfId"){
+	} else if(item_mc.name == "tfId" || item_mc.name == "icoKey"){
 		copyToClipboard(openkey);
 	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){
