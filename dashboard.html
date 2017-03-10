@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>daocasino dashboard</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!--For improved cross-browser rendering-->
+    <link rel="stylesheet" href="css/normalize.css">
+
+    <!--Plugins-->
+
+    <!-- Custom styles CSS -->
+    <!--<link rel="stylesheet" href="css/styles.css">-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.js"></script>
+    <script src="https://rawgit.com/ethereumjs/browser-builds/master/dist/ethereumjs-tx.js"></script>
+    <script src="js/eth_api.js"></script>
+
+    <!-- 
+	Your open key: 0xe43337abfe6036d358fb3ed360876ec91eff11bc
+	Your privatekey: be448345d0a3fb012c594231d4a43ee290f6138371f8db5a0e5722773d51087f 
+	-->
+</head>
+
+<body style='display:none'>
+
+    <section class="support">
+        <div class="container">
+            <div class="section__content">
+                <div class="incontainer">
+                    <h3>Центр управления (контрактами)</h3>
+                    <form action=''>
+                        <b>Game:</b>
+                        <select name='game' class='form-control' id='gameid'>
+							<option value='0'>выбрать</option>
+							<option value='1'>HackDao</option>
+							<option value='2'>Dice</option>
+							<option value='3'>BlackJack</option>
+						</select>
+                        <b>Network:</b>
+                        <select name='game' class='form-control' id='networkid'>
+							<option value='0'>выбрать</option>
+							<option value='1'>TestNet</option>
+							<option value='2'>Mainnet</option>
+							<option value='3'>Kovan</option>
+						</select>
+
+                        <!--<b>Адрес контракта с игрой (todo вставлять текущий адрес который там сохранен):</b> <br>-->
+                        <b>Адрес контракта: </b>
+                        <input type='text' id='contractid' name='' placeholder='0x...' class='form-control' value=''>
+                        <Br>
+
+                        <input type='button' name='' id="send" class='btn btn-primary' value='Сохранить'> <input type='button'
+                            name='' id="show" class='btn btn-success' value='показать'>
+                        <!--По нажатию кнопки сохранить должен выполнятся sendrawtransaction к контракту list который ты вчера написал
+						при этом в аргументы передается то что выбрал чел в этой форме и ввел (не забудь убрать 0x.. в адресе). 
+						<br>-->
+                    </form>
+
+                    <script>
+                        urlApi = "https://testnet.etherscan.io/api";
+                        var openkey, privkey;
+                        var gameid, networkid, contract;
+                        // var gameid = $("#gameid").val();
+                        // var networkid = $("#networkid").val();
+                        // var contract = $("#contractid").val();
+
+                        $('#gameid').on('input keyup change blur select', function () {
+                            var value = this.value;
+                            gameid = value;
+                        });
+                        $('#networkid').on('input keyup change', function () {
+                            var value = this.value;
+                            networkid = value;
+                        });
+
+                        $('input#contractid').on('input keyup change', function () {
+                            var value = this.value;
+                            contract = value;
+                        });
+
+
+
+                        function toFixed(value, precision) {
+                            precision = Math.pow(10, precision);
+                            return Math.ceil(value * precision) / precision;
+                        }
+
+                        function numToHex(num) {
+                            return num.toString(16);
+                        }
+
+                        function hexToNum(str) {
+                            return parseInt(str, 16);
+                        }
+
+                        function pad(num, size) {
+                            var s = num + "";
+                            while (s.length < size) s = "0" + s;
+                            return s;
+                        }
+
+                        function isLocalStorageAvailable() {
+                            try {
+                                return 'localStorage' in window && window['localStorage'] !== null;
+                            } catch (e) {
+                                console.log("localStorage_failed:", e);
+                                return false;
+                            }
+                        }
+
+                        function loadData() {
+                            if (isLocalStorageAvailable()) {
+                                openkey = localStorage.getItem('openkey')
+                                privkey = localStorage.getItem('privkey')
+                            }
+                            console.log("openkey:", openkey)
+                            console.log("privkey:", privkey)
+                        };
+                        loadData();
+
+                        $("#show").click(function () {
+                            gameid = $("#gameid").val();
+                            networkid = $("#networkid").val();
+                            contract = $("#contractid").val();
+                            $.ajax({
+                                type: "POST",
+                                url: urlApi,
+                                data: {
+                                    module: "proxy",
+                                    action: "eth_call",
+                                    data: "0x3d185fc5" + pad(numToHex(gameid), 64) + pad(numToHex(
+                                        networkid), 64),
+                                    to: "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051"
+                                },
+                                success: function (d) {
+                                    contract = d.result;
+                                    console.log(d, d.result);
+                                    $("#contractid").val(contract.substr(2));
+                                }
+                            })
+
+                        });
+
+                        $("#send").click(function () {
+                            gameid = $("#gameid").val();
+                            networkid = $("#networkid").val();
+                            contract = $("#contractid").val();
+                            if (openkey) {
+                                $.ajax({
+                                    method: "POST",
+                                    url: urlApi,
+                                    data: {
+                                        module: "proxy",
+                                        async: false,
+                                        action: "eth_getTransactionCount",
+                                        address: openkey,
+                                        tag: "latest"
+                                    },
+                                    success: function (d) {
+                                        var callData = "0x24689f99";
+                                        callData = callData.substr(0, 10);
+                                        var options = {};
+                                        options.nonce = d.result;
+                                        options.to = "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051";
+                                        options.data = callData + pad(numToHex(contract), 64) + pad(
+                                            numToHex(gameid), 64) + pad(numToHex(networkid), 64);
+                                        options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
+                                        options.gasLimit = 0x927c0; //web3.toHex('600000');
+                                        options.value = 0x00;
+                                        console.log(callData + pad(numToHex(contract), 64) + pad(
+                                            numToHex(gameid), 64) + pad(numToHex(networkid),
+                                            64));
+                                        if (privkey) {
+                                            if (buf == undefined) {
+                                                console.log("ERROR_TRANSACTION");
+                                            } else {
+                                                //приватный ключ игрока, подписываем транзакцию
+                                                var tx = new EthereumTx(options);
+                                                tx.sign(new buf(privkey, 'hex'));
+                                                var serializedTx = tx.serialize().toString('hex');
+                                                console.log("The transaction was signed: " +
+                                                    serializedTx);
+                                                $.ajax({
+                                                    method: "POST",
+                                                    url: urlApi,
+                                                    data: {
+                                                        async: false,
+                                                        module: "proxy",
+                                                        action: "eth_sendRawTransaction",
+                                                        address: openkey,
+                                                        hex: serializedTx,
+
+                                                    },
+                                                    success: function (d) {
+                                                        console.log(
+                                                            "Транзакция отправлена в сеть:",
+                                                            d.result);
+                                                    }
+                                                })
+                                            }
+                                        }
+                                    }
+                                })
+                            }
+                        });
+                    </script>
+                    <Br><br>
+                    <a href='#' onclick='$("#iframe").toggle();$("#iframe").val($("#iframe").val().replace("{link}",window.location));return false'>For webmasters</a><br>
+                    <textarea id='iframe' style='width:100%;height:60px;display:none'><!-- insert this code to your site for enable ETC wallet feature -->
+<iframe src='{link}' border=0 style='width:100%;height:500px'></iframe></textarea>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!--support-->
+
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>-->
+
+
+
+
+    <script>
+        $("body").show();
+    </script>
+
+</body>
+
+</html>
