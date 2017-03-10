@@ -89,7 +89,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.36 kovan") // VERSION !
+    console.log("version 0.37 kovan") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -97,10 +97,10 @@ function loadData() {
 
 function setContract() {
     if (mainnet == "on") {
-        urlEtherscan = "http://api.etherscan.io/api";
+        urlEtherscan = "https://api.etherscan.io/api";
         addressContract = mainnetAddress;
     } else if (mainnet == "off") {
-        urlEtherscan = "http://kovan.etherscan.io/api";
+        urlEtherscan = "https://kovan.etherscan.io/api";
         addressContract = kovanAddress;
     }
 };
@@ -167,12 +167,12 @@ function initGame() {
     getGameContract();
     Refresh();
     loadData();
-    GetLogs();
     setContract();
     getCount();
     TotalRolls();
     TotalPaid();
     getContractBalance();
+    GetLogs();
     $("#openkey").append(openkey);
      $("#contract").append('<a target="_blank" href="https://kovan.etherscan.io/address/' + addressContract + '">To contract</a>')
     // $.ajax({
@@ -331,5 +331,7 @@ setInterval(function () {
 
     }
     $("#your-balance").val(balance);
+    if(balance){
     $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
+    }
 }, 1000);

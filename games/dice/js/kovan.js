@@ -82,7 +82,7 @@ function startGame() {
                                     Timer = setInterval(function () {
                                         $.ajax({
                                             method: "POST",
-                                            url: "http://kovan.etherscan.io/api",
+                                            url: "https://kovan.etherscan.io/api",
                                             data: {
                                                 module: "proxy",
                                                 action: "eth_call",
@@ -121,7 +121,6 @@ function startGame() {
                                                                 $("#random").text("YOU WIN!!! ");
                                                                 GetLogs();
                                                                 getContractBalance();
-                                                                
                                                                 clearInterval(Timer);
                                                             } else if (result == 2) {
                                                                 console.log("YOU LOSER!");
@@ -131,7 +130,6 @@ function startGame() {
                                                                 TotalPaid();
                                                                 GetLogs();
                                                                 getContractBalance();
-                                                                
                                                                 $("#random").text("YOU LOSE!!! ");
                                                                 clearInterval(Timer);
                                                             } else if (result == 3) {
