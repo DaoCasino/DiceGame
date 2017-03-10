@@ -441,7 +441,7 @@ ScrGame.prototype.createGUI = function() {
 	var icoKey = addObj("icoKey", 40, 40);
 	icoKey._selected = false;
 	this.face_mc.addChild(icoKey);
-	this._arButtons.push(ticoKey);
+	this._arButtons.push(icoKey);
 	var icoEthereum = addObj("icoEthereum", 40, 80);
 	this.face_mc.addChild(icoEthereum);
 	var icoTime = addObj("icoTime", 40, 120);
