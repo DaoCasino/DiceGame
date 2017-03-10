@@ -588,7 +588,7 @@ ScrGame.prototype.warningBalance = function() {
 	var func = this.refillBalance;
 	if(document.location.href == "https://dao.casino/hackdao/"){
 		addStr = "OK";
-		func = copyToClipboard;
+		func = copyToClipboard(openkey);
 	}
 	this.createWndInfo(str, func, addStr);
 	this.btnStart.visible = true;
