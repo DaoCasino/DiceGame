@@ -127,8 +127,8 @@ ScrGame.prototype.init = function() {
 	
 	if(options_testnet){
 		urlEtherscan = "https://testnet.etherscan.io/";
-		// urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		urlInfura = "http://46.101.244.101:8546/";
+		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+		// urlInfura = "http://46.101.244.101:8546/";
 		addressContract = addressTestContract;
 	}
 	
