@@ -488,7 +488,7 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.tfLevel);
 }
 
-ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
+ScrGame.prototype.createWndInfo = function(str, callback, addStr, callback2) {
 	if(this.wndInfo == undefined){
 		this.wndInfo = new WndInfo(this);
 		this.wndInfo.x = _W/2;
@@ -497,7 +497,7 @@ ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
 	}
 	
 	this.bWindow = true;
-	this.wndInfo.show(str, callback, addStr)
+	this.wndInfo.show(str, callback, addStr, callback2)
 	this.wndInfo.visible = true;
 	this.curWindow = this.bWindow;
 }
@@ -592,11 +592,13 @@ ScrGame.prototype.warningBalance = function() {
 	var str = "Refill your account in the amount of " + bet + " ETH."
 	var addStr = "Refill";
 	var func = this.refillBalance;
+	var func2 = undefined;
 	if(document.location.href == "https://dao.casino/hackdao/"){
 		addStr = "OK";
 		func = this.copyKey;
+		func2 = this.copyKey;
 	}
-	this.createWndInfo(str, func, addStr);
+	this.createWndInfo(str, func, addStr, func2);
 	this.btnStart.visible = true;
 }
 
