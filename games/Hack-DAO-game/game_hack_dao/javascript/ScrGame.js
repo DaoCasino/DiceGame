@@ -12,7 +12,7 @@ var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 1000;
 var TIME_RESPAWN_MINER = 3000;
 var TIME_RESPAWN_HACKER = 2000;
-var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
+var urlResult = "https://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
@@ -421,7 +421,7 @@ ScrGame.prototype.createAccount = function() {
 			openkey = address;
 			this.tfIdUser.setText(address);
 			if(options_testnet){
-				var str = "http://faucet.ropsten.be:3001/donate/"+openkey;
+				var str = "https://faucet.ropsten.be:3001/donate/"+openkey;
 				this.sendUrlRequest(str, "getEthereum");
 			}
 			saveData();
