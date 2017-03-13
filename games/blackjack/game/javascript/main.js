@@ -22,8 +22,9 @@ var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // var addressTestContract = "0x9a0bc269eB5be016f7b98dFf07f36b11f9d38Cf4";
 // var	addressTestContract = "0xd16ee86df8c0813195d6be3e660c0e9876c4e352"; // Split
 // var	addressTestContract = "0x7c47625d69a112d56dadaf0c8c4322d4c7bfc2f4"; // Split 2
-var	addressTestContract = "0x40c7fa360fe6005390fe270449756e3a228446e7"; // Split 3
+// var	addressTestContract = "0x40c7fa360fe6005390fe270449756e3a228446e7"; // Split 3
 // var	addressTestContract = "0xb0f5dad551ca0845a818a19ab62340887af62a49"; // Split 3 3
+var	addressTestContract = "0x14f445d7253e8dff1323861a941694d741a5373f"; // Split 7
 
 var options_debug = false;
 var options_test = false;
