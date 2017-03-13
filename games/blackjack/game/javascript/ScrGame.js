@@ -125,6 +125,7 @@ ScrGame.prototype.init = function() {
 		this.face_mc.addChild(tfDebug);
 	}
 	
+	// console.log("numToHex:", numToHex(1000000));
 	if(options_testnet){
 		urlEtherscan = "https://testnet.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -237,14 +238,14 @@ ScrGame.prototype.createGUI = function() {
 	var icoTime = addObj("icoTime", 40, 120);
 	this.face_mc.addChild(icoTime);
 	
-	var seat = addObj("seat", _W/2, _H/2+150);
+	var offsetY = 50;
+	var seat = addObj("seat", _W/2, _H/2+150+offsetY);
 	this.back_mc.addChild(seat);
 	this.arrow = addObj("hintArrow", _W/2, _H/2+150);
 	this.arrow.rotation = rad(90);
 	this.arrow.visible = false;
 	this.game_mc.addChild(this.arrow);
 	
-	var offsetY = 25;
 	var strUser = 'id'
 	this.tfIdUser = addText(strUser, 20, "#ffffff", "#000000", "left", 1000, 4)
 	this.tfIdUser.x = icoKey.x + 24;
@@ -264,15 +265,15 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.tfVers);
 	this.tfResult = addText("", 20, "#ffffff", "#000000", "center", 400, 4)
 	this.tfResult.x = _W/2;
-	this.tfResult.y = _H/2-60;
+	this.tfResult.y = _H/2-60+offsetY;
 	this.face_mc.addChild(this.tfResult);
 	this.tfSelBet = addText("Select bet", 20, "#ffffff", "#000000", "center", 400, 4)
 	this.tfSelBet.x = _W/2-200;
-	this.tfSelBet.y = _H/2+100;
+	this.tfSelBet.y = _H/2+100+offsetY;
 	this.face_mc.addChild(this.tfSelBet);
 	this.tfMyPoints = addText("", 20, "#ffffff", "#000000", "right", 200, 4)
 	this.tfMyPoints.x = _W/2-125;
-	this.tfMyPoints.y = _H/2-17;
+	this.tfMyPoints.y = _H/2-17+offsetY;
 	this.face_mc.addChild(this.tfMyPoints);
 	this.tfMySplitPoints = addText("", 20, "#ffffff", "#000000", "right", 200, 4)
 	this.tfMySplitPoints.x = _W/2-125+280;
@@ -280,7 +281,7 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.tfMySplitPoints);
 	this.tfHousePoints = addText("", 20, "#ffffff", "#000000", "right", 200, 4)
 	this.tfHousePoints.x = _W/2-125;
-	this.tfHousePoints.y = _H/2-207;
+	this.tfHousePoints.y = _H/2-207+offsetY;
 	this.face_mc.addChild(this.tfHousePoints);
 	
 	if(openkey){
@@ -294,7 +295,7 @@ ScrGame.prototype.createGUI = function() {
 		this.tfResult.setText("key undefined");
 	}
 	
-	var btnStart = addButton2("btnDefault", _W/2, _H/2+265);
+	var btnStart = addButton2("btnDefault", _W/2, _H/2+265+offsetY);
 	btnStart.name = "btnStart";
 	btnStart.interactive = true;
 	btnStart.buttonMode=true;
@@ -306,7 +307,7 @@ ScrGame.prototype.createGUI = function() {
 	btnStart.addChild(tf);
 	btnStart.visible = false;
 	this.btnStart = btnStart;
-	var btnSplit = addButton2("btnDefault", _W/2, _H/2+265);
+	var btnSplit = addButton2("btnDefault", _W/2, _H/2+265+offsetY);
 	btnSplit.name = "btnSplit";
 	btnSplit.interactive = true;
 	btnSplit.buttonMode=true;
@@ -318,7 +319,7 @@ ScrGame.prototype.createGUI = function() {
 	btnSplit.addChild(tf);
 	btnSplit.visible = false;
 	this.btnSplit = btnSplit;
-	var btnClear = addButton2("btnDefault", _W/2 - 200, _H/2+230, 0.8);
+	var btnClear = addButton2("btnDefault", _W/2 - 200, _H/2+230+offsetY, 0.8);
 	btnClear.name = "btnClear";
 	btnClear.interactive = true;
 	btnClear.buttonMode=true;
@@ -330,7 +331,7 @@ ScrGame.prototype.createGUI = function() {
 	btnClear.addChild(tf);
 	btnClear.visible = false;
 	this.btnClear = btnClear;
-	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200, 0.7);
+	var btnHit = addButton2("btnGreen", _W/2-150, _H/2+200+offsetY, 0.7);
 	btnHit.name = "btnHit";
 	btnHit.interactive = true;
 	btnHit.buttonMode=true;
@@ -342,7 +343,7 @@ ScrGame.prototype.createGUI = function() {
 	tf.y = - 26;
 	btnHit.addChild(tf);
 	this.btnHit = btnHit;
-	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200, 0.7);
+	var btnStand = addButton2("btnOrange", _W/2+150, _H/2+200+offsetY, 0.7);
 	btnStand.name = "btnStand";
 	btnStand.interactive = true;
 	btnStand.buttonMode=true;
@@ -371,9 +372,10 @@ ScrGame.prototype.createGUI = function() {
 	this._arButtons.push(this.btnTweetShare);
 	// this.btnTweetShare.visible = false;
 	
-	this.addBtnChip("fiche_0", _W/2-270, _H/2+170);
-	this.addBtnChip("fiche_1", _W/2-200, _H/2+170);
-	this.addBtnChip("fiche_2", _W/2-130, _H/2+170);
+	var posY = _H/2+170+offsetY;
+	this.addBtnChip("fiche_0", _W/2-270, posY);
+	this.addBtnChip("fiche_1", _W/2-200, posY);
+	this.addBtnChip("fiche_2", _W/2-130, posY);
 	this.showChips(false);
 	
 	if(options_debug){
@@ -472,8 +474,9 @@ ScrGame.prototype.showButtons = function(value) {
 
 ScrGame.prototype.showPlayerCard = function(card){
 	if(card){
+		var offsetY = 50;
 		card.x = _W/2 - 80 + lastPlayerCard*30;
-		card.y = _H/2 + 40 //- lastPlayerCard*20;
+		card.y = _H/2 + 40+offsetY //- lastPlayerCard*20;
 		this.cards_mc.addChild(card);
 		lastPlayerCard++;
 		dealedCards.push(card);
@@ -486,8 +489,9 @@ ScrGame.prototype.showPlayerCard = function(card){
 
 ScrGame.prototype.showPlayerSplitCard = function(card){
 	if(card){
+		var offsetY = 50;
 		card.x = _W/2 + 200 + lastPlayerSplitCard*30;
-		card.y = _H/2 + 40 //- lastPlayerCard*20;
+		card.y = _H/2 + 40+offsetY //- lastPlayerCard*20;
 		this.cards_mc.addChild(card);
 		lastPlayerSplitCard++;
 		dealedCards.push(card);
@@ -518,8 +522,9 @@ ScrGame.prototype.showMySplitPoints = function(){
 
 ScrGame.prototype.showHouseCard = function(card){
 	if(card){
+		var offsetY = 50;
 		card.x = _W/2 - 80 + lastHouseCard*50;
-		card.y = _H/2 - 150;
+		card.y = _H/2 - 150+offsetY;
 		this.cards_mc.addChild(card);
 		lastHouseCard++;
 		dealedCards.push(card);
@@ -578,12 +583,13 @@ ScrGame.prototype.getHousePoints = function(){
 }
 
 ScrGame.prototype.showSuitCard = function(){
+	var offsetY = 50;
 	if(this.cardSuit){} else {
 		this.cardSuit = addObj("suit", 0, 0, 0.52);
 		this.gfx_mc.addChild(this.cardSuit);
 	}
 	this.cardSuit.x = _W/2 - 80 + lastHouseCard*50;
-	this.cardSuit.y = _H/2 - 150;
+	this.cardSuit.y = _H/2 - 150+offsetY;
 	if(this.bStand){
 		this.cardSuit.visible = false;
 	} else {
@@ -830,19 +836,21 @@ ScrGame.prototype.loadBet = function(value){
 		var setBet = betGame;
 		this.countChip = 0;
 		this.clearChips();
+		var offsetY = 50;
+		var posY = _H/2+150+offsetY-this.countChip*8;
 		
 		while(setBet > 0){
 			if(setBet >= 50){
 				setBet -= 50;
-				this.addChip("fiche_2", _W/2, _H/2+150-this.countChip*8);
+				this.addChip("fiche_2", _W/2, posY);
 				this.countChip ++;
 			} else if(setBet >= 10){
 				setBet -= 10;
-				this.addChip("fiche_1", _W/2, _H/2+150-this.countChip*8);
+				this.addChip("fiche_1", _W/2, posY);
 				this.countChip ++;
 			} else if(setBet >= 1){
 				setBet -= 1;
-				this.addChip("fiche_0", _W/2, _H/2+150-this.countChip*8);
+				this.addChip("fiche_0", _W/2, posY);
 				this.countChip ++;
 			} else if(setBet > 0){
 				setBet = 0;
@@ -990,6 +998,8 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 	var data = "";
 	var price = 0;
 	var nameRequest = "sendRaw";
+	var gasPrice="0x737be7600";//web3.toHex('31000000000');
+	var gasLimit=0x927c0; //web3.toHex('600000');
 	if(name == "deal"){
 		data = "0x"+C_DEAL;
 		price = betEth;
@@ -1008,6 +1018,7 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 	} else if(name == "split"){
 		data = "0x"+C_SPLIT;
 		price = betEth;
+		gasLimit=0xf4240; //1000000
 		obj_game["game"].nameGame = "split";
 	}
 	
@@ -1015,8 +1026,8 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 	options.nonce = value;
 	options.to = addressContract;
 	options.data = data; // method from contact
-	options.gasPrice="0x737be7600";//web3.toHex('31000000000');
-	options.gasLimit=0x927c0; //web3.toHex('600000');
+	options.gasPrice = gasPrice;
+	options.gasLimit = gasLimit;
 	options.value = price;
 	
 	if(privkey){
@@ -1079,9 +1090,11 @@ ScrGame.prototype.response = function(command, value, obj) {
 		}
 	} else if(command == "getPlayerCardsNumber"){
 		prnt.countPlayerCard = hexToNum(value);
+		console.log("countPlayerCard:", prnt.countPlayerCard);
 		prnt.addPlayerCard();
 	} else if(command == "getPlayerSplitCardsNumber"){
 		prnt.countPlayerSplitCard = hexToNum(value);
+		console.log("getPlayerSplitCardsNumber:", prnt.countPlayerSplitCard);
 		prnt.addPlayerCard();
 	} else if(command == "getHouseCardsNumber"){
 		prnt.countHouseCard = hexToNum(value);
@@ -1091,7 +1104,7 @@ ScrGame.prototype.response = function(command, value, obj) {
 			prnt.loadBet(value);
 		}
 	} else if(command == "getGameState"){
-		// console.log("state:", stateNow, stateOld);
+		console.log("state:", stateNow, stateOld);
 		if(value != "0x"){
 			stateNow = hexToNum(value);
 			
@@ -1140,7 +1153,6 @@ ScrGame.prototype.response = function(command, value, obj) {
 						break;
 				}
 				
-				// console.log("state:", stateNow, stateOld);
 				if(stateOld == S_IN_PROGRESS || 
 				prnt.bStand || 
 				prnt.myPoints == 21){
