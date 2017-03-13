@@ -430,10 +430,10 @@ function loadData() {
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';
 			checkData();
-			console.log("Loading: ok!");
+			// console.log("Loading: ok!");
 		} else {
 			checkData();
-			console.log("Loading: fail!");
+			// console.log("Loading: fail!");
 		}
 	}
 }
