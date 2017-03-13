@@ -55,9 +55,9 @@ WndInfo.prototype.show = function(str, callback, addStr, callback2) {
 		this._callback = undefined;
 	};
 	if(callback2){
-		this.callback2 = callback2
+		this._callback2 = callback2
 	}else{
-		this.callback2 = undefined;
+		this._callback2 = undefined;
 	};
 	
 	if(callback){
