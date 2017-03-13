@@ -421,7 +421,7 @@ ScrGame.prototype.createAccount = function() {
 			openkey = address;
 			this.tfIdUser.setText(address);
 			if(options_testnet){
-				var str = "http://faucet.ropsten.be:3001/donate/"+openkey;
+				var str = "https://platform.dao.casino/api/?a=faucet&to="+openkey;
 				this.sendUrlRequest(str, "getEthereum");
 			}
 			saveData();
