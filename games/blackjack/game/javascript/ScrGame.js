@@ -354,16 +354,16 @@ ScrGame.prototype.createGUI = function() {
 	tf.y = - 26;
 	btnStand.addChild(tf);
 	this.btnStand = btnStand;
-	var btnSmart = this.createButton("btnSmart", 100, 660, "Check contract", 17, 12);
+	var btnSmart = this.createButton("btnSmart", 100, _H- 60, "Check contract", 17, 12);
 	
-	this.btnShare = addButton2("btnFacebookShare", 1160, 50);
+	this.btnShare = addButton2("btnFacebookShare", _W - 120, 50);
 	this.btnShare.name = "btnShare";
 	this.btnShare.interactive = true;
 	this.btnShare.buttonMode=true;
 	this.addChild(this.btnShare);
 	this._arButtons.push(this.btnShare);
 	// this.btnShare.visible = false;
-	this.btnTweetShare = addButton2("btnTweetShare", 1160, 130);
+	this.btnTweetShare = addButton2("btnTweetShare", _W - 120, 130);
 	this.btnTweetShare.name = "btnTweet";
 	this.btnTweetShare.interactive = true;
 	this.btnTweetShare.buttonMode=true;

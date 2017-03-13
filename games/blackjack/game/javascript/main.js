@@ -1,5 +1,5 @@
-var _W = 1280;
-var _H = 720;
+var _W = 1920;
+var _H = 1080;
 var version = "v. 1.0.12"
 var login_obj = {};
 var dataAnima = [];
