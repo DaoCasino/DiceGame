@@ -614,7 +614,10 @@ ScrGame.prototype.showWndStart = function() {
 	var strX = "Multiplier: x" + betslevel[this.curLevel].koef;
 	var str = "To play the game, send " + bet + " ETH. \n " + strW + " \n " + strX;
 	var addStr = "Start";
-	this.createWndInfo(str, this.startGameF, addStr);
+	var func2 = function(){
+		obj_game["game"].btnStart.visible = true;
+	}
+	this.createWndInfo(str, this.startGameF, addStr, func2);
 }
 
 ScrGame.prototype.createIcoEthereum = function(name) {
