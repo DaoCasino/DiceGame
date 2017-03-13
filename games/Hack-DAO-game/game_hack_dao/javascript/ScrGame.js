@@ -440,12 +440,20 @@ ScrGame.prototype.createGUI = function() {
 	
 	var icoKey = addObj("icoKey", 40, 40);
 	icoKey._selected = false;
+	icoKey.interactive = true;
+	icoKey.buttonMode=true;
 	this.face_mc.addChild(icoKey);
 	this._arButtons.push(icoKey);
 	var icoEthereum = addObj("icoEthereum", 40, 80);
 	this.face_mc.addChild(icoEthereum);
 	var icoTime = addObj("icoTime", 40, 120);
 	this.face_mc.addChild(icoTime);
+	var btnFrame = addButton2("btnFrame", 294, 40);
+	btnFrame.name = "btnKey";
+	btnFrame.interactive = true;
+	btnFrame.buttonMode=true;
+	this.face_mc.addChild(btnFrame);
+	this._arButtons.push(btnFrame);
 	
 	var tfResult = addText("time:", 50, "#FF0000", "#000000", "center", 400)
 	this.itemResult.addChild(tfResult);
@@ -466,14 +474,9 @@ ScrGame.prototype.createGUI = function() {
 	var offsetY = 25;
 	var strUser = 'id'
 	this.tfIdUser = addText(strUser, 20, "#ffffff", "#000000", "left", 1000, 4, fontMain)
-	this.tfIdUser.name = "tfId";
-	this.tfIdUser._selected = false;
 	this.tfIdUser.x = icoKey.x + 24;
 	this.tfIdUser.y = icoKey.y - 12;
-	this.tfIdUser.w = 1000;
-	this.tfIdUser.h = 24;
 	this.face_mc.addChild(this.tfIdUser);
-	this._arButtons.push(this.tfIdUser);
 	this.tfBalance = addText("0", 20, "#ffffff", "#000000", "left", 400, 4, fontMain)
 	this.tfBalance.x = icoEthereum.x + 24;
 	this.tfBalance.y = icoEthereum.y - 12;
@@ -1082,7 +1085,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnNext"){
 		this.removeAllListener();
 		showLevels();
-	} else if(item_mc.name == "tfId" || item_mc.name == "icoKey"){
+	} else if(item_mc.name == "btnKey" || item_mc.name == "icoKey"){
 		copyToClipboard(openkey);
 	} else if(item_mc.name == "itemDao"){
 		if(this._gameOver){

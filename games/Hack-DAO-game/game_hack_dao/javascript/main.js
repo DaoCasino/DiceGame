@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.9"
+var version = "v. 1.1.10"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -154,6 +154,8 @@ function loadManifest(){
 	preloader.add("btnGreen", "images/buttons/btnGreen.png");
 	preloader.add("btnGreenOver", "images/buttons/btnGreenOver.png");
 	preloader.add("btnGreenDown", "images/buttons/btnGreenDown.png");
+	preloader.add("btnFrame", "images/buttons/btnFrame.png");
+	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
 	
 	preloader.add("itemDao", "images/items/itemDao.png");
 	preloader.add("eggPart", "images/items/eggPart.png");
