@@ -1222,8 +1222,8 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
 	console.log("sendRequest:", name, url)
+	var xhr = new XMLHttpRequest();
 	var str = url;
-	/*var xhr = new XMLHttpRequest();
 	xhr.open("GET", str, true);
 	xhr.send(null);
 	xhr.onreadystatechange = function() { // (3)
@@ -1234,16 +1234,7 @@ ScrGame.prototype.sendUrlRequest = function(url, name) {
 		} else {
 			obj_game["game"].response(name, xhr.responseText) 
 		}
-	}*/
-	
-	$.ajax({
-		type: "POST",
-		url: str,
-		dataType: "json",
-		success: function (d) {
-			obj_game["game"].response(name, d.result) 
-		}
-	});
+	}
 }
 
 ScrGame.prototype.getResponseResult = function(value) {
