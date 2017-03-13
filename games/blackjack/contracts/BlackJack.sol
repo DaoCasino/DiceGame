@@ -60,7 +60,7 @@ contract BlackJack is owned {
   		uint8 value
     );
 
-	function () onlyOwner payable {
+	function () payable {
 
 	}
 
@@ -228,6 +228,8 @@ contract BlackJack is owned {
 		splitGames[msg.sender].playerCards.push(game.playerCards[1]);
 
 		game.playerCards = [game.playerCards[0]];
+		game.playerScore = Deck.valueOf(game.playerCards[0], false);
+		game.playerBigScore = Deck.valueOf(game.playerCards[0], true);
 
 		// Deal extra cards in each game.
 		dealCard(true, games[msg.sender]);
