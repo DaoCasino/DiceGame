@@ -407,7 +407,7 @@ ScrGame.prototype.createAccount = function() {
 	}else{
 		var tfCreateKey = addText("Now you generate address", 40, "#FF8611", "#000000", "center", 800)
 		tfCreateKey.x = _W/2;
-		tfCreateKey.y = 150;
+		tfCreateKey.y = 120;
 		this.face_mc.addChild(tfCreateKey);
 		createjs.Tween.get(tfCreateKey).wait(2000).to({alpha:0},500)
 		
@@ -1221,7 +1221,7 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	// console.log("sendRequest:", name, url)	
+	console.log("sendRequest:", name, url)
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
