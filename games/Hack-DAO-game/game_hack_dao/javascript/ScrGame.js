@@ -173,6 +173,7 @@ ScrGame.prototype.init = function() {
 	this.createAccount();
 	this.sendRequest("getBalance");
 	this.sendRequest("getBalanceBank");
+	this.sendRequest("getBlockNumber");
 	this.showWndStart();
 	
 	this.interactive = true;
@@ -1149,7 +1150,7 @@ ScrGame.prototype.getResult = function() {
 	$.get(urlEtherscan + 
 		"api?module=logs"+
 		"&action=getLogs"+
-		"&fromBlock=694725"+
+		"&fromBlock="+String(blockNumber)+
 		"&toBlock=latest"+
 		"&address="+addressContract+
 		"&apikey=YourApiKeyToken", function (d) {
@@ -1159,12 +1160,10 @@ ScrGame.prototype.getResult = function() {
 			if(len > 50){
 				index = len-50;
 			}
-			console.log("gameTxHash:", obj_game["gameTxHash"]);
-			console.log("d:", arLogs);
+			
 			if(idOraclizeGame == undefined){
 				for (var i = index; i < len; i ++) {
 					if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
-						console.log("transactionHash: !!!!!!!!!!!!!!!!!!", i);
 						var obj = arLogs[i];
 						idOraclizeGame = obj.data; //id Oraclize
 						break;
@@ -1275,6 +1274,22 @@ ScrGame.prototype.sendRequest = function(value) {
 			if(openkey){
 				this.sendInfuraRequest("getBalanceBank", addressContract);
 			}
+		} else if(value == "getBlockNumber"){
+			if(openkey){
+				$.ajax({
+					type: "POST",
+					url: urlInfura,
+					dataType: 'json',
+					async: false,
+					data: JSON.stringify({"id":0,
+										"jsonrpc":'2.0',
+										"method":"eth_blockNumber",
+										"params":[]}),
+					success: function (d) {
+						obj_game["game"].response(value, d.result);
+					}
+				})
+			}
 		}
 	}
 }
@@ -1332,6 +1347,9 @@ ScrGame.prototype.response = function(command, value) {
 		}
 	} else if(command == "getBalanceBank"){
 		obj_game["balanceBank"] = Number(value);
+	} else if(command == "getBlockNumber"){
+		blockNumber = Number(hexToNum(value));
+		console.log("blockNumber:", blockNumber);
 	}
 }
 
