@@ -1640,7 +1640,7 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	console.log("this.bSendReques:", this.bSendReques);
+	console.log("this.bSendRequest:", this.bSendRequest);
 	if(obj_game["balance"]==0){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
