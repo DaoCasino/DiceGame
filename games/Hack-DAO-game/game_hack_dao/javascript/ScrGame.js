@@ -925,8 +925,7 @@ ScrGame.prototype.resultGameEth = function(val){
 
 ScrGame.prototype.startGameF = function() {
 	if(privkey || options_debug){
-		var bet = betslevel[obj_game["game"].curLevel].bet;	
-		console.log("startGameF:", bet, betEth*2, obj_game["balanceBank"]);
+		var bet = betslevel[obj_game["game"].curLevel].bet;
 		if(bet > obj_game["balance"] && options_ethereum &&
 		options_debug == false){
 			obj_game["game"].warningBalance();
@@ -1640,15 +1639,15 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	if(obj_game["balance"]==0){
-		this.timeGetResult += diffTime;
-		if(this.timeGetResult >= TIME_GET_RESULT &&
-		this.bSendRequest == false){
-			this.bSendRequest = true;
-			this.timeGetResult = 0;
-			this.sendRequest("getBalance");
-		}
-	}
+	// if(obj_game["balance"]==0){
+		// this.timeGetResult += diffTime;
+		// if(this.timeGetResult >= TIME_GET_RESULT &&
+		// this.bSendRequest == false){
+			// this.bSendRequest = true;
+			// this.timeGetResult = 0;
+			// this.sendRequest("getBalance");
+		// }
+	// }
 	if(this.gameTxHash){
 		if(login_obj["startGame"]){
 			console.log("!!!:", this.timeGetResult, TIME_GET_RESULT, this.bSendRequest);
