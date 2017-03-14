@@ -1,29 +1,6 @@
-// function getBalance(){
-//     $.ajax({
-//         type: "POST"
-//         , url: urlInfura
-//         , dataType: 'json'
-//         , async: false
-//         , data: JSON.stringify({
-//             "id": 0
-//             , "jsonrpc": '2.0'
-//             , "method": 'eth_getBalance'
-//             , "params": [openkey, "latest"]
-//         })
-//         , success: function (d) {
-//             console.log("balance!: ", d.result, toFixed((Number(d.result) / 1000000000000000000), 4));
-//             _balance = toFixed((Number(d.result) / 1000000000000000000), 4);
-//             $("#balance").html(_balance);
-//             $("#your-balance").val(_balance);
-//         }
-//     })
-// };
-
-
 var Timer;
-
-
 function startGame() {
+    game = true;
     if (openkey) {
         $.ajax({
             method: "POST",
@@ -73,16 +50,15 @@ function startGame() {
                                 console.log("Транзакция отправлена в сеть:", d.result);
                                 lastTx = d.result;
                                 if (lastTx == undefined) {
-                                    $("#label").text("Sorry, transaction failed");
+                                    $("#random").text("Sorry, transaction failed");
                                 } else {
-                                    $("#Tx").html('<a target="_blank" href="https://kovan.etherscan.io/tx/' + lastTx + '">...' + lastTx.slice(4, 12) + '...</a>')
+                                    $("#Tx").html('<a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + '">...' + lastTx.slice(2, 24) + '...</a>')
                                     disabled(true);
-                                    $("#label").text("Please, wait . . . ");
-                                    game = true;
+                                    $("#random").text("Please, wait . . . ");
                                     Timer = setInterval(function () {
                                         $.ajax({
                                             method: "POST",
-                                            url: "https://kovan.etherscan.io/api",
+                                            url: "https://testnet.etherscan.io/api",
                                             data: {
                                                 module: "proxy",
                                                 action: "eth_call",
@@ -99,7 +75,7 @@ function startGame() {
                                                     console.log("getStatusGame")
                                                     $.ajax({
                                                         method: "POST",
-                                                        url: urlEtherscan,
+                                                        url: "https://testnet.etherscan.io/api",
                                                         data: {
                                                             module: "proxy",
                                                             action: "eth_call",
@@ -114,38 +90,43 @@ function startGame() {
                                                                 console.log("идет игра");
                                                             } else if (result == 1) {
                                                                 console.log("YOU WIN!");
+                                                                $("#random").text("YOU WIN!!! ");
                                                                 disabled(false);
-                                                                game = false;
                                                                 TotalRolls();
                                                                 TotalPaid();
-                                                                $("#random").text("YOU WIN!!! ");
                                                                 GetLogs();
                                                                 getContractBalance();
                                                                 clearInterval(Timer);
+                                                                count = new_count;
+                                                                game = false;
                                                             } else if (result == 2) {
                                                                 console.log("YOU LOSER!");
+                                                                $("#random").text("YOU LOSE!!! ");                                                                
                                                                 disabled(false);
-                                                                game = false;
                                                                 TotalRolls();
                                                                 TotalPaid();
                                                                 GetLogs();
                                                                 getContractBalance();
-                                                                $("#random").text("YOU LOSE!!! ");
                                                                 clearInterval(Timer);
+                                                                count = new_count;
+                                                                game = false;
                                                             } else if (result == 3) {
-                                                                console.log("Sorry, dont money in bank");
-                                                                game = false;
+                                                                console.log("Sorry, No money in the bank");
+                                                                $("#random").text("Sorry, no money in the bank");                                                                
                                                                 disabled(false);
                                                                 TotalRolls();
                                                                 TotalPaid();
                                                                 GetLogs();
                                                                 getContractBalance();
-                                                                $("#random").text("Sorry, dont money in bank");
                                                                 clearInterval(Timer);
+                                                                count = new_count;
+                                                                game = false;
                                                             }
+                                                            //
+
                                                         }
                                                     })
-                                                    count = new_count;
+                                                    
                                                 }
                                             }
                                         });
@@ -160,3 +141,4 @@ function startGame() {
         })
     }
 }
+

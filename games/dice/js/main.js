@@ -1,32 +1,22 @@
 var balance = ".::::.";
 var urlBalance = ""; //balance
-//var addressContract = "0x7776ec25d1d676d8656fb79ab96054ba13bf70b3"; TESTNET
 var addressContract = "NOOO";
-//"0x0cf37d2d45427a1380db12c9b352d6f083143817"; // KOVAN
-//0xba2f1399df21c75ce578630ff9ed9285b2146b8d  TESTNET ETHERSCAN
 var betEth = 0.2; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress, kovanAddress;
 var chance = 5000;
 //var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-var urlEtherscan = "https://kovan.etherscan.io/api";
+var urlEtherscan = "https://testnet.etherscan.io/api";
 var lastTx;
 var count;
-var game = false;
 var sends;
 var paids;
+var game = false;
 var contractTable;
-
-
-
 // var maxBet = 2000;
 /*
  * value - Дробное число.
  * precision - Количество знаков после запятой.
  */
-
-//0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051
-
-
 function getGameContract() {
     var arr;
     $.ajax({
@@ -49,8 +39,6 @@ function getGameContract() {
     }) 
 };
 getGameContract();
-
-
 
 function toFixed(value, precision) {
     precision = Math.pow(10, precision);
@@ -88,11 +76,15 @@ function loadData() {
         mainnet = localStorage.getItem('mainnet')
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
+
+
     }
-    console.log("version 0.37a kovan") // VERSION !
+
+    console.log("version 0.40 testnet") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
+
 };
 
 function setContract() {
@@ -100,8 +92,8 @@ function setContract() {
         urlEtherscan = "https://api.etherscan.io/api";
         addressContract = mainnetAddress;
     } else if (mainnet == "off") {
-        urlEtherscan = "https://kovan.etherscan.io/api";
-        addressContract = kovanAddress;
+        urlEtherscan = "https://testnet.etherscan.io/api";
+        addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
     }
 };
 
@@ -137,32 +129,30 @@ function getContractBalance() {
 
         },
         success: function (d) {
-            $('#contractBalance').html((d.result / 1000000000000000000).toFixed(5));
+            $('#contractBalance').html("CONTRACT ( " + (d.result / 1000000000000000000).toFixed(5)+" ETH )");
         }
     });
 };
 // РАЗОБРАТЬСЯ С SHOWRND !!!!
-function ShowRnd() {
-    $.ajax({
-        type: "POST",
-        url: urlEtherscan,
-        data: {
-            module: "proxy",
-            action: "eth_call",
-            //address: openkey,
-            data: "0xeb54cd4b000000000000000000000000" + openkey.substr(2),
-            to: addressContract,
-            // tag: "latest"
-        },
-        success: function (d) {
-            count = hexToNum(d.result);
-            console.log(count, d.result, d);
-            $('#random').html(count);
-        }
-    });
-}
-
-
+// function ShowRnd() {
+//     $.ajax({
+//         type: "POST",
+//         url: urlEtherscan,
+//         data: {
+//             module: "proxy",
+//             action: "eth_call",
+//             //address: openkey,
+//             data: "0xeb54cd4b000000000000000000000000" + openkey.substr(2),
+//             to: addressContract,
+//             // tag: "latest"
+//         },
+//         success: function (d) {
+//             count = hexToNum(d.result);
+//             console.log(count, d.result, d);
+//             $('#random').html(count);
+//         }
+//     });
+// }
 function initGame() {
     getGameContract();
     Refresh();
@@ -172,44 +162,8 @@ function initGame() {
     TotalRolls();
     TotalPaid();
     getContractBalance();
-    $("#openkey").append(openkey);
-     $("#contract").append('<a target="_blank" href="https://kovan.etherscan.io/address/' + addressContract + '">To contract</a>')
+    $("#contract").html('<a target="_blank" href="'+ urlEtherscan.slice(0, -3) + '/address/' + addressContract + '">...'+ addressContract.slice(2, 24) +'...</a>')
     GetLogs();
-    // $.ajax({
-    //     type: "POST",
-    //     url: urlInfura,
-    //     dataType: 'json',
-    //     async: false,
-    //     data: JSON.stringify({
-    //         "id": 0,
-    //         "jsonrpc": '2.0',
-    //         "method": 'eth_getBalance',
-    //         "params": [openkey, "latest"]
-    //     }),
-    //     success: function (d) {
-    //         console.log("balance!: ", d.result, toFixed((Number(d.result) / 1000000000000000000), 4));
-    //         //_balance = toFixed((Number(d.result) / 1000000000000000000), 4);
-    //         //$("#balance").html(_balance);
-    //         //$("#your-balance").val(_balance);
-    //     }
-    // })
-
-    // $.ajax({
-    //     type: "POST",
-    //     url: urlEtherscan,
-    //     data: {
-    //         module: "proxy",
-    //         action: "eth_call",
-    //         // address: openkey,
-    //         data: "0x9288cebc000000000000000000000000" + openkey.substr(2),
-    //         to: addressContract,
-    //         // tag: "latest"
-    //     },
-    //     success: function (d) {
-    //         count = hexToNum(d.result);
-    //         console.log("old_count", count);
-    //     }
-    // });
 };
 
 
@@ -302,23 +256,6 @@ function TotalPaid() {
 
 
 setInterval(function () {
-    // $.ajax({
-    //     method: "POST",
-    //     url: urlEtherscan,
-    //     data: {
-    //         module: "account",
-    //         action: "balance",
-    //         address: openkey,
-    //         tag: "latest"
-    //     }
-
-    //     ,
-    //     success: function (d) {
-    //         // console.log(d.result);
-    //         balance = d.result / 1000000000000000000;
-
-    //     }
-    // });
     balance = $('#balance').html();
     balance = +balance.substr(0, balance.length - 4);
     balance = +balance.toFixed(8);

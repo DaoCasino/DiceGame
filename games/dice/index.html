@@ -98,7 +98,7 @@
 						<div class="col-md-3 col-sm-6 col-xs-6 top-check">
 							<div class="switch-block clearfix">
 								<form action="">
-									<span class="real-money switch-span">KOVAN TESTNET</span>
+									<span class="real-money switch-span">TESTNET</span>
 									<span class="toggle-bg">
 										<input type="radio" id="checked-off" name="toggle" value="off">
 										<input type="radio" id="checked-on" name="toggle" value="on"> 
@@ -115,7 +115,7 @@
 								</a>
 								
 								<div id='isreg' style='display:none'>
-									<h3 id="openkey" class="switch-span" data-clipboard-target="#openkey"></h3>
+						
 									<a class="disclaimer-btn" id='balance' href="/balance.html">
 										? ETH
 									</a>-
@@ -148,9 +148,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="player-stats">
-											<p class="label-numbers"></p>
-											<h2 class="status-numbers" id="contract"></h2>
-											<h3 id="contractBalance">..::.:.</h3>
+											<h3 id="random"></h3>
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -193,8 +191,8 @@
 								<div class="wrapper-slider">
 									<div class="clearfix">
 										<div class="wrapper-slider__right-item">
-											<label for="less-than-wins">0 - 9900</label>
-											<input type="text" value="5000" id="less-than-wins">
+											<label for="less-than-wins">Less than wins</label>
+											<input type="text" placeholder="0 - 9900" value="5000" id="less-than-wins">
 										</div>
 										<div class="wrapper-slider__right-item">
 											<label for="amount-two">Win Chance</label>
@@ -213,11 +211,18 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-4 col-md-offset-4">
+							
+							<div class="col-md-4 col-md-offset-2">
 								<div class="player-stats">
-								<h3 id="random"></h3>
-								<h3 class="status-numbers">TRANSACTION:</h3>
+								<h3 class="status-numbers">TRANSACTION</h3>
 								<h3 class="status-numbers" id="Tx">..:.::.</h3>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="player-stats">
+								<h3 class="status-numbers"  id="contractBalance" >CONTRACT </h3>
+								<h3 class="status-numbers" id="contract">..:.::.</h3>
+								
 								</div>
 							</div>
 						</div>
@@ -383,7 +388,7 @@
 	<script src="js/gamecommon.js"async></script>
 <script src="../../js/common.js"></script>
 	<script src="js/scrGame.js"></script>
-	<script src="js/kovan.js"></script>
+	<script src="js/testnet.js"></script>
 	
 	
 </body>
