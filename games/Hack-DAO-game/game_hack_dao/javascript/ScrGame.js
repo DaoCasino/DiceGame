@@ -1646,8 +1646,7 @@ ScrGame.prototype.update = function() {
 		this.bSendRequest == false){
 			this.bSendRequest = true;
 			this.timeGetResult = 0;
-				this.sendRequest("getBalance");
-			}
+			this.sendRequest("getBalance");
 		}
 	}
 	if(this.gameTxHash){
