@@ -1321,7 +1321,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
 		if(this.tfGetEth){
-			this.tfGetEth.setText("Your 1 test ether will be available shortly");
+			this.tfGetEth.setText("Your 1 test ether will be available shortly (about minute)");
 		}
 		this.sendRequest("getBalance");
 	} else if(command == "getBalance"){
