@@ -14,7 +14,7 @@ ItemHacker.prototype.init = function() {
 	this.hMax = 156;
 	this.w = this.wMax;
 	this.h = this.hMax;
-	this.healthMax = 80;
+	this.healthMax = 70;
 	this.health = this.healthMax;
 	this.dead = false;
 	
