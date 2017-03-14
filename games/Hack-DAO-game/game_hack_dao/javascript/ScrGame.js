@@ -1651,6 +1651,7 @@ ScrGame.prototype.update = function() {
 	}
 	if(this.gameTxHash){
 		if(login_obj["startGame"]){
+			console.log("!!!:", this.timeGetResult, TIME_GET_RESULT, this.bSendRequest);
 			this.timeGetResult += diffTime;
 			if(this.timeGetResult >= TIME_GET_RESULT &&
 			this.bSendRequest == false){
