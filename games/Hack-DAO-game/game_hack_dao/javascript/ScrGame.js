@@ -462,6 +462,10 @@ ScrGame.prototype.createGUI = function() {
 	tfBalance.y = 55;
 	this.itemResult.addChild(tfBalance);
 	this.itemResult.tfBalance = tfBalance;
+	this.tfGetEth = addText("", 40, "#FF8611", "#000000", "center", 800)
+	this.tfGetEth.x = _W/2;
+	this.tfGetEth.y = 120;
+	this.face_mc.addChild(this.tfGetEth);
 	
 	this.hintArrow = new PIXI.Container();
 	this.hintArrow.x = this.itemDao.x + 70;
@@ -1298,12 +1302,17 @@ ScrGame.prototype.response = function(command, value) {
 		}
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
-		console.log("this:", this);
+		if(this.tfGetEth){
+			this.tfGetEth.setText("Your 1 test ether will be available shortly");
+		}
 		this.sendRequest("getBalance");
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
+		if(obj_game["balance"] > 0){
+			this.tfGetEth.setText("");
+		}
 		if(this.oldBalance == -1){
 			// записываем баланс на старте игры
 			this.oldBalance = Number(obj_game["balance"]);
@@ -1630,13 +1639,19 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	if(this.gameTxHash && login_obj["startGame"]){
-		this.timeGetResult += diffTime;
-		if(this.timeGetResult >= TIME_GET_RESULT &&
-		this.bSendRequest == false){
-			this.bSendRequest = true;
-			this.timeGetResult = 0;
-			this.sendRequest("gameTxHash");
+	if(this.gameTxHash){
+		if(login_obj["startGame"] || obj_game["balance"]==0){
+			this.timeGetResult += diffTime;
+			if(this.timeGetResult >= TIME_GET_RESULT &&
+			this.bSendRequest == false){
+				this.bSendRequest = true;
+				this.timeGetResult = 0;
+				if(obj_game["balance"]==0){
+					this.sendRequest("getBalance");
+				} else {
+					this.sendRequest("gameTxHash");
+				}
+			}
 		}
 	}
 	
@@ -1651,7 +1666,7 @@ ScrGame.prototype.update = function() {
 			this.bWindow = false;
 		}
 	}
-	
+		
 	if(options_pause){
 		return false;
 	}
