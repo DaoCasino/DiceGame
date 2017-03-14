@@ -1640,12 +1640,12 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	
+	console.log("this.gameTxHash:", this.gameTxHash, login_obj["startGame"]);
 	if(obj_game["balance"]==0){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
 		this.bSendRequest == false){
-			// this.bSendRequest = true;
+			this.bSendRequest = true;
 			this.timeGetResult = 0;
 			this.sendRequest("getBalance");
 		}
