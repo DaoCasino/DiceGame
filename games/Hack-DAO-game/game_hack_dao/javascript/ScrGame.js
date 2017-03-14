@@ -1271,7 +1271,7 @@ ScrGame.prototype.sendRequest = function(value) {
 			}
 		} else if(value == "getBalanceBank"){
 			if(openkey){
-				this.sendInfuraRequest("getBalanceBank", openkey);
+				this.sendInfuraRequest("getBalanceBank", addressContract);
 			}
 		}
 	}
