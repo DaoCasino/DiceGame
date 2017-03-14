@@ -462,7 +462,7 @@ ScrGame.prototype.createGUI = function() {
 	tfBalance.y = 55;
 	this.itemResult.addChild(tfBalance);
 	this.itemResult.tfBalance = tfBalance;
-	this.tfGetEth = addText("", 40, "#FF8611", "#000000", "center", 800)
+	this.tfGetEth = addText("", 40, "#FF8611", "#000000", "center", 600)
 	this.tfGetEth.x = _W/2;
 	this.tfGetEth.y = 120;
 	this.face_mc.addChild(this.tfGetEth);
@@ -1640,6 +1640,7 @@ ScrGame.prototype.update = function() {
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
 	if(this.gameTxHash){
+		console.log("getBalance:", obj_game["balance"], this.timeGetResult, this.bSendRequest);
 		if(login_obj["startGame"] || obj_game["balance"]==0){
 			this.timeGetResult += diffTime;
 			if(this.timeGetResult >= TIME_GET_RESULT &&
