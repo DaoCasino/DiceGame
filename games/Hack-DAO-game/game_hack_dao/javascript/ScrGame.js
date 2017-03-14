@@ -1161,10 +1161,8 @@ ScrGame.prototype.getResult = function() {
 			}
 			if(idOraclizeGame == undefined){
 				for (var i = index; i < len; i ++) {
-					console.log(i, "transactionHash:", 
-					arLogs[i].transactionHash,
-					obj_game["gameTxHash"]);
 					if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
+						console.log("transactionHash: !!!!!!!!!!!!!!!!!!", i);
 						var obj = arLogs[i];
 						idOraclizeGame = obj.data; //id Oraclize
 						break;
