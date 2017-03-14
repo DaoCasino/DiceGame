@@ -1,6 +1,6 @@
 var balance = ".::::.";
 var urlBalance = ""; //balance
-var addressContract = "NOOO";
+var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 var betEth = 0.2; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress, kovanAddress;
 var chance = 5000;
@@ -80,7 +80,7 @@ function loadData() {
 
     }
 
-    console.log("version 0.40 testnet") // VERSION !
+    console.log("version 0.40a testnet") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -134,25 +134,24 @@ function getContractBalance() {
     });
 };
 // РАЗОБРАТЬСЯ С SHOWRND !!!!
-// function ShowRnd() {
-//     $.ajax({
-//         type: "POST",
-//         url: urlEtherscan,
-//         data: {
-//             module: "proxy",
-//             action: "eth_call",
-//             //address: openkey,
-//             data: "0xeb54cd4b000000000000000000000000" + openkey.substr(2),
-//             to: addressContract,
-//             // tag: "latest"
-//         },
-//         success: function (d) {
-//             count = hexToNum(d.result);
-//             console.log(count, d.result, d);
-//             $('#random').html(count);
-//         }
-//     });
-// }
+function ShowRnd() {
+    $.ajax({
+        type: "POST",
+        url: urlEtherscan,
+        data: {
+            module: "proxy",
+            action: "eth_call",
+            //address: openkey,
+            data: "0xdb571498000000000000000000000000" + openkey.substr(2),
+            to: addressContract,
+            // tag: "latest"
+        },
+        success: function (d) {
+            count = hexToNum(d.result);
+            $('#randomnum').html(count);
+        }
+    });
+}
 function initGame() {
     getGameContract();
     Refresh();
@@ -256,6 +255,7 @@ function TotalPaid() {
 
 
 setInterval(function () {
+    if(openkey){
     balance = $('#balance').html();
     balance = +balance.substr(0, balance.length - 4);
     balance = +balance.toFixed(8);
@@ -271,4 +271,9 @@ setInterval(function () {
     if(balance){
     $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
     }
+}
+else{
+    $("#label").text("Please, sign in");
+    disabled(true);
+}
 }, 1000);

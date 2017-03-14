@@ -96,6 +96,7 @@ function startGame() {
                                                                 TotalPaid();
                                                                 GetLogs();
                                                                 getContractBalance();
+                                                                ShowRnd();
                                                                 clearInterval(Timer);
                                                                 count = new_count;
                                                                 game = false;
@@ -107,6 +108,7 @@ function startGame() {
                                                                 TotalPaid();
                                                                 GetLogs();
                                                                 getContractBalance();
+                                                                ShowRnd();
                                                                 clearInterval(Timer);
                                                                 count = new_count;
                                                                 game = false;
@@ -118,6 +120,7 @@ function startGame() {
                                                                 TotalPaid();
                                                                 GetLogs();
                                                                 getContractBalance();
+                                                                ShowRnd();
                                                                 clearInterval(Timer);
                                                                 count = new_count;
                                                                 game = false;
