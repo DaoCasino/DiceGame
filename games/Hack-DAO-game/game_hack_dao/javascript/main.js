@@ -420,10 +420,12 @@ function saveData() {
 }
 
 function loadData() {
+	console.log("isLocalStorageAvailable:", isLocalStorageAvailable());
 	if(isLocalStorageAvailable()){
 		mainet = localStorage.getItem('mainnet')
 		openkey = localStorage.getItem('openkey')
 		privkey = localStorage.getItem('privkey')
+		console.log("openkey:", openkey);
 		if (localStorage.getItem('daocasino_hack')){
 			var login_str = localStorage.getItem('daocasino_hack')
 			login_obj = JSON.parse(login_str);
