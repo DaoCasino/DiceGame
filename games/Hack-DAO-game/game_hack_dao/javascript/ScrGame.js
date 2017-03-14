@@ -1179,6 +1179,7 @@ ScrGame.prototype.getResult = function() {
 					}
 				}
 			}
+			console.log("resultTxid:", idOraclizeGame, resultTxid);
 			
 			if(resultTxid){
 				for (var i = index; i < len; i ++) {
@@ -1277,11 +1278,11 @@ ScrGame.prototype.sendRequest = function(value) {
 }
 
 ScrGame.prototype.response = function(command, value) {
+	console.log("response:", command, value)	
 	if(value == undefined){
 		return false;
 	}
 	
-	console.log("response:", command, value)	
 	if(command == "gameTxHash"){
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
@@ -1652,7 +1653,6 @@ ScrGame.prototype.update = function() {
 			this.timeGetResult += diffTime;
 			if(this.timeGetResult >= TIME_GET_RESULT &&
 			this.bSendRequest == false){
-				console.log("------------------------");
 				this.bSendRequest = true;
 				this.timeGetResult = 0;
 				this.sendRequest("gameTxHash");
