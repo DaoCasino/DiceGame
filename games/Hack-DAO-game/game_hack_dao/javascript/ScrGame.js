@@ -1149,7 +1149,7 @@ ScrGame.prototype.getResult = function() {
 	$.get(urlEtherscan + 
 		"api?module=logs"+
 		"&action=getLogs"+
-		"&fromBlock=379224"+
+		"&fromBlock=694725"+
 		"&toBlock=latest"+
 		"&address="+addressContract+
 		"&apikey=YourApiKeyToken", function (d) {
