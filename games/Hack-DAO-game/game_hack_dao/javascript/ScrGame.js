@@ -1226,7 +1226,7 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	// console.log("sendRequest:", name, url)
+	console.log("sendRequest:", name, url)
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
@@ -1640,7 +1640,6 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	console.log("this.bSendRequest:", this.bSendRequest);
 	if(obj_game["balance"]==0){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
