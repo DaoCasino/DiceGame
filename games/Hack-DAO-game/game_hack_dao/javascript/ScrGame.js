@@ -620,6 +620,7 @@ ScrGame.prototype.showWndClearLog = function() {
 ScrGame.prototype.showTestEther = function() {
 	var str = "Your 1 test ether will be available shortly (about minute)";
 	this.createWndInfo(str);
+	obj_game["game"].btnStart.visible = true;
 }
 
 ScrGame.prototype.showWndStart = function() {
