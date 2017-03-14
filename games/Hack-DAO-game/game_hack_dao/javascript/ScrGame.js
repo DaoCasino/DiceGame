@@ -1225,7 +1225,6 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	console.log("sendRequest:", name, url)
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
@@ -1254,6 +1253,7 @@ ScrGame.prototype.getResponseResult = function(value) {
 
 ScrGame.prototype.sendRequest = function(value) {
 	if(options_ethereum){
+		console.log("sendRequest:", value)
 		if(value == "game"){
 			if(this.clickDAO == false){
 				this.clickDAO = true;
@@ -1649,7 +1649,6 @@ ScrGame.prototype.update = function() {
 		}
 	} else if(this.gameTxHash){
 		if(login_obj["startGame"]){
-			console.log("!!!:", this.timeGetResult, TIME_GET_RESULT, this.bSendRequest);
 			this.timeGetResult += diffTime;
 			if(this.timeGetResult >= TIME_GET_RESULT &&
 			this.bSendRequest == false){
