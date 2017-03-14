@@ -620,7 +620,6 @@ ScrGame.prototype.showWndClearLog = function() {
 ScrGame.prototype.showTestEther = function() {
 	var str = "Your 1 test ether will be available shortly (about minute)";
 	this.createWndInfo(str);
-	obj_game["game"].btnStart.visible = true;
 }
 
 ScrGame.prototype.showWndStart = function() {
@@ -947,7 +946,7 @@ ScrGame.prototype.startGameF = function() {
 				obj_game["game"].bSendRequest = false;
 				obj_game["game"].startGame = true;
 			}
-			// obj_game["game"].btnStart.visible = false;
+			obj_game["game"].btnStart.visible = false;
 		}
 	} else {
 		obj_game["game"].createAccount();
@@ -1335,10 +1334,15 @@ ScrGame.prototype.response = function(command, value) {
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
+		this.bSendRequest = false;
 		if(obj_game["balance"] > 0){
 			this.tfGetEth.setText("");
+			if(this.oldBalance == -1){
+				this.oldBalance = Number(obj_game["balance"]);
+				this.showWndStart();
+			}
 		}
-		if(this.oldBalance == -1){
+		/*if(this.oldBalance == -1){
 			// записываем баланс на старте игры
 			this.oldBalance = Number(obj_game["balance"]);
 			obj_game["oldBalance"] = this.oldBalance;
@@ -1351,7 +1355,7 @@ ScrGame.prototype.response = function(command, value) {
 				this.timeGetResult = 0;
 				this.bSendRequest = false;
 			}
-		}
+		}*/
 	} else if(command == "getBalanceBank"){
 		obj_game["balanceBank"] = Number(value);
 	} else if(command == "getBlockNumber"){
