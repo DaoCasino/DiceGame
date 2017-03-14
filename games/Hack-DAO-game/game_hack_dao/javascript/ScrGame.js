@@ -1179,6 +1179,7 @@ ScrGame.prototype.getResult = function() {
 					}
 				}
 			}
+			console.log("d:", d);
 			console.log("resultTxid:", idOraclizeGame, resultTxid);
 			
 			if(resultTxid){
