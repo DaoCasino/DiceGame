@@ -1639,19 +1639,25 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
+	console.log("getBalance:", obj_game["balance"], this.timeGetResult, this.bSendRequest);
+	if(obj_game["balance"]==0){
+		this.timeGetResult += diffTime;
+		if(this.timeGetResult >= TIME_GET_RESULT &&
+		this.bSendRequest == false){
+			this.bSendRequest = true;
+			this.timeGetResult = 0;
+				this.sendRequest("getBalance");
+			}
+		}
+	}
 	if(this.gameTxHash){
-		console.log("getBalance:", obj_game["balance"], this.timeGetResult, this.bSendRequest);
-		if(login_obj["startGame"] || obj_game["balance"]==0){
+		if(login_obj["startGame"]){
 			this.timeGetResult += diffTime;
 			if(this.timeGetResult >= TIME_GET_RESULT &&
 			this.bSendRequest == false){
 				this.bSendRequest = true;
 				this.timeGetResult = 0;
-				if(obj_game["balance"]==0){
-					this.sendRequest("getBalance");
-				} else {
-					this.sendRequest("gameTxHash");
-				}
+				this.sendRequest("gameTxHash");
 			}
 		}
 	}
