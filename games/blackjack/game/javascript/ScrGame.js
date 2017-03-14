@@ -1179,6 +1179,8 @@ ScrGame.prototype.response = function(command, value, obj) {
 			prnt.bWait = false;
 			prnt.startGame = false;
 			prnt.showChips(true);
+			if(stateOld == -1 && betEth == 0){
+			}
 		}
 	} else if(command == "deal" ||
 			command == "hit" ||
