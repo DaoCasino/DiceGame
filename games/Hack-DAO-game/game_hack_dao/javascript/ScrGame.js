@@ -1156,9 +1156,9 @@ ScrGame.prototype.getResult = function() {
 			var arLogs = d.result;
 			var len = arLogs.length;
 			var index = 0;
-			if(len > 50){
-				index = len-50;
-			}
+			// if(len > 50){
+				// index = len-50;
+			// }
 			if(idOraclizeGame == undefined){
 				for (var i = index; i < len; i ++) {
 					if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
@@ -1180,7 +1180,6 @@ ScrGame.prototype.getResult = function() {
 					}
 				}
 			}
-			console.log("d:", d);
 			console.log("resultTxid:", idOraclizeGame, resultTxid);
 			
 			if(resultTxid){
