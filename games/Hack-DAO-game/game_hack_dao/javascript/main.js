@@ -415,12 +415,13 @@ function saveData() {
 		localStorage.setItem('daocasino_hack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
+		localStorage.setItem('openkey', openkey);
+		localStorage.setItem('privkey', privkey);
 		// console.log("Saving: ok!");
 	}
 }
 
 function loadData() {
-	console.log("isLocalStorageAvailable:", isLocalStorageAvailable());
 	if(isLocalStorageAvailable()){
 		mainet = localStorage.getItem('mainnet')
 		openkey = localStorage.getItem('openkey')

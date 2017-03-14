@@ -926,6 +926,7 @@ ScrGame.prototype.resultGameEth = function(val){
 ScrGame.prototype.startGameF = function() {
 	if(privkey || options_debug){
 		var bet = betslevel[obj_game["game"].curLevel].bet;	
+		console.log("startGameF:", bet, betEth*2, obj_game["balanceBank"]);
 		if(bet > obj_game["balance"] && options_ethereum &&
 		options_debug == false){
 			obj_game["game"].warningBalance();
