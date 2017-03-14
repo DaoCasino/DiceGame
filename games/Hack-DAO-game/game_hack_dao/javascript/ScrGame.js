@@ -1255,7 +1255,7 @@ ScrGame.prototype.getResponseResult = function(value) {
 
 ScrGame.prototype.sendRequest = function(value) {
 	if(options_ethereum){
-		console.log("sendRequest:", value)
+		// console.log("sendRequest:", value)
 		if(value == "game"){
 			if(this.clickDAO == false){
 				this.clickDAO = true;
@@ -1295,7 +1295,7 @@ ScrGame.prototype.sendRequest = function(value) {
 }
 
 ScrGame.prototype.response = function(command, value) {
-	console.log("response:", command, value)	
+	// console.log("response:", command, value)	
 	if(value == undefined){
 		return false;
 	}
@@ -1349,7 +1349,6 @@ ScrGame.prototype.response = function(command, value) {
 		obj_game["balanceBank"] = Number(value);
 	} else if(command == "getBlockNumber"){
 		blockNumber = Number(hexToNum(value));
-		console.log("blockNumber:", blockNumber);
 	}
 }
 
