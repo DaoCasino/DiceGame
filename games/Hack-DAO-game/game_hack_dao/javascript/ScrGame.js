@@ -1221,7 +1221,7 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	console.log("sendRequest:", name, url)
+	// console.log("sendRequest:", name, url)
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
@@ -1298,7 +1298,8 @@ ScrGame.prototype.response = function(command, value) {
 		}
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
-		console.log("getEthereum:", obj);
+		console.log("this:", this);
+		this.sendRequest("getBalance");
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
