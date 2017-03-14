@@ -174,7 +174,6 @@ ScrGame.prototype.init = function() {
 	this.sendRequest("getBalance");
 	this.sendRequest("getBalanceBank");
 	this.sendRequest("getBlockNumber");
-	this.showWndStart();
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -405,6 +404,7 @@ ScrGame.prototype.createAccount = function() {
 	if(privkey || options_debug){
 		if(openkey){}else{openkey=1, privkey=1};
 		this.tfIdUser.setText(openkey);
+		this.showWndStart();
 	}else{
 		var tfCreateKey = addText("Now you generate address", 40, "#FF8611", "#000000", "center", 800)
 		tfCreateKey.x = _W/2;
@@ -425,6 +425,7 @@ ScrGame.prototype.createAccount = function() {
 				var str = "https://platform.dao.casino/api/?a=faucet&to="+openkey;
 				this.sendUrlRequest(str, "getEthereum");
 			}
+			this.showTestEther();
 			saveData();
 		} else {
 			this.showError(ERROR_KEYTHEREUM);
@@ -604,7 +605,7 @@ ScrGame.prototype.warningBalance = function() {
 	if(document.location.href == "https://dao.casino/hackdao/"){
 		addStr = "OK";
 		func = this.copyKey;
-		func2 = this.copyKey;
+		// func2 = this.copyKey;
 	}
 	this.createWndInfo(str, func, addStr, func2);
 	this.btnStart.visible = true;
@@ -614,6 +615,11 @@ ScrGame.prototype.showWndClearLog = function() {
 	var str = "Do you want to overwrite the keys?"
 	var addStr = "Yes";
 	this.createWndInfo(str, this.clearLog, addStr);
+}
+
+ScrGame.prototype.showTestEther = function() {
+	var str = "Your 1 test ether will be available shortly (about minute)";
+	this.createWndInfo(str);
 }
 
 ScrGame.prototype.showWndStart = function() {
