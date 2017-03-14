@@ -499,21 +499,6 @@ function parseData(objData) {
     }
 }
 
-function getLogs() {
-	var objOrcl = undefined;
-	$.get("https://testnet.etherscan.io/" + 
-		"api?module=logs"+
-		"&action=getLogs"+
-		"&fromBlock=379224"+
-		"&toBlock=latest"+
-		"&address="+"0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498"+
-		"&apikey=YourApiKeyToken", function (d) {
-			var objData = d;
-			parseData(objData);
-		}, 
-	"json");
-}
-
 function removeSelf(obj) {
 	if (obj) {
 		if (obj.parent.contains(obj)) {

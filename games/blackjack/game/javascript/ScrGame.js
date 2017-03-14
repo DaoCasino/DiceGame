@@ -152,6 +152,7 @@ ScrGame.prototype.init = function() {
 	this.createGUI();
 	infura.sendRequest("getBalance", openkey, _callback);
 	infura.sendRequest("getBalanceBank", addressContract, _callback);
+	infura.sendRequest("getBlockNumber", undefined, _callback);
 	this.checkGameState();
 	
 	if(openkey){} else {
@@ -1077,6 +1078,8 @@ ScrGame.prototype.response = function(command, value, obj) {
 		prnt.tfBalance.setText(obj_game["balance"]);
 	} else if(command == "getBalanceBank"){
 		obj_game["balanceBank"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
+	} else if(command == "getBlockNumber"){
+		blockNumber = Number(hexToNum(value));
 	} else if(command == "getPlayerCard"){
 		if(value != "0x"){
 			var card = hexToNum(value);
@@ -1125,7 +1128,6 @@ ScrGame.prototype.response = function(command, value, obj) {
 			} else {
 				prnt.showMyPoints();
 				prnt.showMySplitPoints();
-				console.log("betEth:", betEth);
 				if(stateOld == -1 && betEth == 0){
 					prnt.arrow.visible = true;
 				}
