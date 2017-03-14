@@ -463,7 +463,7 @@ ScrGame.prototype.createGUI = function() {
 	tfBalance.y = 55;
 	this.itemResult.addChild(tfBalance);
 	this.itemResult.tfBalance = tfBalance;
-	this.tfGetEth = addText("", 40, "#FF8611", "#000000", "center", 600)
+	this.tfGetEth = addText("", 40, "#FF8611", "#000000", "center", 500)
 	this.tfGetEth.x = _W/2;
 	this.tfGetEth.y = 120;
 	this.face_mc.addChild(this.tfGetEth);
