@@ -1645,7 +1645,7 @@ ScrGame.prototype.update = function() {
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
 		this.bSendRequest == false){
-			this.bSendRequest = true;
+			// this.bSendRequest = true;
 			this.timeGetResult = 0;
 			this.sendRequest("getBalance");
 		}
