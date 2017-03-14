@@ -241,7 +241,7 @@ ScrGame.prototype.createGUI = function() {
 	var offsetY = 50;
 	var seat = addObj("seat", _W/2, _H/2+150+offsetY);
 	this.back_mc.addChild(seat);
-	this.arrow = addObj("hintArrow", _W/2, _H/2+150);
+	this.arrow = addObj("hintArrow", _W/2, _H/2+150+offsetY);
 	this.arrow.rotation = rad(90);
 	this.arrow.visible = false;
 	this.game_mc.addChild(this.arrow);
@@ -898,19 +898,21 @@ ScrGame.prototype.clickСhip = function(name){
 	var setBet = betGame;
 	this.countChip = 0;
 	this.clearChips();
+	var offsetY = 50;
+	var posY = _H/2+150+offsetY-this.countChip*8;
 	
 	while(setBet > 0){
 		if(setBet >= 50){
 			setBet -= 50;
-			this.addChip("fiche_2", _W/2, _H/2+150-this.countChip*8);
+			this.addChip("fiche_2", _W/2, posY);
 			this.countChip ++;
 		} else if(setBet >= 10){
 			setBet -= 10;
-			this.addChip("fiche_1", _W/2, _H/2+150-this.countChip*8);
+			this.addChip("fiche_1", _W/2, posY);
 			this.countChip ++;
 		} else if(setBet >= 1){
 			setBet -= 1;
-			this.addChip("fiche_0", _W/2, _H/2+150-this.countChip*8);
+			this.addChip("fiche_0", _W/2, posY);
 			this.countChip ++;
 		} else if(setBet > 0){
 			setBet = 0;
@@ -1123,6 +1125,7 @@ ScrGame.prototype.response = function(command, value, obj) {
 			} else {
 				prnt.showMyPoints();
 				prnt.showMySplitPoints();
+				console.log("betEth:", betEth);
 				if(stateOld == -1 && betEth == 0){
 					prnt.arrow.visible = true;
 				}
