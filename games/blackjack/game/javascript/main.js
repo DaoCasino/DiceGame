@@ -17,7 +17,7 @@ var stats; //для вывода статистики справа
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // var addressTestContract = "0xd1b45edac3f3758f665d126044847bddc883b6e1"; Old Work
-var	addressTestContract = "0x196526fb987094d3bd0a1fe0f3f465b9c9f598c8"; // Split
+var	addressTestContract = "0x710a066ab97f0c1d118cc4a1bb188127edf994a2"; // Split
 
 var options_debug = false;
 var options_test = false;
@@ -196,6 +196,8 @@ function loadManifest(){
 	preloader.add("btnGreen", "images/buttons/btnGreen.png");
 	preloader.add("btnGreenOver", "images/buttons/btnGreenOver.png");
 	preloader.add("btnGreenDown", "images/buttons/btnGreenDown.png");
+	preloader.add("btnFrame", "images/buttons/btnFrame.png");
+	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
@@ -385,6 +387,9 @@ function pad(num, size) {
     var s = num+"";
     while (s.length < size) s = "0" + s;
     return s;
+}
+function copyToClipboard(value) {
+  window.prompt("Copy to clipboard: Ctrl+C", value);
 }
 
 function removeAllScreens() {
