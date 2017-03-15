@@ -173,7 +173,7 @@ ScrGame.prototype.init = function() {
 	this.createAccount();
 	this.sendRequest("getBalance");
 	this.sendRequest("getBalanceBank");
-	this.showWndStart();
+	this.sendRequest("getBlockNumber");
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -320,7 +320,7 @@ ScrGame.prototype.createLevel = function() {
 			this.itemDao.visible = true;
 			this.itemHome = addObj("itemHome2", 1247, 496);
 			this.gfx_mc.addChild(this.itemHome);
-			this.valueLevelMax = 500000;
+			this.valueLevelMax = 1000000;
 			this.groundY = 425;
 			this.damage = 10;
 			this.tfTitleLevel.setText("Stolen money: $" + this.valueLevel + "/" + this.valueLevelMax);
@@ -404,6 +404,7 @@ ScrGame.prototype.createAccount = function() {
 	if(privkey || options_debug){
 		if(openkey){}else{openkey=1, privkey=1};
 		this.tfIdUser.setText(openkey);
+		this.showWndStart();
 	}else{
 		var tfCreateKey = addText("Now you generate address", 40, "#FF8611", "#000000", "center", 800)
 		tfCreateKey.x = _W/2;
@@ -421,9 +422,10 @@ ScrGame.prototype.createAccount = function() {
 			openkey = address;
 			this.tfIdUser.setText(address);
 			if(options_testnet){
-				var str = "http://faucet.ropsten.be:3001/donate/"+openkey;
+				var str = "https://platform.dao.casino/api/?a=faucet&to="+openkey;
 				this.sendUrlRequest(str, "getEthereum");
 			}
+			this.showTestEther();
 			saveData();
 		} else {
 			this.showError(ERROR_KEYTHEREUM);
@@ -462,6 +464,10 @@ ScrGame.prototype.createGUI = function() {
 	tfBalance.y = 55;
 	this.itemResult.addChild(tfBalance);
 	this.itemResult.tfBalance = tfBalance;
+	this.tfGetEth = addText("", 40, "#FF8611", "#000000", "center", 400)
+	this.tfGetEth.x = _W/2;
+	this.tfGetEth.y = 120;
+	this.face_mc.addChild(this.tfGetEth);
 	
 	this.hintArrow = new PIXI.Container();
 	this.hintArrow.x = this.itemDao.x + 70;
@@ -599,7 +605,7 @@ ScrGame.prototype.warningBalance = function() {
 	if(document.location.href == "https://dao.casino/hackdao/"){
 		addStr = "OK";
 		func = this.copyKey;
-		func2 = this.copyKey;
+		// func2 = this.copyKey;
 	}
 	this.createWndInfo(str, func, addStr, func2);
 	this.btnStart.visible = true;
@@ -609,6 +615,11 @@ ScrGame.prototype.showWndClearLog = function() {
 	var str = "Do you want to overwrite the keys?"
 	var addStr = "Yes";
 	this.createWndInfo(str, this.clearLog, addStr);
+}
+
+ScrGame.prototype.showTestEther = function() {
+	var str = "Your 1 test ether will be available shortly (about minute)";
+	this.createWndInfo(str);
 }
 
 ScrGame.prototype.showWndStart = function() {
@@ -921,7 +932,7 @@ ScrGame.prototype.resultGameEth = function(val){
 
 ScrGame.prototype.startGameF = function() {
 	if(privkey || options_debug){
-		var bet = betslevel[obj_game["game"].curLevel].bet;	
+		var bet = betslevel[obj_game["game"].curLevel].bet;
 		if(bet > obj_game["balance"] && options_ethereum &&
 		options_debug == false){
 			obj_game["game"].warningBalance();
@@ -935,7 +946,7 @@ ScrGame.prototype.startGameF = function() {
 				obj_game["game"].bSendRequest = false;
 				obj_game["game"].startGame = true;
 			}
-			// obj_game["game"].btnStart.visible = false;
+			obj_game["game"].btnStart.visible = false;
 		}
 	} else {
 		obj_game["game"].createAccount();
@@ -1145,7 +1156,7 @@ ScrGame.prototype.getResult = function() {
 	$.get(urlEtherscan + 
 		"api?module=logs"+
 		"&action=getLogs"+
-		"&fromBlock=379224"+
+		"&fromBlock="+String(blockNumber)+
 		"&toBlock=latest"+
 		"&address="+addressContract+
 		"&apikey=YourApiKeyToken", function (d) {
@@ -1155,6 +1166,7 @@ ScrGame.prototype.getResult = function() {
 			if(len > 50){
 				index = len-50;
 			}
+			
 			if(idOraclizeGame == undefined){
 				for (var i = index; i < len; i ++) {
 					if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
@@ -1221,7 +1233,6 @@ ScrGame.prototype.sendInfuraRequest = function(name, params) {
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
-	console.log("sendRequest:", name, url)
 	var xhr = new XMLHttpRequest();
 	var str = url;
 	xhr.open("GET", str, true);
@@ -1250,6 +1261,7 @@ ScrGame.prototype.getResponseResult = function(value) {
 
 ScrGame.prototype.sendRequest = function(value) {
 	if(options_ethereum){
+		// console.log("sendRequest:", value)
 		if(value == "game"){
 			if(this.clickDAO == false){
 				this.clickDAO = true;
@@ -1266,18 +1278,34 @@ ScrGame.prototype.sendRequest = function(value) {
 			}
 		} else if(value == "getBalanceBank"){
 			if(openkey){
-				this.sendInfuraRequest("getBalanceBank", openkey);
+				this.sendInfuraRequest("getBalanceBank", addressContract);
+			}
+		} else if(value == "getBlockNumber"){
+			if(openkey){
+				$.ajax({
+					type: "POST",
+					url: urlInfura,
+					dataType: 'json',
+					async: false,
+					data: JSON.stringify({"id":0,
+										"jsonrpc":'2.0',
+										"method":"eth_blockNumber",
+										"params":[]}),
+					success: function (d) {
+						obj_game["game"].response(value, d.result);
+					}
+				})
 			}
 		}
 	}
 }
 
 ScrGame.prototype.response = function(command, value) {
+	// console.log("response:", command, value)	
 	if(value == undefined){
 		return false;
 	}
 	
-	console.log("response:", command, value)	
 	if(command == "gameTxHash"){
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
@@ -1298,12 +1326,23 @@ ScrGame.prototype.response = function(command, value) {
 		}
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
-		console.log("getEthereum:", obj);
+		if(this.tfGetEth){
+			this.tfGetEth.setText("Your 1 test ether will be available shortly (about minute)");
+		}
+		this.sendRequest("getBalance");
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
 		this.tfBalance.setText(obj_game["balance"]);
-		if(this.oldBalance == -1){
+		this.bSendRequest = false;
+		if(obj_game["balance"] > 0){
+			this.tfGetEth.setText("");
+			if(this.oldBalance == -1){
+				this.oldBalance = Number(obj_game["balance"]);
+				this.showWndStart();
+			}
+		}
+		/*if(this.oldBalance == -1){
 			// записываем баланс на старте игры
 			this.oldBalance = Number(obj_game["balance"]);
 			obj_game["oldBalance"] = this.oldBalance;
@@ -1316,9 +1355,11 @@ ScrGame.prototype.response = function(command, value) {
 				this.timeGetResult = 0;
 				this.bSendRequest = false;
 			}
-		}
+		}*/
 	} else if(command == "getBalanceBank"){
 		obj_game["balanceBank"] = Number(value);
+	} else if(command == "getBlockNumber"){
+		blockNumber = Number(hexToNum(value));
 	}
 }
 
@@ -1629,13 +1670,23 @@ ScrGame.prototype.update = function() {
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
-	if(this.gameTxHash && login_obj["startGame"]){
+	if(obj_game["balance"]==0){
 		this.timeGetResult += diffTime;
 		if(this.timeGetResult >= TIME_GET_RESULT &&
 		this.bSendRequest == false){
 			this.bSendRequest = true;
 			this.timeGetResult = 0;
-			this.sendRequest("gameTxHash");
+			this.sendRequest("getBalance");
+		}
+	} else if(this.gameTxHash){
+		if(login_obj["startGame"]){
+			this.timeGetResult += diffTime;
+			if(this.timeGetResult >= TIME_GET_RESULT &&
+			this.bSendRequest == false){
+				this.bSendRequest = true;
+				this.timeGetResult = 0;
+				this.sendRequest("gameTxHash");
+			}
 		}
 	}
 	
@@ -1650,7 +1701,7 @@ ScrGame.prototype.update = function() {
 			this.bWindow = false;
 		}
 	}
-	
+		
 	if(options_pause){
 		return false;
 	}
