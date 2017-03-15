@@ -17,6 +17,8 @@ ScrMenu.prototype.init = function() {
 	this._arButtons = [];
 	
 	this.bg = addObj("bgGame", _W/2, _H/2);
+	this.bg.scale.x =  _W/this.bg.w;
+	this.bg.scale.y =  _H/this.bg.h;
 	this.addChild(this.bg);
 	
 	var btnDao = addButton2("btnOrange", _W/2, _H/2+100);
@@ -34,15 +36,15 @@ ScrMenu.prototype.init = function() {
 	var str3 = "Players who access this game from other jurisdictions do so at their own volition and are responsible for compliance with local law.";
 	var str4 = "This program comes with ABSOLUTELY NO WARRANTY.";
 	
-	var tf3 = addText(str3, 16, "#FFFFFF", undefined, "center", _W, 2, fontTahoma)
+	var tf3 = addText(str3, 16, "#FFFFFF", "#0000000", "center", _W, 3)
 	tf3.x = _W/2;
-	tf3.y = _H - tf3.height-120;
+	tf3.y = _H - tf3.height-20;
 	this.addChild(tf3);
-	var tf2 = addText(str2, 16, "#FFFFFF", undefined, "center", _W, 2, fontTahoma)
+	var tf2 = addText(str2, 16, "#FFFFFF", "#0000000", "center", _W, 3)
 	tf2.x = _W/2;
 	tf2.y = tf3.y - tf2.height;
 	this.addChild(tf2);
-	var tf1 = addText(str1, 16, "#FFFFFF", undefined, "center", _W, 2, fontTahoma)
+	var tf1 = addText(str1, 16, "#FFFFFF", "#0000000", "center", _W, 3)
 	tf1.x = _W/2;
 	tf1.y = tf2.y - tf1.height;
 	this.addChild(tf1);

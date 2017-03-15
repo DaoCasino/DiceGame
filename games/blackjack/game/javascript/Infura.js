@@ -1,5 +1,6 @@
 /**
  * Created by Sergey Pomorin on 07.03.2017.
+ * v 1.0.0
  */
  
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -14,6 +15,8 @@ var Infura = function() {
 Infura.prototype.sendRequest = function(name, params, callback, obj){
 	if(options_ethereum && openkey){
 		var method = name;
+		var arParams = [params, "latest"];
+		
 		switch(name){
 			case "deal":
 			case "hit":
@@ -25,19 +28,19 @@ Infura.prototype.sendRequest = function(name, params, callback, obj){
 			case "gameTxHash":
 			case "sendRaw":
 				method = "eth_sendRawTransaction";
+				arParams = [params];
 				break;
 			case "getBalance":
 			case "getBalanceBank":
 				method = "eth_getBalance";
 				break;
+			case "getBlockNumber":
+				method = "eth_blockNumber";
+				arParams = [];
+				break;
 			default:
 				method = "eth_call";
 				break;
-		}
-		
-		var arParams = [params, "latest"];
-		if(method == "eth_sendRawTransaction"){
-			arParams = [params];
 		}
 		
 		$.ajax({

@@ -1,0 +1,7 @@
+tite: BlackJack
+tags: card,blackjack
+category: Card games
+autor: J0xFlash
+description: Blackjack with splits
+img: https://platform.dao.casino/img/img-game3.jpg
+liecence:

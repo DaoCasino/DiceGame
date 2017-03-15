@@ -159,6 +159,7 @@ if (localStorage.getItem("isreg")) {
 			localStorage.setItem("mainnet","on");
 		} else {
 			rebalance();
+			$.get()
 		}
 		var totalwei;
 		function rebalance() {	
@@ -169,6 +170,9 @@ if (localStorage.getItem("isreg")) {
 				$.get("https://"+u+"/api?module=account&action=balance&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function (d){
 					totalwei = d.result;
 					$("#balance").html(d.result/1000000000000000000+" ETH");
+					if (localStorage.getItem("mainnet") == "off" && totalwei == 0) {
+						$.get("https://platform.dao.casino/api/?a=faucet&to="+localStorage.getItem("openkey"));
+					}
 				});
 
 			},1000);
