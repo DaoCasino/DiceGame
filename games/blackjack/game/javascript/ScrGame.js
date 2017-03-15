@@ -495,8 +495,10 @@ ScrGame.prototype.showChips = function(value) {
 		obj.visible = value;
 	}
 	if(value){
-		this.tfSelBet.setText("Select bet");
-		this.arrow.visible = true;
+		if(betEth == 0){
+			this.tfSelBet.setText("Select bet");
+			this.arrow.visible = true;
+		}
 		this.bClear = false;
 	}
 }
