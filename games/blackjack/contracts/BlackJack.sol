@@ -108,6 +108,7 @@ contract BlackJack is owned {
 		});
 
 		games[msg.sender] = game;
+		delete splitGames[msg.sender];
 
 		// deal the cards
 		dealCard(true, games[msg.sender]);
@@ -150,7 +151,7 @@ contract BlackJack is owned {
 
 	// TODO: test it
 	function hit(bool isMain) public gameIsInProgress {
-		if (games[msg.sender].state != GameState.InProgressSplit) {
+		if (splitGames[msg.sender].state != GameState.InProgress) {
 			throw;
 		}
 		if (isMain) {
