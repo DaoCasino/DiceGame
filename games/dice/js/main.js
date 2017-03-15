@@ -2,43 +2,39 @@ var balance = ".::::.";
 var urlBalance = ""; //balance
 var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 var betEth = 0.2; //0,2 ставка эфира
-var mainnet, openkey, privkey, mainnetAddress, testnetAddress, kovanAddress;
+var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
 var chance = 5000;
-//var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlEtherscan = "https://testnet.etherscan.io/api";
-var lastTx;
-var count;
-var sends;
-var paids;
+var lastTx, count, sends, paids;
 var game = false;
-var contractTable;
 // var maxBet = 2000;
 /*
  * value - Дробное число.
  * precision - Количество знаков после запятой.
  */
-function getGameContract() {
-    var arr;
-    $.ajax({
-        type: "POST",
-        url: "https://testnet.etherscan.io/api",
-        data:{
-        module: "proxy",
-        action: "eth_call",
-        data: "0x3d185fc500000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003",
-        to:"0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051"
-        },
-        success: function (d) {
-            var contract = d.result;
-           // console.log(d, d.result);
-           // localStorage.setItem('testnetAddress', arr[2][1]);
-            localStorage.setItem('kovanAddress',"0x"+contract.substr(26));
-            //localStorage.setItem('mainnetAddress', arr[2][3]);
+// function getGameContract() {
+//     var arr;
+//     $.ajax({
+//         type: "POST",
+//         url: "https://testnet.etherscan.io/api",
+//         data:{
+//         module: "proxy",
+//         action: "eth_call",
+//         data: "0x3d185fc500000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003",
+//         to:"0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051"
+//         },
+//         success: function (d) {
+//             var contract = d.result;
+//            // console.log(d, d.result);
+//            // localStorage.setItem('testnetAddress', arr[2][1]);
+//             localStorage.setItem('kovanAddress',"0x"+contract.substr(26));
+//             //localStorage.setItem('mainnetAddress', arr[2][3]);
             
-        }
-    }) 
-};
-getGameContract();
+//         }
+//     }) 
+// };
+// getGameContract();
 
 function toFixed(value, precision) {
     precision = Math.pow(10, precision);
@@ -80,7 +76,7 @@ function loadData() {
 
     }
 
-    console.log("version 0.40a testnet") // VERSION !
+    console.log("version 0.40b Infura") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -100,16 +96,20 @@ function setContract() {
 function getCount() {
     if(openkey){
     $.ajax({
-        type: "POST",
-        url: urlEtherscan,
-        data: {
-            module: "proxy",
-            action: "eth_call",
-            // address: openkey,
-            data: "0x9288cebc000000000000000000000000" + openkey.substr(2),
-            to: addressContract,
-            // tag: "latest"
-        },
+    type: "POST",
+    url: urlInfura,
+    dataType: 'json',
+    async: false,
+    data: JSON.stringify({
+        "id": 0,
+        "jsonrpc": '2.0',
+        "method": "eth_call",
+        "params": [{
+            "from": openkey,
+            "to": addressContract,
+            "data": "0x9288cebc000000000000000000000000" + openkey.substr(2)
+        }, "latest"]
+    }),
         success: function (d) {
             count = hexToNum(d.result);
             console.log("old_count", count);
@@ -120,14 +120,15 @@ function getCount() {
 function getContractBalance() {
     $.ajax({
         type: "POST",
-        url: urlEtherscan,
-        data: {
-            address: addressContract,
-            module: "account",
-            action: "balance",
-            tag: "latest"
-
-        },
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": 'eth_getBalance',
+            "params": [addressContract, "latest"]
+        }),
         success: function (d) {
             $('#contractBalance').html("CONTRACT ( " + (d.result / 1000000000000000000).toFixed(5)+" ETH )");
         }
@@ -136,24 +137,32 @@ function getContractBalance() {
 // РАЗОБРАТЬСЯ С SHOWRND !!!!
 function ShowRnd() {
     $.ajax({
-        type: "POST",
-        url: urlEtherscan,
-        data: {
-            module: "proxy",
-            action: "eth_call",
-            //address: openkey,
-            data: "0xdb571498000000000000000000000000" + openkey.substr(2),
-            to: addressContract,
-            // tag: "latest"
-        },
+    type: "POST",
+    url: urlInfura,
+    dataType: 'json',
+    async: false,
+    data: JSON.stringify({
+        "id": 0,
+        "jsonrpc": '2.0',
+        "method": "eth_call",
+        "params": [{
+            "from": openkey,
+            "to": addressContract,
+            "data": "0xdb571498000000000000000000000000" + openkey.substr(2)
+        }, "latest"]
+    }),
         success: function (d) {
             count = hexToNum(d.result);
             $('#randomnum').html(count);
+            console.log(count)
         }
     });
 }
+
+
+
 function initGame() {
-    getGameContract();
+    //getGameContract();
     Refresh();
     loadData();
     setContract();
@@ -194,16 +203,20 @@ function disabled(status) {
 
 function TotalRolls() {
     $.ajax({
-        method: "POST",
-        url: urlEtherscan,
-        data: {
-            module: "proxy",
-            action: "eth_call",
-            //address: openkey,
-            data: "0x9e92c991",
-            to: addressContract,
-            tag: "latest"
-        },
+    type: "POST",
+    url: urlInfura,
+    dataType: 'json',
+    async: false,
+    data: JSON.stringify({
+        "id": 0,
+        "jsonrpc": '2.0',
+        "method": "eth_call",
+        "params": [{
+            "from": openkey,
+            "to": addressContract,
+            "data": "0x9e92c991"
+        }, "latest"]
+    }),
         success: function (d) {
             var _count = hexToNum(d.result);
             $("#total-rolls").html(_count);
@@ -215,31 +228,39 @@ function TotalRolls() {
 
 function TotalPaid() {
     $.ajax({
-        method: "POST",
-        url: urlEtherscan,
-        data: {
-            module: "proxy",
-            action: "eth_call",
-            address: openkey,
-            data: "0x46f76648",
-            to: addressContract,
-            tag: "latest"
-        },
+    type: "POST",
+    url: urlInfura,
+    dataType: 'json',
+    async: false,
+    data: JSON.stringify({
+        "id": 0,
+        "jsonrpc": '2.0',
+        "method": "eth_call",
+        "params": [{
+            "from": openkey,
+            "to": addressContract,
+            "data": "0x46f76648"
+        }, "latest"]
+    }),
         success: function (d) {
             var _count = hexToNum(d.result);
             paids = (_count / 10000000000000000000).toFixed(6);
             $("#total-paid").html(paids + ' ETH');
             $.ajax({
-                method: "POST",
-                url: urlEtherscan,
-                data: {
-                    module: "proxy",
-                    action: "eth_call",
-                    address: openkey,
-                    data: "0xf6353590",
-                    to: addressContract,
-                    tag: "latest"
-                },
+    type: "POST",
+    url: urlInfura,
+    dataType: 'json',
+    async: false,
+    data: JSON.stringify({
+        "id": 0,
+        "jsonrpc": '2.0',
+        "method": "eth_call",
+        "params": [{
+            "from": openkey,
+            "to": addressContract,
+            "data": "0xf6353590"
+        }, "latest"]
+    }),
                 success: function (d) {
                     var _count = hexToNum(d.result);
                     sends = (_count / 10000000000000000000).toFixed(6);

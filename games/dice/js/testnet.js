@@ -1,22 +1,23 @@
 var Timer;
+
 function startGame() {
     game = true;
     if (openkey) {
         $.ajax({
-            method: "POST",
-            url: urlEtherscan,
-            data: {
-                module: "proxy",
-                async: false,
-                action: "eth_getTransactionCount",
-                address: openkey,
-                tag: "latest"
-            },
+            type: "POST",
+            url: urlInfura,
+            dataType: 'json',
+            async: false,
+            data: JSON.stringify({
+                "id": 0,
+                "jsonrpc": '2.0',
+                "method": "eth_getTransactionCount",
+                "params": [openkey, "latest"]
+            }),
             success: function (d) {
-                console.log("urlEtherscan:", urlEtherscan);
+                console.log("urlInfura:", urlInfura);
                 console.log("get nonce action " + d.result);
-                var callData = "0x1f7b4f300000000000000000000000000000000000000000000000000000000000001388";
-                callData = callData.substr(0, 10);
+                var callData = "0x1f7b4f30";
                 var options = {};
                 options.nonce = d.result;
                 options.to = addressContract;
@@ -34,18 +35,17 @@ function startGame() {
                         tx.sign(new buf(privkey, 'hex'));
                         var serializedTx = tx.serialize().toString('hex');
                         console.log("The transaction was signed: " + serializedTx);
-                        $.ajax({
-                            method: "POST",
-                            url: urlEtherscan,
-                            data: {
-                                async: false,
-                                module: "proxy",
-                                action: "eth_sendRawTransaction",
-                                address: openkey,
-                                hex: serializedTx,
-                                // to: addressContract,
-                                // tag: "latest"
-                            },
+                       $.ajax({
+                            type: "POST",
+                            url: urlInfura,
+                            dataType: 'json',
+                            async: false,
+                            data: JSON.stringify({
+                                "id": 0,
+                                "jsonrpc": '2.0',
+                                "method": "eth_sendRawTransaction",
+                                "params": ["0x"+serializedTx]
+                            }),
                             success: function (d) {
                                 console.log("Транзакция отправлена в сеть:", d.result);
                                 lastTx = d.result;
@@ -55,18 +55,23 @@ function startGame() {
                                     $("#Tx").html('<a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + '">...' + lastTx.slice(2, 24) + '...</a>')
                                     disabled(true);
                                     $("#random").text("Please, wait . . . ");
+                                    $("#randomnum").text(" . . . ");
                                     Timer = setInterval(function () {
                                         $.ajax({
-                                            method: "POST",
-                                            url: "https://testnet.etherscan.io/api",
-                                            data: {
-                                                module: "proxy",
-                                                action: "eth_call",
-                                                address: openkey,
-                                                data: "0x9288cebc000000000000000000000000" + openkey.substr(2),
-                                                to: addressContract,
-                                                //tag: "latest"
-                                            },
+                                            type: "POST",
+                                            url: urlInfura,
+                                            dataType: 'json',
+                                            async: false,
+                                            data: JSON.stringify({
+                                                "id": 0,
+                                                "jsonrpc": '2.0',
+                                                "method": "eth_call",
+                                                "params": [{
+                                                    "from": openkey,
+                                                    "to": addressContract,
+                                                    "data": "0x9288cebc000000000000000000000000" + openkey.substr(2),
+                                                }, "latest"]
+                                            }),
                                             success: function (d) {
                                                 console.log("new_count", hexToNum(d.result));
                                                 var new_count = hexToNum(d.result);
@@ -74,16 +79,20 @@ function startGame() {
                                                 if (new_count != count) {
                                                     console.log("getStatusGame")
                                                     $.ajax({
-                                                        method: "POST",
-                                                        url: "https://testnet.etherscan.io/api",
-                                                        data: {
-                                                            module: "proxy",
-                                                            action: "eth_call",
-                                                            //address: openkey,
-                                                            data: "0x08199931000000000000000000000000" + openkey.substr(2),
-                                                            to: addressContract,
-                                                            tag: "latest"
-                                                        },
+                                                        type: "POST",
+                                                        url: urlInfura,
+                                                        dataType: 'json',
+                                                        async: false,
+                                                        data: JSON.stringify({
+                                                            "id": 0,
+                                                            "jsonrpc": '2.0',
+                                                            "method": "eth_call",
+                                                            "params": [{
+                                                                "from": openkey,
+                                                                "to": addressContract,
+                                                                "data": "0x08199931000000000000000000000000" + openkey.substr(2),
+                                                            }, "latest"]
+                                                        }),
                                                         success: function (d) {
                                                             var result = hexToNum(d.result);
                                                             if (result == 0) {
@@ -92,34 +101,25 @@ function startGame() {
                                                                 console.log("YOU WIN!");
                                                                 $("#random").text("YOU WIN!!! ");
                                                                 disabled(false);
-                                                                TotalRolls();
-                                                                TotalPaid();
                                                                 GetLogs();
-                                                                getContractBalance();
                                                                 ShowRnd();
                                                                 clearInterval(Timer);
                                                                 count = new_count;
                                                                 game = false;
                                                             } else if (result == 2) {
                                                                 console.log("YOU LOSER!");
-                                                                $("#random").text("YOU LOSE!!! ");                                                                
+                                                                $("#random").text("YOU LOSE!!! ");
                                                                 disabled(false);
-                                                                TotalRolls();
-                                                                TotalPaid();
                                                                 GetLogs();
-                                                                getContractBalance();
                                                                 ShowRnd();
                                                                 clearInterval(Timer);
                                                                 count = new_count;
                                                                 game = false;
                                                             } else if (result == 3) {
                                                                 console.log("Sorry, No money in the bank");
-                                                                $("#random").text("Sorry, no money in the bank");                                                                
+                                                                $("#random").text("Sorry, no money in the bank");
                                                                 disabled(false);
-                                                                TotalRolls();
-                                                                TotalPaid();
                                                                 GetLogs();
-                                                                getContractBalance();
                                                                 ShowRnd();
                                                                 clearInterval(Timer);
                                                                 count = new_count;
@@ -129,7 +129,7 @@ function startGame() {
 
                                                         }
                                                     })
-                                                    
+
                                                 }
                                             }
                                         });
@@ -144,4 +144,3 @@ function startGame() {
         })
     }
 }
-
