@@ -11,10 +11,8 @@ var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
 var infura, soundManager;
-var fontMain = "Luckiest Guy";
-var fontImpact = "Impact";
-var fontTahoma = "Tahoma";
-var fontGothic = "Century Gothic";
+var fontMain = "Arial";
+var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
@@ -74,7 +72,7 @@ function initGame() {
 	font1.x = _W/2;
 	font1.y = -100;
 	stage.addChild(font1);
-	var font2 = addText("font2", 16, "#000000", undefined, "center", 200, 2, fontTahoma)
+	var font2 = addText("font2", 16, "#000000", undefined, "center", 200, 2)
 	font2.x = _W/2;
 	font2.y = -120;
 	stage.addChild(font2);
