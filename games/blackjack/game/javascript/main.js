@@ -121,9 +121,12 @@ function loadManifest(){
 	preloader.add("icoKey", "images/items/icoKey.png");
 	preloader.add("icoEthereum", "images/items/icoEthereum.png");
 	preloader.add("icoTime", "images/items/icoTime.png");
-	preloader.add("fiche_0", "images/items/fiche_0.png");
-	preloader.add("fiche_1", "images/items/fiche_1.png");
-	preloader.add("fiche_2", "images/items/fiche_2.png");
+	preloader.add("chip_1", "images/items/chip_1.png");
+	preloader.add("chip_2", "images/items/chip_2.png");
+	preloader.add("chip_3", "images/items/chip_3.png");
+	preloader.add("chip_4", "images/items/chip_4.png");
+	preloader.add("chip_5", "images/items/chip_5.png");
+	preloader.add("chip_6", "images/items/chip_6.png");
 	preloader.add("seat", "images/items/seat.png");
 	preloader.add("hintArrow", "images/items/hintArrow.png");
 	
