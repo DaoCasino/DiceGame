@@ -21,8 +21,8 @@ var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // var addressTestContract = "0xd1b45edac3f3758f665d126044847bddc883b6e1"; Old Work
 // var addressTestContract = "0x9a0bc269eB5be016f7b98dFf07f36b11f9d38Cf4";
 // var	addressTestContract = "0xd16ee86df8c0813195d6be3e660c0e9876c4e352"; // Split
-var	addressTestContract = "0x7c47625d69a112d56dadaf0c8c4322d4c7bfc2f4"; // Split 2
-
+//var	addressTestContract = "0x7c47625d69a112d56dadaf0c8c4322d4c7bfc2f4"; // Split 2
+var	addressTestContract = "0xa2452796c5adb52e0ca0dc6cc6fe4726634ecb2d"; // Split дек выдает одни и теже карты
 var options_debug = false;
 var options_test = false;
 var options_ethereum = true;
