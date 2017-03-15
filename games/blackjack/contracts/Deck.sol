@@ -6,7 +6,9 @@ library Deck {
 	//			 'value' / 4 means: 0 - King, 1 - Ace, 2 - 10 - pip values, 11 - Jacket, 12 - Queen
 
 	function deal(address player, uint8 cardNumber) internal returns (uint8) {
-		return 29;
+		uint b = block.number;
+		uint timestamp = block.timestamp;
+		return uint8(uint256(keccak256(block.blockhash(b), player, cardNumber, timestamp)) % 52);
 	}
 
 	function valueOf(uint8 card, bool isBigAce) internal constant returns (uint8) {
