@@ -9,6 +9,7 @@ WndInfo.prototype.constructor = WndInfo;
 WndInfo.prototype.init = function(_prnt) {
 	this._prnt = _prnt;
 	this._callback = undefined;
+	this._callback2 = undefined;
 	this._arButtons= [];
 	
 	var rect = new PIXI.Graphics();
@@ -46,12 +47,17 @@ WndInfo.prototype.init = function(_prnt) {
 	this.on('touchend', this.touchHandler);
 }
 
-WndInfo.prototype.show = function(str, callback, addStr) {
+WndInfo.prototype.show = function(str, callback, addStr, callback2) {
 	if(addStr){}else{addStr=""};
 	if(callback){
 		this._callback = callback
 	}else{
 		this._callback = undefined;
+	};
+	if(callback2){
+		this._callback2 = callback2
+	}else{
+		this._callback2 = undefined;
 	};
 	
 	if(callback){
@@ -77,6 +83,10 @@ WndInfo.prototype.clickObj = function(item_mc) {
 	if(name == "btnDefault"){
 		if(this._callback){
 			this._callback();
+		}
+	}else if(name == "btnClose"){
+		if(this._callback2){
+			this._callback2();
 		}
 	}
 }

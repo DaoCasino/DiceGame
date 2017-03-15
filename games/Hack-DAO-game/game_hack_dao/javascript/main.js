@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.8"
+var version = "v. 1.1.11"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -154,6 +154,8 @@ function loadManifest(){
 	preloader.add("btnGreen", "images/buttons/btnGreen.png");
 	preloader.add("btnGreenOver", "images/buttons/btnGreenOver.png");
 	preloader.add("btnGreenDown", "images/buttons/btnGreenDown.png");
+	preloader.add("btnFrame", "images/buttons/btnFrame.png");
+	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
 	
 	preloader.add("itemDao", "images/items/itemDao.png");
 	preloader.add("eggPart", "images/items/eggPart.png");
@@ -413,6 +415,8 @@ function saveData() {
 		localStorage.setItem('daocasino_hack', login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
+		localStorage.setItem('openkey', openkey);
+		localStorage.setItem('privkey', privkey);
 		// console.log("Saving: ok!");
 	}
 }
@@ -422,16 +426,17 @@ function loadData() {
 		mainet = localStorage.getItem('mainnet')
 		openkey = localStorage.getItem('openkey')
 		privkey = localStorage.getItem('privkey')
+		console.log("openkey:", openkey);
 		if (localStorage.getItem('daocasino_hack')){
 			var login_str = localStorage.getItem('daocasino_hack')
 			login_obj = JSON.parse(login_str);
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';
 			checkData();
-			console.log("Loading: ok!");
+			// console.log("Loading: ok!");
 		} else {
 			checkData();
-			console.log("Loading: fail!");
+			// console.log("Loading: fail!");
 		}
 	}
 }

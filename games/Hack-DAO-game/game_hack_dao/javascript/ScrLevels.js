@@ -93,7 +93,10 @@ ScrLevels.prototype.clickCell = function(item_mc) {
 		showGame();
 	} else if(item_mc.name == "btnDao"){
 		this.removeAllListener();
-		var url = "http://platform.dao.casino/";
+		var url = "https://platform.dao.casino/";
+		if(document.location.href == "https://dao.casino/hackdao/"){
+			url = "https://dao.casino/";
+		}
 		window.open(url, "_self"); // "_blank",  "_self"
 	}
 }

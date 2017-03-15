@@ -21,7 +21,7 @@ module.exports = function(deployer, network) {
     	web3.eth.sendTransaction({
         from: web3.eth.accounts[0],
     		to: BlackJack.address,
-    		value: web3.toWei(0.2, "ether"),
+    		value: web3.toWei(1, "ether"),
         gas: 400000,
     	});
     });

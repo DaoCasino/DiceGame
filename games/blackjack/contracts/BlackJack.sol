@@ -60,7 +60,7 @@ contract BlackJack is owned {
   		uint8 value
     );
 
-	function () onlyOwner payable {
+	function () payable {
 
 	}
 
@@ -108,6 +108,7 @@ contract BlackJack is owned {
 		});
 
 		games[msg.sender] = game;
+		delete splitGames[msg.sender];
 
 		// deal the cards
 		dealCard(true, games[msg.sender]);
@@ -150,7 +151,7 @@ contract BlackJack is owned {
 
 	// TODO: test it
 	function hit(bool isMain) public gameIsInProgress {
-		if (games[msg.sender].state != GameState.InProgressSplit) {
+		if (splitGames[msg.sender].state != GameState.InProgress) {
 			throw;
 		}
 		if (isMain) {
@@ -228,6 +229,8 @@ contract BlackJack is owned {
 		splitGames[msg.sender].playerCards.push(game.playerCards[1]);
 
 		game.playerCards = [game.playerCards[0]];
+		game.playerScore = Deck.valueOf(game.playerCards[0], false);
+		game.playerBigScore = Deck.valueOf(game.playerCards[0], true);
 
 		// Deal extra cards in each game.
 		dealCard(true, games[msg.sender]);
