@@ -105,7 +105,6 @@ ScrGame.prototype.init = function() {
 	this.curWindow;
 	this.startGame = false;
 	this._gameOver = false;
-	this.bSendRequest = false;
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bBetLoad = false;
@@ -263,23 +262,7 @@ ScrGame.prototype.createAccount = function() {
 			if(options_testnet){
 				this.showButtons(false);
 				var str = "https://platform.dao.casino/api/?a=faucet&to="+openkey;
-				var xhr = new XMLHttpRequest();
-				xhr.open("GET", str, true);
-				xhr.send(null);
-				xhr.onreadystatechange = function() { // (3)
-					if (xhr.readyState != 4) return;
-
-					if (xhr.status != 200) {
-						console.log("err:" + xhr.status + ': ' + xhr.statusText);
-					} else {
-						obj_game["game"].response("getEthereum", xhr.responseText) 
-					}
-				}
-				// var data = "0x"+C_PLAYER_CARDS;
-				// var params = {"from":openkey,
-							// "to":addressContract,
-							// "data":data};
-				// infura.sendRequest("getPlayerCardsNumber", params, _callback);
+				this.sendUrlRequest(str, "getEthereum");
 			}
 			this.showTestEther();
 			saveData();
@@ -343,7 +326,7 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.tfResult);	
 	this.tfSelBet = addText("Select bet", fontSize, "#ffde00", "#000000", "center", 400, 4, fontDigital)
 	this.tfSelBet.x = _W/2;
-	this.tfSelBet.y = _H/2+250+offsetY;
+	this.tfSelBet.y = _H/2+265+offsetY;
 	this.face_mc.addChild(this.tfSelBet);
 	this.tfMyPoints = addText("", fontSize, "#ffffff", "#000000", "right", 200, 4)
 	this.tfMyPoints.x = _W/2-150;
@@ -1118,6 +1101,22 @@ ScrGame.prototype.startGameEth = function(){
 	infura.sendRequest("deal", openkey, _callback);
 }
 
+ScrGame.prototype.sendUrlRequest = function(url, name) {
+	var xhr = new XMLHttpRequest();
+	var str = url;
+	xhr.open("GET", str, true);
+	xhr.send(null);
+	xhr.onreadystatechange = function() { // (3)
+		if (xhr.readyState != 4) return;
+
+		if (xhr.status != 200) {
+			console.log("err:" + xhr.status + ': ' + xhr.statusText);
+		} else {
+			obj_game["game"].response(name, xhr.responseText) 
+		}
+	}
+}
+
 ScrGame.prototype.responseTransaction = function(name, value, obj) {
 	console.log("get nonce action "+value);
 	var data = "";
@@ -1188,7 +1187,6 @@ ScrGame.prototype.response = function(command, value, obj) {
 		}
 		return false;
 	}
-	var prnt = obj_game["game"];
 	
 	// console.log("response:", command, value);
 	if(command == "gameTxHash"){
