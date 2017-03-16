@@ -27,7 +27,6 @@ function GetLogs() {
                     var obj = objData.result[i];
                     if (thId == obj.transactionHash) {
                         array[0] = obj.transactionHash;
-                        array[1] = obj.timeStamp;
                         array.push(obj.data);
                     }
                 }
@@ -60,7 +59,7 @@ function GetLogs() {
                             profit = -bet;
                         }
                         var rnd = parseInt(arGame[i][7].substr(2), 16)
-                        $(".dice-table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/' + tx + ' "> ' + tx.slice(2, 12) + '...</a> <br>' + player.slice(2, 12) + '</td><td>' + chance + ' %</td><td>' + result + ' ( ' + rnd + ' )</td><td>' + bet + ' ETH</td><td>x' + (99.2 / chance).toFixed(3) + '</td><td>' + profit.toFixed(3) + '</td></tr>');
+                        $(".dice-table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td>' + chance + ' %</td><td>' + result + ' ( ' + rnd + ' )</td><td>' + bet + ' ETH</td><td>x' + (99.2 / chance).toFixed(3) + '</td><td>' + profit.toFixed(3) + '</td></tr>');
                         if ($('#table >tbody >tr').length > 9) {
                             document.getElementById("table").deleteRow(9);
                         };
@@ -69,22 +68,25 @@ function GetLogs() {
             }
             _countBy24Hours = 0;
             _countBy30Days = 0;
-            // for (var n = 0; n < arGame.length; n++) {
-            //     var _time = parseInt(arGame[n][1].substr(2), 16) * 1000;
-            //     var _now = +new Date();
-            //     if (_time > _now - 86400000) {
-            //         _countBy30Days++;
-            //         _countBy24Hours++;
-            //     } else if (_time > _now - 2592000000) {
-            //         _countBy30Days++;
-            //     };
-            //     $("#30days").html(_countBy30Days);
-            //     $("#24hours").html(_countBy24Hours);
-            // }
+            for (var n = 0; n < arGame.length; n++) {
+                var _time = parseInt(arGame[n][1].substr(2), 16) * 1000;
+                var _now = +new Date();
+                if (_time > _now - 86400000) {
+                    _countBy30Days++;
+                    _countBy24Hours++;
+                } else if (_time > _now - 2592000000) {
+                    _countBy30Days++;
+                };
+                $("#30days").html(_countBy30Days);
+                $("#24hours").html(_countBy24Hours);
+            }
         }
     })
 
     getContractBalance();
-    TotalRolls();
-    TotalPaid();
+    paids = (call("getTotalEthSended") / 10000000000000000000).toFixed(6);
+    sends = (call("getTotalEthPaid") / 10000000000000000000).toFixed(6);
+    $("#total-rolls").html(call("getTotalRollMade"));
+    $("#total-paid").html(paids + ' ETH');
+    $("#total-send").html(sends + ' ETH (' + ((paids / sends) * 100).toFixed(2) + '%)');
 };
