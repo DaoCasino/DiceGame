@@ -67,6 +67,11 @@ var lastHouseCard = 0;
 var stateNow = -1;
 var stateOld = -1;
 var scaleCard = 0.9;
+var _oStartingCardOffset;
+var _oDealerCardOffset;
+var _oReceiveWinOffset;
+var _oFichesDealerOffset;
+var _oRemoveCardsOffset;
 
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
@@ -288,6 +293,12 @@ ScrGame.prototype.createGUI = function() {
 	btnFrame.buttonMode=true;
 	this.face_mc.addChild(btnFrame);
 	this._arButtons.push(btnFrame);
+	
+	_oStartingCardOffset = new vector(1214,228);
+	_oDealerCardOffset = new vector(788,180);
+	_oReceiveWinOffset = new vector(418,820);
+	_oFichesDealerOffset = new vector(_W/2,-80);
+	_oRemoveCardsOffset = new vector(408,208);
 	
 	this.tfGetEth = addText("", 40, "#FFFFFF", "#000000", "center", 400)
 	this.tfGetEth.x = _W/2;
