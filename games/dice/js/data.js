@@ -13,7 +13,7 @@ function GetLogs() {
             "jsonrpc": '2.0',
             "method": 'eth_getLogs',
             "params": [{
-                "fromBlock": "580000",
+                "fromBlock": "650000",
                 "toBlock": "latest",
                 "address": addressContract,
             }]
@@ -82,7 +82,6 @@ function GetLogs() {
             }
         }
     })
-
     getContractBalance();
     paids = (call("getTotalEthSended") / 10000000000000000000).toFixed(6);
     sends = (call("getTotalEthPaid") / 10000000000000000000).toFixed(6);

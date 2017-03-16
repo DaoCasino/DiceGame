@@ -1,74 +1,54 @@
 $(document).ready(function () {
+    initGame();
     var clipboard = new Clipboard('#openkey');
-$("#roll-dice").click(function () {
-    startGame();
- });
-initGame()
-    $(".toggle-bg").click(function(){
-			setContract();
-			$("#total-rolls").html(call("getTotalRollMade"));
-    $("#total-paid").html(paids + ' ETH');
-    $("#total-send").html(sends + ' ETH (' + ((paids / sends) * 100).toFixed(2) + '%)');
-            getContractBalance()
-		});
-
-
-    $('#your-balance').click(function(){
-        
-Refresh();
+    $("#roll-dice").click(function () {
+        startGame();
+    });
+    $(".toggle-bg").click(function () {
+        setContract();
+        GetLogs();
+        getContractBalance();
+    });
+    $('#your-balance').click(function () {
+        Refresh();
     })
-
     $('input#amount-one').keypress(function (e) {
         if (e.which == 13) {
             Refresh();
             $(this).blur();
         }
     })
-
+    // $('input#amount-one').keypress(function (e) {
+    //     Refresh();
+    //     if (!(e.which == 8 || e.which == 44 || e.which == 45 || e.which == 46 || (e.which > 47 && e.which < 58))) return false;
+    // });
+    $('input#amount-one').on('input keyup change keypress', function () {
+        var value = this.value;
+        Refresh();
+        if (/^\.|\d+\..*\.|[^\d\.{1}]/.test(value) || value > balance - 0.02)
+            this.value = value.slice(0, -1);
+        
+    });
     $('input#less-than-wins').keypress(function (e) {
         if (e.which == 13) {
             Refresh();
             $(this).blur();
         }
     })
-
-    $(document).ready(function () {
-        $('input#amount-one').keypress(function (e) {
-            Refresh();
-            if (!(e.which == 8 || e.which == 44 || e.which == 45 || e.which == 46 || (e.which > 47 && e.which < 58))) return false;
-        });
-    });
-    $(document).ready(function () {
-        $('input#less-than-wins').keypress(function (e) {
-            Refresh();
-            if (!(e.which == 8 || (e.which > 47 && e.which < 58))) return false;
-
-        });
-
-
-        $('input#amount-one').on('input keyup change', function () {
-            var value = this.value;
-            Refresh();
-            if (/^\.|\d+\..*\.|[^\d\.{1}]/.test(value) || value > balance - 0.02)
-                this.value = value.slice(0, -1);
-
-                else Refresh();
-
-        });
-
-        $('input#less-than-wins').on('input keyup change', function () {
-            var value = this.value;
-            Refresh();
-            if (value < 1 || value > 9900)
-                this.value = value.slice(0, -1);
-                
-                else Refresh();
-
-        });
+    $('input#less-than-wins').keypress(function (e) {
+        Refresh();
+        if (!(e.which == 8 || (e.which > 47 && e.which < 58))) return false;
 
     });
+    $('input#less-than-wins').on('input keyup change', function () {
+        var value = this.value;
+        Refresh();
+        if (value < 1 || value > 9900)
+            this.value = value.slice(0, -1);
 
+        else Refresh();
 
+    });
     /* SLIDER UI */
     $(function () {
         $('#less-than-wins').change(function () {
