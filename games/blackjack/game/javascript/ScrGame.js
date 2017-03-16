@@ -572,7 +572,7 @@ ScrGame.prototype.showButtons = function(value) {
 		this.btnSplit.visible = false;
 	}
 	if(value){
-		if(this.bSplit){
+		if(stateNow == S_IN_PROGRESS_SPLIT){
 			this.btnHit.visible = false;
 		} else {
 			this.btnHitM.visible = false;
@@ -583,7 +583,7 @@ ScrGame.prototype.showButtons = function(value) {
 
 ScrGame.prototype.showPlayerCard = function(card){
 	if(card){
-		if(this.bSplit){
+		if(stateNow == S_IN_PROGRESS_SPLIT){
 			card.x = _W/2 - 200 + lastPlayerCard*30;
 			this.tfMyPoints.x = _W/2-270;
 		} else {
@@ -1136,7 +1136,7 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 		if(obj){
 			var val = obj.bool;
 			data = data + pad(numToHex(val), 64);
-			console.log(name, val);
+			console.log(name, val, data);
 		}
 	} else if(name == "stand"){
 		data = "0x"+C_STAND;

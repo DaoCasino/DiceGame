@@ -16,8 +16,7 @@ var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-// var addressTestContract = "0xd1b45edac3f3758f665d126044847bddc883b6e1"; //Old Work
-var addressTestContract = "0xc204b69b5a6784e37367233ff89e0452e961b223"; //New Work
+var addressTestContract = "0xc204b69b5a6784e37367233ff89e0452e961b223"; //Work
 // var	addressTestContract = "0x710a066ab97f0c1d118cc4a1bb188127edf994a2"; // Split
 
 var options_debug = false;
