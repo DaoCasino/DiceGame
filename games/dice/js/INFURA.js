@@ -21,10 +21,6 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 //     })
 // };
 
-
-
-
-
 function startGame() {
     if (openkey) {
         $.ajax({

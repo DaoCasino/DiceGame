@@ -19,10 +19,11 @@ html, body, #tbl_wrap {
 	text-align: center; 
 }
 @font-face {
-   font-family: 'Luckiest Guy';
-   src: url('../fonts/LuckiestGuy.ttf') format('truetype');
-   font-weight: normal;
-   font-style: normal;
+	font-family: 'Digital-7';
+	src: url('Digital-7.eot?') format('eot'), 
+	     url('Digital-7.woff') format('woff'), 
+	     url('Digital-7.ttf')  format('truetype'),
+	     url('Digital-7.svg#Digital-7') format('svg');
 }
 @font-game {
    font-family: 'Impact';
@@ -30,18 +31,7 @@ html, body, #tbl_wrap {
    font-weight: normal;
    font-style: normal;
 }
-@font-tahoma {
-   font-family: 'Tahoma';
-   src: url('../fonts/tahoma.ttf') format('truetype');
-   font-weight: normal;
-   font-style: normal;
-}
-@font-gothic {
-   font-family: 'Century Gothic';
-   src: url('../fonts/GOTHIC.ttf') format('truetype');
-   font-weight: normal;
-   font-style: normal;
-}
+
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;

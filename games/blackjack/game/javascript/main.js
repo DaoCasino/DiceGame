@@ -1,6 +1,6 @@
-var _W = 1280;
-var _H = 720;
-var version = "v. 1.0.11"
+var _W = 1920;
+var _H = 1080;
+var version = "v. 1.0.14"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -11,10 +11,8 @@ var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
 var infura, soundManager;
-var fontMain = "Luckiest Guy";
-var fontImpact = "Impact";
-var fontTahoma = "Tahoma";
-var fontGothic = "Century Gothic";
+var fontMain = "Arial";
+var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
@@ -75,7 +73,7 @@ function initGame() {
 	font1.x = _W/2;
 	font1.y = -100;
 	stage.addChild(font1);
-	var font2 = addText("font2", 16, "#000000", undefined, "center", 200, 2, fontTahoma)
+	var font2 = addText("font2", 16, "#000000", undefined, "center", 200, 2)
 	font2.x = _W/2;
 	font2.y = -120;
 	stage.addChild(font2);
@@ -122,9 +120,12 @@ function loadManifest(){
 	preloader.add("icoKey", "images/items/icoKey.png");
 	preloader.add("icoEthereum", "images/items/icoEthereum.png");
 	preloader.add("icoTime", "images/items/icoTime.png");
-	preloader.add("fiche_0", "images/items/fiche_0.png");
-	preloader.add("fiche_1", "images/items/fiche_1.png");
-	preloader.add("fiche_2", "images/items/fiche_2.png");
+	preloader.add("chip_1", "images/items/chip_1.png");
+	preloader.add("chip_2", "images/items/chip_2.png");
+	preloader.add("chip_3", "images/items/chip_3.png");
+	preloader.add("chip_4", "images/items/chip_4.png");
+	preloader.add("chip_5", "images/items/chip_5.png");
+	preloader.add("chip_6", "images/items/chip_6.png");
 	preloader.add("seat", "images/items/seat.png");
 	preloader.add("hintArrow", "images/items/hintArrow.png");
 	
@@ -196,6 +197,8 @@ function loadManifest(){
 	preloader.add("btnGreen", "images/buttons/btnGreen.png");
 	preloader.add("btnGreenOver", "images/buttons/btnGreenOver.png");
 	preloader.add("btnGreenDown", "images/buttons/btnGreenDown.png");
+	preloader.add("btnFrame", "images/buttons/btnFrame.png");
+	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
@@ -386,6 +389,9 @@ function pad(num, size) {
     while (s.length < size) s = "0" + s;
     return s;
 }
+function copyToClipboard(value) {
+  window.prompt("Copy to clipboard: Ctrl+C", value);
+}
 
 function removeAllScreens() {
 	if(ScreenGame){
@@ -498,21 +504,6 @@ function parseData(objData) {
 			}
         }
     }
-}
-
-function getLogs() {
-	var objOrcl = undefined;
-	$.get("https://testnet.etherscan.io/" + 
-		"api?module=logs"+
-		"&action=getLogs"+
-		"&fromBlock=379224"+
-		"&toBlock=latest"+
-		"&address="+"0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498"+
-		"&apikey=YourApiKeyToken", function (d) {
-			var objData = d;
-			parseData(objData);
-		}, 
-	"json");
 }
 
 function removeSelf(obj) {

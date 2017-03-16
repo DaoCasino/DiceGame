@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,12 +33,81 @@
 	Your privatekey: be448345d0a3fb012c594231d4a43ee290f6138371f8db5a0e5722773d51087f 
 	-->
 </head>
+
 <body style='display:none'>
     <section class="support">
         <div class="container">
             <div class="section__content">
                 <div class="incontainer">
                     <h3>Центр управления (контрактами)</h3>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>имя игры</th>
+                                <th>network</th>
+                                <th>bankroll</th>
+                                <th>количество игр за 30 дней</th>
+                                <th>количество игр</th>
+                                <th>заявленный % payout</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2">1</td>
+                                <td rowspan="2">HackDao</td>
+                                <td>testnet</td>
+                                <td>5 ETH</td>
+                                <td>500</td>
+                                <td>5001</td>
+                                <td>90%</td>
+                            </tr>
+                            <tr>
+                                <td>mainnet</td>
+                                <td>1000 ETH</td>
+                                <td>500</td>
+                                <td>5001</td>
+                                <td>90%</td>
+                            </tr>
+							
+							 <tr>
+                                <td rowspan="2">2</td>
+                                <td rowspan="2">Dice</td>
+                                <td>testnet</td>
+                                <td>5 ETH</td>
+                                <td>500</td>
+                                <td>5001</td>
+                                <td>90%</td>
+                            </tr>
+                            <tr>
+                                <td>mainnet</td>
+                                <td>1000 ETH</td>
+                                <td>500</td>
+                                <td>5001</td>
+                                <td>90%</td>
+                            </tr>
+							
+							 <tr>
+                                <td rowspan="2">3</td>
+                                <td rowspan="2">BlackJack</td>
+                                <td>testnet</td>
+                                <td>5 ETH</td>
+                                <td>500</td>
+                                <td>5001</td>
+                                <td>90%</td>
+                            </tr>
+                            <tr>
+                                <td>mainnet</td>
+                                <td>1000 ETH</td>
+                                <td>500</td>
+                                <td>5001</td>
+                                <td>90%</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
                     <form action=''>
                         <b>Game:</b>
                         <select name='game' class='form-control' id='gameid'>
@@ -54,24 +124,46 @@
 							<option value='0'>выбрать</option>
 							<option value='1'>TestNet</option>
 							<option value='2'>Mainnet</option>
-							<option value='3'>Kovan</option>
+							<!--<option value='3'>Kovan</option>
+                            <option value='4'>Testrpc</option>-->
 						</select>
 
 
                         <!--<b>Адрес контракта с игрой (todo вставлять текущий адрес который там сохранен):</b> <br>-->
                         <b>Адрес контракта: </b>
                         <input type='text' id='contractid' name='' placeholder='0x...' class='form-control' value=''>
-                        <Br>
 
-                        <input type='button' name='' id="send" class='btn btn-primary' value='Сохранить'> 
-                        <!--<input type='button'
-                            name='' id="show" class='btn btn-success' value='показать'>-->
-                        <!--По нажатию кнопки сохранить должен выполнятся sendrawtransaction к контракту list который ты вчера написал
-						при этом в аргументы передается то что выбрал чел в этой форме и ввел (не забудь убрать 0x.. в адресе). 
-						<br>-->
+
+                        <br>
+                        <input type='button' name='' id="send" class='btn btn-primary' value='Сохранить'>
+
                     </form>
-
+                    <a id="to" href="etherscan.io" target="_blank">
+                        <h3>to contract</h3>
+                    </a>
+                    <h3 id="balance">Balance: ..:..:. ETH</h3>
                     <script>
+                        var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+                        var addressContract = "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051";
+
+                        function getContractBalance(address) {
+                            $.ajax({
+                                type: "POST",
+                                url: urlInfura,
+                                dataType: 'json',
+                                async: false,
+                                data: JSON.stringify({
+                                    "id": 0,
+                                    "jsonrpc": '2.0',
+                                    "method": 'eth_getBalance',
+                                    "params": [address, "latest"]
+                                }),
+                                success: function (d) {
+                                    $('#bal').html((d.result /
+                                        1000000000000000000).toFixed(5) + " ETH");
+                                }
+                            });
+                        };
 
                         function show() {
                             gameid = $("#gameid").val();
@@ -79,19 +171,43 @@
                             contract = $("#contractid").val();
                             $.ajax({
                                 type: "POST",
-                                url: urlApi,
-                                data: {
-                                    module: "proxy",
-                                    action: "eth_call",
-                                    data: "0x3d185fc5" + pad(numToHex(gameid), 64) + pad(numToHex(
-                                        networkid), 64),
-                                    to: "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051"
-                                },
+                                url: urlInfura,
+                                dataType: 'json',
+                                async: false,
+                                data: JSON.stringify({
+                                    "id": 0,
+                                    "jsonrpc": '2.0',
+                                    "method": "eth_call",
+                                    "params": [{
+                                        "from": openkey,
+                                        "to": addressContract,
+                                        "data": "0x3d185fc5" + pad(numToHex(gameid), 64) + pad(
+                                            numToHex(
+                                                networkid), 64)
+                                    }, "latest"]
+                                }),
                                 success: function (d) {
                                     contract = d.result;
-                                    $("#contractid").val("0x"+contract.substr(26));
+                                    $("#contractid").val("0x" + contract.substr(26));
+                                    switch (networkid) {
+                                        case "1":
+                                            urlApi = "https://testnet.etherscan.io/api";
+                                            break;
+                                        case "2":
+                                            urlApi = "https://api.etherscan.io/api";
+                                            break;
+                                        case "3":
+                                            urlApi = "https://kovan.etherscan.io/api";
+                                            break;
+
+                                    }
+                                    $('a#to').attr("href", urlApi.substr(0, urlApi.length - 3) + "address/" +
+                                        "0x" + contract.substr(26));
                                 }
                             })
+
+
+
 
                         };
 
@@ -166,22 +282,22 @@
                             contract = $("#contractid").val();
                             if (openkey) {
                                 $.ajax({
-                                    method: "POST",
-                                    url: urlApi,
-                                    data: {
-                                        module: "proxy",
-                                        async: false,
-                                        action: "eth_getTransactionCount",
-                                        address: openkey,
-                                        tag: "latest"
-                                    },
+                                    type: "POST",
+                                    url: urlInfura,
+                                    dataType: 'json',
+                                    async: false,
+                                    data: JSON.stringify({
+                                        "id": 0,
+                                        "jsonrpc": '2.0',
+                                        "method": "eth_getTransactionCount",
+                                        "params": [openkey, "latest"]
+                                    }),
                                     success: function (d) {
                                         var callData = "0x24689f99";
-                                        callData = callData.substr(0, 10);
                                         var options = {};
                                         options.nonce = d.result;
-                                        options.to = "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051";
-                                        options.data = callData + pad(numToHex(contract), 64) + pad(
+                                        options.to = addressContract;
+                                        options.data = callData + pad(numToHex(contract.substr(2)), 64) + pad(
                                             numToHex(gameid), 64) + pad(numToHex(networkid), 64);
                                         options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
                                         options.gasLimit = 0x927c0; //web3.toHex('600000');
@@ -199,17 +315,17 @@
                                                 var serializedTx = tx.serialize().toString('hex');
                                                 console.log("The transaction was signed: " +
                                                     serializedTx);
-                                                $.ajax({
-                                                    method: "POST",
-                                                    url: urlApi,
-                                                    data: {
-                                                        async: false,
-                                                        module: "proxy",
-                                                        action: "eth_sendRawTransaction",
-                                                        address: openkey,
-                                                        hex: serializedTx,
-
-                                                    },
+                                                 $.ajax({
+                            type: "POST",
+                            url: urlInfura,
+                            dataType: 'json',
+                            async: false,
+                            data: JSON.stringify({
+                                "id": 0,
+                                "jsonrpc": '2.0',
+                                "method": "eth_sendRawTransaction",
+                                "params": ["0x"+serializedTx]
+                            }),
                                                     success: function (d) {
                                                         console.log(
                                                             "Транзакция отправлена в сеть:",
@@ -223,8 +339,6 @@
                             }
                         });
                     </script>
-                    <Br><br>
-
                 </div>
             </div>
 
