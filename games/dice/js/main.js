@@ -42,7 +42,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.41a Infura") // VERSION !
+    console.log("version 0.41b Infura") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -165,7 +165,8 @@ function initGame() {
     sends = (call("getTotalEthPaid") / 10000000000000000000).toFixed(6);
     Refresh();
     setContract();
-    console.log("old_count", call("totalRollsByUser"));
+    count = call("totalRollsByUser")
+    console.log("old_count", count);
     $("#total-rolls").html(call("getTotalRollMade"));
     $("#total-paid").html(paids + ' ETH');
     $("#total-send").html(sends + ' ETH (' + ((paids / sends) * 100).toFixed(2) + '%)');
@@ -270,24 +271,7 @@ function startGame() {
                                     $("#random").text("Please, wait . . . ");
                                     $("#randomnum").text(" . . . ");
                                     Timer = setInterval(function () {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: urlInfura,
-                                            dataType: 'json',
-                                            async: false,
-                                            data: JSON.stringify({
-                                                "id": 0,
-                                                "jsonrpc": '2.0',
-                                                "method": "eth_call",
-                                                "params": [{
-                                                    "from": openkey,
-                                                    "to": addressContract,
-                                                    "data": "0x9288cebc000000000000000000000000" + openkey.substr(2),
-                                                }, "latest"]
-                                            }),
-                                            success: function (d) {
-                                                console.log("new_count", hexToNum(d.result));
-                                                new_count = hexToNum(d.result);
+                                                 new_count = call("totalRollsByUser");
                                                 console.log("detected count:", new_count, count);
                                                 if (new_count != count) {
                                                     console.log("getStatusGame")
@@ -332,8 +316,8 @@ function startGame() {
                                                     })
 
                                                 }
-                                            }
-                                        });
+                                            
+                                        
                                     }, 3000);
                                 }
 

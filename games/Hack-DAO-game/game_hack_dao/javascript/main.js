@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.11"
+var version = "v. 1.1.12"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -16,6 +16,9 @@ var fontImpact = "Impact";
 var fontTahoma = "Tahoma";
 var fontGothic = "Century Gothic";
 var stats; //для вывода статистики справа
+
+var addressContract = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
+var	addressTestContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 
 var options_debug = false;
 var options_test = false;
@@ -94,6 +97,7 @@ function initGame() {
 	
 	// soundManager = new SoundManager();
 	// soundManager.currentMusic = "none";
+	infura = new Infura();
 	
 	LoadBack = new PIXI.Container();
 	stage.addChild(LoadBack);
@@ -541,6 +545,10 @@ function showLevels() {
 }
 function showTest() {
 	addScreen("test");
+}
+function showHome() {
+	var url = "/";
+	window.open(url, "_self"); // "_blank",  "_self"
 }
 
 function addScreen(name) {

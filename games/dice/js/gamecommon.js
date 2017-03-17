@@ -82,8 +82,6 @@ $(document).ready(function () {
             betEth = +value;
             Refresh();
         });
-
-
         $("#slider-dice-one").slider({
             range: "min",
             value: 200,
@@ -95,7 +93,6 @@ $(document).ready(function () {
                 Refresh();
             }
         });
-
         $("#slider-dice-two").slider({
             range: "min",
             value: 5000,

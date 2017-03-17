@@ -67,6 +67,11 @@ var lastHouseCard = 0;
 var stateNow = -1;
 var stateOld = -1;
 var scaleCard = 0.9;
+var _oStartingCardOffset;
+var _oDealerCardOffset;
+var _oReceiveWinOffset;
+var _oFichesDealerOffset;
+var _oRemoveCardsOffset;
 
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
@@ -105,7 +110,6 @@ ScrGame.prototype.init = function() {
 	this.curWindow;
 	this.startGame = false;
 	this._gameOver = false;
-	this.bSendRequest = false;
 	this.bWindow = false;
 	this.bGameLoad = false;
 	this.bBetLoad = false;
@@ -263,23 +267,7 @@ ScrGame.prototype.createAccount = function() {
 			if(options_testnet){
 				this.showButtons(false);
 				var str = "https://platform.dao.casino/api/?a=faucet&to="+openkey;
-				var xhr = new XMLHttpRequest();
-				xhr.open("GET", str, true);
-				xhr.send(null);
-				xhr.onreadystatechange = function() { // (3)
-					if (xhr.readyState != 4) return;
-
-					if (xhr.status != 200) {
-						console.log("err:" + xhr.status + ': ' + xhr.statusText);
-					} else {
-						obj_game["game"].response("getEthereum", xhr.responseText) 
-					}
-				}
-				// var data = "0x"+C_PLAYER_CARDS;
-				// var params = {"from":openkey,
-							// "to":addressContract,
-							// "data":data};
-				// infura.sendRequest("getPlayerCardsNumber", params, _callback);
+				this.sendUrlRequest(str, "getEthereum");
 			}
 			this.showTestEther();
 			saveData();
@@ -305,6 +293,12 @@ ScrGame.prototype.createGUI = function() {
 	btnFrame.buttonMode=true;
 	this.face_mc.addChild(btnFrame);
 	this._arButtons.push(btnFrame);
+	
+	_oStartingCardOffset = new vector(1214,228);
+	_oDealerCardOffset = new vector(788,180);
+	_oReceiveWinOffset = new vector(418,820);
+	_oFichesDealerOffset = new vector(_W/2,-80);
+	_oRemoveCardsOffset = new vector(408,208);
 	
 	this.tfGetEth = addText("", 40, "#FFFFFF", "#000000", "center", 400)
 	this.tfGetEth.x = _W/2;
@@ -343,7 +337,7 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.tfResult);	
 	this.tfSelBet = addText("Select bet", fontSize, "#ffde00", "#000000", "center", 400, 4, fontDigital)
 	this.tfSelBet.x = _W/2;
-	this.tfSelBet.y = _H/2+250+offsetY;
+	this.tfSelBet.y = _H/2+265+offsetY;
 	this.face_mc.addChild(this.tfSelBet);
 	this.tfMyPoints = addText("", fontSize, "#ffffff", "#000000", "right", 200, 4)
 	this.tfMyPoints.x = _W/2-150;
@@ -572,7 +566,7 @@ ScrGame.prototype.showButtons = function(value) {
 		this.btnSplit.visible = false;
 	}
 	if(value){
-		if(this.bSplit){
+		if(stateNow == S_IN_PROGRESS_SPLIT){
 			this.btnHit.visible = false;
 		} else {
 			this.btnHitM.visible = false;
@@ -583,7 +577,7 @@ ScrGame.prototype.showButtons = function(value) {
 
 ScrGame.prototype.showPlayerCard = function(card){
 	if(card){
-		if(this.bSplit){
+		if(stateNow == S_IN_PROGRESS_SPLIT){
 			card.x = _W/2 - 200 + lastPlayerCard*30;
 			this.tfMyPoints.x = _W/2-270;
 		} else {
@@ -1118,6 +1112,22 @@ ScrGame.prototype.startGameEth = function(){
 	infura.sendRequest("deal", openkey, _callback);
 }
 
+ScrGame.prototype.sendUrlRequest = function(url, name) {
+	var xhr = new XMLHttpRequest();
+	var str = url;
+	xhr.open("GET", str, true);
+	xhr.send(null);
+	xhr.onreadystatechange = function() { // (3)
+		if (xhr.readyState != 4) return;
+
+		if (xhr.status != 200) {
+			console.log("err:" + xhr.status + ': ' + xhr.statusText);
+		} else {
+			obj_game["game"].response(name, xhr.responseText) 
+		}
+	}
+}
+
 ScrGame.prototype.responseTransaction = function(name, value, obj) {
 	console.log("get nonce action "+value);
 	var data = "";
@@ -1136,7 +1146,7 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 		if(obj){
 			var val = obj.bool;
 			data = data + pad(numToHex(val), 64);
-			console.log(name, val);
+			console.log(name, val, data);
 		}
 	} else if(name == "stand"){
 		data = "0x"+C_STAND;
@@ -1188,7 +1198,6 @@ ScrGame.prototype.response = function(command, value, obj) {
 		}
 		return false;
 	}
-	var prnt = obj_game["game"];
 	
 	// console.log("response:", command, value);
 	if(command == "gameTxHash"){

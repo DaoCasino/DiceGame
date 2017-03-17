@@ -12,16 +12,16 @@ var TIME_RESPAWN_MONEY = 500;
 var TIME_RESPAWN_PROPOSAL = 1000;
 var TIME_RESPAWN_MINER = 3000;
 var TIME_RESPAWN_HACKER = 2000;
+var C_START = "cddbe729";
 var urlResult = "https://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var urlBalance = "";
-var addressContract = "0x5c430fa24f782cf8156ca97208c42127b17b0494";
-var	addressTestContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 var topicsResultLog = "0x70d816668b2732e5fb6f136b2561a576ff46b80a1ced4f5fdae6ede3c87708ab";
 var betEth = 200000000000000000; //ставка эфира
 var betGame = betEth/1000000000000000000; //ставка 0.2 эфира
 var obj_game = {};
+var _callback;
 var _mouseX;
 var _mouseY;
 var blockNumber;
@@ -133,6 +133,7 @@ ScrGame.prototype.init = function() {
 	obj_game["game"] = this;
 	obj_game["balance"] = 0;
 	obj_game["balanceBank"] = 0;
+	_callback = obj_game["game"].response;
 	
 	this.addChild(this.back_mc);
 	this.addChild(this.game_mc);
@@ -171,9 +172,9 @@ ScrGame.prototype.init = function() {
 	this.createPrepareLevel();
 	this.createGUI();
 	this.createAccount();
-	this.sendRequest("getBalance");
-	this.sendRequest("getBalanceBank");
-	this.sendRequest("getBlockNumber");
+	infura.sendRequest("getBalance", openkey, _callback);
+	infura.sendRequest("getBalanceBank", addressContract, _callback);
+	infura.sendRequest("getBlockNumber", undefined, _callback);
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -532,11 +533,6 @@ ScrGame.prototype.shareFB = function() {
 	if (typeof(FB) != 'undefined' && FB != null ) {
 		var urlGame = 'https://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/';
 		var urlImg = "https://platform.dao.casino/games/Hack-DAO-game/game_hack_dao/images/distr/icon_1024.png";
-		/*FB.ui({
-			method: 'share',
-			href: urlGame,
-		}, function(response){});*/
-		
 		
 		FB.ui({
 		  method: 'feed',
@@ -828,62 +824,11 @@ ScrGame.prototype.addHolderObj = function(obj){
 // START
 ScrGame.prototype.startGameEth = function(){
 	if(openkey == undefined){
-		obj_game["game"].showError(ERROR_KEY);
+		obj_game["game"].showError(ERROR_KEY, showHome);
 		return false;
 	}
 	
-	$.ajax({
-		type: "POST",
-		url: urlInfura,
-		dataType: 'json',
-		async: false,
-		data: JSON.stringify({"jsonrpc":"2.0",
-							"method":"eth_getTransactionCount",
-							"params":[openkey,"latest"],
-							"id":1}),
-		success: function (d) {
-			console.log("get nonce "+d.result);
-			var options = {};
-			options.nonce = d.result;
-			options.to = addressContract;
-			// call function game() in contract
-			options.data = '0xcddbe729000000000000000000000000000000000000000000000000000000000000000'+String(obj_game["game"].curLevel);
-			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
-			options.gasLimit=0x927c0; //web3.toHex('600000');
-			options.value = betEth;
-			
-			if(privkey){
-				if(buf == undefined){
-					obj_game["game"].showError(ERROR_TRANSACTION);
-				} else {
-					//приватный ключ игрока, подписываем транзакцию
-					var tx = new EthereumTx(options);
-					tx.sign(new buf(privkey, 'hex'));
-
-					var serializedTx = tx.serialize().toString('hex');
-					obj_game["game"].createLevel();
-					obj_game["game"].bSendRequest = false;
-					obj_game["game"].startGame = true;
-					console.log("The transaction was signed: "+serializedTx);
-					
-					$.ajax({
-						type: "POST",
-						url: urlInfura,
-						dataType: 'json',
-						async: false,
-						data: JSON.stringify({"id":0,
-											"jsonrpc":'2.0',
-											"method":'eth_sendRawTransaction',
-											"params":["0x"+String(serializedTx)]}),
-						success: function (d) {
-							obj_game["game"].response("gameTxHash", d.result) 
-							console.log("Транзакция отправлена в сеть:", d.result);
-						}
-					})
-				}
-			}
-		}
-	})
+	infura.sendRequest("start", openkey, _callback);
 }
 
 // RESULT
@@ -921,7 +866,7 @@ ScrGame.prototype.resultGameEth = function(val){
 	login_obj["curLevel"] = false;
 	obj_game["time"] = this.timeTotal;
 	
-	this.sendRequest("getBalance");
+	infura.sendRequest("getBalance", openkey, _callback);
 	this.itemResult.visible = true;
 	this.startGame = false;
 	this.timeTotal = 0;
@@ -1151,85 +1096,53 @@ ScrGame.prototype.clickObject = function(evt) {
 	}
 }
 
-ScrGame.prototype.getResult = function() {
+ScrGame.prototype.getResult = function(arLogs) {
 	var objOrcl = undefined;
-	$.get(urlEtherscan + 
-		"api?module=logs"+
-		"&action=getLogs"+
-		"&fromBlock="+String(blockNumber)+
-		"&toBlock=latest"+
-		"&address="+addressContract+
-		"&apikey=YourApiKeyToken", function (d) {
-			var arLogs = d.result;
-			var len = arLogs.length;
-			var index = 0;
-			if(len > 50){
-				index = len-50;
-			}
-			
-			if(idOraclizeGame == undefined){
-				for (var i = index; i < len; i ++) {
-					if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
-						var obj = arLogs[i];
-						idOraclizeGame = obj.data; //id Oraclize
-						break;
-					}
-				}
-			}
-			if(idOraclizeGame && resultTxid == undefined){
-				for (var j = index; j < len; j ++) {
-					var objC = arLogs[j];
-					if (objC.transactionHash != obj_game["gameTxHash"]
-					&& objC.data == idOraclizeGame) {
-						resultTxid = objC.transactionHash;
-						objOrcl = objC;
-						break;
-					}
-				}
-			}
-			
-			if(resultTxid){
-				for (var i = index; i < len; i ++) {
-					var obj = arLogs[i];
-					if (obj.transactionHash == resultTxid) {
-						if (obj.data.match(/77696e/i)) {
-							obj_game["game"].getResponseResult(1);
-							return false;
-						}
-						if (obj.data.match(/6c6f7365/i)) {
-							obj_game["game"].getResponseResult(-1);
-							return false;
-						}
-					}
-				}
-			}
-	}, "json");
 	
-	obj_game["game"].getResponseResult(0);
-}
-
-ScrGame.prototype.sendInfuraRequest = function(name, params) {
-	var method = "";
-	switch(name){
-		case "getBalance":
-		case "getBalanceBank":
-			method = "eth_getBalance";
-			break;
+	var len = arLogs.length;
+	var index = 0;
+	if(len > 50){
+		index = len-50;
 	}
 	
-	$.ajax({
-		type: "POST",
-		url: urlInfura,
-		dataType: 'json',
-		async: false,
-		data: JSON.stringify({"id":0,
-							"jsonrpc":'2.0',
-							"method":method,
-							"params":[params, "latest"]}),
-		success: function (d) {
-			obj_game["game"].response(name, d.result);
+	if(idOraclizeGame == undefined){
+		for (var i = index; i < len; i ++) {
+			if (arLogs[i].transactionHash == obj_game["gameTxHash"]) {
+				var obj = arLogs[i];
+				idOraclizeGame = obj.data; //id Oraclize
+				break;
+			}
 		}
-	})
+	}
+	if(idOraclizeGame && resultTxid == undefined){
+		for (var j = index; j < len; j ++) {
+			var objC = arLogs[j];
+			if (objC.transactionHash != obj_game["gameTxHash"]
+			&& objC.data == idOraclizeGame) {
+				resultTxid = objC.transactionHash;
+				objOrcl = objC;
+				break;
+			}
+		}
+	}
+	
+	if(resultTxid){
+		for (var i = index; i < len; i ++) {
+			var obj = arLogs[i];
+			if (obj.transactionHash == resultTxid) {
+				if (obj.data.match(/77696e/i)) {
+					obj_game["game"].getResponseResult(1);
+					return false;
+				}
+				if (obj.data.match(/6c6f7365/i)) {
+					obj_game["game"].getResponseResult(-1);
+					return false;
+				}
+			}
+		}
+	}
+	
+	obj_game["game"].getResponseResult(0);
 }
 
 ScrGame.prototype.sendUrlRequest = function(url, name) {
@@ -1259,107 +1172,105 @@ ScrGame.prototype.getResponseResult = function(value) {
 	}
 }
 
-ScrGame.prototype.sendRequest = function(value) {
-	if(options_ethereum){
-		// console.log("sendRequest:", value)
-		if(value == "game"){
-			if(this.clickDAO == false){
-				this.clickDAO = true;
-				this.sendUrlRequest(urlRequest, "gameTxHash");
+ScrGame.prototype.responseTransaction = function(name, value, obj) {
+	console.log("get nonce action "+value);
+	var prnt = obj_game["game"];
+	var data = "";
+	var price = 0;
+	var nameRequest = "sendRaw";
+	var gasPrice="0x737be7600";//web3.toHex('31000000000');
+	var gasLimit=0x927c0; //web3.toHex('600000');
+	if(name == "start"){
+		data = "0x"+C_START + pad(numToHex(obj_game["game"].curLevel), 64);
+		price = betEth;
+		nameRequest = "gameTxHash";
+	}
+	
+	var options = {};
+	options.nonce = value;
+	options.to = addressContract;
+	options.data = data; // method from contact
+	options.gasPrice = gasPrice;
+	options.gasLimit = gasLimit;
+	options.value = price;
+	
+	if(privkey){
+		if(buf == undefined){
+			prnt.showError(ERROR_BUF);
+			prnt.clearBet();
+			prnt.tfResult.setText("");
+			prnt.bWait = false;
+			prnt.showChips(true);
+		} else {
+			var tx = new EthereumTx(options);
+			tx.sign(new buf(privkey, 'hex'));
+			
+			if(name == "start"){
+				prnt.createLevel();
+				prnt.bSendRequest = false;
+				prnt.startGame = true;
 			}
-		} else if(value == "gameTxHash"){
-			if(this.gameTxHash){
-				this.clickDAO = false;
-				this.getResult();
-			}
-		} else if(value == "getBalance"){
-			if(openkey){
-				this.sendInfuraRequest("getBalance", openkey);
-			}
-		} else if(value == "getBalanceBank"){
-			if(openkey){
-				this.sendInfuraRequest("getBalanceBank", addressContract);
-			}
-		} else if(value == "getBlockNumber"){
-			if(openkey){
-				$.ajax({
-					type: "POST",
-					url: urlInfura,
-					dataType: 'json',
-					async: false,
-					data: JSON.stringify({"id":0,
-										"jsonrpc":'2.0',
-										"method":"eth_blockNumber",
-										"params":[]}),
-					success: function (d) {
-						obj_game["game"].response(value, d.result);
-					}
-				})
-			}
+
+			var serializedTx = tx.serialize().toString('hex');
+			console.log("The transaction was signed: "+serializedTx);
+			
+			var params = "0x"+String(serializedTx);
+			infura.sendRequest(nameRequest, params, _callback);
 		}
 	}
 }
 
-ScrGame.prototype.response = function(command, value) {
+ScrGame.prototype.response = function(command, value, obj) {
 	// console.log("response:", command, value)	
+	var prnt = obj_game["game"];
 	if(value == undefined){
 		return false;
 	}
 	
-	if(command == "gameTxHash"){
+	if(command == "start"){
+		prnt.responseTransaction(command, value, obj);
+	} else if(command == "gameTxHash"){
 		obj_game["gameTxHash"] = value;
 		login_obj["gameTxHash"] = value;
-		this.gameTxHash = obj_game["gameTxHash"];
-		this.timeGetResult = 0;
-		this.sendRequest("getBalance");
+		prnt.gameTxHash = obj_game["gameTxHash"];
+		prnt.timeGetResult = 0;
+		infura.sendRequest("getBalance", openkey, _callback);
 		login_obj["startGame"] = true;
-		login_obj["curLevel"] = this.curLevel;
+		login_obj["curLevel"] = prnt.curLevel;
 	} else if(command == "resultGame"){
 		var val = Number(value);
 		if(val == 0){
-			this.clickDAO = true
-			this.timeGetResult = 0;
-			this.bSendRequest = false;
-			this.sendRequest("getBalance");
+			prnt.clickDAO = true
+			prnt.timeGetResult = 0;
+			prnt.bSendRequest = false;
+			infura.sendRequest("getBalance", openkey, _callback);
 		} else {
-			this.resultGameEth(val);
+			prnt.resultGameEth(val);
 		}
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
-		if(this.tfGetEth){
-			this.tfGetEth.setText("Your 1 test ether will be available shortly (about minute)");
+		if(prnt.tfGetEth && obj){
+			prnt.tfGetEth.setText("Your 1 test ether will be available shortly (about minute)");
 		}
-		this.sendRequest("getBalance");
+		infura.sendRequest("getBalance", openkey, _callback);
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		login_obj["balance"] = obj_game["balance"];
-		this.tfBalance.setText(obj_game["balance"]);
-		this.bSendRequest = false;
+		prnt.tfBalance.setText(obj_game["balance"]);
+		prnt.bSendRequest = false;
 		if(obj_game["balance"] > 0){
-			this.tfGetEth.setText("");
-			if(this.oldBalance == -1){
-				this.oldBalance = Number(obj_game["balance"]);
-				this.showWndStart();
+			prnt.tfGetEth.setText("");
+			if(prnt.oldBalance == -1){
+				prnt.oldBalance = Number(obj_game["balance"]);
+				prnt.showWndStart();
 			}
 		}
-		/*if(this.oldBalance == -1){
-			// записываем баланс на старте игры
-			this.oldBalance = Number(obj_game["balance"]);
-			obj_game["oldBalance"] = this.oldBalance;
-		} else {
-			// определяем результат, если баланс изменился
-			if(obj_game["balance"] != this.oldBalance){
-			} else {
-				// повторно запросим баланс через TIME_GET_RESULT мс
-				this.clickDAO = true
-				this.timeGetResult = 0;
-				this.bSendRequest = false;
-			}
-		}*/
 	} else if(command == "getBalanceBank"){
 		obj_game["balanceBank"] = Number(value);
 	} else if(command == "getBlockNumber"){
 		blockNumber = Number(hexToNum(value));
+	} else if(command == "getLogs"){
+		prnt.getResult(value);
 	}
 }
 
@@ -1676,7 +1587,7 @@ ScrGame.prototype.update = function() {
 		this.bSendRequest == false){
 			this.bSendRequest = true;
 			this.timeGetResult = 0;
-			this.sendRequest("getBalance");
+			infura.sendRequest("getBalance", openkey, _callback);
 		}
 	} else if(this.gameTxHash){
 		if(login_obj["startGame"]){
@@ -1685,7 +1596,15 @@ ScrGame.prototype.update = function() {
 			this.bSendRequest == false){
 				this.bSendRequest = true;
 				this.timeGetResult = 0;
-				this.sendRequest("gameTxHash");
+				if(this.gameTxHash){
+					this.clickDAO = false;
+					var params = {
+						"fromBlock": String(blockNumber),
+						"toBlock": "latest",
+						"address": addressContract,
+					}
+					infura.sendRequest("getLogs", params, _callback);
+				}
 			}
 		}
 	}
