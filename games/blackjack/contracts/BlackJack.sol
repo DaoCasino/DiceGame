@@ -149,29 +149,17 @@ contract BlackJack is owned {
 
 	// Deals one more card to the player
 	function hit() public gameIsInProgress {
-		if (games[msg.sender].state == GameState.InProgress) {
-			dealCard(true, games[msg.sender]);
-			checkGameResult(games[msg.sender], false);
-		} else {
-			throw;
-		}
+		dealCard(true, games[msg.sender]);
+		checkGameResult(games[msg.sender], false);
 	}
 
-	// TODO: test it
-	function hit1(bool isMain) public gameIsInProgress {
-		if (splitGames[msg.sender].state != GameState.InProgress && games[msg.sender].state == GameState.InProgressSplit) {
+	// Deals one more card to the split
+	function hit_split() public {
+		if (splitGames[msg.sender].state != GameState.InProgress) {
 			throw;
 		}
-		if (isMain) {
-			dealCard(true, games[msg.sender]);
-			checkGameResult(games[msg.sender], false);
-		} else {
-			Game storage splitGame = splitGames[msg.sender];
-			if (splitGame.state == GameState.InProgress) {
-				dealCard(true, splitGame);
-				checkGameResult(splitGame, false);
-			}
-		}
+		dealCard(true, splitGames[msg.sender]);
+		checkGameResult(splitGames[msg.sender], false);
 	}
 
 	function requestInsurance() 
