@@ -21,7 +21,7 @@ ScrMenu.prototype.init = function() {
 	this.bg.scale.y =  _H/this.bg.h;
 	this.addChild(this.bg);
 	
-	var btnDao = addButton2("btnOrange", _W/2, _H/2+100);
+	var btnDao = addButton2("btnDefault", _W/2, _H/2+100);
 	btnDao.interactive = true;
 	btnDao.buttonMode=true;
 	this.addChild(btnDao);
@@ -66,7 +66,7 @@ ScrMenu.prototype.clickCell = function(item_mc) {
 		}
 	}
 	
-	if(item_mc.name == "btnOrange"){
+	if(item_mc.name == "btnDefault"){
 		this.removeAllListener();
 		showGame();
 	}
