@@ -32,6 +32,9 @@ contract BlackJack is owned {
 
 		GameState state;
 		uint8 seed;
+
+		uint insurance;
+		bool insuranceAvailable;
 	}
 
 	mapping (address => Game) public games;
@@ -77,7 +80,6 @@ contract BlackJack is owned {
 		} else {
 			return false;
 		}
-
 	}
 
 	// starts a new game
@@ -105,6 +107,8 @@ contract BlackJack is owned {
 			houseBigScore: 0,
 			state: GameState.InProgress,
 			seed: 3,
+			insurance: 0,
+			insuranceAvailable: false
 		});
 
 		games[msg.sender] = game;
@@ -114,6 +118,10 @@ contract BlackJack is owned {
 		dealCard(true, games[msg.sender]);
 		dealCard(false, games[msg.sender]);
 		dealCard(true, games[msg.sender]);
+
+		if (Deck.isAce(games[msg.sender].houseCards[0])) {
+			games[msg.sender].insuranceAvailable = true;
+		}
 
 		checkGameResult(games[msg.sender], false);
 	}
@@ -150,8 +158,8 @@ contract BlackJack is owned {
 	}
 
 	// TODO: test it
-	function hit(bool isMain) public gameIsInProgress {
-		if (splitGames[msg.sender].state != GameState.InProgress) {
+	function hit1(bool isMain) public gameIsInProgress {
+		if (splitGames[msg.sender].state != GameState.InProgress && games[msg.sender].state == GameState.InProgressSplit) {
 			throw;
 		}
 		if (isMain) {
@@ -164,6 +172,24 @@ contract BlackJack is owned {
 				checkGameResult(splitGame, false);
 			}
 		}
+	}
+
+	function requestInsurance() 
+		payable
+		public
+		gameIsInProgress
+	{
+		Game storage game = games[msg.sender];
+
+		if (game.insuranceAvailable == false) {
+			throw;
+		}
+
+		if (msg.value == 0 && msg.value >= game.bet / 2) {
+			throw;
+		}
+
+		games[msg.sender].insurance = msg.value;
 	}
 
 	// Makes a "stand" move
@@ -223,6 +249,8 @@ contract BlackJack is owned {
 			houseBigScore: game.houseBigScore,
 			state: GameState.InProgress,
 			seed: 128,
+			insurance: 0,
+			insuranceAvailable: false
 		});
 
 		splitGames[msg.sender] = splitGame;
@@ -254,6 +282,9 @@ contract BlackJack is owned {
 			} else {
 				// HOUSE WON
 				game.state = GameState.HouseWon; // simply finish the game
+				if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
+					if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
+				}
 				return;
 			}
 		} else {
@@ -269,7 +300,6 @@ contract BlackJack is owned {
 				game.state = GameState.PlayerWon; // finish the game
 				return;
 			} else {
-
 				if (game.playerScore > BLACKJACK) {
 					// BUST, HOUSE WON
 					Log(1);
@@ -378,6 +408,14 @@ contract BlackJack is owned {
 
 	function getSplitCardsNumber() public constant returns(uint) {
 		return splitGames[msg.sender].playerCards.length;
+	}
+
+	function getInsurance() public constant returns(uint) {
+		return games[msg.sender].insurance;
+	}
+
+	function isInsuranceAvailable() public constant returns(bool) {
+		return games[msg.sender].insuranceAvailable;
 	}
 
 	function getGameState() public constant returns (GameState) {
