@@ -33,7 +33,7 @@ WndInfo.prototype.init = function(_prnt) {
 	this.btnOk.buttonMode=true;
 	this.btnOk.overSc=true;
 	
-	this.tf = addText("", 26, "#FFCC00", "#000000", "center", 350, 3)
+	this.tf = addText("", 26, "#FFCC00", "#000000", "center", 500, 3)
 	this.tf.y = -70;
 	this.addChild(this.tf);
 	this.tfBtn = addText("", 26, "#FFFFFF", "#000000", "center", 350)

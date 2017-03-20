@@ -16,8 +16,8 @@ var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var addressTestContract = "0xc204b69b5a6784e37367233ff89e0452e961b223"; //Work
-// var	addressTestContract = "0x8195b501510683e76509654290f1426ff4e29cfe"; // Split
+// var addressTestContract = "0xc204b69b5a6784e37367233ff89e0452e961b223"; //Work
+var	addressTestContract = "0x8195b501510683e76509654290f1426ff4e29cfe"; // Split
 
 var options_debug = false;
 var options_test = false;
@@ -87,11 +87,14 @@ function initGame() {
 	stage.addChild(scrContainer);
 	
 	var preload_image = document.createElement("img");
-	preload_image.src = "images/bg/bgGame.jpg";
+	preload_image.src = "images/bg/bgGame1.jpg";
 	preload_image.onload = function() {
 		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
 		bgLoading.texture.baseTexture.on('loaded', 
 				function(){
+					var scaleBack = _W/bgLoading.width;
+					bgLoading.scale.x = scaleBack;
+					bgLoading.scale.y = scaleBack;
 					bgLoading.x = _W/2 - bgLoading.width/2;
 					bgLoading.y = _H/2 - bgLoading.height/2;
 				});
@@ -113,7 +116,8 @@ function initGame() {
 function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
-	preloader.add("bgGame", "images/bg/bgGame.jpg");
+	preloader.add("bgGame1", "images/bg/bgGame1.jpg");
+	preloader.add("bgGame2", "images/bg/bgGame2.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("icoKey", "images/items/icoKey.png");
@@ -198,7 +202,6 @@ function loadManifest(){
 	preloader.add("btnTweetShare", "images/buttons/btnTweetShare.png");
 	preloader.add("btnFrame", "images/buttons/btnFrame.png");
 	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
-	preloader.add("btnTest", "images/buttons/btnTest.png");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);

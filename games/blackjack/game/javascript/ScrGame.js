@@ -27,7 +27,9 @@ var C_HIT = "2ae3594a";
 var C_HIT_S = "0x9aa60e1d";
 var C_SPLIT = "f7654176";
 var C_STAND = "c2897b10";
-	
+var C_GET_INSURANCE = "267a8da0";
+var C_INSURANCE_AVAILABLE = "0541ec91";
+
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -49,7 +51,7 @@ var accounts;
 var account;
 var gameIsGoingOn;
 var dealedCards = new Array();
-var suit = {0: 'Hearts', 1: 'Diamonds', 2: 'Spades', 3: 'Clubs'};
+var suit = {0: 'Hearts', 1: 'Diamonds', 2: 'Spades', 3: 'Cubs'};
 var cardType = {0: 'King', 1: 'Ace', 2: '2', 3: '3', 4: '4', 5: '5', 
 				6: '6', 7: '7', 8: '8', 9: '9', 10: '10',
                 11: 'Jacket', 12: 'Queen'};
@@ -61,6 +63,13 @@ chipVale[3] = 0.5;
 chipVale[4] = 1;
 chipVale[5] = 2;
 chipVale[6] = 5;
+var chipId = [];
+chipId[5] = 1;
+chipId[10] = 2;
+chipId[50] = 3;
+chipId[100] = 4;
+chipId[200] = 5;
+chipId[500] = 6;
 var lastPlayerCard = 0;
 var lastPlayerSplitCard = 0;
 var lastHouseCard = 0;
@@ -93,6 +102,7 @@ ScrGame.prototype.init = function() {
 	this._arMyCards = [];
 	this._arMySplitCards = [];
 	this._arHouseCards = [];
+	this._arHolder = [];
 	this.timeGetState = 0;
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
@@ -119,13 +129,15 @@ ScrGame.prototype.init = function() {
 	this.bStand = false;
 	this.bClear = false;
 	this.bSplit = false;
+	this.bStandSplit = false;
 	this.nameGame = ""; // main, split
 	
 	obj_game = {};
 	this.clearBet();
 	this.clearGame();
 	
-	this.bg = addObj("bgGame", _W/2, _H/2);
+	var rndBg = String(Math.ceil(Math.random()*2));
+	this.bg = addObj("bgGame"+rndBg, _W/2, _H/2);
 	scaleBack = _W/this.bg.w;
 	this.bg.scale.x = scaleBack;
 	this.bg.scale.y = scaleBack;
@@ -194,6 +206,7 @@ ScrGame.prototype.clearGame = function(){
 	this.countPlayerSplitCard = 0;
 	this.bStand = false;
 	this.bSplit = false;
+	this.bStandSplit = false;
 	var i = 0;
 	
 	for (i = 0; i < dealedCards.length; i++) {
@@ -574,6 +587,9 @@ ScrGame.prototype.showPlayerCard = function(card){
 		if(stateNow == S_IN_PROGRESS_SPLIT){
 			card.x = _W/2 - 200 + lastPlayerCard*30;
 			this.tfMyPoints.x = _W/2-270;
+			if(this.bSplit && !this.bStandSplit){
+				card.img.tint = 0x999999;
+			}
 		} else {
 			card.x = _W/2 - 80 + lastPlayerCard*30;
 			this.tfMyPoints.x = _W/2-150;
@@ -594,12 +610,26 @@ ScrGame.prototype.showPlayerSplitCard = function(card){
 		var offsetY = 50;
 		card.x = _W/2 + 200 + lastPlayerSplitCard*30;
 		card.y = _H/2 + 70 //- lastPlayerCard*20;
+		if(!this.bSplit && this.bStandSplit){
+			card.img.tint = 0x999999;
+		}
 		this.cards_mc.addChild(card);
 		lastPlayerSplitCard++;
 		dealedCards.push(card);
 		this._arMySplitCards.push(card);
 		this._arMySplitPoints.push(card.point);
 		this.showMySplitPoints();
+	}
+}
+
+ScrGame.prototype.darkCards = function(array, value) {
+	for (var i = 0; i < array.length; i++) {
+		var card = array[i];
+		if(value){
+			card.img.tint = 0x999999;
+		} else {
+			card.img.tint = 0xffffff;
+		}
 	}
 }
 
@@ -884,14 +914,12 @@ ScrGame.prototype.clickHit = function(){
 		this.addPlayerCard();
 	} else {
 		this.bWait = true;
-		infura.sendRequest("hit", openkey, _callback);
+		if(this.bSplit){
+			infura.sendRequest("hitS", openkey, _callback);
+		} else {
+			infura.sendRequest("hit", openkey, _callback);
+		}
 	}
-}
-
-ScrGame.prototype.clickHitS = function(){
-	this.showButtons(false);
-	this.bWait = true;
-	infura.sendRequest("hitS", openkey, _callback, {bool:1});
 }
 
 ScrGame.prototype.clickStand = function(){
@@ -902,7 +930,14 @@ ScrGame.prototype.clickStand = function(){
 		this.addHouseCard();
 	} else {
 		this.bWait = true;
-		infura.sendRequest("stand", openkey, _callback);
+		if(this.bSplit && !this.bStandSplit){
+			this.bStandSplit = true;
+			this.bSplit = false;
+			this.darkCards(this._arMyCards, false);
+			this.darkCards(this._arMySplitCards, true);
+		} else {
+			infura.sendRequest("stand", openkey, _callback);
+		}
 	}
 }
 
@@ -969,6 +1004,22 @@ ScrGame.prototype.fillChips = function(value){
 	}
 }
 
+ScrGame.prototype.sendChip = function(item_mc, betGame){
+	var prnt = obj_game["game"];
+	var chip = prnt.createObj(item_mc, item_mc.name, scaleChip);
+	if(chip == undefined){
+		prnt.fillChips(betGame);
+		return false;
+	}
+	var _x = prnt.seat.x;
+	var _y = prnt.seat.y;
+	createjs.Tween.get(chip).to({x:_x, y:_y},500)
+							.call(function(){
+								prnt.addHolderObj(chip);
+								prnt.fillChips(betGame);
+							});
+}
+
 ScrGame.prototype.loadBet = function(value){
 	if(!this.bBetLoad){
 		var c = 100;
@@ -982,7 +1033,8 @@ ScrGame.prototype.loadBet = function(value){
 	}
 }
 
-ScrGame.prototype.clickСhip = function(name){
+ScrGame.prototype.clickChip = function(item_mc){
+	var name = item_mc.name;
 	var c = 100;
 	var value = chipVale[Number(name.substr(5))]*c;
 	var oldBet = betGame;
@@ -1019,7 +1071,8 @@ ScrGame.prototype.clickСhip = function(name){
 		return false;
 	}
 	betGameOld = betGame;
-	this.fillChips(betGame);
+	this.sendChip(item_mc, betGame);
+	// this.fillChips(betGame);
 	betEth = betGame*1000000000000000000/c;
 }
 
@@ -1091,6 +1144,45 @@ ScrGame.prototype.shareFB = function() {
 	}
 }
 
+ScrGame.prototype.createObj = function(point, name, sc) {	
+	if(sc){}else{sc = 1};
+	var mc = undefined;
+	var newObj = true;
+	
+	for (var i = 0; i < this._arHolder.length; i++ ) {
+		mc = this._arHolder[i];
+		if (mc) {
+			if (mc.dead && mc.name == name) {
+				mc.visible = true;
+				newObj = false;
+				break;
+			}
+		}
+	}
+	
+	if (newObj) {
+		if(name == "item"){
+		} else {
+			mc = addObj(name, 0, 0, sc);
+		}
+		this.game_mc.addChild(mc);
+		this._arHolder.push(mc);
+	}
+	
+	mc.x = point.x;
+	mc.y = point.y;
+	mc.dead = false;
+	
+	return mc;
+}
+
+ScrGame.prototype.addHolderObj = function(obj){
+	obj.visible = false;
+	obj.dead = true;
+	obj.x = _W + 150;
+	obj.y = _H + 50;
+}
+
 // START
 ScrGame.prototype.startGameEth = function(){
 	if(openkey == undefined){
@@ -1117,8 +1209,9 @@ ScrGame.prototype.sendUrlRequest = function(url, name) {
 	}
 }
 
-ScrGame.prototype.responseTransaction = function(name, value, obj) {
+ScrGame.prototype.responseTransaction = function(name, value) {
 	console.log("get nonce action "+value);
+	var prnt = obj_game["game"];
 	var data = "";
 	var price = 0;
 	var nameRequest = "sendRaw";
@@ -1132,18 +1225,14 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 		data = "0x"+C_HIT;
 	} else if(name == "hitS"){
 		data = "0x"+C_HIT_S;
-		if(obj){
-			var val = obj.bool;
-			data = data + pad(numToHex(val), 64);
-			console.log(name, val, data);
-		}
 	} else if(name == "stand"){
 		data = "0x"+C_STAND;
 	} else if(name == "split"){
 		data = "0x"+C_SPLIT;
 		price = betEth;
 		gasLimit=0xf4240; //1000000
-		obj_game["game"].nameGame = "split";
+		prnt.nameGame = "split";
+		prnt.darkCards(prnt._arMyCards, true);
 	}
 	
 	var options = {};
@@ -1175,7 +1264,7 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 	}
 }
 
-ScrGame.prototype.response = function(command, value, obj) {
+ScrGame.prototype.response = function(command, value) {
 	var prnt = obj_game["game"];
 	if(value == undefined || options_debug){
 		if(command == "sendRaw" && !options_debug){
@@ -1243,7 +1332,9 @@ ScrGame.prototype.response = function(command, value, obj) {
 		prnt.countHouseCard = hexToNum(value);
 		prnt.addHouseCard();
 	} else if(command == "getPlayerBet"){
-		if(stateNow == S_IN_PROGRESS && stateOld > -1 && prnt.tfSelBet){
+		if((stateNow == S_IN_PROGRESS ||
+		stateNow == S_IN_PROGRESS_SPLIT)
+		&& stateOld > -1 && prnt.tfSelBet){
 			prnt.loadBet(value);
 		}
 	} else if(command == "getGameState"){
@@ -1263,7 +1354,7 @@ ScrGame.prototype.response = function(command, value, obj) {
 				prnt.getHouseCardsNumber();
 				prnt.getPlayerBet();
 				prnt.tfResult.setText("");	
-				if(stateNow == S_IN_PROGRESS_SPLIT){
+				if(stateNow == S_IN_PROGRESS_SPLIT && !prnt.bStandSplit){
 					prnt.bSplit = true;
 				}
 				if(stateOld == -1){
@@ -1317,6 +1408,7 @@ ScrGame.prototype.response = function(command, value, obj) {
 					prnt.startGame = false;
 					prnt.showChips(true);
 					infura.sendRequest("getBalance", openkey, _callback);
+					infura.sendRequest("getBalanceBank", addressContract, _callback);
 					stateOld = stateNow;
 				}
 				prnt.showButtons(false);
@@ -1334,7 +1426,7 @@ ScrGame.prototype.response = function(command, value, obj) {
 			command == "hitS" ||
 			command == "stand" ||
 			command == "split"){
-		prnt.responseTransaction(command, value, obj);
+		prnt.responseTransaction(command, value);
 	} else if(command == "sendRaw"){
 	}
 }
@@ -1346,7 +1438,9 @@ ScrGame.prototype.resetTimer  = function(){
 ScrGame.prototype.update = function(){
 	var diffTime = getTimer() - this.startTime;
 	
-	if(this.startGame){
+	if(this.startGame || 
+	stateNow == S_IN_PROGRESS || 
+	stateNow == S_IN_PROGRESS_SPLIT){
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
@@ -1443,7 +1537,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	} else if(item_mc.name == "btnSplit"){
 		this.clickSplit();
 	} else if(item_mc.name.search("chip") != -1){
-		this.clickСhip(item_mc.name);
+		this.clickChip(item_mc);
 	} else if(item_mc.name == "btnShare"){
 		this.shareFB();
 	} else if(item_mc.name == "btnTweet"){
