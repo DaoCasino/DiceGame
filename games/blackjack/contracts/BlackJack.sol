@@ -383,7 +383,7 @@ contract BlackJack is owned {
 		if (id < 0 || id > splitGames[msg.sender].playerCards.length) {
 			throw;
 		}
-		return games[msg.sender].houseCards[id];
+		return splitGames[msg.sender].playerCards[id];
 	}
 
 	function getPlayerCardsNumber() public constant returns(uint) {
