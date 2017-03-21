@@ -20,7 +20,7 @@ Infura.prototype.sendRequest = function(name, params, callback){
 		switch(name){
 			case "deal":
 			case "hit":
-			case "hitB":
+			case "hitS":
 			case "stand":
 			case "split":
 				method = "eth_getTransactionCount";

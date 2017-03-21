@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.15"
+var version = "v. 1.0.16"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -14,10 +14,12 @@ var infura, soundManager;
 var fontMain = "Arial";
 var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
+var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // var addressTestContract = "0xc204b69b5a6784e37367233ff89e0452e961b223"; //Work
-var	addressTestContract = "0x8195b501510683e76509654290f1426ff4e29cfe"; // Split
+// var	addressTestContract = "0x8195b501510683e76509654290f1426ff4e29cfe"; // Split
+var	addressTestContract = "0x57ed71f96c17c853188d2c9f2f956ffc1438c4a2"; // My Split
 
 var options_debug = false;
 var options_test = false;
@@ -87,7 +89,7 @@ function initGame() {
 	stage.addChild(scrContainer);
 	
 	var preload_image = document.createElement("img");
-	preload_image.src = "images/bg/bgGame1.jpg";
+	preload_image.src = "images/bg/bgGame"+rndBg+".jpg";
 	preload_image.onload = function() {
 		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
 		bgLoading.texture.baseTexture.on('loaded', 
