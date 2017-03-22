@@ -183,6 +183,10 @@ ScrGame.prototype.init = function() {
 	if(openkey){} else {
 		this.showError(ERROR_KEY, showHome);
 	}
+	
+	// for(var i=1; i<53; i++){
+		// this.getCard(i);
+	// }
 
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
