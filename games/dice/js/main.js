@@ -166,10 +166,10 @@ setInterval(function () {
         balance = $('#balance').html();
         balance = +balance.substr(0, balance.length - 4);
         balance = +balance.toFixed(8);
-        if (balance < 0.1 && !game) {
+        if (balance < 0.01 && !game) {
             disabled(true);
             $("#label").text(" NO MONEY ");
-        } else if (balance > 0.1 && !game) {
+        } else if (balance > 0.01 && !game) {
             disabled(false);
             $("#label").text("Click Roll Dice to place your bet:");
         }
@@ -323,4 +323,5 @@ function gameend() {
     count = new_count;
     game = false;
     $('.active').click();
+    $('#amount-one').change();
 };
