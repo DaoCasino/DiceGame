@@ -2,7 +2,9 @@
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
 
 <head>
 	<meta charset="utf-8" />
@@ -29,6 +31,7 @@
 	<link rel="stylesheet" href="css/jquery-ui.css" />
 
 </head>
+
 <body>
 	<!-- WRAPPER -->
 	<div class="wrapper_main">
@@ -113,9 +116,9 @@
 								<a style='visibility:hidden' class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
 									Sign in
 								</a>
-								
+
 								<div id='isreg' style='display:none'>
-						
+
 									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
 										? ETH
 									</a>-
@@ -124,7 +127,7 @@
 									</a>
 								</div>
 							</div>
-							
+
 						</div>
 					</div>
 				</div>
@@ -193,7 +196,7 @@
 									<div class="clearfix">
 										<div class="wrapper-slider__right-item">
 											<label for="less-than-wins">Less than wins</label>
-											<input type="text" placeholder="0 - 9900" value="5000" id="less-than-wins">
+											<input type="text" placeholder="1 - 65600" value="32768" id="less-than-wins">
 										</div>
 										<div class="wrapper-slider__right-item">
 											<label for="amount-two">Win Chance</label>
@@ -212,38 +215,46 @@
 							</div>
 						</div>
 						<div class="row">
-							
 							<div class="col-md-4 col-md-offset-2">
 								<div class="player-stats">
-								<h3 class="status-numbers">TRANSACTION</h3>
-								<h3 class="status-numbers" id="Tx">..:.::.</h3>
+									<h3 class="status-numbers">TRANSACTION</h3>
+									<h3 class="status-numbers" id="Tx">..:.::.</h3>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="player-stats">
-								<h3 class="status-numbers"  id="contractBalance" >CONTRACT </h3>
-								<h3 class="status-numbers" id="contract">..:.::.</h3>
-								
+									<h3 class="status-numbers" id="contractBalance">CONTRACT </h3>
+									<h3 class="status-numbers" id="contract">..:.::.</h3>
+
 								</div>
 							</div>
+
+
 						</div>
-					</div>
-					
-					<div class="container">
-						<div class="wrapper-dice_table">
-							<table class="dice-table" id="table">
-								<thead>
-									<tr>
-										<th>TRANSACTION / PLAYER</th>
-										<th>WIN CHANCE</th>
-										<th>OUTCOME</th>
-										<th>BET AMOUNT</th>
-										<th>PAYOUT</th>
-										<th>PROFIT</th>
-									</tr>
-								</thead>
-								<tbody>
-									<!--<tr>
+
+						<div class="container">
+
+							<div class="col-md-12 wrapper-slider" style="margin-bottom:10px">
+								<button class="disclaimer-btn registr-now" id="all">ALL BETS</button>
+								<button class="disclaimer-btn registr-now" id="your">YOUR BETS</button>
+							</div>
+
+
+							<div class="wrapper-dice_table">
+								<table class="dice-table" id="table">
+									
+									<thead>
+										<tr>
+											<th>TRANSACTION / PLAYER</th>
+											<th>WIN CHANCE</th>
+											<th>OUTCOME</th>
+											<th class="del">BET AMOUNT</th>
+											<th class="del">PAYOUT</th>
+											<th class="del">PROFIT</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!--<tr>
 										<td>
 											<span class="tbl-span">less than a minute ago</span>
 											<a href="#">Alpha05358</a>
@@ -271,40 +282,37 @@
 											</a>
 										</td>
 									</tr>-->
-								</tbody>
-							</table>
-						</div>
-						
-					</div>
-
-<hr>
-					<div class="container">
-						<div class="col-md-12">
-							<div class="row">
-									<div class="col-md-4">
-										<div class="player-stats">
-											<p class="label-numbers">Total games in 30 days</p>
-											<h2 class="status-numbers" id="30days">.:.:.::.</h2>
+									</tbody>
+								</table>
+							</div>
+							<hr>
+							<div class="container">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4">
+											<div class="player-stats">
+												<p class="label-numbers">Total games in 30 days</p>
+												<h2 class="status-numbers" id="30days">.:.:.::.</h2>
+											</div>
 										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="player-stats">
-											<p class="label-numbers">Total games in 24 hours</p>
-											<h2 class="status-numbers" id="24hours">..::.</h2>
+										<div class="col-md-4">
+											<div class="player-stats">
+												<p class="label-numbers">Total games in 24 hours</p>
+												<h2 class="status-numbers" id="24hours">..::.</h2>
+											</div>
 										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="player-stats">
-											<p class="label-numbers">Paid/Send</p>
-											<h2 class="status-numbers" id="total-send">..::. ETH</h2>
+										<div class="col-md-4">
+											<div class="player-stats">
+												<p class="label-numbers">Paid/Send</p>
+												<h2 class="status-numbers" id="total-send">..::. ETH</h2>
+											</div>
 										</div>
 									</div>
 								</div>
+							</div>
+
 						</div>
 					</div>
-
-				</div>
-			</div>
 		</main>
 		<!-- MAIN AND -->
 		<!-- FOOTER -->
@@ -323,7 +331,7 @@
 						<li><a href="../HackDAO">HackDAO</a></li>
 						<!--<li><a href="https://twitter.com/daocasino">Twitter</a></li>
 						<li><a href="https://github.com/DaoCasino">GitHub</a></li>-->
-						
+
 
 					</ul>
 				</nav>
@@ -331,66 +339,65 @@
 		</footer>
 		<!-- FOOTER AND -->
 
-	</div>
+		</div>
 
 
-	<div class="hidden">
+		<div class="hidden">
 
-		<div id="small-dialog" class="zoom-anim-dialog">
+			<div id="small-dialog" class="zoom-anim-dialog">
 
-			<div class="window-seed">
-				<h1>Save this seed</h1>
-				<textarea class="popup-textarea" id='seed'></textarea>
-			</div>
+				<div class="window-seed">
+					<h1>Save this seed</h1>
+					<textarea class="popup-textarea" id='seed'></textarea>
+				</div>
 
-			<p id="popup-open-text-after">
-				Please write down your seed phrase. It is impossible to access your fund without your seed.
-			</p>
+				<p id="popup-open-text-after">
+					Please write down your seed phrase. It is impossible to access your fund without your seed.
+				</p>
 
-			<p id="popup-open-text-before">
-				Let’s verify your seed phrase.
-			</p>
+				<p id="popup-open-text-before">
+					Let’s verify your seed phrase.
+				</p>
 
-			<div class="window-open-registr dialog-window-two">
-				<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
-				<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("whait..")'>CONTINUE</button>
-				<span class="dialog-window-cancel">назад</span>
-			</div>
+				<div class="window-open-registr dialog-window-two">
+					<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
+					<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("whait..")'>CONTINUE</button>
+					<span class="dialog-window-cancel">назад</span>
+				</div>
 
 
 
-			<div class="popup-button clearfix">
-				<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
-				<button class="disclaimer-btn registr-now open-dialog-window fl-right">Restore Wallet from Backup</button>
+				<div class="popup-button clearfix">
+					<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
+					<button class="disclaimer-btn registr-now open-dialog-window fl-right">Restore Wallet from Backup</button>
+				</div>
+
 			</div>
 
 		</div>
 
-	</div>
-
-	<!--[if lt IE 9]>
+		<!--[if lt IE 9]>
 	<script src="libs/html5shiv/es5-shim.min.js"></script>
 	<script src="libs/html5shiv/html5shiv.min.js"></script>
 	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
 	<script src="libs/respond/respond.min.js"></script>
 	<![endif]-->
-	<script src="../../js/clipboard.min.js"></script>
-    <script src="js/data.js" async></script>
-	<script src="libs/jquery/jquery-1.11.2.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="libs/modernizr/modernizr.js"></script>
-	<script src="libs/selectivizr/selectivizr-min.js"></script>
-	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
-	<script src="js/eth_api.js"></script>
-	<script src="js/main.js"></script>
-	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
-	
-	<script src="js/gamecommon.js"async></script>
-<script src="../../js/common.js"></script>
-	<script src="js/scrGame.js"></script>
-	<script src="js/testnet.js"></script>
-	
-	
+		<script src="../../js/clipboard.min.js"></script>
+		<script src="js/data.js" async></script>
+		<script src="libs/jquery/jquery-1.11.2.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="libs/modernizr/modernizr.js"></script>
+		<script src="libs/selectivizr/selectivizr-min.js"></script>
+		<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+		<script src="js/eth_api.js"></script>
+		<script src="js/main.js"></script>
+		<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
+
+		<script src="js/gamecommon.js" async></script>
+		<script src="../../js/common.js"></script>
+		<script src="js/scrGame.js"></script>
+		<script src="js/testnet.js"></script>
 </body>
+
 </html>
