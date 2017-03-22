@@ -163,32 +163,32 @@
 											Welcome to trust casino
 										</span> -->
 									</div>
-									<button class="style-botton" onclick='if(localStorage.getItem("isreg")==1){window.location="/games/Hack-DAO-game/game_hack_dao/"}else{$("#regbut").click();}'>START GAME NOW</button> 
+									<button class="style-botton" onclick='if(localStorage.getItem("isreg")==1){window.location="/games/dice"}else{$("#regbut").click();}'>START DICE GAME</button> 
 								</div>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="jackpot">
-								<h3>jackpot</h3>
+								<h3>Statistic</h3>
 								<div class="jackpot-txt">
 									<span class="jackpot-txt__name">
-										total jackpots
+										Total bankroll
 									</span>
 									<span class="jackpot-txt__namber">
-										<span>0</span> BTC
+										<span>0</span> ETH
 									</span>
 								</div>
 								<div class="jackpot-txt">
 									<span class="jackpot-txt__name">
-										TOTAL WAGERED
+										24h games
 									</span>
 									<span class="jackpot-txt__namber">
-										<span>0</span> BTC
+										<span>0</span>
 									</span>
 								</div>
 								<div class="jackpot-txt">
 									<span class="jackpot-txt__name">
-										NUMBER OF BETS
+										Total games
 									</span>
 									<span class="jackpot-txt__namber">
 										<span>0</span>
@@ -218,17 +218,12 @@
 					</nav>
 					<div class="row category-block">
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="#popup-games" class="item-games popup-with-move-anim">
+							<a href="if(localStorage.getItem("isreg")==1){window.location="/games/Hack-DAO-game/game_hack_dao/"}else{$("#regbut").click();}" class="item-games popup-with-move-anim">
 								<img src="img/img-game1.jpg" alt="">
-								<span>ROULETTE</span>
+								<span>Hack dao (special for EDCON)</span>
 							</a>
 						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a onclick='if(localStorage.getItem("isreg")==1){window.location="/games/dice"}else{$("#regbut").click();}' href='#' class="item-games">
-								<img src="img/img-game2.jpg" alt="">
-								<span>DICE</span>
-							</a>
-						</div>
+						
 						<div class="col-md-3 col-sm-6 col-xs-6">
 							<a onclick='if(localStorage.getItem("isreg")==1){window.location="/games/blackjack/game"}else{$("#regbut").click();}' href='#' class="item-games">
 								<img src="img/img-game3.jpg" alt="">
@@ -263,6 +258,13 @@
 							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game8.jpg" alt="">
 								<span>lotto</span>
+							</a>
+						</div>
+						
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a onclick='#popup-games' href='#' class="item-games">
+								<img src="img/img-game2.jpg" alt="">
+								<span>DICE</span>
 							</a>
 						</div>
 					</div>
