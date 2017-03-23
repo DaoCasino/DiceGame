@@ -22,7 +22,7 @@ WndInfo.prototype.init = function(_prnt) {
 	var btnClose = addButton2("btnClose", 230, -150, 0.5);
 	this.addChild(btnClose);
 	this._arButtons.push(btnClose);
-	this.btnOk = addButton2("btnDefault", 0, 150);
+	this.btnOk = addButton2("btnDefault", 0, 150, 0.75);
 	this.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
 	
@@ -37,7 +37,7 @@ WndInfo.prototype.init = function(_prnt) {
 	this.tf.y = -70;
 	this.addChild(this.tf);
 	this.tfBtn = addText("", 26, "#FFFFFF", "#000000", "center", 350)
-	this.tfBtn.y = this.btnOk.y - 17;
+	this.tfBtn.y = this.btnOk.y - 12;
 	this.addChild(this.tfBtn);
 	
 	this.interactive = true;

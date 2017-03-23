@@ -30,6 +30,7 @@ var C_SPLIT = "f7654176";
 var C_STAND = "c2897b10";
 var C_GET_INSURANCE = "267a8da0";
 var C_INSURANCE_AVAILABLE = "0541ec91";
+var C_INSURANCE = "7ce8154a";
 
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
@@ -38,6 +39,7 @@ var urlBalance = "";
 var betEth = 0; //ставка эфира
 var betGame = 0;
 var betGameOld = 0;
+var valInsurance = 0;
 var minBet = 50000000000000000;
 var obj_game = {};
 var _callback;
@@ -132,7 +134,7 @@ ScrGame.prototype.init = function() {
 	this.bStandSplit = false;
 	this.bEndTurnSplit = false;
 	this.bClickStart = false;
-	this.nameGame = ""; // main, split
+	this.bInsurance = -1;
 	
 	obj_game = {};
 	this.clearBet();
@@ -217,6 +219,7 @@ ScrGame.prototype.clearGame = function(){
 	this.bStandSplit = false;
 	this.bEndTurnSplit = false;
 	this.bWaitSplit = false;
+	this.bInsurance = -1;
 	var i = 0;
 	
 	for (i = 0; i < dealedCards.length; i++) {
@@ -235,6 +238,7 @@ ScrGame.prototype.clearBet = function(){
 	betEth = 0;
 	betGame = 0;
 	betGameOld = 0;
+	valInsurance = 0;
 	this.clearChips();
 	this.clearSplitChips();
 	if(this.btnClear){
@@ -875,6 +879,22 @@ ScrGame.prototype.getSplitCardsNumber = function() {
 	infura.sendRequest("getSplitCardsNumber", params, _callback);
 }
 
+ScrGame.prototype.getInsurance = function() {
+	var data = "0x"+C_GET_INSURANCE;
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	infura.sendRequest("getInsurance", params, _callback);
+}
+
+ScrGame.prototype.isInsuranceAvailable = function() {
+	var data = "0x"+C_INSURANCE_AVAILABLE;
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	infura.sendRequest("isInsuranceAvailable", params, _callback);
+}
+
 ScrGame.prototype.getPlayerBet = function() {
 	var data = "0x"+C_GET_BET;
 	var params = {"from":openkey,
@@ -1078,6 +1098,14 @@ ScrGame.prototype.clickSplit = function(){
 		this.tfSplitBet.setText(str);
 		this.tfSelBet.x = _W/2 - 200;
 	}
+}
+
+ScrGame.prototype.clickInsurance = function(){
+	var prnt = obj_game["game"];
+	prnt.bInsurance = 1;
+	infura.sendRequest("insurance", openkey, _callback);
+	prnt.bWait = true;
+	prnt.showButtons(false);
 }
 
 ScrGame.prototype.fillChips = function(value, type){
@@ -1345,6 +1373,12 @@ ScrGame.prototype.showTestEther = function() {
 	this.createWndInfo(str);
 }
 
+ScrGame.prototype.showInsurance = function() {
+	var str = "Do you want Insurance?";
+	this.createWndInfo(str, this.clickInsurance);
+	this.bInsurance = 0;
+}
+
 ScrGame.prototype.shareTwitter = function() {
 	// @daocasino @ethereumproject @edcon #blockchain #ethereum
 	if(twttr){
@@ -1457,16 +1491,17 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		data = "0x"+C_HIT;
 	} else if(name == "hitS"){
 		data = "0x"+C_HIT_S;
-		// gasLimit=0xf4240; //1000000
 	} else if(name == "stand"){
 		data = "0x"+C_STAND;
 	} else if(name == "split"){
 		data = "0x"+C_SPLIT;
 		price = betEth;
 		gasLimit=0xf4240; //1000000
-		prnt.nameGame = "split";
 		prnt.offsetCards("player", _W/2 - 200);
 		prnt.darkCards(prnt._arMyCards, true);
+	} else if(name == "insurance"){
+		data = "0x"+C_INSURANCE;
+		price = betEth/2;
 	}
 	
 	var options = {};
@@ -1580,6 +1615,13 @@ ScrGame.prototype.response = function(command, value) {
 		&& stateOld > -1 && prnt.tfSelBet){
 			prnt.loadBet(value);
 		}
+	} else if(command == "isInsuranceAvailable"){
+		if((stateNow == S_IN_PROGRESS ||
+		stateNow == S_IN_PROGRESS_SPLIT) && 
+		prnt.bInsurance == -1 && prnt._arMyCards.length == 2 &&
+		hexToNum(value) && valInsurance == 0){
+			prnt.showInsurance();
+		}
 	} else if(command == "getGameState"){
 		console.log("state:", stateNow, stateOld);
 		if(value != "0x"){
@@ -1613,6 +1655,8 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.getPlayerCardsNumber();
 				prnt.getHouseCardsNumber();
 				prnt.getPlayerBet();
+				prnt.getInsurance();
+				prnt.isInsuranceAvailable();
 				prnt.tfResult.setText("");	
 			} else {
 				prnt.showMyPoints();
@@ -1679,8 +1723,17 @@ ScrGame.prototype.response = function(command, value) {
 			command == "hit" ||
 			command == "hitS" ||
 			command == "stand" ||
-			command == "split"){
+			command == "split" ||
+			command == "insurance"){
 		prnt.responseTransaction(command, value);
+	} else if(command == "getInsurance"){
+		if(valInsurance == 0){
+			valInsurance = hexToNum(value);
+			if(valInsurance > 0){
+				prnt.bWait = false;
+				prnt.showButtons(true);
+			}
+		}
 	} else if(command == "sendRaw"){
 	}
 }
