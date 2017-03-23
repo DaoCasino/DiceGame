@@ -309,7 +309,9 @@ contract BlackJack is owned {
 			} else {
 				if (game.playerScore > BLACKJACK) {
 					// BUST, HOUSE WON
-					Log(1);
+					if (game.houseCards.length == 1) {
+						dealCard(false, game);
+					}
 					game.state = GameState.HouseWon; // finish the game
 					return;
 				}
@@ -381,7 +383,7 @@ contract BlackJack is owned {
 	}
 
 	function isSplitAvailable(Game game) private constant returns (bool) {
-		return game.state == GameState.InProgress && game.playerCards.length == 2 && Deck.equalDenomination(game.playerCards[0], game.playerCards[1]);
+		return game.state == GameState.InProgress && game.playerCards.length == 2 && Deck.valueOf(game.playerCards[0], false) == Deck.valueOf(game.playerCards[1], false);
 	}
 
 	function getPlayerCard(uint8 id) public constant returns(uint8) {

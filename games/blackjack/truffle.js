@@ -30,7 +30,7 @@ module.exports = {
       host: "localhost",
       port: 8545,
       network_id: 3,
-      gas: 4000000,
+      gas: 4200000,
       gasPrice: 100000000000,
     }
   }
