@@ -546,11 +546,13 @@ p{
 }
 
 .icon-w {
-	width: 20px;
-	height: 20px;
-	display: inline-block;
-	background: #d08c49;
-	border-radius: 50%;
+	width: 50px;
+    height: 20px;
+    display: inline-block;
+    background: #d08c49;
+    border-radius: 11%;
+    line-height: 22px;
+    text-align: center;
 }
 
 .tbl-span {

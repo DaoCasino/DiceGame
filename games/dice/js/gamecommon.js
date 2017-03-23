@@ -16,7 +16,8 @@ $(document).ready(function () {
 
     $("#roll-dice").click(function () {
         animate = setInterval(function () {
-            $("#randomnum").fadeToggle("slow")
+            $("#randomnum").fadeTo( "slow" , 0.1)
+            $("#randomnum").fadeTo( "slow" , 0,9)
         }, 1000);
         startGame();
     });
