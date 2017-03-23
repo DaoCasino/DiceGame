@@ -188,7 +188,7 @@ contract BlackJack is owned {
 			throw;
 		}
 
-		if (msg.value == 0 && msg.value >= game.bet / 2) {
+		if (msg.value == 0 || msg.value > game.bet / 2) {
 			throw;
 		}
 
@@ -227,6 +227,7 @@ contract BlackJack is owned {
 	function BlackJack() {
 		// do nothing
 	}
+
 
 	function split()
 		public
