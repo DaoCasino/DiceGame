@@ -18,8 +18,9 @@ var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // var addressTestContract = "0xc204b69b5a6784e37367233ff89e0452e961b223"; //Work
-// var	addressTestContract = "0x8195b501510683e76509654290f1426ff4e29cfe"; // Split
+// var addressTestContract = "0x5f50157eb669bb3db9e309dceab694a6c34d79c7"; //My Work
 var	addressTestContract = "0x57ed71f96c17c853188d2c9f2f956ffc1438c4a2"; // My Split
+// var	addressTestContract = "0x7ae0ad665dbd077e80f582ac9d298f8c0eaa6fa3 "; // My Split 2
 
 var options_debug = false;
 var options_test = false;
