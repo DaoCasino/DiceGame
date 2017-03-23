@@ -14,17 +14,21 @@ function toFixed(value, precision) {
     precision = Math.pow(10, precision);
     return Math.ceil(value * precision) / precision;
 };
+
 function numToHex(num) {
     return num.toString(16);
 };
+
 function hexToNum(str) {
     return parseInt(str, 16);
 };
+
 function pad(num, size) {
     var s = num + "";
     while (s.length < size) s = "0" + s;
     return s;
 };
+
 function isLocalStorageAvailable() {
     try {
         return 'localStorage' in window && window['localStorage'] !== null;
@@ -33,6 +37,7 @@ function isLocalStorageAvailable() {
         return false;
     }
 };
+
 function loadData() {
     if (isLocalStorageAvailable()) {
         testnetAddress = localStorage.getItem(' testnetAddress')
@@ -42,11 +47,12 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.42a Infura") // VERSION !
+    console.log("version 0.42b Infura") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
 };
+
 function call(callname) {
     var result;
     var callData;
@@ -91,6 +97,7 @@ function call(callname) {
     });
     return result;
 };
+
 function getContract(game, network) {
     var result;
     var gameid;
@@ -135,15 +142,20 @@ function getContract(game, network) {
     });
     return result;
 };
+
 function setContract() {
     if (mainnet == "on") {
         urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         addressContract = getContract("Dice", "mainnet");
+        disabled(true);
+        $('#randomnum').text("Coming soon")
     } else if (mainnet == "off") {
         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         addressContract = getContract("Dice", "testnet");
+        $('#randomnum').text("");
     }
 };
+
 function getContractBalance() {
     $.ajax({
         type: "POST",
@@ -166,9 +178,10 @@ setInterval(function () {
         balance = $('#balance').html();
         balance = +balance.substr(0, balance.length - 4);
         balance = +balance.toFixed(8);
-        if (balance < 0.01 && !game) {
+        if (balance < 0.02 && !game) {
             disabled(true);
             $("#label").text(" NO MONEY ");
+            $('#randomnum').text("Please, top up balance")
         } else if (balance > 0.01 && !game) {
             disabled(false);
             $("#label").text("Click Roll Dice to place your bet:");
@@ -182,6 +195,7 @@ setInterval(function () {
         disabled(true);
     }
 }, 100);
+
 function initGame() {
     loadData();
     setContract();
@@ -200,6 +214,7 @@ function initGame() {
     $('#all').click();
 
 };
+
 function disabled(status) {
     $("#slider-dice-one").slider({
         disabled: status
@@ -215,10 +230,12 @@ function disabled(status) {
     }) : $("#roll-dice").removeAttr('style');
 
 };
+
 function Refresh() {
     $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
     $("#payout").val("x" + ((65536 - 1310) / chance).toFixed(5));
 };
+
 function startGame() {
     game = true;
     if (openkey) {
@@ -269,7 +286,8 @@ function startGame() {
                                 console.log("Транзакция отправлена в сеть:", d.result);
                                 lastTx = d.result;
                                 if (lastTx == undefined) {
-                                    $("#random").text("Sorry, transaction failed");
+                                    $("#randomnum").text("Sorry, transaction failed");
+                                    gameend();
                                 } else {
                                     $("#Tx").html('<a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
                                     $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5"> ...pending... </td></tr>');
@@ -312,16 +330,16 @@ function startGame() {
         })
     }
 };
+
 function gameend() {
     disabled(false);
     GetLogs();
-  //  call("getShowRnd") > chance ? $("#randomnum").html(call("getShowRnd") + " > " + chance) : $("#randomnum").html(call("getShowRnd") + " < " + chance);
     $("#randomnum").fadeIn("slow")
-   // $("#randomnum").html(call("getShowRnd"));
     clearInterval(Timer);
     clearInterval(animate);
     count = new_count;
     game = false;
     $('.active').click();
+    //$('#amount-one').val(balance/2);
     $('#amount-one').change();
 };

@@ -90,7 +90,7 @@ function getMyLogs() {
                     color = "gray";
                 }
                 if (player == openkey && ($('tbody tr').length != 10)) {
-                $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://testnet.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
+                $(".dice-table#table").append('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://testnet.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
                     "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance.toFixed() + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + result + '</td><td  aria-label="BET">' + bet + ' ETH</td><td  aria-label="PAYOUT">x' + (payout / bet / 10).toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' ETH</td></tr>');
                 }
             }

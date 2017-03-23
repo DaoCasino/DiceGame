@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $("input#checked-on").prop('disabled', true);
     var clipboard = new Clipboard('#openkey');
 
     $('#all').click(function () {
@@ -99,6 +100,7 @@ $(document).ready(function () {
         });
         $("#slider-dice-one").slider({
             range: "min",
+            step: 0.5,
             value: 10,
             min: 10,
             max: 2000,
