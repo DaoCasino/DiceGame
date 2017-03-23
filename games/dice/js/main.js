@@ -334,7 +334,6 @@ function startGame() {
 function gameend() {
     disabled(false);
     GetLogs();
-    $("#randomnum").fadeIn("slow")
     clearInterval(Timer);
     clearInterval(animate);
     count = new_count;
@@ -342,4 +341,5 @@ function gameend() {
     $('.active').click();
     //$('#amount-one').val(balance/2);
     $('#amount-one').change();
+    $("#randomnum").fadeIn("slow", 1)
 };
