@@ -159,6 +159,7 @@ contract BlackJack is owned {
 			throw;
 		}
 		dealCard(true, games[msg.sender]);
+		games[msg.sender].insuranceAvailable = false;
 		checkGameResult(games[msg.sender], false);
 	}
 
