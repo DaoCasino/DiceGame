@@ -284,7 +284,32 @@ contract BlackJack is owned {
 		dealCard(true, games[msg.sender]);
 		dealCard(true, splitGames[msg.sender]);
 	}
+    
+    function double()
+		public
+		payable
+		gameIsInProgress
+	{
+		Game storage game = games[msg.sender];
+		if(game.state == GameState.InProgressSplit){
+		    game = splitGames[msg.sender];
+		}
+		
+		if (msg.value != game.bet) {
+			// Should double the bet
+			throw;
+		}
 
+		if (!isDoubleAvailable()) {
+			throw;
+		}
+		
+	    game.bet = game.bet*2;
+	    
+	    dealCard(true, game);
+	    stand();
+	}
+	
 	// @param finishGame - whether to finish the game or not (in case of Blackjack the game finishes anyway)
 	function checkGameResult(Game storage game, bool finishGame) private {
 		if (!gameInProgress(game, false)) {
@@ -397,6 +422,19 @@ contract BlackJack is owned {
 
 	function isSplitAvailable(Game game) private constant returns (bool) {
 		return game.state == GameState.InProgress && game.playerCards.length == 2 && Deck.valueOf(game.playerCards[0], false) == Deck.valueOf(game.playerCards[1], false);
+	}
+	
+	function isDoubleAvailable() public constant returns (bool) {
+	    Game memory game = games[msg.sender];
+		if(game.state == GameState.InProgressSplit){
+		    game = splitGames[msg.sender];
+		}
+	    
+	    if((game.state == GameState.InProgress || game.state == GameState.InProgressSplit) && 
+	    game.playerScore > 8 && game.playerScore < 12 && game.playerCards.length == 2){
+	        return true;
+	    }
+		return false;
 	}
 
 	function getPlayerCard(uint8 id) public constant returns(uint8) {

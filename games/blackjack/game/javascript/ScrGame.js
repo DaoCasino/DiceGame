@@ -35,6 +35,8 @@ var C_STAND = "c2897b10";
 var C_GET_INSURANCE = "267a8da0";
 var C_INSURANCE_AVAILABLE = "0541ec91";
 var C_INSURANCE = "7ce8154a";
+var C_DOUBLE_AVAILABLE = "0062a7fa";
+var C_DOUBLE = "8fdb7189";
 
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
@@ -223,6 +225,7 @@ ScrGame.prototype.clearGame = function(){
 	this.bStandSplit = false;
 	this.bEndTurnSplit = false;
 	this.bWaitSplit = false;
+	this.bClickStart = false;
 	this.bInsurance = -1;
 	var i = 0;
 	
@@ -648,6 +651,11 @@ ScrGame.prototype.showButtons = function(value) {
 	} else {
 		this.btnSplit.alpha = a;
 	}
+	if(value && this.isDoubleAvailable()){
+		this.btnDouble.alpha = 1;
+	} else {
+		this.btnDouble.alpha = a;
+	}
 }
 
 ScrGame.prototype.showPlayerCard = function(card){
@@ -914,6 +922,20 @@ ScrGame.prototype.isInsuranceAvailable = function() {
 				"to":addressContract,
 				"data":data};
 	infura.sendRequest("isInsuranceAvailable", params, _callback);
+}
+
+ScrGame.prototype.isDoubleAvailable = function() {
+	if(stateNow == S_IN_PROGRESS || 
+	stateNow == S_IN_PROGRESS_SPLIT){
+		if((stateNow == S_IN_PROGRESS && 
+		this.myPoints > 8 && this.myPoints < 12 && this._arMyCards.length == 2) ||
+		(stateNow == S_IN_PROGRESS_SPLIT && this._arMySplitCards.length == 2 &&
+		split.playerScore > 8 && split.playerScore < 12)){
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 ScrGame.prototype.getPlayerBet = function() {
@@ -1445,9 +1467,10 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	if(sc){}else{sc = 1};
 	var mc = undefined;
 	var newObj = true;
+	var prnt = obj_game["game"];
 	
-	for (var i = 0; i < this._arHolder.length; i++ ) {
-		mc = this._arHolder[i];
+	for (var i = 0; i < prnt._arHolder.length; i++ ) {
+		mc = prnt._arHolder[i];
 		if (mc) {
 			if (mc.dead && mc.name == name) {
 				mc.visible = true;
@@ -1459,7 +1482,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	
 	if (newObj) {
 		if(name == "tfWin"){
-			mc = addText(R_WIN, 50, "#327B35", "#193F1B", "left", 300, 4);
+			mc = addText(R_WIN, 50, "#5FEE00", "#193F1B", "left", 300, 4);
 			mc.name = "tfWin";
 			mc.w = mc.width;
 		} else if(name == "tfBust"){
@@ -1470,15 +1493,15 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 			mc = addText(R_LOSE, 50, "#D72319", "#64100B", "left", 300, 4);
 			mc.name = "tfLose";
 			mc.w = mc.width;
-		} else if(name == "tfLose"){
+		} else if(name == "tfPush"){
 			mc = addText(R_PUSH, 50, "#999999", "#333333", "left", 300, 4);
 			mc.name = "tfPush";
 			mc.w = mc.width;
 		} else {
 			mc = addObj(name, 0, 0, sc);
 		}
-		this.gfx_mc.addChild(mc);
-		this._arHolder.push(mc);
+		prnt.gfx_mc.addChild(mc);
+		prnt._arHolder.push(mc);
 	}
 	
 	mc.x = point.x;
@@ -1722,19 +1745,23 @@ ScrGame.prototype.response = function(command, value) {
 						_x = _W/2 - 200-75;
 					}
 				}
+				var checkResult = false;
+				if(stateOld == S_IN_PROGRESS || 
+				stateOld == S_IN_PROGRESS_SPLIT ||
+				(prnt.startGame && betEth>0)){
+					checkResult = true;
+				}
 				
 				switch (stateNow){
-					case 1:
-						if(stateOld == S_IN_PROGRESS || 
-						stateOld == S_IN_PROGRESS_SPLIT){
+					case S_PLAYER_WON:
+						if(checkResult){
 							prnt.tfResult.setText("You won!");
 							prnt.clearBet();
 							prnt.showResult("tfWin", _x, _y);
 						}
 						break;
-					case 2:
-						if(stateOld == S_IN_PROGRESS || 
-						stateOld == S_IN_PROGRESS_SPLIT){
+					case S_HOUSE_WON:
+						if(checkResult){
 							prnt.tfResult.setText("House won!");
 							prnt.clearBet();
 							
@@ -1746,9 +1773,8 @@ ScrGame.prototype.response = function(command, value) {
 							}
 						}
 						break;
-					case 3:
-						if(stateOld == S_IN_PROGRESS || 
-						stateOld == S_IN_PROGRESS_SPLIT){
+					case S_TIE:
+						if(checkResult){
 							prnt.tfResult.setText("Tie!");
 							prnt.clearBet();
 							prnt.showResult("tfPush", _x, _y);

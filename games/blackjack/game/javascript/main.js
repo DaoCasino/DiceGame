@@ -17,9 +17,10 @@ var stats; //для вывода статистики справа
 var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var addressTestContract = "0xab34cecb580f7e375f1db1d8c5ca182db56ee318"; //My Work
+// var addressTestContract = "0xab34cecb580f7e375f1db1d8c5ca182db56ee318"; //My Work
 // var	addressTestContract = "0x8eae29b6897e449f631e0e301c606808bb85cdb5"; // My Split 777
 // var	addressTestContract = "0x59a379d307f8c776ede0c413206eb2dfaac0a261"; // My Split A
+var	addressTestContract = "0x7e6293e33ffbc5804f7aad749995b13b891b34a1"; // Double
 
 var options_debug = false;
 var options_test = false;
