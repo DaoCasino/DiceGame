@@ -1226,10 +1226,9 @@ ScrGame.prototype.sendCard = function(obj){
 		_x = _W/2 - 80 + lastHouseCard*30;
 		_y = _H/2 - 200;
 		prnt.showHouseCard(card);
-		console.log("loadHouseCard:", loadHouseCard);
+		
 		if(loadHouseCard==1){
 			prnt._arNewCards.push({type:"suit", id:0});
-			console.log("valInsurance:", valInsurance, card.point);
 			if(valInsurance == 0 && card.point == 11){
 				prnt.showInsurance();
 			}
@@ -1410,7 +1409,7 @@ ScrGame.prototype.showResult = function(_name, _x, _y) {
 	var tf = prnt.createObj({x:_x, y:_y}, _name);
 	tf.alpha = 0;
 	
-	createjs.Tween.get(tf).wait(3000).to({y:_y, alpha:1},300).to({y:_y-50},500);
+	createjs.Tween.get(tf).wait(7000).to({y:_y, alpha:1},300).to({y:_y-50},500);
 }
 
 ScrGame.prototype.shareTwitter = function() {
@@ -1419,7 +1418,7 @@ ScrGame.prototype.shareTwitter = function() {
 		var urlGame = 'http://platform.dao.casino/';
 		var url="https://twitter.com/intent/tweet";
 		var str='Play blackjack for ether '+ " " + urlGame;
-		var hashtags="blockchain,ethereum";
+		var hashtags="blockchain,ethereum,blackjack";
 		var via="daocasino";
 		window.open(url+"?text="+str+";hashtags="+hashtags+";via="+via,"","width=500,height=300");
 	}
@@ -1460,19 +1459,19 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	
 	if (newObj) {
 		if(name == "tfWin"){
-			mc = addText(R_WIN, 50, "#327B35", "#193F1B", "center", 300, 4);
+			mc = addText(R_WIN, 50, "#327B35", "#193F1B", "left", 300, 4);
 			mc.name = "tfWin";
 			mc.w = mc.width;
 		} else if(name == "tfBust"){
-			mc = addText(R_BUST, 50, "#EC8018", "#3F2307", "center", 300, 4);
+			mc = addText(R_BUST, 50, "#EC8018", "#3F2307", "left", 300, 4);
 			mc.name = "tfBust";
 			mc.w = mc.width;
 		} else if(name == "tfLose"){
-			mc = addText(R_LOSE, 50, "#D72319", "#64100B", "center", 300, 4);
+			mc = addText(R_LOSE, 50, "#D72319", "#64100B", "left", 300, 4);
 			mc.name = "tfLose";
 			mc.w = mc.width;
 		} else if(name == "tfLose"){
-			mc = addText(R_PUSH, 50, "#999999", "#333333", "center", 300, 4);
+			mc = addText(R_PUSH, 50, "#999999", "#333333", "left", 300, 4);
 			mc.name = "tfPush";
 			mc.w = mc.width;
 		} else {
@@ -1714,13 +1713,13 @@ ScrGame.prototype.response = function(command, value) {
 				if(stateOld == -1 && betEth == 0){
 					prnt.arrow.visible = true;
 				}
-				var _x = _W/2 - 80;
+				var _x = _W/2 - 80-75;
 				var _y = _H/2 - 35;
 				if(prnt.mySplitPoints > 0){
 					if(stateOld == S_IN_PROGRESS_SPLIT){
-						_x = _W/2 + 200;
+						_x = _W/2 + 200-75;
 					} else {
-						_x = _W/2 - 200;
+						_x = _W/2 - 200-75;
 					}
 				}
 				
@@ -1738,7 +1737,13 @@ ScrGame.prototype.response = function(command, value) {
 						stateOld == S_IN_PROGRESS_SPLIT){
 							prnt.tfResult.setText("House won!");
 							prnt.clearBet();
-							prnt.showResult("tfLose", _x, _y);
+							
+							if((_x > _W/2 && prnt.mySplitPoints > 21) ||
+							(_x < _W/2 && prnt.myPoints > 21)){
+								prnt.showResult("tfBust", _x, _y);
+							} else {
+								prnt.showResult("tfLose", _x, _y);
+							}
 						}
 						break;
 					case 3:
