@@ -161,12 +161,12 @@ contract BlackJack is owned {
 		dealCard(true, games[msg.sender]);
 		games[msg.sender].insuranceAvailable = false;
 		checkGameResult(games[msg.sender], false);
-		
-		if (game.state != GameState.InProgress) { // the game finished
+
+		if (games[msg.sender].state != GameState.InProgress) { // the game finished
 			if (splitGames[msg.sender].state == GameState.InProgressSplit) { // there was a split game
 				// check result for the split game as well
-				while (game.houseBigScore < 17) {
-					dealCard(false, game);
+				while (games[msg.sender].houseBigScore < 17) {
+					dealCard(false, games[msg.sender]);
 				}
 				splitGames[msg.sender].houseCards = games[msg.sender].houseCards;
 				checkGameResult(splitGames[msg.sender], true);
