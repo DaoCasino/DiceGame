@@ -304,10 +304,12 @@ contract BlackJack is owned {
 			throw;
 		}
 		
-	    game.bet = game.bet*2;
+	    game.bet = game.bet * 2;
 	    
 	    dealCard(true, game);
-	    stand();
+	    if (game.state == GameState.InProgress) {
+		    stand();
+		}
 	}
 	
 	// @param finishGame - whether to finish the game or not (in case of Blackjack the game finishes anyway)
@@ -430,11 +432,7 @@ contract BlackJack is owned {
 		    game = splitGames[msg.sender];
 		}
 	    
-	    if((game.state == GameState.InProgress || game.state == GameState.InProgressSplit) && 
-	    game.playerScore > 8 && game.playerScore < 12 && game.playerCards.length == 2){
-	        return true;
-	    }
-		return false;
+		return game.state == GameState.InProgress && game.playerScore > 8 && game.playerScore < 12 && game.playerCards.length == 2;
 	}
 
 	function getPlayerCard(uint8 id) public constant returns(uint8) {
