@@ -1088,6 +1088,15 @@ ScrGame.prototype.clickStand = function(){
 	}
 }
 
+ScrGame.prototype.clickDouble = function(){
+	if(options_debug){
+	} else {
+		// this.bStand = true;
+		// this.showButtons(false);
+		// infura.sendRequest("double", openkey, _callback);
+	}
+}
+
 ScrGame.prototype.clickSplit = function(){
 	if(obj_game["balance"] < betGame/100){
 		obj_game["game"].showError(ERROR_BALANCE);
@@ -1947,6 +1956,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.clickStand();
 	} else if(item_mc.name == "btnSplit"){
 		this.clickSplit();
+	} else if(item_mc.name == "btnDouble"){
+		this.clickDouble();
 	} else if(item_mc.name.search("chip") != -1){
 		this.clickChip(item_mc);
 	} else if(item_mc.name == "btnShare"){
