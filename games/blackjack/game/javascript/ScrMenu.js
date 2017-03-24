@@ -28,7 +28,7 @@ ScrMenu.prototype.init = function() {
 	this._arButtons.push(btnDao);
 	var tf = addText("START", 24, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
-	tf.y = - 17;
+	tf.y = -tf.height/2;
 	btnDao.addChild(tf);
 	
 	var str1 = "This game is a proof of concept and intended for test purposes. It is based on experimental software.";
