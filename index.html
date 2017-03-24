@@ -105,7 +105,7 @@
 									<span class="real-money switch-span">TESTNET</span>
 								   <span class="toggle-bg">
 										<input type="radio" id="checked-off" name="toggle" value="off">
-										<input type="radio" id="checked-on" name="toggle" value="on"> 
+										<input type="radio" id="checked-on" disabled name="toggle" value="on"> 
 										<span class="switch"></span>
 									</span>
 									<span class="free-money switch-span">MAINNET</span> 
@@ -175,7 +175,7 @@
 										Total bankroll
 									</span>
 									<span class="jackpot-txt__namber" id="bankroll">
-										<span>0</span> ETH
+										<span>..</span> ETH
 									</span>
 								</div>
 								<div class="jackpot-txt">
@@ -183,7 +183,7 @@
 										24h games
 									</span>
 									<span class="jackpot-txt__namber" id="24hours">
-										<span>0</span>
+										<span>..</span>
 									</span>
 								</div>
 								<div class="jackpot-txt">
@@ -191,7 +191,7 @@
 										Total games
 									</span>
 									<span class="jackpot-txt__namber" id="total">
-										<span>0</span>
+										<span>..</span>
 									</span>
 								</div>
 							</div>
@@ -218,7 +218,7 @@
 					</nav>
 					<div class="row category-block">
 						<div class="col-md-3 col-sm-6 col-xs-6">
-							<a href="if(localStorage.getItem("isreg")==1){window.location="/games/Hack-DAO-game/game_hack_dao/"}else{$("#regbut").click();}" class="item-games popup-with-move-anim">
+							<a href="#" onclick='if(localStorage.getItem("isreg")==1){window.location="/games/Hack-DAO-game/game_hack_dao/"}else{$("#regbut").click();}' class="item-games popup-with-move-anim">
 								<img src="img/img-game1.jpg" alt="">
 								<span>Hack dao (special for EDCON)</span>
 							</a>
@@ -230,43 +230,44 @@
 								<span>BLACKJACK</span>
 							</a>
 						</div>
+						
 						<div class="col-md-3 col-sm-6 col-xs-6">
 							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game4.jpg" alt="">
-								<span>card slots</span>
+								<span>Coming soon</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
 							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game5.jpg" alt="">
-								<span>POKER GAMES</span>
+								<span>Coming soon</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
 							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game6.jpg" alt="">
-								<span>slots</span>
+								<span>Coming soon</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
 							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game7.jpg" alt="">
-								<span>card games</span>
+								<span>Coming soon</span>
 							</a>
 						</div>
 						<div class="col-md-3 col-sm-6 col-xs-6">
 							<a href="#popup-games" class="item-games popup-with-move-anim">
 								<img src="img/img-game8.jpg" alt="">
-								<span>lotto</span>
+								<span>Coming soon</span>
 							</a>
 						</div>
 						
 						<div class="col-md-3 col-sm-6 col-xs-6">
 							<a onclick='#popup-games' href='#' class="item-games">
 								<img src="img/img-game2.jpg" alt="">
-								<span>DICE</span>
+								<span>Coming soon</span>
 							</a>
-						</div>
+						</div> 
 					</div>
 				</div>
 				<div style='display:none' class="container">
@@ -322,26 +323,7 @@
 		</main>
 		<!-- MAIN AND -->
 		<!-- FOOTER -->
-		<footer>
-			<div class="container">
-				<div class="footer-open-menu">
-					<a class="open-menu">
-						<span></span>
-						<span></span>
-						<span></span>
-					</a>
-				</div>
-				<nav class="footer-menu">
-					<ul>
-						<li><a href="http://dao.casino/">dao.casino</a></li>
-						<li><a href="https://daocasino.slack.com">Join Slack</a></li>
-						<li><a href="https://twitter.com/daocasino">Twitter</a></li>
-						<li><a href="https://github.com/DaoCasino">GitHub</a></li>
 
-					</ul>
-				</nav>
-			</div>
-		</footer>
 		<!-- FOOTER AND -->
 
 	</div>
