@@ -1432,7 +1432,7 @@ ScrGame.prototype.showError = function(value, callback) {
 			str = "OOOPS! \n You do not have enough money."
 			break;
 		case ERROR_DEAL:
-			str = "OOOPS! \n The transaction did not pass."
+			str = "OOOPS! \n The transaction did not pass. \n Try later."
 			break;
 		default:
 			str = "ERR: " + value;
