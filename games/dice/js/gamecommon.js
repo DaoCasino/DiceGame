@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    
     $("input#checked-on").prop('disabled', true);
     var clipboard = new Clipboard('#openkey');
 
@@ -31,7 +32,7 @@ $(document).ready(function () {
     })
     $('input#amount-one').keypress(function (e) {
         if (e.which == 13) {
-            Refresh();
+            //Refresh();
             $(this).blur();
         }
     })
@@ -41,8 +42,8 @@ $(document).ready(function () {
     // });
     $('input#amount-one').on('input keyup change keypress', function () {
         var value = this.value;
-        Refresh();
-        if (/^\.|\d+\..*\.|[^\d\.{1}]/.test(value) || value > balance - 0.02)
+        //Refresh();
+        if (/^\.|\d+\..*\.|[^\d\.{1}]/.test(value) || value > maxBetEth)
             this.value = value.slice(0, -1);
 
     });
@@ -78,7 +79,7 @@ $(document).ready(function () {
             };
             $("#less-than-wins").val(value);
             $("#slider-dice-two").slider("value", value);
-            $("#amount-two").val(value / 65536 * 100 + "%");
+            $("#amount-two").val((value / 65536 * 100).toFixed(2) + "%");
             chance = +value;
             Refresh();
         });
@@ -86,24 +87,24 @@ $(document).ready(function () {
             var value = $("#amount-one").val();
 
             if (value > balance) {
-                value = balance - 0.02
+                value = balance - 0.0001
                 betEth = balance
 
             };
-            if (value < 0.01) {
-                value = 0.01
-                betEth = 0.01
+            if (value < 0.0001) {
+                value = 0.0001
+                betEth = 0.001
             };
             $("#amount-one").val(value);
             $("#slider-dice-one").slider("value", value * 1000);
             betEth = +value;
-            Refresh();
+            //Refresh();
         });
         $("#slider-dice-one").slider({
             range: "min",
             step: 0.5,
             value: 10,
-            min: 10,
+            min: 1,
             max: 2000,
             slide: function (event, ui) {
                 betEth = ui.value / 1000;
@@ -130,6 +131,7 @@ $(document).ready(function () {
     setTimeout(function () {
         $('#amount-one').val(((balance - 0.02) / 2).toFixed(3));
         $('#amount-one').change();
+        Refresh();
     }, 1000);
 
 })

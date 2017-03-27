@@ -9,6 +9,8 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids;
 var game = false;
 var Timer, animate;
+maxBetEth = 1;
+bankroll = 1000;
 
 function toFixed(value, precision) {
     precision = Math.pow(10, precision);
@@ -47,7 +49,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.42c Infura") // VERSION !
+    console.log("version 0.44 Infura") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -169,7 +171,8 @@ function getContractBalance() {
             "params": [addressContract, "latest"]
         }),
         success: function (d) {
-            $('#contractBalance').html("CONTRACT ( " + (d.result / 1000000000000000000).toFixed(5) + " ETH )");
+            bankroll = (d.result / 1000000000000000000).toFixed(5)
+            $('#contractBalance').html("CONTRACT ( " + bankroll + " ETH )");
         }
     });
 };
@@ -188,7 +191,7 @@ setInterval(function () {
         }
         $("#your-balance").val(balance);
         if (balance) {
-            $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
+           // $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
         }
     } else {
         $("#label").text("Please, sign in");
@@ -201,7 +204,6 @@ function initGame() {
     setContract();
     paids = (call("getTotalEthSended") / 10000000000000000000).toFixed(6);
     sends = (call("getTotalEthPaid") / 10000000000000000000).toFixed(6);
-    Refresh();
     setContract();
     count = call("totalRollsByUser")
     console.log("old_count", count);
@@ -212,7 +214,7 @@ function initGame() {
     $("#contract").html('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">' + addressContract.slice(0, 24) + '...</a>')
     GetLogs();
     $('#all').click();
-
+    Refresh();
 };
 
 function disabled(status) {
@@ -232,8 +234,32 @@ function disabled(status) {
 };
 
 function Refresh() {
+    maxBetEth = (1/10*bankroll)/((65536 - 1310) / chance);
+    if( maxBetEth < balance -0.02){
+        //betEth = maxBetEth;
+        $("#slider-dice-one").slider("option", "max", maxBetEth*1000);
+        $("#amount-one").val(betEth);
+        if(betEth > maxBetEth){
+            betEth = +maxBetEth.toFixed(4);
+            $("#amount-one").val(betEth);
+        }
+        if(betEth < 0.0001){
+            betEth = 0.0001;
+            $("#amount-one").val(betEth);
+        }
+        if(betEth > balance  - 0.02){
+            betEth = +(balance  - 0.02).toFixed(4);
+            $("#amount-one").val(betEth);
+        }
+    }
+    else{
+
+        maxBetEth = (balance * 1000) - 20;
+      $("#slider-dice-one").slider("option", "max", maxBetEth);  
+    }
     $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
     $("#payout").val("x" + ((65536 - 1310) / chance).toFixed(5));
+
 };
 
 function startGame() {
@@ -342,4 +368,5 @@ function gameend() {
     //$('#amount-one').val(balance/2);
     $('#amount-one').change();
     $("#randomnum").fadeIn("slow", 1)
+    Refresh();
 };
