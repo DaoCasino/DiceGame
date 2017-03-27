@@ -155,7 +155,7 @@ ScrGame.prototype.init = function() {
 	if(options_debug){
 		var tfDebug = addText("Debug", 20, "#FF0000", "#000000", "right", 400)
 		tfDebug.x = _W-20;
-		tfDebug.y = 10;
+		tfDebug.y = _H-30;
 		this.face_mc.addChild(tfDebug);
 	}
 	
@@ -257,15 +257,17 @@ ScrGame.prototype.clearBet = function(){
 		this.btnStart.alpha = 0.5;
 		this.arrow.visible = true;
 		this.tfStatus.setText("Select bet");
+		this.tfMyBet.setText("");
 		this.tfSplitBet.setText("");
 		this.tfStatus.x = _W/2;
 	}
 }
 
 ScrGame.prototype.clearChips = function(){
-	for (i = 0; i < this._arChips.length; i++) {
-		var chip = this._arChips[i];
+	while (this._arChips.length > 0) {
+		var chip = this._arChips[0];
 		this.game_mc.removeChild(chip);
+		this._arChips.shift();
 	}
 	this._arChips = [];
 }
@@ -403,13 +405,13 @@ ScrGame.prototype.createGUI = function() {
 	this.tfStatus.x = _W/2;
 	this.tfStatus.y = _H/2+290;
 	this.face_mc.addChild(this.tfStatus);
-	this.tfMyBet = addText("", 34, "#ffde00", "#000000", "right", 400, 4, fontDigital)
-	this.tfMyBet.x = _W/2;
-	this.tfMyBet.y = _H/2+290;
+	this.tfMyBet = addText("", 30, "#ffde00", "#000000", "right", 400, 4, fontDigital)
+	this.tfMyBet.x = _W/2-50;
+	this.tfMyBet.y = _H/2+200;
 	this.face_mc.addChild(this.tfMyBet);
-	this.tfSplitBet = addText("", 40, "#ffde00", "#000000", "center", 400, 4, fontDigital)
-	this.tfSplitBet.x = _W/2+200;
-	this.tfSplitBet.y = _H/2+290;
+	this.tfSplitBet = addText("", 30, "#ffde00", "#000000", "right", 400, 4, fontDigital)
+	this.tfSplitBet.x = this.tfMyBet.x+200;
+	this.tfSplitBet.y = this.tfMyBet.y;
 	this.face_mc.addChild(this.tfSplitBet);
 	var tfMinBet = addText("MIN BET: 0.05", 40, "#ffde00", undefined, "left", 300, 4, fontDigital)
 	tfMinBet.x = -100;
@@ -623,6 +625,7 @@ ScrGame.prototype.showChips = function(value) {
 	}
 	if(value && betEth == 0){
 		this.tfStatus.setText("Select bet");
+		this.tfMyBet.setText("");
 		this.tfSplitBet.setText("");
 		this.arrow.visible = true;
 		this.bClear = false;
@@ -864,6 +867,7 @@ ScrGame.prototype.showSuitCard = function(){
 }
 
 ScrGame.prototype.getCard = function(cardIndex){
+	cardIndex = 28;
 	var cardType = Math.floor(cardIndex / 4);
 	var cardSymbol = String(cardType);
 	var point = cardType;
@@ -962,7 +966,7 @@ ScrGame.prototype.isSplitAvailable = function() {
 	var value = false;
 	
 	if(stateNow == S_IN_PROGRESS && 
-	this._arMyPoints.length == 2 &&
+	this._arMyCards.length == 2 &&
 	obj_game["balance"]*100 > betGame &&
 	this.bSplit == false &&
 	this._arMySplitCards.length == 0 &&
@@ -1109,6 +1113,13 @@ ScrGame.prototype.clickSplit = function(){
 	
 	this.showButtons(false);
 	this.bSplit = true;
+	this.fillChips(betGame);
+	this.fillChips(betGame, "split");
+	var str = String(betGame/100);
+	this.tfMyBet.setText(str);
+	this.tfMyBet.x = _W/2 - 250;
+	this.tfSplitBet.setText(str);
+	
 	if(options_debug){
 		this._arMySplitCards = [this._arMyCards[1]];
 		this._arMyCards = [this._arMyCards[0]];
@@ -1119,6 +1130,7 @@ ScrGame.prototype.clickSplit = function(){
 		loadPlayerCard = 1;
 		lastPlayerSplitCard = 0;
 		loadPlayerSplitCard = 0;
+		this._arMyCards[0].x = _W/2 - 200;
 		this._arMySplitCards[0].x = _W/2 + 200 + lastPlayerSplitCard*30;
 		this.showMyPoints();
 		this.showMySplitPoints();
@@ -1148,11 +1160,6 @@ ScrGame.prototype.clickSplit = function(){
 		this.showMySplitPoints();
 		this.darkCards(this._arMyCards, true);
 		this.darkCards(this._arMySplitCards, false);
-		this.fillChips(betGame);
-		this.fillChips(betGame, "split");
-		var str = "Bet " + String(betGame/100) + " eth";
-		this.tfSplitBet.setText(str);
-		// this.tfStatus.x = _W/2 - 200;
 	}
 }
 
@@ -1175,6 +1182,8 @@ ScrGame.prototype.fillChips = function(value, type){
 	} else if(this.bSplit || stateNow == S_IN_PROGRESS_SPLIT){
 		this.clearChips();
 		posX -= 200;
+	} else {
+		this.clearChips();
 	}
 	while(setBet > 0){
 		var posY = this.seat.y-countChip*6;
@@ -1338,13 +1347,13 @@ ScrGame.prototype.loadBet = function(value){
 		betEth = Number(hexToNum(value));
 		betGame = toFixed((betEth/1000000000000000000), 4)*c;
 		var str = String(betGame/c) + " eth";
-		// this.tfStatus.setText(str);
+		this.tfMyBet.setText(str);
 		
 		this.fillChips(betGame);
 		if(stateNow == S_IN_PROGRESS_SPLIT){
 			this.fillChips(betGame, "split");
 			this.tfSplitBet.setText(str);
-			// this.tfStatus.x = _W/2 - 200;
+			this.tfMyBet.x = _W/2 - 250;
 		}
 	}
 }
@@ -1361,6 +1370,7 @@ ScrGame.prototype.clickChip = function(item_mc){
 	} else {
 		var str = "Your bet: " + String(betGame/c);
 		this.tfYourBet.setText(str);
+		this.tfMyBet.setText(betGame/c);
 	}
 	
 	if(betGame > 0){
