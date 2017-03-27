@@ -1827,6 +1827,8 @@ ScrGame.prototype.response = function(command, value) {
 			prnt.bWait = false;
 			prnt.startGame = false;
 			prnt.showChips(true);
+			prnt.clearBet();
+			prnt.clearChips();
 			if(stateOld == -1 && betEth == 0){
 				prnt.arrow.visible = false;
 			}
