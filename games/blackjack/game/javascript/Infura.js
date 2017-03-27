@@ -24,6 +24,7 @@ Infura.prototype.sendRequest = function(name, params, callback){
 			case "stand":
 			case "split":
 			case "insurance":
+			case "double":
 				method = "eth_getTransactionCount";
 				break;
 			case "gameTxHash":

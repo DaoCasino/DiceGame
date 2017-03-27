@@ -1091,9 +1091,9 @@ ScrGame.prototype.clickStand = function(){
 ScrGame.prototype.clickDouble = function(){
 	if(options_debug){
 	} else {
-		// this.bStand = true;
-		// this.showButtons(false);
-		// infura.sendRequest("double", openkey, _callback);
+		this.bStand = true;
+		this.showButtons(false);
+		infura.sendRequest("double", openkey, _callback);
 	}
 }
 
@@ -1582,6 +1582,14 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	} else if(name == "insurance"){
 		data = "0x"+C_INSURANCE;
 		price = betEth/2;
+	} else if(name == "double"){
+		data = "0x"+C_DOUBLE;
+		price = betEth;
+		betEth = betEth*2;
+		betGame = toFixed((betEth/1000000000000000000), 4)*100;
+		prnt.fillChips(betGame);
+		var str = "Bet " + String(betGame/100) + " eth";
+		prnt.tfSplitBet.setText(str);
 	}
 	
 	var options = {};
@@ -1757,7 +1765,7 @@ ScrGame.prototype.response = function(command, value) {
 				var checkResult = false;
 				if(stateOld == S_IN_PROGRESS || 
 				stateOld == S_IN_PROGRESS_SPLIT ||
-				(prnt.startGame && betEth>0)){
+				(prnt.startGame && betEth>0 && prnt._arMyCards.length > 0)){
 					checkResult = true;
 				}
 				
@@ -1802,7 +1810,8 @@ ScrGame.prototype.response = function(command, value) {
 				if(prnt.myPoints == 21){
 					// console.log("blackjack");
 				}
-				if(stateOld == -1 || 
+				if((stateOld == -1 && !prnt.bClickStart && 
+				prnt._arMyCards.length > 0) || 
 				stateOld == S_IN_PROGRESS || 
 				stateOld == S_IN_PROGRESS_SPLIT){
 					prnt.bWait = false;
@@ -1827,6 +1836,7 @@ ScrGame.prototype.response = function(command, value) {
 			command == "hitS" ||
 			command == "stand" ||
 			command == "split" ||
+			command == "double" ||
 			command == "insurance"){
 		prnt.responseTransaction(command, value);
 	} else if(command == "getInsurance"){
