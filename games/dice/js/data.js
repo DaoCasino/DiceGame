@@ -21,6 +21,9 @@ function GetLogs() {
             }]
         }),
         success: function (objData) {
+                if(objData.result.length == 0){
+                    $("#bg_popup").show();
+                }
             function getArTh(thId) {
                 var array = [];
 
