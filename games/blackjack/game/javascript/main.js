@@ -22,7 +22,7 @@ var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // var	addressTestContract = "0x59a379d307f8c776ede0c413206eb2dfaac0a261"; // My Split A
 var	addressTestContract = "0x61797c95e552d744e3026d0d5a70af75a6d8ca14"; // Double
 
-var options_debug = true;
+var options_debug = false;
 var options_test = false;
 var options_ethereum = true;
 var options_mainet = false;
