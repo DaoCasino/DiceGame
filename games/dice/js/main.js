@@ -2,29 +2,35 @@ var balance = ".::::.";
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 var addressContract = "0xe061a411d69853155d221edc7c837b338f23730d";
-var betEth = 0.2; //0,2 ставка эфира
+var betEth; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
-var chance = 5000;
+var chance = 32768;
 var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids;
 var game = false;
-var Timer;
+var Timer, animate;
+maxBetEth = 1;
+bankroll = 1000;
 
 function toFixed(value, precision) {
     precision = Math.pow(10, precision);
     return Math.ceil(value * precision) / precision;
 };
+
 function numToHex(num) {
     return num.toString(16);
 };
+
 function hexToNum(str) {
     return parseInt(str, 16);
 };
+
 function pad(num, size) {
     var s = num + "";
     while (s.length < size) s = "0" + s;
     return s;
 };
+
 function isLocalStorageAvailable() {
     try {
         return 'localStorage' in window && window['localStorage'] !== null;
@@ -33,6 +39,7 @@ function isLocalStorageAvailable() {
         return false;
     }
 };
+
 function loadData() {
     if (isLocalStorageAvailable()) {
         testnetAddress = localStorage.getItem(' testnetAddress')
@@ -42,11 +49,12 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.41b Infura") // VERSION !
+    console.log("version 0.44 Infura") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
 };
+
 function call(callname) {
     var result;
     var callData;
@@ -65,6 +73,9 @@ function call(callname) {
             break;
         case "getTotalEthPaid":
             callData = "0xf6353590";
+            break;
+        case "getStateByAddress":
+            callData = "0x08199931"
             break;
     }
     $.ajax({
@@ -88,6 +99,7 @@ function call(callname) {
     });
     return result;
 };
+
 function getContract(game, network) {
     var result;
     var gameid;
@@ -132,15 +144,20 @@ function getContract(game, network) {
     });
     return result;
 };
+
 function setContract() {
     if (mainnet == "on") {
         urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         addressContract = getContract("Dice", "mainnet");
+        disabled(true);
+        $('#randomnum').text("Coming soon")
     } else if (mainnet == "off") {
         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         addressContract = getContract("Dice", "testnet");
+        $('#randomnum').text("");
     }
 };
+
 function getContractBalance() {
     $.ajax({
         type: "POST",
@@ -154,16 +171,39 @@ function getContractBalance() {
             "params": [addressContract, "latest"]
         }),
         success: function (d) {
-            $('#contractBalance').html("CONTRACT ( " + (d.result / 1000000000000000000).toFixed(5) + " ETH )");
+            bankroll = (d.result / 1000000000000000000).toFixed(5)
+            $('#contractBalance').html("CONTRACT ( " + bankroll + " ETH )");
         }
     });
 };
+setInterval(function () {
+    if (openkey) {
+        balance = $('#balance').html();
+        balance = +balance.substr(0, balance.length - 4);
+        balance = +balance.toFixed(8);
+        if (balance < 0.02 && !game) {
+            disabled(true);
+            $("#label").text(" NO MONEY ");
+            $('#randomnum').text("Please, top up balance")
+        } else if (balance > 0.01 && !game) {
+            disabled(false);
+            $("#label").text("Click Roll Dice to place your bet:");
+        }
+        $("#your-balance").val(balance);
+        if (balance) {
+           // $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
+        }
+    } else {
+        $("#label").text("Please, sign in");
+        disabled(true);
+    }
+}, 100);
+
 function initGame() {
     loadData();
     setContract();
     paids = (call("getTotalEthSended") / 10000000000000000000).toFixed(6);
     sends = (call("getTotalEthPaid") / 10000000000000000000).toFixed(6);
-    Refresh();
     setContract();
     count = call("totalRollsByUser")
     console.log("old_count", count);
@@ -171,9 +211,12 @@ function initGame() {
     $("#total-paid").html(paids + ' ETH');
     $("#total-send").html(sends + ' ETH (' + ((paids / sends) * 100).toFixed(2) + '%)');
     getContractBalance();
-    $("#contract").html('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">...' + addressContract.slice(2, 24) + '...</a>')
+    $("#contract").html('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">' + addressContract.slice(0, 24) + '...</a>')
     GetLogs();
+    $('#all').click();
+    Refresh();
 };
+
 function disabled(status) {
     $("#slider-dice-one").slider({
         disabled: status
@@ -189,31 +232,36 @@ function disabled(status) {
     }) : $("#roll-dice").removeAttr('style');
 
 };
+
 function Refresh() {
-    $("#profit-on-win").val(((betEth * 9920 / chance) - betEth).toFixed(4));
-    $("#payout").val("x" + (9920 / chance).toFixed(3));
-};
-setInterval(function () {
-    if (openkey) {
-        balance = $('#balance').html();
-        balance = +balance.substr(0, balance.length - 4);
-        balance = +balance.toFixed(8);
-        if (balance < 0.1 && !game) {
-            disabled(true);
-            $("#label").text(" NO MONEY ");
-        } else if (balance > 0.1 && !game) {
-            disabled(false);
-            $("#label").text("Click Roll Dice to place your bet:");
+    maxBetEth = (1/10*bankroll)/((65536 - 1310) / chance);
+    if( maxBetEth < balance -0.02){
+        //betEth = maxBetEth;
+        $("#slider-dice-one").slider("option", "max", maxBetEth*1000);
+        $("#amount-one").val(betEth);
+        if(betEth > maxBetEth){
+            betEth = +maxBetEth.toFixed(4);
+            $("#amount-one").val(betEth);
         }
-        $("#your-balance").val(balance);
-        if (balance) {
-            $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
+        if(betEth < 0.0001){
+            betEth = 0.0001;
+            $("#amount-one").val(betEth);
         }
-    } else {
-        $("#label").text("Please, sign in");
-        disabled(true);
+        if(betEth > balance  - 0.02){
+            betEth = +(balance  - 0.02).toFixed(4);
+            $("#amount-one").val(betEth);
+        }
     }
-}, 1000);
+    else{
+
+        maxBetEth = (balance * 1000) - 20;
+      $("#slider-dice-one").slider("option", "max", maxBetEth);  
+    }
+    $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
+    $("#payout").val("x" + ((65536 - 1310) / chance).toFixed(5));
+
+};
+
 function startGame() {
     game = true;
     if (openkey) {
@@ -264,60 +312,39 @@ function startGame() {
                                 console.log("Транзакция отправлена в сеть:", d.result);
                                 lastTx = d.result;
                                 if (lastTx == undefined) {
-                                    $("#random").text("Sorry, transaction failed");
+                                    $("#randomnum").text("Sorry, transaction failed");
+                                    gameend();
                                 } else {
-                                    $("#Tx").html('<a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + '">...' + lastTx.slice(2, 24) + '...</a>')
+                                    $("#Tx").html('<a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
+                                    $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
                                     disabled(true);
-                                    $("#random").text("Please, wait . . . ");
-                                    $("#randomnum").text(" . . . ");
+                                    $("#randomnum").text("Please, wait . . . ");
                                     Timer = setInterval(function () {
-                                                 new_count = call("totalRollsByUser");
-                                                console.log("detected count:", new_count, count);
-                                                if (new_count != count) {
-                                                    console.log("getStatusGame")
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        url: urlInfura,
-                                                        dataType: 'json',
-                                                        async: false,
-                                                        data: JSON.stringify({
-                                                            "id": 0,
-                                                            "jsonrpc": '2.0',
-                                                            "method": "eth_call",
-                                                            "params": [{
-                                                                "from": openkey,
-                                                                "to": addressContract,
-                                                                "data": "0x08199931000000000000000000000000" + openkey.substr(2),
-                                                            }, "latest"]
-                                                        }),
-                                                        success: function (d) {
-                                                            var result = hexToNum(d.result);
-                                                            switch (result) {
-                                                                case 1:
-                                                                    console.log("YOU WIN!");
-                                                                    $("#random").text("YOU WIN!!! ");
-                                                                    gameend();
-                                                                    break;
-                                                                case 2:
-                                                                    console.log("YOU LOSER!");
-                                                                    $("#random").text("YOU LOSE!!! ");
-                                                                    gameend();
-                                                                    break;
-                                                                case 3:
-                                                                    console.log("Sorry, No money in the bank");
-                                                                    $("#random").text("Sorry, no money in the bank");
-                                                                    gameend();
-                                                                    break;
-                                                                default:
-                                                                    console.log("идет игра");
-                                                            }
-
-                                                        }
-                                                    })
-
-                                                }
-                                            
-                                        
+                                        new_count = call("totalRollsByUser");
+                                        console.log("detected count:", new_count, count);
+                                        if (new_count != count) {
+                                            console.log("getStatusGame");
+                                            var result = call("getStateByAddress");
+                                            switch (result) {
+                                                case 1:
+                                                    console.log("YOU WIN!");
+                                                    $("#randomnum").text("YOU WIN!");
+                                                    gameend();
+                                                    break;
+                                                case 2:
+                                                    console.log("LOSS");
+                                                    $("#randomnum").text("YOU LOSE");
+                                                    gameend();
+                                                    break;
+                                                case 3:
+                                                    console.log("Sorry, No money in the bank");
+                                                    $("#randomnum").text("Sorry, no money in the bank");
+                                                    gameend();
+                                                    break;
+                                                default:
+                                                    console.log("идет игра");
+                                            }
+                                        }
                                     }, 3000);
                                 }
 
@@ -329,11 +356,17 @@ function startGame() {
         })
     }
 };
+
 function gameend() {
     disabled(false);
     GetLogs();
-    $("#randomnum").html(call("getShowRnd"));
     clearInterval(Timer);
+    clearInterval(animate);
     count = new_count;
     game = false;
+    $('.active').click();
+    //$('#amount-one').val(balance/2);
+    $('#amount-one').change();
+    $("#randomnum").fadeIn("slow", 1)
+    Refresh();
 };

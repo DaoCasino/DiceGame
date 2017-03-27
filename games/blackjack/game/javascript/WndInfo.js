@@ -16,26 +16,28 @@ WndInfo.prototype.init = function(_prnt) {
 	rect.alpha = 0.5;
 	this.addChild(rect);
 	
-	var bg = addObj("wndInfo");
+	var bg = addObj("wndInfo",0,0,0.3);
 	this.addChild(bg);
 	
-	var btnClose = addButton2("btnClose", 230, -160);
+	var btnClose = addButton2("btnClose", 230, -150, 0.5);
 	this.addChild(btnClose);
 	this._arButtons.push(btnClose);
-	this.btnOk = addButton2("btnDefault", 0, 150);
+	this.btnOk = addButton2("btnDefault", 0, 150, 0.75);
 	this.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
 	
 	btnClose.interactive = true;
 	btnClose.buttonMode=true;
+	btnClose.overSc=true;
 	this.btnOk.interactive = true;
 	this.btnOk.buttonMode=true;
+	this.btnOk.overSc=true;
 	
-	this.tf = addText("", 26, "#FFCC00", "#000000", "center", 350, 3)
+	this.tf = addText("", 26, "#FFCC00", "#000000", "center", 500, 3)
 	this.tf.y = -70;
 	this.addChild(this.tf);
 	this.tfBtn = addText("", 26, "#FFFFFF", "#000000", "center", 350)
-	this.tfBtn.y = this.btnOk.y - 17;
+	this.tfBtn.y = this.btnOk.y - 12;
 	this.addChild(this.tfBtn);
 	
 	this.interactive = true;
@@ -69,6 +71,10 @@ WndInfo.prototype.clickObj = function(item_mc) {
 	if(item_mc.over){
 		item_mc.over.visible = false;
 	}
+	if(item_mc.overSc){
+		item_mc.scale.x = 1*item_mc.sc;
+		item_mc.scale.y = 1*item_mc.sc;
+	}
 	this._prnt.closeWindow(this);
 	
 	if(name == "btnDefault"){
@@ -88,6 +94,9 @@ WndInfo.prototype.checkButtons = function(evt){
 				item_mc._selected = true;
 				if(item_mc.over){
 					item_mc.over.visible = true;
+				} else if(item_mc.overSc){
+					item_mc.scale.x = 1.1*item_mc.sc;
+					item_mc.scale.y = 1.1*item_mc.sc;
 				}
 			}
 		} else {
@@ -95,6 +104,9 @@ WndInfo.prototype.checkButtons = function(evt){
 				item_mc._selected = false;
 				if(item_mc.over){
 					item_mc.over.visible = false;
+				} else if(item_mc.overSc){
+					item_mc.scale.x = 1*item_mc.sc;
+					item_mc.scale.y = 1*item_mc.sc;
 				}
 			}
 		}

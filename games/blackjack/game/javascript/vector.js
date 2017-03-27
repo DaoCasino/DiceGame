@@ -105,11 +105,11 @@ function vector(iX,iY){
     };
 
     this.toString = function(){
-        return "Vector2: " + x + ", " + y;
+        return "Vector: " + x + ", " + y;
     };
 		
     this.print = function(){
-        console.log( "Vector2: " + x + ", " + y + "" );
+        console.log( "Vector: " + x + ", " + y + "" );
     };
     
     this.getX = function(){

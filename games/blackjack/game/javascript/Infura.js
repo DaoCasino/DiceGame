@@ -12,7 +12,7 @@ var Infura = function() {
 	}
 };
 
-Infura.prototype.sendRequest = function(name, params, callback, obj){
+Infura.prototype.sendRequest = function(name, params, callback){
 	if(options_ethereum && openkey){
 		var method = name;
 		var arParams = [params, "latest"];
@@ -20,9 +20,11 @@ Infura.prototype.sendRequest = function(name, params, callback, obj){
 		switch(name){
 			case "deal":
 			case "hit":
-			case "hitB":
+			case "hitS":
 			case "stand":
 			case "split":
+			case "insurance":
+			case "double":
 				method = "eth_getTransactionCount";
 				break;
 			case "gameTxHash":
@@ -53,7 +55,7 @@ Infura.prototype.sendRequest = function(name, params, callback, obj){
 									"params":arParams,
 									"id":1}),
 			success: function (d) {
-				callback(name, d.result, obj);
+				callback(name, d.result);
 			}
 		})
 	}

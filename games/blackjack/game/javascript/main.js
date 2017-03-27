@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.14"
+var version = "v. 1.0.20"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -14,10 +14,13 @@ var infura, soundManager;
 var fontMain = "Arial";
 var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
+var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var addressTestContract = "0xc204b69b5a6784e37367233ff89e0452e961b223"; //Work
-// var	addressTestContract = "0x710a066ab97f0c1d118cc4a1bb188127edf994a2"; // Split
+// var addressTestContract = "0xab34cecb580f7e375f1db1d8c5ca182db56ee318"; //My Work
+// var	addressTestContract = "0x8eae29b6897e449f631e0e301c606808bb85cdb5"; // My Split 777
+// var	addressTestContract = "0x59a379d307f8c776ede0c413206eb2dfaac0a261"; // My Split A
+var	addressTestContract = "0x61797c95e552d744e3026d0d5a70af75a6d8ca14"; // Double
 
 var options_debug = false;
 var options_test = false;
@@ -35,6 +38,8 @@ var ERROR_BUF = 2;
 var ERROR_KEY = 3;
 var ERROR_BANK = 4;
 var ERROR_TRANSACTION = 5;
+var ERROR_BALANCE = 6;
+var ERROR_DEAL = 7;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
@@ -87,11 +92,14 @@ function initGame() {
 	stage.addChild(scrContainer);
 	
 	var preload_image = document.createElement("img");
-	preload_image.src = "images/bg/bgGame.jpg";
+	preload_image.src = "images/bg/bgGame"+rndBg+".jpg";
 	preload_image.onload = function() {
 		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
 		bgLoading.texture.baseTexture.on('loaded', 
 				function(){
+					var scaleBack = _W/bgLoading.width;
+					bgLoading.scale.x = scaleBack;
+					bgLoading.scale.y = scaleBack;
 					bgLoading.x = _W/2 - bgLoading.width/2;
 					bgLoading.y = _H/2 - bgLoading.height/2;
 				});
@@ -113,7 +121,8 @@ function initGame() {
 function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
-	preloader.add("bgGame", "images/bg/bgGame.jpg");
+	preloader.add("bgGame1", "images/bg/bgGame1.jpg");
+	preloader.add("bgGame2", "images/bg/bgGame2.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
 	preloader.add("icoKey", "images/items/icoKey.png");
@@ -127,6 +136,10 @@ function loadManifest(){
 	preloader.add("chip_6", "images/items/chip_6.png");
 	preloader.add("seat", "images/items/seat.png");
 	preloader.add("hintArrow", "images/items/hintArrow.png");
+	preloader.add("metal", "images/items/metal.png");
+	preloader.add("cardsLeft", "images/items/cardsLeft.png");
+	preloader.add("cardsRight", "images/items/cardsRight.png");
+	preloader.add("descBet", "images/items/descBet.png");
 	
 	preloader.add("1_A", "images/cards/1_A.png")
 	preloader.add("1_2", "images/cards/1_2.png")
@@ -183,19 +196,15 @@ function loadManifest(){
 	preloader.add("suit", "images/cards/suit.png")
 	
 	preloader.add("btnClose", "images/buttons/btnClose.png");
-	preloader.add("btnCloseOver", "images/buttons/btnCloseOver.png");
-	preloader.add("btnCloseDown", "images/buttons/btnCloseDown.png");
+	preloader.add("btnClearBets", "images/buttons/btnClearBets.png");
+	preloader.add("btnDeal", "images/buttons/btnDeal.png");
+	preloader.add("btnDouble", "images/buttons/btnDouble.png");
+	preloader.add("btnHit", "images/buttons/btnHit.png");
+	preloader.add("btnSplit", "images/buttons/btnSplit.png");
+	preloader.add("btnStand", "images/buttons/btnStand.png");
 	preloader.add("btnDefault", "images/buttons/btnDefault.png");
-	preloader.add("btnDefaultOver", "images/buttons/btnDefaultOver.png");
-	preloader.add("btnDefaultDown", "images/buttons/btnDefaultDown.png");
 	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");
 	preloader.add("btnTweetShare", "images/buttons/btnTweetShare.png");
-	preloader.add("btnOrange", "images/buttons/btnOrange.png");
-	preloader.add("btnOrangeOver", "images/buttons/btnOrangeOver.png");
-	preloader.add("btnOrangeDown", "images/buttons/btnOrangeDown.png");
-	preloader.add("btnGreen", "images/buttons/btnGreen.png");
-	preloader.add("btnGreenOver", "images/buttons/btnGreenOver.png");
-	preloader.add("btnGreenDown", "images/buttons/btnGreenDown.png");
 	preloader.add("btnFrame", "images/buttons/btnFrame.png");
 	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
 	
@@ -585,10 +594,11 @@ function addButton(name, _x, _y, _scGr) {
 			obj.lock = null;
 		}
 		
+		obj.sc = _scGr;
 		obj.vX = 1;
 		obj.vY = 1;
-		obj.x = _x*_scGr;
-		obj.y = _y*_scGr;
+		obj.x = _x;
+		obj.y = _y;
 		obj.w = objImg.w;
 		obj.h = objImg.h;
 		obj.r = obj.w/2;
@@ -648,6 +658,7 @@ function addButton2(name, _x, _y, _scGr, _scaleX, _scaleY) {
 	} else {
 		obj.lock = null;
 	}
+	obj.sc = _scGr;
 	obj.scale.x = _scGr*_scaleX;
 	obj.scale.y = _scGr*_scaleY;
 	obj.vX = _scaleX;
@@ -695,13 +706,14 @@ function addObj(name, _x, _y, _scGr, _scaleX, _scaleY, _anchor) {
 			return null;
 		}
 	}
+	obj.sc = _scGr;
 	objImg.anchor.x = _anchor;
 	objImg.anchor.y = _anchor;
 	obj.w = objImg.width*obj.scale.x;
 	obj.h = objImg.height*obj.scale.y;
 	obj.addChild(objImg);
-	obj.x = _x*_scGr;
-	obj.y = _y*_scGr;
+	obj.x = _x;
+	obj.y = _y;
 	obj.name = name;
 	obj.img = objImg;
 	obj.r = obj.w/2;

@@ -16,19 +16,19 @@ ScrMenu.prototype.init = function() {
 	
 	this._arButtons = [];
 	
-	this.bg = addObj("bgGame", _W/2, _H/2);
+	this.bg = addObj("bgGame"+rndBg, _W/2, _H/2);
 	this.bg.scale.x =  _W/this.bg.w;
 	this.bg.scale.y =  _H/this.bg.h;
 	this.addChild(this.bg);
 	
-	var btnDao = addButton2("btnOrange", _W/2, _H/2+100);
+	var btnDao = addButton2("btnDefault", _W/2, _H/2+100);
 	btnDao.interactive = true;
 	btnDao.buttonMode=true;
 	this.addChild(btnDao);
 	this._arButtons.push(btnDao);
 	var tf = addText("START", 24, "#FFFFFF", undefined, "center", 350, 2)
 	tf.x = 0;
-	tf.y = - 17;
+	tf.y = -tf.height/2;
 	btnDao.addChild(tf);
 	
 	var str1 = "This game is a proof of concept and intended for test purposes. It is based on experimental software.";
@@ -66,7 +66,7 @@ ScrMenu.prototype.clickCell = function(item_mc) {
 		}
 	}
 	
-	if(item_mc.name == "btnOrange"){
+	if(item_mc.name == "btnDefault"){
 		this.removeAllListener();
 		showGame();
 	}

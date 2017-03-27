@@ -1,7 +1,25 @@
 $(document).ready(function () {
-    initGame();
+    
+    $("input#checked-on").prop('disabled', true);
     var clipboard = new Clipboard('#openkey');
+
+    $('#all').click(function () {
+        getAllLogs();
+        $('.active').removeClass('active')
+        $(this).addClass('active');
+    });
+    $('#your').click(function () {
+        getMyLogs()
+        $('.active').removeClass('active')
+        $(this).addClass('active');
+    });
+    initGame();
+
     $("#roll-dice").click(function () {
+        animate = setInterval(function () {
+            $("#randomnum").fadeTo( "slow" , 0.1)
+            $("#randomnum").fadeTo( "slow" , 0.9)
+        }, 1000);
         startGame();
     });
     $(".toggle-bg").click(function () {
@@ -14,7 +32,7 @@ $(document).ready(function () {
     })
     $('input#amount-one').keypress(function (e) {
         if (e.which == 13) {
-            Refresh();
+            //Refresh();
             $(this).blur();
         }
     })
@@ -24,10 +42,10 @@ $(document).ready(function () {
     // });
     $('input#amount-one').on('input keyup change keypress', function () {
         var value = this.value;
-        Refresh();
-        if (/^\.|\d+\..*\.|[^\d\.{1}]/.test(value) || value > balance - 0.02)
+        //Refresh();
+        if (/^\.|\d+\..*\.|[^\d\.{1}]/.test(value) || value > maxBetEth)
             this.value = value.slice(0, -1);
-        
+
     });
     $('input#less-than-wins').keypress(function (e) {
         if (e.which == 13) {
@@ -43,7 +61,7 @@ $(document).ready(function () {
     $('input#less-than-wins').on('input keyup change', function () {
         var value = this.value;
         Refresh();
-        if (value < 1 || value > 9900)
+        if (value < 1 || value > 64224)
             this.value = value.slice(0, -1);
 
         else Refresh();
@@ -53,15 +71,15 @@ $(document).ready(function () {
     $(function () {
         $('#less-than-wins').change(function () {
             var value = $("#less-than-wins").val();
-            if (value > 9900) {
-                value = 9900
+            if (value > 64224) {
+                value = 64224
             };
             if (value < 1) {
                 value = 1
             };
             $("#less-than-wins").val(value);
             $("#slider-dice-two").slider("value", value);
-            $("#amount-two").val(value / 100 + "%");
+            $("#amount-two").val((value / 65536 * 100).toFixed(2) + "%");
             chance = +value;
             Refresh();
         });
@@ -69,23 +87,24 @@ $(document).ready(function () {
             var value = $("#amount-one").val();
 
             if (value > balance) {
-                value = balance - 0.02
+                value = balance - 0.0001
                 betEth = balance
 
             };
-            if (value < 0.01) {
-                value = 0.01
-                betEth = 0.01
+            if (value < 0.0001) {
+                value = 0.0001
+                betEth = 0.001
             };
             $("#amount-one").val(value);
             $("#slider-dice-one").slider("value", value * 1000);
             betEth = +value;
-            Refresh();
+            //Refresh();
         });
         $("#slider-dice-one").slider({
             range: "min",
-            value: 200,
-            min: 10,
+            step: 0.5,
+            value: 10,
+            min: 1,
             max: 2000,
             slide: function (event, ui) {
                 betEth = ui.value / 1000;
@@ -95,18 +114,24 @@ $(document).ready(function () {
         });
         $("#slider-dice-two").slider({
             range: "min",
-            value: 5000,
+            value: 32768,
             min: 1,
-            max: 9900,
+            max: 64224,
             slide: function (event, ui) {
                 chance = ui.value;
-                $("#amount-two").val(ui.value / 100 + "%");
+                $("#amount-two").val((ui.value / 65536 * 100).toFixed(2) + "%");
                 $("#less-than-wins").val(ui.value);
                 Refresh();
             }
         });
-        $("#amount-two").val($("#slider-dice-two").slider("value") / 100 + "%");
+        $("#amount-two").val(($("#slider-dice-two").slider("value") / 65536 * 100).toFixed(2) + "%");
         $("#amount-one").val($("#slider-dice-one").slider("value") / 1000);
         Refresh();
     });
+    setTimeout(function () {
+        $('#amount-one').val(((balance - 0.02) / 2).toFixed(3));
+        $('#amount-one').change();
+        Refresh();
+    }, 1000);
+
 })
