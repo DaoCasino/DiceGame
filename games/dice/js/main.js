@@ -1,10 +1,11 @@
-var balance = ".::::.";
+var balance = 1;
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 var addressContract = "0xe061a411d69853155d221edc7c837b338f23730d";
-var betEth; //0,2 ставка эфира
+var betEth = 1; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
 var chance = 32768;
+//var urlInfura = "http://46.101.244.101:8545";
 var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids;
 var game = false;
@@ -49,7 +50,7 @@ function loadData() {
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
     }
-    console.log("version 0.44 Infura") // VERSION !
+    console.log("version 0.44a Infura") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -171,16 +172,22 @@ function getContractBalance() {
             "params": [addressContract, "latest"]
         }),
         success: function (d) {
-            bankroll = (d.result / 1000000000000000000).toFixed(5)
+            bankroll = +(d.result / 1000000000000000000).toFixed(5)
             $('#contractBalance').html("CONTRACT ( " + bankroll + " ETH )");
         }
     });
 };
+
 setInterval(function () {
     if (openkey) {
+        
         balance = $('#balance').html();
         balance = +balance.substr(0, balance.length - 4);
         balance = +balance.toFixed(8);
+        // if(balance = NaN){
+        //     console.log("NaN");
+        //     balance = 0;
+        // }
         if (balance < 0.02 && !game) {
             disabled(true);
             $("#label").text(" NO MONEY ");
@@ -211,7 +218,7 @@ function initGame() {
     $("#total-paid").html(paids + ' ETH');
     $("#total-send").html(sends + ' ETH (' + ((paids / sends) * 100).toFixed(2) + '%)');
     getContractBalance();
-    $("#contract").html('<a target="_blank" href="https://testnet.etherscan.io/address/' + addressContract + '">' + addressContract.slice(0, 24) + '...</a>')
+    $("#contract").html('<a target="_blank" href="https://ropsten.etherscan.io/address/' + addressContract + '">' + addressContract.slice(0, 24) + '...</a>')
     GetLogs();
     $('#all').click();
     Refresh();
@@ -234,9 +241,8 @@ function disabled(status) {
 };
 
 function Refresh() {
-    maxBetEth = (1/10*bankroll)/((65536 - 1310) / chance);
+    maxBetEth = (bankroll/10+betEth)/((65536 - 1310) / chance);
     if( maxBetEth < balance -0.02){
-        //betEth = maxBetEth;
         $("#slider-dice-one").slider("option", "max", maxBetEth*1000);
         $("#amount-one").val(betEth);
         if(betEth > maxBetEth){
@@ -253,9 +259,9 @@ function Refresh() {
         }
     }
     else{
-
-        maxBetEth = (balance * 1000) - 20;
-      $("#slider-dice-one").slider("option", "max", maxBetEth);  
+        maxBetEth = balance -0.02;
+        console.log(maxBetEth, balance, bankroll, chance, betEth)
+      $("#slider-dice-one").slider("option", "max", maxBetEth*1000);  
     }
     $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
     $("#payout").val("x" + ((65536 - 1310) / chance).toFixed(5));
@@ -315,8 +321,8 @@ function startGame() {
                                     $("#randomnum").text("Sorry, transaction failed");
                                     gameend();
                                 } else {
-                                    $("#Tx").html('<a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
-                                    $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
+                                    $("#Tx").html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
+                                    $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
                                     disabled(true);
                                     $("#randomnum").text("Please, wait . . . ");
                                     Timer = setInterval(function () {
