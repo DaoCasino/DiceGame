@@ -1,8 +1,18 @@
 $(document).ready(function () {
-    
+    $("#slider-dice-one").slider({
+            range: "min",
+            step: 0.5,
+            value: 10,
+            min: 1,
+            max: 2000,
+            slide: function (event, ui) {
+                betEth = ui.value / 1000;
+                $("#amount-one").val(ui.value / 1000);
+                Refresh();
+            }
+        });
     $("input#checked-on").prop('disabled', true);
     var clipboard = new Clipboard('#openkey');
-
     $('#all').click(function () {
         getAllLogs();
         $('.active').removeClass('active')
@@ -100,18 +110,7 @@ $(document).ready(function () {
             betEth = +value;
             //Refresh();
         });
-        $("#slider-dice-one").slider({
-            range: "min",
-            step: 0.5,
-            value: 10,
-            min: 1,
-            max: 2000,
-            slide: function (event, ui) {
-                betEth = ui.value / 1000;
-                $("#amount-one").val(ui.value / 1000);
-                Refresh();
-            }
-        });
+        
         $("#slider-dice-two").slider({
             range: "min",
             value: 32768,
@@ -128,8 +127,9 @@ $(document).ready(function () {
         $("#amount-one").val($("#slider-dice-one").slider("value") / 1000);
         Refresh();
     });
+
     setTimeout(function () {
-        $('#amount-one').val(((balance - 0.02) / 2).toFixed(3));
+        $('#amount-one').val((maxBetEth).toFixed(3));
         $('#amount-one').change();
         Refresh();
     }, 1000);
