@@ -437,8 +437,8 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(this.tfHousePoints);
 	
 	this.mixingCard = new ItemMixing(this);
-	this.mixingCard.x = _W/2 + 300;
-	this.mixingCard.y = _H/2;
+	this.mixingCard.x = _W/2 + 400;
+	this.mixingCard.y = _H/2 - 150;
 	this.mixingCard.visible = false;
 	this.addChild(this.mixingCard);
 	
@@ -942,7 +942,7 @@ ScrGame.prototype.isDoubleAvailable = function() {
 		if((stateNow == S_IN_PROGRESS && 
 		this.myPoints > 8 && this.myPoints < 12 && this._arMyCards.length == 2) ||
 		(stateNow == S_IN_PROGRESS_SPLIT && this._arMySplitCards.length == 2 &&
-		split.playerScore > 8 && split.playerScore < 12)){
+		this.mySplitPoints.playerScore > 8 && this.mySplitPoints.playerScore < 12)){
 			return true;
 		}
 	}
@@ -1350,7 +1350,7 @@ ScrGame.prototype.loadBet = function(value){
 		this.bBetLoad = true;
 		betEth = Number(hexToNum(value));
 		betGame = toFixed((betEth/1000000000000000000), 4)*c;
-		var str = String(betGame/c) + " eth";
+		var str = String(betGame/c);
 		this.tfMyBet.setText(str);
 		
 		this.fillChips(betGame);
@@ -1461,7 +1461,7 @@ ScrGame.prototype.showResult = function(_name, _x, _y) {
 	var tf = prnt.createObj({x:_x, y:_y}, _name);
 	tf.alpha = 0;
 	
-	createjs.Tween.get(tf).wait(7000).to({y:_y, alpha:1},300).to({y:_y-50},500);
+	createjs.Tween.get(tf).wait(5000).to({y:_y, alpha:1},300).to({y:_y-50},500);
 }
 
 ScrGame.prototype.shareTwitter = function() {
@@ -1609,8 +1609,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		betEth = betEth*2;
 		betGame = toFixed((betEth/1000000000000000000), 4)*100;
 		prnt.fillChips(betGame);
-		var str = "Bet " + String(betGame/100) + " eth";
-		prnt.tfSplitBet.setText(str);
+		prnt.tfMyBet.setText(betGame/100);
 	}
 	
 	var options = {};
@@ -1832,7 +1831,7 @@ ScrGame.prototype.response = function(command, value) {
 					// console.log("blackjack");
 				}
 				if((stateOld == -1 && !prnt.bClickStart && 
-				prnt._arMyCards.length > 0) || 
+				prnt._arMyCards.length == 0) || 
 				stateOld == S_IN_PROGRESS || 
 				stateOld == S_IN_PROGRESS_SPLIT){
 					prnt.bWait = false;
@@ -1919,7 +1918,9 @@ ScrGame.prototype.update = function(){
 		}
 	}
 	
-	this.mixingCard.visible = this.bWait;
+	if(stateNow > -1){
+		this.mixingCard.visible = this.bWait;
+	}
 	
 	if(this.bWait){
 		this.timeWait += diffTime;
