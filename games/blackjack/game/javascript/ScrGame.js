@@ -1512,6 +1512,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	
 	if (newObj) {
 		if(name == "tfWin"){
+			mc = addText(R_WIN, 50, "#A7FF17", "#BBFFC1", "left", 300, 4);
 			mc.name = "tfWin";
 			mc.w = mc.width;
 		} else if(name == "tfBust"){
