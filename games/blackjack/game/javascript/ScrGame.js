@@ -282,24 +282,6 @@ ScrGame.prototype.clearSplitChips = function(){
 	this._arSplitChips = [];
 }
 
-ScrGame.prototype.loadGame = function(){
-	if(!this.bGameLoad){
-		this.bGameLoad = true;
-		this.showButtons(true);
-		var i = 0;
-		
-		for (i = loadPlayerCard; i < this.countPlayerCard; i++) {
-			this.getPlayerCard(i);
-		}
-		for (i = loadPlayerSplitCard; i < this.countPlayerSplitCard; i++) {
-			this.getSplitCard(i);
-		}
-		for (i = loadHouseCard; i < this.countHouseCard; i++) {
-			this.getHouseCard(i);
-		}
-	}
-}
-
 ScrGame.prototype.createAccount = function() {
 	if(privkey || options_debug){
 		if(openkey){}else{openkey=1, privkey=1};
@@ -617,7 +599,7 @@ ScrGame.prototype.showChips = function(value) {
 	if(value){
 		alpha = 1;
 	}
-	if(this.startGame){
+	if(this.startGame || !this.bGameLoad){
 		alpha = a;
 	}
 	if(betEth != 0 && value && this.bWait){
@@ -1512,7 +1494,7 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	
 	if (newObj) {
 		if(name == "tfWin"){
-			mc = addText(R_WIN, 50, "#A7FF17", "#BBFFC1", "left", 300, 4);
+			mc = addText(R_WIN, 50, "#A7FF17", "#062703", "left", 300, 4);
 			mc.name = "tfWin";
 			mc.w = mc.width;
 		} else if(name == "tfBust"){
@@ -1738,7 +1720,6 @@ ScrGame.prototype.response = function(command, value) {
 		console.log("state:", stateNow, stateOld);
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			
 			if(stateNow == S_IN_PROGRESS ||
 			stateNow == S_IN_PROGRESS_SPLIT){
 				if(stateNow == S_IN_PROGRESS_SPLIT && !prnt.bStandSplit){
@@ -1774,9 +1755,8 @@ ScrGame.prototype.response = function(command, value) {
 			} else {
 				prnt.showMyPoints();
 				prnt.showMySplitPoints();
-				if(stateOld == -1 && betEth == 0){
-					prnt.arrow.visible = true;
-				}
+				// prnt.arrow.visible = (stateOld == -1 && betEth == 0);
+				prnt.arrow.visible = (betEth == 0);
 				var _x = _W/2 - 80-75;
 				var _y = _H/2 - 35;
 				if(prnt.mySplitPoints > 0){
@@ -1793,17 +1773,20 @@ ScrGame.prototype.response = function(command, value) {
 					checkResult = true;
 					if(checkResult && prnt._arMySplitCards.length > 0){
 						var _xSpl = _W/2 + 200-75;
-						if(prnt.mySplitPoints > prnt.housePoints){
+						if(prnt.mySplitPoints > 21){ 
+							prnt.showResult("tfBust", _xSpl, _y);
+						} else if(prnt.mySplitPoints > prnt.housePoints){
 							prnt.showResult("tfWin", _xSpl, _y);
 						} else if(prnt.mySplitPoints == prnt.housePoints){
 							prnt.showResult("tfPush", _xSpl, _y);
 						} else {
-							if(prnt.mySplitPoints > 21){
-								prnt.showResult("tfBust", _xSpl, _y);
-							} else {
-								prnt.showResult("tfLose", _xSpl, _y);
-							}
+							prnt.showResult("tfLose", _xSpl, _y);
 						}						
+					}
+				} else {
+					// if BLACKJACK
+					if(prnt.timeTotal > 30000){
+						prnt.getPlayerCardsNumber();
 					}
 				}
 				
@@ -1837,8 +1820,7 @@ ScrGame.prototype.response = function(command, value) {
 				
 				if(stateOld == S_IN_PROGRESS || 
 				stateOld == S_IN_PROGRESS_SPLIT ||
-				prnt.bStand || 
-				prnt.myPoints == 21){
+				prnt.bStand){
 					prnt.getSplitCardsNumber();
 					prnt.getPlayerCardsNumber();
 					prnt.getHouseCardsNumber();
@@ -1847,7 +1829,7 @@ ScrGame.prototype.response = function(command, value) {
 					// console.log("blackjack");
 				}
 				if((stateOld == -1 && !prnt.bClickStart && 
-				prnt._arMyCards.length == 0) || 
+				prnt._arMyCards.length == 0 && prnt.bGameLoad) || 
 				stateOld == S_IN_PROGRESS || 
 				stateOld == S_IN_PROGRESS_SPLIT){
 					prnt.bWait = false;
@@ -1872,6 +1854,9 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.bClickStart = false;
 				prnt.showError(ERROR_DEAL);
 			}*/
+		}
+		if(!prnt.bGameLoad){
+			prnt.bGameLoad = true;
 		}
 	} else if(command == "deal" ||
 			command == "hit" ||
@@ -1972,7 +1957,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnDeal"){
 		var curBet = betEth/1000000000000000000;
-		if(betEth >= minBet && obj_game["balanceBank"] >= curBet*2.5){
+		if(betEth >= minBet && obj_game["balanceBank"] >= curBet*5){
 			item_mc.alpha = 0.5;
 			this.btnClear.alpha = 0.5;
 			this.bWait = true;
