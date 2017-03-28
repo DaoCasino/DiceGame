@@ -353,6 +353,9 @@ contract BlackJack is owned {
 						dealCard(false, game);
 					}
 					game.state = GameState.HouseWon; // finish the game
+					if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
+						if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
+					}
 					return;
 				}
 
