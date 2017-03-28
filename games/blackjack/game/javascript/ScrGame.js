@@ -1512,7 +1512,6 @@ ScrGame.prototype.createObj = function(point, name, sc) {
 	
 	if (newObj) {
 		if(name == "tfWin"){
-			mc = addText(R_WIN, 50, "#5FEE00", "#193F1B", "left", 300, 4);
 			mc.name = "tfWin";
 			mc.w = mc.width;
 		} else if(name == "tfBust"){
@@ -1609,7 +1608,11 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		betEth = betEth*2;
 		betGame = toFixed((betEth/1000000000000000000), 4)*100;
 		prnt.fillChips(betGame);
-		prnt.tfMyBet.setText(betGame/100);
+		if(stateNow == C_GAME_SPLIT_STATE){
+			prnt.tfSplitBet.setText(betGame/100);
+		} else {
+			prnt.tfMyBet.setText(betGame/100);
+		}
 	}
 	
 	var options = {};
@@ -1787,19 +1790,31 @@ ScrGame.prototype.response = function(command, value) {
 				stateOld == S_IN_PROGRESS_SPLIT ||
 				(prnt.startGame && betEth>0 && prnt._arMyCards.length > 0)){
 					checkResult = true;
+					if(checkResult && prnt._arMySplitCards.length > 0){
+						var _xSpl = _W/2 + 200-75;
+						if(prnt.mySplitPoints > prnt.housePoints){
+							prnt.showResult("tfWin", _xSpl, _y);
+						} else if(prnt.mySplitPoints == prnt.housePoints){
+							prnt.showResult("tfPush", _xSpl, _y);
+						} else {
+							if(prnt.mySplitPoints > 21){
+								prnt.showResult("tfBust", _xSpl, _y);
+							} else {
+								prnt.showResult("tfLose", _xSpl, _y);
+							}
+						}						
+					}
 				}
 				
 				switch (stateNow){
 					case S_PLAYER_WON:
 						if(checkResult){
-							// prnt.tfStatus.setText("You won!");
 							prnt.clearBet();
 							prnt.showResult("tfWin", _x, _y);
 						}
 						break;
 					case S_HOUSE_WON:
 						if(checkResult){
-							// prnt.tfStatus.setText("House won!");
 							prnt.clearBet();
 							
 							if((_x > _W/2 && prnt.mySplitPoints > 21) ||
