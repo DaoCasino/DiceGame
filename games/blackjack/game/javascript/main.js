@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.20"
+var version = "v. 1.0.21"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -17,16 +17,15 @@ var stats; //для вывода статистики справа
 var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-// var addressTestContract = "0xab34cecb580f7e375f1db1d8c5ca182db56ee318"; //My Work
-// var	addressTestContract = "0x8eae29b6897e449f631e0e301c606808bb85cdb5"; // My Split 777
-// var	addressTestContract = "0x59a379d307f8c776ede0c413206eb2dfaac0a261"; // My Split A
-var	addressTestContract = "0x61797c95e552d744e3026d0d5a70af75a6d8ca14"; // Double
+var	addressRpcContract = "0xc0951cf7a33d26642c8c48d308345a5444562e15";
+var	addressTestContract = "0xd308a86cf93e58f7b780cedbc2808b7182e09fe6";
 
 var options_debug = false;
 var options_test = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
+var options_rpc = false;
 var options_music = true;
 var options_sound = true;
 var options_mobile = true;
@@ -84,7 +83,6 @@ function initGame() {
 	
 	// soundManager = new SoundManager();
 	// soundManager.currentMusic = "none";
-	infura = new Infura();
 	
 	LoadBack = new PIXI.Container();
 	stage.addChild(LoadBack);
@@ -339,6 +337,8 @@ function handleComplete(evt) {
 	if(options_testnet){
 		version = version + " testnet"
 	}
+	
+	infura = new Infura();
 	
 	start();
 }
