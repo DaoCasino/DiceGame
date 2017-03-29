@@ -611,11 +611,14 @@ ScrGame.prototype.showChips = function(value) {
 		obj.alpha = alpha;
 	}
 	if(value && betEth == 0){
-		this.tfStatus.setText("Select bet");
 		this.tfMyBet.setText("");
 		this.tfSplitBet.setText("");
-		this.arrow.visible = true;
 		this.bClear = false;
+		if(this.bGameLoad){
+			this.bWait = false;
+			this.arrow.visible = true;
+			this.tfStatus.setText("Select bet");
+		}
 	}
 }
 
@@ -1609,6 +1612,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		}
 	}
 	
+	infura.sendRequest("getBalance", openkey, _callback);
 	var options = {};
 	options.nonce = value;
 	options.to = addressContract;
@@ -1630,7 +1634,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 			tx.sign(new buf(privkey, 'hex'));
 
 			var serializedTx = tx.serialize().toString('hex');
-			console.log("The transaction was signed: "+serializedTx);
+			console.log("The transaction was signed");
 			
 			var params = "0x"+String(serializedTx);
 			infura.sendRequest(nameRequest, params, _callback);
@@ -1873,12 +1877,8 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.showButtons(false);
 			}
 		} else {
-			prnt.bWait = false;
 			prnt.startGame = false;
 			prnt.showChips(true);
-			if(stateOld == -1 && betEth == 0){
-				prnt.arrow.visible = false;
-			}
 			/*if(prnt.bClickStart){
 				prnt.clearBet();
 				prnt.clearChips();
@@ -1906,6 +1906,7 @@ ScrGame.prototype.response = function(command, value) {
 			}
 		}
 	} else if(command == "sendRaw"){
+		infura.sendRequest("getBalance", openkey, _callback);
 	}
 }
 
