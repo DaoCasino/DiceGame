@@ -1841,13 +1841,13 @@ ScrGame.prototype.response = function(command, value) {
 			}
 		}
 	} else if(command == "getGameState"){
-		// console.log("state:", stateNow);
 		if(!isGame){
 			prnt.getIsGame();
 		}
 		
 		if(value != "0x" && isGame){
 			stateNow = hexToNum(value);
+			console.log("state:", stateNow);
 			if(stateNow == S_IN_PROGRESS ||
 			stateNow == S_IN_PROGRESS_SPLIT){
 				if(stateNow == S_IN_PROGRESS_SPLIT && !prnt.bStandSplit){
