@@ -978,6 +978,17 @@ ScrGame.prototype.checkGameState = function() {
 	infura.sendRequest("getGameState", params, _callback);
 }
 
+ScrGame.prototype.checkGameSplitState = function() {
+	if(openkey == undefined){
+		return false;
+	}
+	var data = "0x"+C_GAME_SPLIT_STATE;
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	infura.sendRequest("getSplitGameState", params, _callback);
+}
+
 ScrGame.prototype.addPlayerCard = function(){
 	for (var i = loadPlayerCard; i < this.countPlayerCard; i++) {
 		if(options_debug){
@@ -1591,7 +1602,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		betEth = betEth*2;
 		betGame = toFixed((betEth/1000000000000000000), 4)*100;
 		prnt.fillChips(betGame);
-		if(stateNow == C_GAME_SPLIT_STATE){
+		if(stateNow == S_IN_PROGRESS_SPLIT){
 			prnt.tfSplitBet.setText(betGame/100);
 		} else {
 			prnt.tfMyBet.setText(betGame/100);
@@ -1716,6 +1727,27 @@ ScrGame.prototype.response = function(command, value) {
 		hexToNum(value) && valInsurance == 0){
 			prnt.showInsurance();
 		}
+	} else if(command == "getSplitGameState"){
+		if(value != "0x"){
+			var stateSplit = hexToNum(value);
+			var _x = _W/2 + 200-75;
+			var _y = _H/2 - 35;
+			switch (stateSplit){
+				case S_PLAYER_WON:
+						prnt.showResult("tfWin", _x, _y);
+					break;
+				case S_HOUSE_WON:
+					if(prnt.mySplitPoints > 21){
+						prnt.showResult("tfBust", _x, _y);
+					} else {
+						prnt.showResult("tfLose", _x, _y);
+					}
+					break;
+				case S_TIE:
+					prnt.showResult("tfPush", _x, _y);
+					break;
+			}
+		}
 	} else if(command == "getGameState"){
 		console.log("state:", stateNow, stateOld);
 		if(value != "0x"){
@@ -1755,7 +1787,6 @@ ScrGame.prototype.response = function(command, value) {
 			} else {
 				prnt.showMyPoints();
 				prnt.showMySplitPoints();
-				// prnt.arrow.visible = (stateOld == -1 && betEth == 0);
 				prnt.arrow.visible = (betEth == 0);
 				var _x = _W/2 - 80-75;
 				var _y = _H/2 - 35;
@@ -1772,7 +1803,8 @@ ScrGame.prototype.response = function(command, value) {
 				(prnt.startGame && betEth>0 && prnt._arMyCards.length > 0)){
 					checkResult = true;
 					if(checkResult && prnt._arMySplitCards.length > 0){
-						var _xSpl = _W/2 + 200-75;
+						prnt.checkGameSplitState();
+						/*var _xSpl = _W/2 + 200-75;
 						if(prnt.mySplitPoints > 21){ 
 							prnt.showResult("tfBust", _xSpl, _y);
 						} else if(prnt.mySplitPoints > prnt.housePoints){
@@ -1781,7 +1813,7 @@ ScrGame.prototype.response = function(command, value) {
 							prnt.showResult("tfPush", _xSpl, _y);
 						} else {
 							prnt.showResult("tfLose", _xSpl, _y);
-						}						
+						}	*/					
 					}
 				} else {
 					// if BLACKJACK
@@ -1811,7 +1843,6 @@ ScrGame.prototype.response = function(command, value) {
 						break;
 					case S_TIE:
 						if(checkResult){
-							// prnt.tfStatus.setText("Tie!");
 							prnt.clearBet();
 							prnt.showResult("tfPush", _x, _y);
 						}
