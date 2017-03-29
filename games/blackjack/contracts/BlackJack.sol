@@ -10,7 +10,7 @@ contract BlackJack is owned {
 
   uint8 BLACKJACK = 21;
 
-    enum GameState {
+  enum GameState {
     InProgress,
     PlayerWon,
     HouseWon,
@@ -35,6 +35,7 @@ contract BlackJack is owned {
 
     uint insurance;
     bool insuranceAvailable;
+    bool isGame;
   }
 
   mapping (address => Game) public games;
@@ -111,11 +112,14 @@ contract BlackJack is owned {
       state: GameState.InProgress,
       seed: 3,
       insurance: 0,
-      insuranceAvailable: false
+      insuranceAvailable: false,
+      isGame: true
     });
 
     games[msg.sender] = game;
     delete splitGames[msg.sender];
+    
+    games[msg.sender].isGame = true;
 
     // deal the cards
     dealCard(true, games[msg.sender]);
@@ -270,7 +274,8 @@ contract BlackJack is owned {
       state: GameState.InProgress,
       seed: 128,
       insurance: 0,
-      insuranceAvailable: false
+      insuranceAvailable: false,
+      isGame: false
     });
 
     splitGames[msg.sender] = splitGame;
@@ -321,6 +326,7 @@ contract BlackJack is owned {
     GameStatus(game.houseScore, game.houseBigScore, game.playerScore, game.playerBigScore);
 
     if (game.houseBigScore == BLACKJACK || game.houseScore == BLACKJACK) {
+      game.isGame = false;
       if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
         // TIE
         if (!msg.sender.send(game.bet)) throw; // return bet to the player
@@ -336,6 +342,7 @@ contract BlackJack is owned {
       }
     } else {
       if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
+          game.isGame = false;
         // PLAYER WON
         if (game.playerCards.length == 2 && (Deck.isTen(game.playerCards[0]) || Deck.isTen(game.playerCards[1]))) {
           // Natural blackjack => return x2.5
@@ -352,6 +359,7 @@ contract BlackJack is owned {
           if (game.houseCards.length == 1) {
             dealCard(false, game);
           }
+          game.isGame = false;
           game.state = GameState.HouseWon; // finish the game
           if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
             if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
@@ -370,6 +378,7 @@ contract BlackJack is owned {
         if (game.playerBigScore > BLACKJACK) {
           if (game.playerScore > BLACKJACK) {
             // HOUSE WON
+            game.isGame = false;
             game.state = GameState.HouseWon; // simply finish the game
             return;
           } else {
@@ -384,6 +393,7 @@ contract BlackJack is owned {
             // PLAYER WON
             if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
             game.state = GameState.PlayerWon;
+            game.isGame = false;
             return;
           } else {
             houseShortage = BLACKJACK - game.houseScore;
@@ -396,12 +406,15 @@ contract BlackJack is owned {
           // TIE
           if (!msg.sender.send(game.bet)) throw; // return bet to the player
           game.state = GameState.Tie;
+          game.isGame = false;
         } else if (houseShortage > playerShortage) {
           // PLAYER WON
           if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
           game.state = GameState.PlayerWon;
+          game.isGame = false;
         } else {
           game.state = GameState.HouseWon;
+          game.isGame = false;
         }
       }
     }
@@ -469,6 +482,18 @@ contract BlackJack is owned {
 
   function getSplitCardsNumber() public constant returns(uint) {
     return splitGames[msg.sender].playerCards.length;
+  }
+  
+  function getIsGame() public constant returns(bool) {
+    return games[msg.sender].isGame;
+  }
+  
+  function getPlayerScore() public constant returns(uint) {
+    return games[msg.sender].playerScore;
+  }
+  
+  function getSplitScore() public constant returns(uint) {
+    return splitGames[msg.sender].playerScore;
   }
 
   function getInsurance() public constant returns(uint) {
