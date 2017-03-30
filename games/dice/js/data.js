@@ -15,7 +15,7 @@ function GetLogs() {
             "jsonrpc": '2.0',
             "method": 'eth_getLogs',
             "params": [{
-                "fromBlock": "650000",
+                "fromBlock": "599000",
                 "toBlock": "latest",
                 "address": addressContract,
             }]
@@ -93,14 +93,14 @@ function getMyLogs() {
                     color = "gray";
                 }
                 if (player == openkey && ($('tbody tr').length != 10)) {
-                $(".dice-table#table").append('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://testnet.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
+                $(".dice-table#table").append('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
                     "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance.toFixed() + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + result + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' ETH</td><td  aria-label="PAYOUT">x' + (payout / bet / 10).toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' ETH</td></tr>');
                 }
             }
         }
     }
     if (game) {
-        $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + ' "> 0x' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5"  style="height: 63px"> ...pending... </td></tr>');
+        $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> 0x' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5"  style="height: 63px"> ...pending... </td></tr>');
     }
 }
 
@@ -128,12 +128,12 @@ function getAllLogs() {
                     color = "gray";
                 }
                 var rnd = parseInt(arGame[i][7].substr(2), 16)
-                $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://testnet.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
+                $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
                     "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance.toFixed() + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + result + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' ETH</td><td  aria-label="PAYOUT">x' + (payout / bet / 10).toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' ETH</td></tr>');
             }
         }
     }
     if (game) {
-        $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://testnet.etherscan.io/tx/' + lastTx + ' "> 0x' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
+        $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> 0x' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
     }
 }

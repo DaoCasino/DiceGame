@@ -6,10 +6,12 @@
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 
 var Infura = function() {
-    if(options_testnet){
+	if(options_rpc){
+		urlInfura = "http://46.101.244.101:8545";
+    } else if(options_testnet){
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		addressContract = addressTestContract;
 	}
+	console.log("urlInfura:",urlInfura);
 };
 
 Infura.prototype.sendRequest = function(name, params, callback){

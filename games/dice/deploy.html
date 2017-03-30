@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Deploy Contract</title>
+</head>
+
+<body>
+    <script src="js/eth_api.js">
+    </script>
+    <script src="js/jquery-1.11.1.min.js">
+    </script>
+    <textarea name="data" id="data" cols="30" rows="10"></textarea>
+    <button id="btn">deploy</button>
+    <div id="text"></div>
+    <script>
+        var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+        function numToHex(num) {
+            return num.toString(16);
+        };
+
+        function hexToNum(str) {
+            return parseInt(str, 16);
+        };
+
+        function pad(num, size) {
+            var s = num + "";
+            while (s.length < size) s = "0" + s;
+            return s;
+        };
+
+        function isLocalStorageAvailable() {
+            try {
+                return 'localStorage' in window && window['localStorage'] !== null;
+            } catch (e) {
+                console.log("localStorage_failed:", e);
+                return false;
+            }
+        };
+
+        function loadData() {
+            if (isLocalStorageAvailable()) {
+                openkey = localStorage.getItem('openkey')
+                privkey = localStorage.getItem('privkey')
+            }
+            console.log("openkey:", openkey)
+            console.log("privkey:", privkey)
+        };
+loadData();
+        function sendTx() {
+            if (openkey) {
+                $.ajax({
+                    type: "POST",
+                    url: urlInfura,
+                    dataType: 'json',
+                    async: false,
+                    data: JSON.stringify({
+                        "id": 0,
+                        "jsonrpc": '2.0',
+                        "method": "eth_getTransactionCount",
+                        "params": [openkey, "latest"]
+                    }),
+                    success: function (d) {
+                        console.log("urlInfura:", urlInfura);
+                        console.log("get nonce action " + d.result);
+                        var callData = "0x1f7b4f30";
+                        var options = {};
+                        options.nonce = d.result;
+                        //options.to = addressContract;
+                        options.data = $('#data').val(); // method from contact
+                        options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
+                       options.gasLimit = 0x4630C0; //web3.toHex('600000');
+                        options.value = 0;
+                        if (privkey) {
+                            if (buf == undefined) {
+                                console.log("ERROR_TRANSACTION");
+                            } else {
+                                //приватный ключ игрока, подписываем транзакцию
+                                var tx = new EthereumTx(options);
+                                tx.sign(new buf(privkey, 'hex'));
+                                var serializedTx = tx.serialize().toString('hex');
+                                console.log("The transaction was signed: " + serializedTx);
+                                $.ajax({
+                                    type: "POST",
+                                    url: urlInfura,
+                                    dataType: 'json',
+                                    async: false,
+                                    data: JSON.stringify({
+                                        "id": 0,
+                                        "jsonrpc": '2.0',
+                                        "method": "eth_sendRawTransaction",
+                                        "params": ["0x" + serializedTx]
+                                    }),
+                                    success: function (d) {
+                                        console.log("Транзакция отправлена в сеть:", d.result);
+                                        $('#text').html("<a href=\"https://ropsten.etherscan.io/tx/"+d.result+">Transaction</a>")
+                                    }
+                                })
+                            }
+                        }
+                    }
+                })
+            }
+        };
+
+        $('#btn').click(function(){
+        $('#text').text($('#data').val())
+        console.log($('#data').val())
+        sendTx();
+        })
+    </script>
+</body>
+
+</html>
