@@ -1651,6 +1651,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		price = betEth;
 		betEth = betEth*2;
 		betGame = toFixed((betEth/1000000000000000000), 4)*100;
+		betGameCur = betGame;
 		prnt.fillChips(betGame);
 		if(stateNow == S_IN_PROGRESS_SPLIT){
 			prnt.tfSplitBet.setText(betGame/100);
