@@ -1787,8 +1787,6 @@ ScrGame.prototype.response = function(command, value) {
 		var point = Number(hexToNum(value));
 		var bet = betGameCur/100;
 		var strResult = "";
-		prnt.myPoints = point;
-		prnt.tfMyPoints.setText(prnt.myPoints);
 		switch (stateNow){
 			case S_PLAYER_WON:
 				if(point == 21 && prnt._arMyCards.length == 2){
@@ -1811,8 +1809,6 @@ ScrGame.prototype.response = function(command, value) {
 		var point = Number(hexToNum(value));
 		var bet = betGameCur/100;
 		var strResult = "";
-		prnt.mySplitPoints = point;
-		prnt.tfMySplitPoints.setText(prnt.mySplitPoints);
 		switch (stateNow){
 			case S_PLAYER_WON:
 				if(point == 21 && prnt._arMySplitCards.length == 2){
