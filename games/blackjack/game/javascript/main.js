@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.24"
+var version = "v. 1.0.25"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -18,7 +18,7 @@ var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 var	addressRpcContract = "0xc0951cf7a33d26642c8c48d308345a5444562e15";
-var	addressTestContract = "0xfbd44bab7ff6367738aa1f57603668d49b3695b4";
+var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9";
 
 var options_debug = false;
 var options_test = false;

@@ -15,7 +15,8 @@ contract BlackJack is owned {
     PlayerWon,
     HouseWon,
     Tie,
-    InProgressSplit
+    InProgressSplit,
+    PlayerBlackJack
   }
 
   struct Game {
@@ -244,7 +245,6 @@ contract BlackJack is owned {
     // do nothing
   }
 
-
   function split()
     public
     payable
@@ -342,16 +342,17 @@ contract BlackJack is owned {
       }
     } else {
       if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
-          game.isGame = false;
         // PLAYER WON
         if (game.playerCards.length == 2 && (Deck.isTen(game.playerCards[0]) || Deck.isTen(game.playerCards[1]))) {
           // Natural blackjack => return x2.5
           if (!msg.sender.send((game.bet * 5) / 2)) throw; // send prize to the player
+          game.state = GameState.PlayerBlackJack; // finish the game
         } else {
           // Usual blackjack => return x2
           if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
+          game.state = GameState.PlayerWon; // finish the game
         }
-        game.state = GameState.PlayerWon; // finish the game
+        game.isGame = false;
         return;
       } else {
         if (game.playerScore > BLACKJACK) {
