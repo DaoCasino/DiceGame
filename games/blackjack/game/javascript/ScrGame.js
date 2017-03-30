@@ -1887,7 +1887,7 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.getInsurance();
 				prnt.isInsuranceAvailable();
 				prnt.tfStatus.setText("");	
-			} else {
+			} else if(prnt.startGame){
 				prnt.showMyPoints();
 				prnt.showMySplitPoints();
 				var _x = _W/2 - 80-75;
