@@ -970,9 +970,10 @@ ScrGame.prototype.getHouseCardsNumber = function() {
 ScrGame.prototype.isSplitAvailable = function() {
 	var value = false;
 	
+	console.log("isSplitAvailable:", Math.floor(obj_game["balance"]*100), betGame);
 	if(stateNow == S_IN_PROGRESS && 
 	this._arMyCards.length == 2 &&
-	obj_game["balance"]*100 > betGame &&
+	Math.floor(obj_game["balance"]*100) > betGame &&
 	this.bSplit == false &&
 	this._arMySplitCards.length == 0 &&
 	this._arMyPoints[0] == this._arMyPoints[1]){
