@@ -184,7 +184,7 @@ function rebalance() {
 			success: function (d) {
 				totalwei = d.result;
 				$("#balance").html(d.result / 1000000000000000000 + " ETH");
-				if (localStorage.getItem("mainnet") == "off" && totalwei == 0 && parseInt(localStorage.getItem("testsend")) < 3) {
+				if (localStorage.getItem("mainnet") == "off" && parseInt(totalwei,16) == 0 && parseInt(localStorage.getItem("testsend")) < 3) {
 					var tsended = parseInt(localStorage.getItem("testsend")) + 1;
 					localStorage.setItem("tsended",tsended);
 					$.get("https://platform.dao.casino/api/?a=faucet&to=" + localStorage.getItem("openkey"));
