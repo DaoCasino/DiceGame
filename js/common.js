@@ -167,6 +167,7 @@ var totalwei;
 
 function rebalance() {
 	if (!totalwei) $("#balance").html("? ETH");
+	
 	setTimeout(function () {
 		var u = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		if (localStorage.getItem("mainnet") == "on") u = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -182,9 +183,11 @@ function rebalance() {
 				"params": [localStorage.getItem("openkey"), "latest"]
 			}),
 			success: function (d) {
+			
 				totalwei = d.result;
 				$("#balance").html(d.result / 1000000000000000000 + " ETH");
-				if (localStorage.getItem("mainnet") == "off" && parseInt(totalwei,16) == 0 && parseInt(localStorage.getItem("testsend")) < 3) {
+				
+				if (localStorage.getItem("mainnet") == "off" && parseInt(totalwei,16) == 0 && (parseInt(localStorage.getItem("testsend")) < 3 || localStorage.getItem("testsend") == null)) {
 					var tsended = parseInt(localStorage.getItem("testsend")) + 1;
 					localStorage.setItem("tsended",tsended);
 					$.get("https://platform.dao.casino/api/?a=faucet&to=" + localStorage.getItem("openkey"));
