@@ -242,7 +242,12 @@ function disabled(status) {
 
 function Refresh() {
     maxBetEth = (bankroll/10+betEth)/((65536 - 1310) / chance);
-    if( maxBetEth < balance -0.02){
+    if(maxBetEth > 3){
+        maxBetEth = 3;
+        $("#slider-dice-one").slider("option", "max", maxBetEth*1000);
+        $("#amount-one").val(betEth);
+    }
+    else if( maxBetEth < balance -0.02){
         $("#slider-dice-one").slider("option", "max", maxBetEth*1000);
         $("#amount-one").val(betEth);
         if(betEth > maxBetEth){
