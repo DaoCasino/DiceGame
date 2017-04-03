@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.25"
+var version = "v. 1.0.26"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -39,6 +39,7 @@ var ERROR_BANK = 4;
 var ERROR_TRANSACTION = 5;
 var ERROR_BALANCE = 6;
 var ERROR_DEAL = 7;
+var ERROR_MAX_BET = 8;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame

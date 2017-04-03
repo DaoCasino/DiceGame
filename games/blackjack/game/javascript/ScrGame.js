@@ -48,6 +48,7 @@ var urlEtherscan = "https://api.etherscan.io/";
 var urlBalance = "";
 var betEth = 0; //ставка эфира
 var betGame = 0;
+var betSplitGame = 0;
 var betGameOld = 0;
 var betGameCur = 0;
 var valInsurance = 0;
@@ -261,6 +262,7 @@ ScrGame.prototype.clearGame = function(){
 ScrGame.prototype.clearBet = function(){
 	betEth = 0;
 	betGame = 0;
+	betSplitGame = 0;
 	betGameOld = 0;
 	valInsurance = 0;
 	this.clearChips();
@@ -459,7 +461,8 @@ ScrGame.prototype.createGUI = function() {
 	btnHit.visible = false;
 	btnStand.visible = false;
 	
-	var btnSmart = this.createButton("btnSmart", 120, _H-60, "Contract", 0.7, 40, 16);
+	this.createButton("btnSmart", 120, _H-60, "Contract", 0.7, 40);
+	this.createButton("btnDao", _W-120, _H-60, "DAO.CASINO", 0.7, 34);
 	
 	this.btnShare = addButton2("btnFacebookShare", _W - 120, 50, 0.75);
 	this.btnShare.name = "btnShare";
@@ -572,7 +575,7 @@ ScrGame.prototype.createButton = function(name, x, y, label, sc, size) {
 	btn.interactive = true;
 	btn.buttonMode=true;
 	btn.overSc=true;
-	if(name == "btnSmart"){
+	if(name == "btnSmart" || name == "btnDao"){
 		this.addChild(btn);
 	} else {
 		this.face_mc.addChild(btn);
@@ -970,11 +973,12 @@ ScrGame.prototype.getHouseCardsNumber = function() {
 ScrGame.prototype.isSplitAvailable = function() {
 	var value = false;
 	
-	console.log("isSplitAvailable:", Math.floor(obj_game["balance"]*100), betGame);
+	
 	if(stateNow == S_IN_PROGRESS && 
 	this._arMyCards.length == 2 &&
 	Math.floor(obj_game["balance"]*100) > betGame &&
 	this.bSplit == false &&
+	betGame > 0 &&
 	this._arMySplitCards.length == 0 &&
 	this._arMyPoints[0] == this._arMyPoints[1]){
 		value = true;
@@ -1138,6 +1142,7 @@ ScrGame.prototype.clickStand = function(){
 ScrGame.prototype.clickDouble = function(){
 	if(options_debug){
 	} else {
+		this.bWait = true;
 		this.bStand = true;
 		this.showButtons(false);
 		infura.sendRequest("double", openkey, _callback);
@@ -1218,7 +1223,9 @@ ScrGame.prototype.fillChips = function(value, type){
 	if(type == "split"){
 		this.clearSplitChips();
 		posX += 200;
-	} else if(this.bSplit || stateNow == S_IN_PROGRESS_SPLIT){
+	} else if(this.bSplit || 
+	stateNow == S_IN_PROGRESS_SPLIT || 
+	type == "main"){
 		this.clearChips();
 		posX -= 200;
 	} else {
@@ -1299,12 +1306,16 @@ ScrGame.prototype.sendCard = function(obj){
 		}
 		_y = _H/2 + 70;
 		prnt.showPlayerCard(card);
-		prnt.showButtons(true);
+		if(betGame > 0){
+			prnt.showButtons(true);
+		}
 	} else if(type == "split"){
 		_x = _W/2 + 200 + lastPlayerSplitCard*30;
 		_y = _H/2 + 70;
 		prnt.showPlayerSplitCard(card);
-		prnt.showButtons(true);
+		if(betGame > 0){
+			prnt.showButtons(true);
+		}
 	} else if(type == "house"){
 		_x = _W/2 - 80 + lastHouseCard*30;
 		_y = _H/2 - 200;
@@ -1383,15 +1394,18 @@ ScrGame.prototype.loadBet = function(value){
 	if(!this.bBetLoad){
 		var c = 100;
 		this.bBetLoad = true;
+		this.bWait = false;
 		betEth = Number(hexToNum(value));
 		betGame = toFixed((betEth/1000000000000000000), 4)*c;
+		betSplitGame = betGame;
 		betGameCur = betGame;
 		var str = String(betGame/c);
 		this.tfMyBet.setText(str);
-		
+		this.isSplitAvailable();
+		this.showButtons(true);
 		this.fillChips(betGame);
 		if(stateNow == S_IN_PROGRESS_SPLIT){
-			this.fillChips(betGame, "split");
+			this.fillChips(betSplitGame, "split");
 			this.tfSplitBet.setText(str);
 			this.tfMyBet.x = _W/2 - 250;
 		}
@@ -1405,7 +1419,12 @@ ScrGame.prototype.clickChip = function(item_mc){
 	var oldBet = betGame;
 	betGame += value;
 	betGame = toFixed(betGame, 2);
-	if(betGame > 5*c || betGame > obj_game["balance"]*c){
+	
+	if(betGame > obj_game["balance"]*c){
+		obj_game["game"].showError(ERROR_BALANCE);
+		betGame = oldBet;
+	} else if(betGame > 5*c){
+		obj_game["game"].showError(ERROR_MAX_BET);
 		betGame = oldBet;
 	} else {
 		var str = "Your bet: " + String(betGame/c);
@@ -1475,6 +1494,9 @@ ScrGame.prototype.showError = function(value, callback) {
 			break;
 		case ERROR_DEAL:
 			str = "OOOPS! \n The transaction did not pass. \n Try later."
+			break;
+		case ERROR_MAX_BET:
+			str = "OOOPS! \n The maximum bet is 5."
 			break;
 		default:
 			str = "ERR: " + value;
@@ -1650,13 +1672,14 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	} else if(name == "double"){
 		data = "0x"+C_DOUBLE;
 		price = betEth;
-		betEth = betEth*2;
-		betGame = toFixed((betEth/1000000000000000000), 4)*100;
-		betGameCur = betGame;
-		prnt.fillChips(betGame);
 		if(stateNow == S_IN_PROGRESS_SPLIT){
-			prnt.tfSplitBet.setText(betGame/100);
+			betSplitGame = toFixed((price*2/1000000000000000000), 4)*100;
+			prnt.fillChips(betSplitGame, "split");
+			prnt.tfSplitBet.setText(betSplitGame/100);
 		} else {
+			betGame = toFixed((price*2/1000000000000000000), 4)*100;
+			betGameCur = betGame;
+			prnt.fillChips(betGame, "main");
 			prnt.tfMyBet.setText(betGame/100);
 		}
 	}
@@ -1887,7 +1910,6 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.darkCards(prnt._arMySplitCards, false);
 					}
 				}
-				
 				prnt.startGame = true;
 				prnt.btnStart.alpha = 0.5;
 				prnt.btnClear.alpha = 0.5;
@@ -1899,6 +1921,11 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.getInsurance();
 				prnt.isInsuranceAvailable();
 				prnt.tfStatus.setText("");	
+				
+				if(!prnt.bBetLoad && betGame == 0){
+					prnt.showButtons(false);
+					prnt.bWait = true;
+				}
 			} else if(prnt.startGame){
 				prnt.showMyPoints();
 				prnt.showMySplitPoints();
@@ -1953,6 +1980,8 @@ ScrGame.prototype.response = function(command, value) {
 			
 			stateOld = stateNow;
 		} else if(stateNow == S_BLACKJACK && prnt.startGame) {
+			var _x = _W/2 - 80-75;
+			var _y = _H/2 - 35;
 			prnt.showResult("tfBlackjack", _x, _y);
 			isGame = false;
 			prnt.getSplitCardsNumber();
@@ -2104,6 +2133,10 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		}
 	} else if(item_mc.name == "btnSmart"){
 		this.showSmartContract();
+	} else if(item_mc.name == "btnDao"){
+		this.removeAllListener();
+		var url = "https://platform.dao.casino/";
+		window.open(url, "_self");
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();
 	} else if(item_mc.name == "btnStand"){
