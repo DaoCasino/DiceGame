@@ -18,6 +18,18 @@ contract owned {
 }
 
 contract PowerBall is owned {
+    
+    struct Ticket {
+        address player;
+        uint8[] whiteBalls;
+        uint8 redBall;
+        uint8 countPowerPlay;
+        uint8 countWhite; //match
+        uint8 countRed; //match
+        string res;
+    }
+    
+    bool acceptTicket = true;
     uint priceTicket = 20 finney; // 0.02 ether
     uint pricePowerPlay = 10 finney;
     uint16 numSession = 0;
@@ -26,7 +38,21 @@ contract PowerBall is owned {
     uint8[] arCasinoWhiteBalls;
     uint8[] arWhiteBalls;
     uint8[] dataPowerPlay; // multiplier
-    mapping (address => uint) public totalRollsByUser;
+    Ticket[] dataTickets;
+    
+	modifier betValueIsOk() {
+		if (msg.value < priceTicket || 
+		msg.value > (priceTicket+pricePowerPlay*5)) {
+			throw; // incorrect bet
+		}
+		_;
+	}
+	modifier isAcceptTicket() {
+		if (!acceptTicket) {
+			throw;
+		}
+		_;
+	}
     
     event logNum(
         uint value
@@ -42,17 +68,6 @@ contract PowerBall is owned {
     event logArr(
         uint8[] value
     );
-	
-    struct Ticket {
-        address player;
-        
-        uint8[] whiteBalls;
-        uint8 redBall;
-        uint8 countPowerPlay;
-        uint8 countWhite; //match
-        uint8 countRed; //match
-        string res;
-    }
     
     function PowerBall() { // Constructor
         arCasinoWhiteBalls = new uint8[](0);
@@ -92,8 +107,18 @@ contract PowerBall is owned {
         checkBalls(array);
     }
     
+    function checkCasinoBalls(uint8[] ar) private {
+        bool bMatch = checkBalls(ar);
+        
+        if(bMatch){
+            gSeed ++;
+            arWhiteBalls = new uint8[](0);
+            getBalls(arWhiteBalls);
+        }
+    }
+    
     // array.insexOf()
-    function checkBalls(uint8[] ar) private {
+    function checkBalls(uint8[] ar) private returns (bool){
         bool bMatch = false;
         uint8 i = 5;
         uint8 j = 5;
@@ -115,11 +140,7 @@ contract PowerBall is owned {
             }
         }
         
-        if(bMatch){
-            gSeed ++;
-            arWhiteBalls = new uint8[](0);
-            getBalls(arWhiteBalls);
-        }
+       return bMatch;
     }
     
     function getPrize(uint8 wb, uint8 rb) private returns (uint){
@@ -141,11 +162,93 @@ contract PowerBall is owned {
         return value;
     }
     
+    function setTicket(uint8[] wb, uint8 rb, uint8 pp) 
+	    public 
+	    payable 
+	    isAcceptTicket
+	    betValueIsOk 
+	{
+	    bool bMatch = true;
+	    if(wb.length == 5){
+	        bMatch = checkBalls(wb);
+	    }
+		if (bMatch) {
+		    throw; // incorrect balls
+		}
+		
+        Ticket memory ticket = Ticket({
+            player: msg.sender,
+            whiteBalls:wb,
+            redBall:rb,
+            countPowerPlay:pp,
+            countWhite:0,
+            countRed:0,
+            res:""
+        });
+        
+        dataTickets.push(ticket);
+	}
+	
+	function checkResult(Ticket ticket) private {
+		if(arCasinoWhiteBalls.length == 5 && redBall > 0){
+    		uint8 i = 5;
+            uint8 j = 5;
+            uint8 white = 0;
+            
+            while (i > 0) {
+                i--;
+                j = 5;
+                uint8 value1 = arCasinoWhiteBalls[i];
+                while (j > 0) {
+                    j--;
+                    uint8 value2 = ticket.whiteBalls[j];
+                    if(value1 == value2 && i != j){
+                        white++;
+                    }
+                }
+            }
+            
+            ticket.countWhite = white;
+            
+            if(ticket.redBall == redBall){
+    			ticket.countRed = 1;
+    		}
+    		
+    		uint prize = getPrize(ticket.countWhite, ticket.countRed);
+    		if(prize > 0){
+    		    if(prize == priceTicket){
+    		        ticket.res = "jackpoint";
+    		    } else {
+    		        ticket.res = "win";
+    		    }
+    		} else {
+    		    ticket.res = "lose";
+    		}
+		} else {
+		    throw;
+		}
+    }
+    
     function startPowerBall() public onlyOwner {
         numSession ++;
+        acceptTicket = false;
         playGame();
     	logArr(arCasinoWhiteBalls);
     	logNum(redBall);
         
+    }
+    
+    function getWhiteBalls() public constant returns(uint8[]) {
+        return arCasinoWhiteBalls;
+    }
+    
+    function getRedBall() public constant returns(uint8) {
+        return redBall;
+    }
+    
+    function withdraw(uint amountInWei) onlyOwner {
+        if (!msg.sender.send(amountInWei)) {
+            throw;
+        }
     }
 }
