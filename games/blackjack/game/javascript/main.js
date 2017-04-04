@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.25"
+var version = "v. 1.0.27"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -18,7 +18,8 @@ var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 var	addressRpcContract = "0xc0951cf7a33d26642c8c48d308345a5444562e15";
-var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9";
+// var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9"; // work
+var	addressTestContract = "0x9b27c1e0ac356b8eef9eebe514f3599f367643b2";
 
 var options_debug = false;
 var options_test = false;
@@ -39,6 +40,7 @@ var ERROR_BANK = 4;
 var ERROR_TRANSACTION = 5;
 var ERROR_BALANCE = 6;
 var ERROR_DEAL = 7;
+var ERROR_MAX_BET = 8;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
@@ -90,7 +92,7 @@ function initGame() {
 	stage.addChild(scrContainer);
 	
 	var preload_image = document.createElement("img");
-	preload_image.src = "images/bg/bgGame"+rndBg+".jpg";
+	preload_image.src = "images/bg/bgMenu.jpg";
 	preload_image.onload = function() {
 		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
 		bgLoading.texture.baseTexture.on('loaded', 
@@ -119,6 +121,7 @@ function initGame() {
 function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
+	preloader.add("bgMenu", "images/bg/bgMenu.jpg");
 	preloader.add("bgGame1", "images/bg/bgGame1.jpg");
 	preloader.add("bgGame2", "images/bg/bgGame2.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
