@@ -291,29 +291,29 @@ contract BlackJack is owned {
   }
 
     function double()
-    public
-    payable
-    gameIsInProgress
-  {
-    Game storage game = games[msg.sender];
-    if(game.state == GameState.InProgressSplit){
-        game = splitGames[msg.sender];
-    }
+	    public
+	    payable
+	    gameIsInProgress
+    {
+	    Game storage game = games[msg.sender];
+	    if (game.state == GameState.InProgressSplit) {
+	        game = splitGames[msg.sender];
+	    }
 
-    if (msg.value != game.bet) {
-      // Should double the bet
-      throw;
-    }
+	    if (msg.value != game.bet) {
+	      // Should double the bet
+	      throw;
+	    }
 
-    if (!isDoubleAvailable()) {
-      throw;
-    }
+	    if (!isDoubleAvailable()) {
+	      throw;
+	    }
 
-      game.bet = game.bet * 2;
+	    game.bet = game.bet * 2;
 
-      dealCard(true, game);
-      if (game.state == GameState.InProgress) {
-        stand();
+	    dealCard(true, game);
+	    if (game.state == GameState.InProgress) {
+	      stand();
     }
   }
 
@@ -343,6 +343,10 @@ contract BlackJack is owned {
     } else {
       if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
         // PLAYER WON
+        if (split && !finishGame) {
+          stand();
+          return;
+        }
         if (game.playerCards.length == 2 && (Deck.isTen(game.playerCards[0]) || Deck.isTen(game.playerCards[1]))) {
           // Natural blackjack => return x2.5
           if (!msg.sender.send((game.bet * 5) / 2)) throw; // send prize to the player
@@ -357,6 +361,10 @@ contract BlackJack is owned {
       } else {
         if (game.playerScore > BLACKJACK) {
           // BUST, HOUSE WON
+          if (split && !finishGame) {
+            stand();
+            return;
+          }
           if (game.houseCards.length == 1) {
             dealCard(false, game);
           }
@@ -444,7 +452,7 @@ contract BlackJack is owned {
   }
 
   function isDoubleAvailable() public constant returns (bool) {
-      Game memory game = games[msg.sender];
+    Game memory game = games[msg.sender];
     if(game.state == GameState.InProgressSplit){
         game = splitGames[msg.sender];
     }
