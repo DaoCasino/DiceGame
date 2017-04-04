@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.25"
+var version = "v. 1.0.26"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -39,6 +39,7 @@ var ERROR_BANK = 4;
 var ERROR_TRANSACTION = 5;
 var ERROR_BALANCE = 6;
 var ERROR_DEAL = 7;
+var ERROR_MAX_BET = 8;
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
@@ -90,7 +91,7 @@ function initGame() {
 	stage.addChild(scrContainer);
 	
 	var preload_image = document.createElement("img");
-	preload_image.src = "images/bg/bgGame"+rndBg+".jpg";
+	preload_image.src = "images/bg/bgMenu.jpg";
 	preload_image.onload = function() {
 		var bgLoading = new PIXI.Sprite.fromImage(preload_image.src);
 		bgLoading.texture.baseTexture.on('loaded', 
@@ -119,6 +120,7 @@ function initGame() {
 function loadManifest(){
 	preloader = new PIXI.loaders.Loader();
 	
+	preloader.add("bgMenu", "images/bg/bgMenu.jpg");
 	preloader.add("bgGame1", "images/bg/bgGame1.jpg");
 	preloader.add("bgGame2", "images/bg/bgGame2.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");

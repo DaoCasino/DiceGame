@@ -16,7 +16,7 @@ ScrMenu.prototype.init = function() {
 	
 	this._arButtons = [];
 	
-	this.bg = addObj("bgGame"+rndBg, _W/2, _H/2);
+	this.bg = addObj("bgMenu", _W/2, _H/2);
 	this.bg.scale.x =  _W/this.bg.w;
 	this.bg.scale.y =  _H/this.bg.h;
 	this.addChild(this.bg);
