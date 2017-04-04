@@ -189,9 +189,6 @@ contract BlackJack is owned {
     }
     dealCard(true, splitGames[msg.sender]);
     checkGameResult(splitGames[msg.sender], false, true);
-    if (splitGames[msg.sender].state != GameState.InProgress) {
-      games[msg.sender].state = GameState.InProgress;
-    }
   }
 
   function requestInsurance()
@@ -229,6 +226,8 @@ contract BlackJack is owned {
         splitGame.state = GameState.InProgressSplit;
         // Move focus to the main game.
         game.state = GameState.InProgress;
+        // Check state of the main game
+        checkGameResult(games[msg.sender], false, false);
         return;
       }
 
@@ -288,6 +287,8 @@ contract BlackJack is owned {
     // Deal extra cards in each game.
     dealCard(true, games[msg.sender]);
     dealCard(true, splitGames[msg.sender]);
+
+    checkGameResult(splitGames[msg.sender], false, true);
   }
 
     function double()
