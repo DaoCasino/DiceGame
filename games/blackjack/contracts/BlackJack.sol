@@ -355,7 +355,7 @@ contract BlackJack is owned {
         } else {
           // Usual blackjack => return x2
           if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
-          game.state = GameState.PlayerWon; // finish the game
+          game.state = GameState.PlayerBlackJack; // finish the game
         }
         game.isGame = false;
         return;
