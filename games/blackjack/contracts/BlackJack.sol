@@ -344,7 +344,7 @@ contract BlackJack is owned {
     } else {
       if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
         // PLAYER WON
-        if (split && !finishGame) {
+        if (!finishGame) {
           stand();
           return;
         }
@@ -362,12 +362,9 @@ contract BlackJack is owned {
       } else {
         if (game.playerScore > BLACKJACK) {
           // BUST, HOUSE WON
-          if (split && !finishGame) {
+          if (!finishGame) {
             stand();
             return;
-          }
-          if (game.houseCards.length == 1) {
-            dealCard(false, game);
           }
           game.isGame = false;
           game.state = GameState.HouseWon; // finish the game
