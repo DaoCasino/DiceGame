@@ -29,6 +29,16 @@ contract PowerBall is owned {
         string res;
     }
     
+    struct Player {
+        address id;
+        Ticket[] arrayTickets;
+    }
+    
+    struct Session {
+        uint16 id;
+        mapping (address => Player) arrayPlayers;
+    }
+    
     bool acceptTicket = true;
     uint priceTicket = 20 finney; // 0.02 ether
     uint pricePowerPlay = 10 finney;
@@ -38,7 +48,10 @@ contract PowerBall is owned {
     uint8[] arCasinoWhiteBalls;
     uint8[] arWhiteBalls;
     uint8[] dataPowerPlay; // multiplier
-    Ticket[] dataTickets;
+    Player tmpPlayer;
+    Session tmpSession;
+    
+    mapping (uint16 => Session) public sessions;
     
 	modifier betValueIsOk() {
 		if (msg.value < priceTicket || 
@@ -56,14 +69,6 @@ contract PowerBall is owned {
     
     event logNum(
         uint value
-    );
-    event logNum2(
-        string str,
-        uint value,
-        uint value2
-    );
-    event logStr(
-        string value
     );
     event logArr(
         uint8[] value
@@ -104,7 +109,7 @@ contract PowerBall is owned {
 	        count --;
         }
         
-        checkBalls(array);
+        checkCasinoBalls(array);
     }
     
     function checkCasinoBalls(uint8[] ar) private {
@@ -162,7 +167,7 @@ contract PowerBall is owned {
         return value;
     }
     
-    function setTicket(uint8[] wb, uint8 rb, uint8 pp) 
+    function buyTicket(uint8[] wb, uint8 rb, uint8 pp) 
 	    public 
 	    payable 
 	    isAcceptTicket
@@ -176,8 +181,11 @@ contract PowerBall is owned {
 		    throw; // incorrect balls
 		}
 		
+		address id = msg.sender;
+		
+		// create ticket
         Ticket memory ticket = Ticket({
-            player: msg.sender,
+            player: id,
             whiteBalls:wb,
             redBall:rb,
             countPowerPlay:pp,
@@ -186,12 +194,32 @@ contract PowerBall is owned {
             res:""
         });
         
-        dataTickets.push(ticket);
+        Session memory session = sessions[numSession];
+        
+        // create session
+        if(session.id < 1){
+            tmpPlayer.id = id;
+            tmpPlayer.arrayTickets[0] = ticket;
+            tmpSession.id = numSession;
+            tmpSession.arrayPlayers[id] = tmpPlayer;
+            sessions[numSession] = tmpSession;
+        } else {
+            // TODO Member "arrayPlayers" is not available in struct PowerBall
+            /*Player memory player = session.arrayPlayers[id]; // !!!
+            // create player
+            if(player.id == 0){
+                tmpPlayer.id = id;
+                tmpPlayer.arrayTickets[0] = ticket;
+                player = tmpPlayer;
+            }
+            
+            player.arrayTickets.push(ticket);*/
+        }
 	}
 	
 	function checkResult(Ticket ticket) private {
 		if(arCasinoWhiteBalls.length == 5 && redBall > 0){
-    		uint8 i = 5;
+            uint8 i = 5;
             uint8 j = 5;
             uint8 white = 0;
             
@@ -229,13 +257,15 @@ contract PowerBall is owned {
 		}
     }
     
-    function startPowerBall() public onlyOwner {
+    function startNewSession() public onlyOwner {
         numSession ++;
+    }
+    
+    function startPowerBall() public onlyOwner {
         acceptTicket = false;
         playGame();
-    	logArr(arCasinoWhiteBalls);
-    	logNum(redBall);
-        
+        logArr(arCasinoWhiteBalls);
+        logNum(redBall);
     }
     
     function getWhiteBalls() public constant returns(uint8[]) {
