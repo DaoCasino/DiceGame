@@ -11,7 +11,6 @@ var Infura = function() {
     } else if(options_testnet){
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 	}
-	console.log("urlInfura:",urlInfura);
 };
 
 Infura.prototype.sendRequest = function(name, params, callback){

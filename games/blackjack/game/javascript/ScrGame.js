@@ -1361,7 +1361,7 @@ ScrGame.prototype.sendCard = function(obj){
 											prnt._arNewCards.push({type:"house", id:28});
 										} else if(lastHouseCard == 3){
 											prnt.clearBet();
-											prnt.bWait = false;
+											// prnt.bWait = false;
 											prnt.startGame = false;
 											prnt.showChips(true);
 											prnt.showButtons(true);
@@ -1378,7 +1378,7 @@ ScrGame.prototype.sendCard = function(obj){
 											prnt._arNewCards.push({type:"house", id:28});
 										} else if(lastHouseCard == 3){
 											prnt.clearBet();
-											prnt.bWait = false;
+											// prnt.bWait = false;
 											prnt.startGame = false;
 											prnt.showChips(true);
 											prnt.showButtons(true);
@@ -1521,7 +1521,7 @@ ScrGame.prototype.showResult = function(_name, _x, _y) {
 	var tf = prnt.createObj({x:_x, y:_y}, _name);
 	tf.alpha = 0;
 	
-	createjs.Tween.get(tf).wait(5000).to({y:_y, alpha:1},300).to({y:_y-50},500);
+	createjs.Tween.get(tf).wait(3000).to({y:_y, alpha:1},300).to({y:_y-50},500);
 }
 
 ScrGame.prototype.shareTwitter = function() {
@@ -1679,8 +1679,10 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		} else {
 			betGame = toFixed((price*2/1000000000000000000), 4)*100;
 			betGameCur = betGame;
-			prnt.fillChips(betGame, "main");
-			prnt.tfMyBet.setText(betGame/100);
+			if(prnt.bSplit){
+				prnt.fillChips(betGame, "main");
+				prnt.tfMyBet.setText(betGame/100);
+			}
 		}
 	}
 	
