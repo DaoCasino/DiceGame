@@ -19,7 +19,7 @@ var rndBg = String(Math.ceil(Math.random()*2));
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 var	addressRpcContract = "0xc0951cf7a33d26642c8c48d308345a5444562e15";
 // var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9"; // work
-var	addressTestContract = "0xb4a43c8f618b57ec9ef13cc5e4cdbb86b6d10930";
+var	addressTestContract = "0x37d7526ee8f05c808ab6aab0de56643ca6177e56";
 
 var options_debug = false;
 var options_test = false;
