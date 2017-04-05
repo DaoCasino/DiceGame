@@ -236,6 +236,8 @@ contract BlackJack is owned {
       dealCard(false, game);
     }
     splitGames[msg.sender].houseCards = games[msg.sender].houseCards;
+    splitGames[msg.sender].houseScore = games[msg.sender].houseScore;
+    splitGames[msg.sender].houseBigScore = games[msg.sender].houseBigScore;
     checkGameResult(games[msg.sender], true, false);
     checkGameResult(splitGames[msg.sender], true, true);
   }
