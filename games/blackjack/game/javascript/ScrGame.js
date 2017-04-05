@@ -1869,11 +1869,11 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.showResult("tfBlackjack", _x, _y);
 					break;
 				case S_HOUSE_WON:
-					if(prnt.mySplitPoints > 21){
-						prnt.showResult("tfBust", _x, _y);
-					} else {
+					// if(prnt.mySplitPoints > 21){
+						// prnt.showResult("tfBust", _x, _y);
+					// } else {
 						prnt.showResult("tfLose", _x, _y);
-					}
+					// }
 					break;
 				case S_TIE:
 					prnt.showResult("tfPush", _x, _y);
@@ -1950,12 +1950,12 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.showResult("tfWin", _x, _y);
 						break;
 					case S_HOUSE_WON:
-						if((_x > _W/2 && prnt.mySplitPoints > 21) ||
-						(_x < _W/2 && prnt.myPoints > 21)){
-							prnt.showResult("tfBust", _x, _y);
-						} else {
+						// if((_x > _W/2 && prnt.mySplitPoints > 21) ||
+						// (_x < _W/2 && prnt.myPoints > 21)){
+							// prnt.showResult("tfBust", _x, _y);
+						// } else {
 							prnt.showResult("tfLose", _x, _y);
-						}
+						// }
 						break;
 					case S_TIE:
 						prnt.showResult("tfPush", _x, _y);
@@ -1984,6 +1984,7 @@ ScrGame.prototype.response = function(command, value) {
 			var _y = _H/2 - 35;
 			prnt.showResult("tfBlackjack", _x, _y);
 			isGame = false;
+			prnt.clearBet();
 			prnt.getSplitCardsNumber();
 			prnt.getPlayerCardsNumber();
 			prnt.getHouseCardsNumber();
