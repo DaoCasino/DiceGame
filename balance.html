@@ -173,7 +173,7 @@
 	
 						function sendEther(to) {
 
-							var u='testnet.etherscan.io';
+							var u='ropsten.etherscan.io';
 							if (localStorage.getItem("mainnet") == "on") u='api.etherscan.io';
 
 							$.get("https://"+u+"/api?module=proxy&action=eth_getTransactionCount&address="+localStorage.getItem("openkey")+"&tag=latest&apikey=YourApiKeyToken",function(d){

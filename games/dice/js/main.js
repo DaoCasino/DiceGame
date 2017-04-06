@@ -1,3 +1,268 @@
+var abi = [{
+    "constant": true,
+    "inputs": [{
+        "name": "player",
+        "type": "address"
+    }],
+    "name": "getStateByAddress",
+    "outputs": [{
+        "name": "",
+        "type": "uint8"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [{
+        "name": "value",
+        "type": "uint256"
+    }],
+    "name": "roll",
+    "outputs": [],
+    "payable": true,
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [{
+        "name": "amount",
+        "type": "uint256"
+    }],
+    "name": "withdraw",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "maxBet",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "getTotalEthSended",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "name": "games",
+    "outputs": [{
+        "name": "player",
+        "type": "address"
+    }, {
+        "name": "bet",
+        "type": "uint256"
+    }, {
+        "name": "chance",
+        "type": "uint256"
+    }, {
+        "name": "rnd",
+        "type": "uint256"
+    }, {
+        "name": "state",
+        "type": "uint8"
+    }, {
+        "name": "seed",
+        "type": "uint8"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "name": "totalRollsByUser",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "ownerStoped",
+    "outputs": [{
+        "name": "",
+        "type": "bool"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "minBet",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "getTotalRollMade",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "getCount",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [],
+    "name": "Stop",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [{
+        "name": "player",
+        "type": "address"
+    }],
+    "name": "getShowRnd",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [{
+        "name": "newOwner",
+        "type": "address"
+    }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "getTotalEthPaid",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "type": "function"
+}, {
+    "payable": true,
+    "type": "fallback"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "str",
+        "type": "address"
+    }],
+    "name": "logAdr",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "str",
+        "type": "string"
+    }],
+    "name": "logStr",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "value",
+        "type": "uint8"
+    }],
+    "name": "log8",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "value",
+        "type": "uint32"
+    }],
+    "name": "log32",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "value",
+        "type": "uint256"
+    }],
+    "name": "log256",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "str",
+        "type": "string"
+    }, {
+        "indexed": false,
+        "name": "value",
+        "type": "address"
+    }],
+    "name": "logClassic",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "str",
+        "type": "string"
+    }, {
+        "indexed": false,
+        "name": "state",
+        "type": "uint8"
+    }],
+    "name": "logState",
+    "type": "event"
+}];
+newMode = true;
+var ks = localStorage.getItem('keystore');
+ks = lightwallet.keystore.deserialize(ks);
+var sendingAddr;
+
+
 var balance = 1;
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
@@ -7,7 +272,7 @@ var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
 var chance = 32768;
 //var urlInfura = "http://46.101.244.101:8545";
 var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-var lastTx, count, new_count, sends, paids;
+var lastTx, count, new_count, sends, paids, password;
 var game = false;
 var Timer, animate;
 maxBetEth = 1;
@@ -49,6 +314,7 @@ function loadData() {
         mainnet = localStorage.getItem('mainnet')
         openkey = localStorage.getItem('openkey')
         privkey = localStorage.getItem('privkey')
+        sendingAddr = openkey.substr(2);
     }
     console.log("version 0.44a Infura") // VERSION !
     console.log("mainnet:", mainnet)
@@ -180,7 +446,7 @@ function getContractBalance() {
 
 setInterval(function () {
     if (openkey) {
-        
+
         balance = $('#balance').html();
         balance = +balance.substr(0, balance.length - 4);
         balance = +balance.toFixed(8);
@@ -198,7 +464,7 @@ setInterval(function () {
         }
         $("#your-balance").val(balance);
         if (balance) {
-           // $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
+            // $("#slider-dice-one").slider("option", "max", (balance * 1000) - 20);
         }
     } else {
         $("#label").text("Please, sign in");
@@ -241,13 +507,14 @@ function disabled(status) {
 };
 
 function Refresh() {
-    maxBetEth = (bankroll/10+betEth)/((65536 - 1310) / chance);
+    maxBetEth = (bankroll/11+betEth)/((65536 - 1310) / chance);
     if(maxBetEth > 3){
+
         maxBetEth = 3;
         $("#slider-dice-one").slider("option", "max", maxBetEth*1000);
         $("#amount-one").val(betEth);
     }
-    else if( maxBetEth < balance -0.02){
+    if( maxBetEth < balance -0.02){
         $("#slider-dice-one").slider("option", "max", maxBetEth*1000);
         $("#amount-one").val(betEth);
         if(betEth > maxBetEth){
@@ -265,7 +532,7 @@ function Refresh() {
     }
     else{
         maxBetEth = balance -0.02;
-        console.log(maxBetEth, balance, bankroll, chance, betEth)
+       // console.log(maxBetEth, balance, bankroll, chance, betEth)
       $("#slider-dice-one").slider("option", "max", maxBetEth*1000);  
     }
     $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
@@ -274,6 +541,9 @@ function Refresh() {
 };
 
 function startGame() {
+    if (!password) {
+        password = prompt('Enter password');
+    }
     game = true;
     if (openkey) {
         $.ajax({
@@ -290,24 +560,30 @@ function startGame() {
             success: function (d) {
                 console.log("urlInfura:", urlInfura);
                 console.log("get nonce action " + d.result);
-                var callData = "0x1f7b4f30";
+                //var callData = "0x1f7b4f30";
                 var options = {};
                 options.nonce = d.result;
                 options.to = addressContract;
-                // call function game() in contract
-                options.data = callData + pad(numToHex(chance), 64); // method from contact
+                //options.data = callData + pad(numToHex(chance), 64); // method from contact
                 options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
-                options.gasLimit = 0x927c0; //web3.toHex('600000');
+                options.gasLimit = "0x927c0"; //web3.toHex('600000');
                 options.value = betEth * 1000000000000000000;
-                if (privkey) {
-                    if (buf == undefined) {
-                        console.log("ERROR_TRANSACTION");
-                    } else {
+                // if (privkey) {
+                //     if (buf == undefined) {
+                //         console.log("ERROR_TRANSACTION");
+                //     } else {
                         //приватный ключ игрока, подписываем транзакцию
-                        var tx = new EthereumTx(options);
-                        tx.sign(new buf(privkey, 'hex'));
-                        var serializedTx = tx.serialize().toString('hex');
-                        console.log("The transaction was signed: " + serializedTx);
+
+                        // var tx = new EthereumTx(options);
+                        // tx.sign(new buf(privkey, 'hex'));
+                        // var serializedTx = tx.serialize().toString('hex');
+                        // console.log("The transaction was signed: " + serializedTx);
+                        ks.keyFromPassword(password, function (err, pwDerivedKey) {
+                            var args = [chance];
+                            var registerTx = lightwallet.txutils.functionTx(abi, 'roll', args, options)
+                            var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
+                            console.log("lightWallet sign:", signedTx)
+                        
                         $.ajax({
                             type: "POST",
                             url: urlInfura,
@@ -317,7 +593,7 @@ function startGame() {
                                 "id": 0,
                                 "jsonrpc": '2.0',
                                 "method": "eth_sendRawTransaction",
-                                "params": ["0x" + serializedTx]
+                                "params": ["0x" + signedTx]
                             }),
                             success: function (d) {
                                 console.log("Транзакция отправлена в сеть:", d.result);
@@ -361,8 +637,8 @@ function startGame() {
 
                             }
                         })
-                    }
-                }
+                    //}
+              })  //}
             }
         })
     }

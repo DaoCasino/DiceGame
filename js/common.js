@@ -84,23 +84,47 @@ if (localStorage.getItem("isreg")) {
 
 var secretSeed = lightwallet.keystore.generateRandomSeed();
 $("#seed").html(secretSeed);
-
-function wallet_open(secretSeed) { //box aerobic sweet proof warfare alone atom snake amateur spy couple side
-	lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
-		var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-		ks.generateNewAddress(pwDerivedKey, 1);
-		var address = ks.getAddresses()[0];
-		var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
-		localStorage.setItem("openkey", "0x" + address);
-		localStorage.setItem("privkey", prv_key);
-		localStorage.setItem("isreg", 1);
-		localStorage.setItem("mainnet", "off");
-		console.log('address and key: ', address, prv_key);
-		window.location = 'balance.html';
-
-
+function wallet_open(secretSeed) {
+	var password = prompt('Enter password for encryption');
+	lightwallet.keystore.createVault({
+		password: password,
+		seedPhrase: secretSeed, // Optionally provide a 12-word seed phrase
+	}, function (err, ks) {
+		ks.keyFromPassword(password, function (err, pwDerivedKey) {
+			if (err) throw err;
+			ks.generateNewAddress(pwDerivedKey, 1);
+			var addr = ks.getAddresses()[0];
+			var prv_key = ks.exportPrivateKey(addr, pwDerivedKey);
+			var keystorage = ks.serialize();
+			localStorage.setItem("keystore", keystorage);
+			localStorage.setItem("isreg", 1);
+			localStorage.setItem("openkey", "0x" + addr);
+		 	localStorage.setItem("privkey", prv_key);
+			 localStorage.setItem("mainnet", "off");
+			 console.log(password, pwDerivedKey);
+			console.log(addr, prv_key);
+			window.location = 'balance.html';
+		});
 	});
+
+	// lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
+	// 	ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
+	// 	ks.generateNewAddress(pwDerivedKey, 1);
+	// 	var ser = ks.serialize()
+	// 	console.log(ser);
+
+	// 	var address = ks.getAddresses()[0];
+	// 	var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
+	// 	localStorage.setItem("openkey", "0x" + address);
+	// 	localStorage.setItem("privkey", prv_key);
+	// 	localStorage.setItem("isreg", 1);
+	// 	localStorage.setItem("mainnet", "off");
+	// 	localStorage.setItem("keystore", ser);
+	// 	console.log('address and key: ', address, prv_key);
+	// 	//
+
+
+	// });
 }
 
 
@@ -167,7 +191,6 @@ var totalwei;
 
 function rebalance() {
 	if (!totalwei) $("#balance").html("? ETH");
-	
 	setTimeout(function () {
 		var u = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		if (localStorage.getItem("mainnet") == "on") u = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -183,13 +206,9 @@ function rebalance() {
 				"params": [localStorage.getItem("openkey"), "latest"]
 			}),
 			success: function (d) {
-			
 				totalwei = d.result;
 				$("#balance").html(d.result / 1000000000000000000 + " ETH");
-				
-				if (localStorage.getItem("mainnet") == "off" && parseInt(totalwei,16) == 0 && (parseInt(localStorage.getItem("testsend")) < 3 || localStorage.getItem("testsend") == null)) {
-					var tsended = parseInt(localStorage.getItem("testsend")) + 1;
-					localStorage.setItem("tsended",tsended);
+				if (localStorage.getItem("mainnet") == "off" && totalwei == 0) {
 					$.get("https://platform.dao.casino/api/?a=faucet&to=" + localStorage.getItem("openkey"));
 				}
 			}
