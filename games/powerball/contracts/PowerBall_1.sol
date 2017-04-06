@@ -21,21 +21,18 @@ contract PowerBall is owned {
     
     struct Ticket {
         address player;
-        uint id;
-        uint16 numSession;
+        uint16 id;
         uint8[] whiteBalls;
         uint8 redBall;
         uint8 countPowerPlay;
         uint8 countWhite; //match
         uint8 countRed; //match
         string res;
-        bool checkResult;
     }
     
     struct Player {
         address id;
-        uint[] arrayIdTickets;
-        mapping (uint => bool) arrayTickets;
+        Ticket[] arrayTickets;
     }
     
     struct Session {
@@ -46,9 +43,9 @@ contract PowerBall is owned {
     bool acceptTicket = true;
     uint priceTicket = 20 finney; // 0.02 ether
     uint pricePowerPlay = 10 finney;
-    uint idTicket = 0;
     uint16 numSession = 0;
     uint16 gSeed = 0;
+    uint16 idTicket = 0;
     uint8 redBall = 0;
     uint8[] arCasinoWhiteBalls;
     uint8[] arWhiteBalls;
@@ -57,7 +54,6 @@ contract PowerBall is owned {
     Session tmpSession;
     
     mapping (uint16 => Session) public sessions;
-    mapping (uint => Ticket) public tickets;
     
 	modifier betValueIsOk() {
 		if (msg.value < priceTicket || 
@@ -76,19 +72,8 @@ contract PowerBall is owned {
     event logNum(
         uint value
     );
-    event logStrNum(
-        string str,
-        uint value
-    );
-    event logNumNum(
-        uint value1,
-        uint value2
-    );
     event logArr(
         uint8[] value
-    );
-    event logStr(
-        string value
     );
     
     function PowerBall() { // Constructor
@@ -107,7 +92,7 @@ contract PowerBall is owned {
         arWhiteBalls = new uint8[](0);
         getBalls(arWhiteBalls);
         arCasinoWhiteBalls = arWhiteBalls;
-        redBall = randomGen(msg.sender, gSeed, 26)+1;
+        redBall = randomGen(msg.sender, gSeed, 26);
     }
     
 	function randomGen(address player, uint16 seed, uint16 value) private returns (uint8) {
@@ -184,11 +169,10 @@ contract PowerBall is owned {
         return value;
     }
     
-    // [1,2,3,4,5],20,0
     function buyTicket(uint8[] wb, uint8 rb, uint8 pp) 
 	    public 
 	    //payable 
-	    //isAcceptTicket
+	    isAcceptTicket
 	    //betValueIsOk 
 	{
 	    bool bMatch = true;
@@ -206,62 +190,49 @@ contract PowerBall is owned {
         Ticket memory ticket = Ticket({
             player: id,
             id: idTicket,
-            numSession:numSession,
             whiteBalls:wb,
             redBall:rb,
             countPowerPlay:pp,
             countWhite:0,
             countRed:0,
-            res:"",
-            checkResult: false
+            res:""
         });
         
-        //Session storage session = sessions[numSession]; //not memory!
-        //delete tmpPlayer;
+        Session storage session = sessions[numSession]; //not memory!
+        delete tmpPlayer;
         
         //TODO: Always create new session (session.id == 0)
         
         // create session
-        //if(session.id < 1){
+        if(session.id < 1){
             tmpPlayer.id = id;
-            tmpPlayer.arrayIdTickets.push(idTicket);
-            tmpPlayer.arrayTickets[idTicket] = true;
+            tmpPlayer.arrayTickets.push(ticket);
             tmpSession.id = numSession;
             tmpSession.arrayPlayers[id] = tmpPlayer;
             sessions[numSession] = tmpSession;
-            //logNum(1);
-       /* } else {
+            logNum(1);
+        } else {
             Player storage player = session.arrayPlayers[id];
             // create player
             if(player.id == 0){
                 tmpPlayer.id = id;
+                tmpPlayer.arrayTickets[0] = ticket;
                 player = tmpPlayer;
                 logNum(2);
             } else {
                 logNum(3);
             }
             
-            player.arrayIdTickets.push(idTicket);
-            player.arrayTickets[idTicket] = true;
-        }*/
-        
-        tickets[idTicket] = ticket;
-	}
-	
-	function checkResult(uint id) public {
-        tmpSession = sessions[numSession];
-        tmpPlayer = tmpSession.arrayPlayers[msg.sender];
-        if (tmpPlayer.id == 0) {
-            throw;
-        }
-        Ticket ticket = tickets[id];
-        if(tmpPlayer.arrayTickets[id] && !ticket.checkResult){
-            checkTicket(msg.sender, ticket);
+            player.arrayTickets.push(ticket);
         }
 	}
 	
-	function checkTicket(address player, Ticket ticket) private {
-	    ticket.checkResult = true;
+	
+	function checkResult() public {
+	    
+	}
+	
+	function checkTicket(Ticket ticket) private {
 		if(arCasinoWhiteBalls.length == 5 && redBall > 0){
             uint8 i = 5;
             uint8 j = 5;
@@ -274,7 +245,7 @@ contract PowerBall is owned {
                 while (j > 0) {
                     j--;
                     uint8 value2 = ticket.whiteBalls[j];
-                    if(value1 == value2){
+                    if(value1 == value2 && i != j){
                         white++;
                     }
                 }
@@ -288,7 +259,6 @@ contract PowerBall is owned {
     		
     		uint prize = getPrize(ticket.countWhite, ticket.countRed);
     		if(prize > 0){
-    		    // TODO sent prize to player
     		    if(prize == priceTicket){
     		        ticket.res = "jackpoint";
     		    } else {
@@ -297,7 +267,6 @@ contract PowerBall is owned {
     		} else {
     		    ticket.res = "lose";
     		}
-    		logStrNum(ticket.res, prize);
 		} else {
 		    throw;
 		}
@@ -320,12 +289,6 @@ contract PowerBall is owned {
     
     function getRedBall() public constant returns(uint8) {
         return redBall;
-    }
-    
-    function getPlayerTicket() public constant returns(uint[]) {
-        tmpSession = sessions[numSession];
-        tmpPlayer = tmpSession.arrayPlayers[msg.sender];
-        return tmpPlayer.arrayIdTickets;
     }
     
     function withdraw(uint amountInWei) onlyOwner {
