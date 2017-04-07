@@ -17,14 +17,18 @@ contract owned {
     }
 }
 
+contract Rng {
+    function randomGen(address player, uint16 seed, uint b, uint timestamp, uint16 value) returns (uint16);
+}
+
 contract PowerBall is owned {
     
     struct Ticket {
         address player;
         uint id;
         uint16 numSession;
-        uint8[] whiteBalls;
-        uint8 redBall;
+        uint16[] whiteBalls;
+        uint16 redBall;
         uint8 countPowerPlay;
         uint8 countWhite; //match
         uint8 countRed; //match
@@ -43,18 +47,20 @@ contract PowerBall is owned {
         mapping (address => Player) arrayPlayers;
     }
     
-    bool acceptTicket = true;
+    bool acceptTicket = false;
     uint priceTicket = 20 finney; // 0.02 ether
     uint pricePowerPlay = 10 finney;
     uint idTicket = 0;
     uint16 numSession = 0;
     uint16 gSeed = 0;
-    uint8 redBall = 0;
-    uint8[] arCasinoWhiteBalls;
-    uint8[] arWhiteBalls;
-    uint8[] dataPowerPlay; // multiplier
+    uint16 redBall = 0;
+    uint16[] arCasinoWhiteBalls;
+    uint16[] arWhiteBalls;
+    uint16[] dataPowerPlay; // multiplier
     Player tmpPlayer;
     Session tmpSession;
+    address addrRng = 0xcdd09E673379d89447F054C203D5bD47ABA078d0;
+    Rng rng = Rng(addrRng);
     
     mapping (uint16 => Session) public sessions;
     mapping (uint => Ticket) public tickets;
@@ -85,7 +91,7 @@ contract PowerBall is owned {
         uint value2
     );
     event logArr(
-        uint8[] value
+        uint16[] value
     );
     event logStr(
         string value
@@ -104,24 +110,25 @@ contract PowerBall is owned {
     
     function playGame() private {
         gSeed ++;
-        arWhiteBalls = new uint8[](0);
+        arWhiteBalls = new uint16[](0);
         getBalls(arWhiteBalls);
         arCasinoWhiteBalls = arWhiteBalls;
         redBall = randomGen(msg.sender, gSeed, 26)+1;
     }
     
-	function randomGen(address player, uint16 seed, uint16 value) private returns (uint8) {
+	function randomGen(address player, uint16 seed, uint16 value) private returns (uint16) {
 		uint b = block.number;
 		uint timestamp = block.timestamp;
-		return uint8(uint256(keccak256(block.blockhash(b), player, seed, timestamp)) % value);
+		//return rng.randomGen(player, seed, b, timestamp, value); // web3
+		return uint8(uint256(keccak256(block.blockhash(b), player, seed, timestamp)) % value); //js
 	}
     
-    function getBalls(uint8[] storage ar) private {
-        uint8[] storage array = ar;
+    function getBalls(uint16[] storage ar) private {
+        uint16[] storage array = ar;
         uint8 count = 5;
         
 	    while (count > 0) {
-            uint8 rnd = randomGen(msg.sender, gSeed+count, 69)+1;//69
+            uint16 rnd = randomGen(msg.sender, gSeed+count, 69)+1;//69
 	        array.push(rnd);
 	        count --;
         }
@@ -129,7 +136,7 @@ contract PowerBall is owned {
         checkCasinoBalls(array);
     }
     
-    function checkCasinoBalls(uint8[] ar) private {
+    function checkCasinoBalls(uint16[] ar) private {
         bool bMatch = checkBalls(ar);
         
         if(bMatch){
@@ -140,7 +147,7 @@ contract PowerBall is owned {
     }
     
     // array.insexOf()
-    function checkBalls(uint8[] ar) private returns (bool){
+    function checkBalls(uint16[] ar) private returns (bool){
         bool bMatch = false;
         uint8 i = 5;
         uint8 j = 5;
@@ -148,10 +155,10 @@ contract PowerBall is owned {
         while (i > 0) {
             i--;
             j = 5;
-            uint8 num1 = ar[i];
+            uint16 num1 = ar[i];
             while (j > 0) {
                 j--;
-                uint8 num2 = ar[j];
+                uint16 num2 = ar[j];
                 if(num1 == num2 && i != j){
                     bMatch = true;
                     break;
@@ -185,10 +192,10 @@ contract PowerBall is owned {
     }
     
     // [1,2,3,4,5],20,0
-    function buyTicket(uint8[] wb, uint8 rb, uint8 pp) 
+    function buyTicket(uint16[] wb, uint16 rb, uint8 pp) 
 	    public 
 	    //payable 
-	    //isAcceptTicket
+	    isAcceptTicket
 	    //betValueIsOk 
 	{
 	    bool bMatch = true;
@@ -270,10 +277,10 @@ contract PowerBall is owned {
             while (i > 0) {
                 i--;
                 j = 5;
-                uint8 value1 = arCasinoWhiteBalls[i];
+                uint16 value1 = arCasinoWhiteBalls[i];
                 while (j > 0) {
                     j--;
-                    uint8 value2 = ticket.whiteBalls[j];
+                    uint16 value2 = ticket.whiteBalls[j];
                     if(value1 == value2){
                         white++;
                     }
@@ -305,6 +312,7 @@ contract PowerBall is owned {
     
     function startNewSession() public onlyOwner {
         numSession ++;
+        acceptTicket = true;
     }
     
     function startPowerBall() public onlyOwner {
@@ -314,11 +322,11 @@ contract PowerBall is owned {
         logNum(redBall);
     }
     
-    function getWhiteBalls() public constant returns(uint8[]) {
+    function getWhiteBalls() public constant returns(uint16[]) {
         return arCasinoWhiteBalls;
     }
     
-    function getRedBall() public constant returns(uint8) {
+    function getRedBall() public constant returns(uint16) {
         return redBall;
     }
     
