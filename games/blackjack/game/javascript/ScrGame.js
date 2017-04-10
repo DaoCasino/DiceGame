@@ -897,9 +897,10 @@ ScrGame.prototype.getCard = function(cardIndex){
 	}else{
 		console.log("UNDEFINED spriteName:", cardIndex, spriteName);
 	}
+	console.log("UNDEFINED spriteName:", cardIndex, spriteName);
 	return newCard;
 }
-
+// [20, 21, 1, 22, 2, 23, 3, 24, 44]
 ScrGame.prototype.getPlayerCardsNumber = function() {
 	var data = "0x"+C_PLAYER_CARDS;
 	var params = {"from":openkey,
@@ -1889,7 +1890,7 @@ ScrGame.prototype.response = function(command, value) {
 		
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state:", stateNow);
+			console.log("state|isGame:", stateNow, isGame);
 		}
 		
 		if(value != "0x" && isGame){
@@ -1982,6 +1983,7 @@ ScrGame.prototype.response = function(command, value) {
 			
 			stateOld = stateNow;
 		} else if(stateNow == S_BLACKJACK && prnt.startGame) {
+			console.log("BLACKJACK");
 			var _x = _W/2 - 80-75;
 			var _y = _H/2 - 35;
 			prnt.showResult("tfBlackjack", _x, _y);
