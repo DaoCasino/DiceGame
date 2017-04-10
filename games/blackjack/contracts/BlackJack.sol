@@ -10,6 +10,8 @@ contract BlackJack is owned {
 
   uint8 BLACKJACK = 21;
 
+  uint lastGameId;
+
   enum GameState {
     InProgress,
     PlayerWon,
@@ -36,7 +38,8 @@ contract BlackJack is owned {
 
     uint insurance;
     bool insuranceAvailable;
-    bool isGame;
+    
+    uint id;
   }
 
   mapping (address => Game) public games;
@@ -101,6 +104,8 @@ contract BlackJack is owned {
       throw;
     }
 
+    lastGameId = lastGameId + 1;
+
     Game memory game = Game({
       player: msg.sender,
       bet: msg.value,
@@ -114,14 +119,12 @@ contract BlackJack is owned {
       seed: 3,
       insurance: 0,
       insuranceAvailable: false,
-      isGame: true
+      id: lastGameId
     });
 
     games[msg.sender] = game;
     delete splitGames[msg.sender];
     
-    games[msg.sender].isGame = true;
-
     // deal the cards
     dealCard(true, games[msg.sender]);
     dealCard(false, games[msg.sender]);
@@ -276,7 +279,7 @@ contract BlackJack is owned {
       seed: 128,
       insurance: 0,
       insuranceAvailable: false,
-      isGame: false
+      id: lastGameId
     });
 
     splitGames[msg.sender] = splitGame;
@@ -329,7 +332,6 @@ contract BlackJack is owned {
     GameStatus(game.houseScore, game.houseBigScore, game.playerScore, game.playerBigScore);
 
     if (game.houseBigScore == BLACKJACK || game.houseScore == BLACKJACK) {
-      game.isGame = false;
       if (game.playerScore == BLACKJACK || game.playerBigScore == BLACKJACK) {
         // TIE
         if (!msg.sender.send(game.bet)) throw; // return bet to the player
@@ -359,7 +361,6 @@ contract BlackJack is owned {
           if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
           game.state = GameState.PlayerBlackJack; // finish the game
         }
-        game.isGame = false;
         return;
       } else {
         if (game.playerScore > BLACKJACK) {
@@ -368,7 +369,6 @@ contract BlackJack is owned {
             stand();
             return;
           }
-          game.isGame = false;
           game.state = GameState.HouseWon; // finish the game
           if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
             if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
@@ -387,7 +387,6 @@ contract BlackJack is owned {
         if (game.playerBigScore > BLACKJACK) {
           if (game.playerScore > BLACKJACK) {
             // HOUSE WON
-            game.isGame = false;
             game.state = GameState.HouseWon; // simply finish the game
             return;
           } else {
@@ -402,7 +401,6 @@ contract BlackJack is owned {
             // PLAYER WON
             if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
             game.state = GameState.PlayerWon;
-            game.isGame = false;
             return;
           } else {
             houseShortage = BLACKJACK - game.houseScore;
@@ -415,15 +413,12 @@ contract BlackJack is owned {
           // TIE
           if (!msg.sender.send(game.bet)) throw; // return bet to the player
           game.state = GameState.Tie;
-          game.isGame = false;
         } else if (houseShortage > playerShortage) {
           // PLAYER WON
           if (!msg.sender.send(game.bet * 2)) throw; // send prize to the player
           game.state = GameState.PlayerWon;
-          game.isGame = false;
         } else {
           game.state = GameState.HouseWon;
-          game.isGame = false;
         }
       }
     }
@@ -493,10 +488,6 @@ contract BlackJack is owned {
     return splitGames[msg.sender].playerCards.length;
   }
   
-  function getIsGame() public constant returns(bool) {
-    return games[msg.sender].isGame;
-  }
-  
   function getPlayerScore() public constant returns(uint) {
     return games[msg.sender].playerScore;
   }
@@ -544,6 +535,17 @@ contract BlackJack is owned {
     }
 
     return game.bet;
+  }
+
+  function getGameId() public constant returns(uint) {
+    Game memory game = games[msg.sender];
+
+    if (game.player == 0) {
+      // game doesn't exist
+      throw;
+    }
+
+    return game.id;
   }
 
   function withdraw(uint amountInWei) onlyOwner {
