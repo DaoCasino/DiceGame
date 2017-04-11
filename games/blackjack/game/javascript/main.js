@@ -20,7 +20,8 @@ var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 var	addressRpcContract = "0xc0951cf7a33d26642c8c48d308345a5444562e15";
 // var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9"; // work
 // var	addressTestContract = "0xdab19f150ce7e66ca85e9865d1846231840ed151"; // work 2
-var	addressTestContract = "0xf6cd2f2dc28CBE31741f4367CAAB38b0718e63Bc";
+// var	addressTestContract = "0xf6cd2f2dc28CBE31741f4367CAAB38b0718e63Bc";
+var	addressTestContract = "0x658aab9891924345046d2d89abc4ca90806dcbed"; // sd
 
 var options_debug = false;
 var options_test = false;
