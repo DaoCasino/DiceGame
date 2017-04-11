@@ -154,11 +154,44 @@ function split(player, bet) {
   });
 }
 
+function double(player, bet) {
+  var game;
+  return BlackJack.deployed().then(function (instance) {
+      game = instance;
+      return game.double({
+        from: player,
+        gas: gasAmount,
+        value: web3.toWei(bet, "Ether")
+      });
+  }).then(function(tx) {
+    console.log("Double: " + tx.tx);
+    logCards(tx);
+    return game.getGameState.call({
+        from: player
+    });
+  }).then(function(state) {
+    gameState = state;
+    console.log("Game state: " + state);
+  });
+}
+
 function isSplitAvailable(player) {
   var game;
   return BlackJack.deployed().then(function (instance) {
       game = instance;
       return game.isSplitAvailable.call({
+          from: player
+      });
+  }).then(function(flag) {
+    return flag;
+  });
+}
+
+function isDoubleAvailable(player) {
+  var game;
+  return BlackJack.deployed().then(function (instance) {
+      game = instance;
+      return game.isDoubleAvailable.call({
           from: player
       });
   }).then(function(flag) {
@@ -207,6 +240,26 @@ function testSplit(player, done) {
       });
     }).then(function(n) {
       assert.equal(n.toNumber(), 2, "there are supposed to be 2 cards in split");
+      return isDoubleAvailable(player);
+    }).then(function(flag) {
+      console.log("isDoubleAvailable: " + flag);
+      if (flag) {
+        return testSplitDouble(player, done);
+      } else {
+        done();
+      }
+    });
+}
+
+function testSplitDouble(player, done) {
+  var game;
+  return BlackJack.deployed().then(function(instance) {
+      game = instance;
+      return double(player, 0.1);
+    }).then(function() {
+      return game.getSplitGameState.call({ from: player });
+    }).then(function(state) {
+      console.log("split game state: " + state);
     }).then(done);
 }
 

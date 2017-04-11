@@ -1,6 +1,7 @@
 pragma solidity ^0.4.2;
 
 library Deck {
+
 	// returns random number from 0 to 51
 	// let's say 'value' % 4 means suit (0 - Hearts, 1 - Spades, 2 - Diamonds, 3 - Clubs)
 	//			 'value' / 4 means: 0 - King, 1 - Ace, 2 - 10 - pip values, 11 - Jacket, 12 - Queen
@@ -9,7 +10,6 @@ library Deck {
 		uint b = block.number;
 		uint timestamp = block.timestamp;
 		return uint8(uint256(keccak256(block.blockhash(b), player, cardNumber, timestamp)) % 52);
-		// return 29;
 	}
 
 	function valueOf(uint8 card, bool isBigAce) internal constant returns (uint8) {
