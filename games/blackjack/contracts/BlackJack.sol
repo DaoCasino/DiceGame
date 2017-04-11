@@ -146,6 +146,7 @@ contract BlackJack is owned {
       cards = storageGame.playerCards;
     }
     cards.push(Deck.deal(msg.sender, game.seed));
+	
     if (player) {
       // cards[cards.length - 1] might be further optimized by accessing local game copy.
       storageGame.playerScore = recalculateScore(cards[cards.length - 1], game.playerScore, false);
@@ -299,11 +300,12 @@ contract BlackJack is owned {
     function double()
 	    public
 	    payable
-	    gameIsInProgress
     {
 	    Game storage game = games[msg.sender];
 	    if (game.state == GameState.InProgressSplit) {
 	        game = splitGames[msg.sender];
+		} else if (!gameInProgress(game, false)) {
+			throw;
 	    }
 
 	    if (msg.value != game.bet) {
