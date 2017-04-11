@@ -1,0 +1,117 @@
+<html>
+<head>
+	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="libs/merkle_bundle.js"></script>
+<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script> <!-- DEV VERSION !! -->
+<script src="js/common.js"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-D9XILkoivXN+bcvB2kSOowkIvIcBbNdoDQvfBNsxYAIieZbx8/SI4NeUvrRGCpDi" crossorigin="anonymous">
+</head>
+<body style='text-align:center;padding:200px'>
+<center>
+	MerkleTree random seed generation. <BR>
+	<img width=400 src='img/alt_anims.gif'>
+	
+	<h3>Balance <span style='font-size:2em'>0</span> BETs</h3>
+</center>
+
+
+
+<input type='button' name='' class='btn btn-primary' onclick='start();$(this).prop("disabled",true)' value='Start mining and earn BETs'>
+<Br><br>
+<div id='iroot'></div>
+<br><br>
+<div id='consolesell'></div>
+
+
+<hr>
+<script>
+var abcde = new Array();
+function gen() { 
+	 h = Math.random()*1005000;
+	 abcde[abcde.length] = h;
+	 var tree = merk('sha256').sync(abcde);
+	 hs = tree.root();
+	 $("#iroot").html(hs);
+	 sendRwTr(0,[hs],"put","#consolesell","0x020e90a30D306869C1FBb24d9d48a57f19B91143");
+}
+	
+function start() {
+	gen();
+	setInterval(gen, 30000); // использовать функцию
+}
+
+ABI = [{"constant":false,"inputs":[{"name":"_owner","type":"address"}],"name":"setOwner","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_id","type":"uint256"},{"name":"_range","type":"uint256"}],"name":"get","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"randomSeed","outputs":[{"name":"seed","type":"bytes32"},{"name":"entropy","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"minEntropy","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_entropy","type":"uint256"}],"name":"setMinEntropy","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_hash","type":"bytes32"}],"name":"put","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"randomSeedLength","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}];
+option_etherscan_api = 'https://ropsten.etherscan.io';
+openkey = localStorage.getItem("openkey");
+var ks = localStorage.getItem('keystore');
+ks = lightwallet.keystore.deserialize(ks);
+
+var password;
+
+if (!localStorage.getItem("keystore")) {
+	alert("You have old autorization type. Please register NEW account");
+}
+	
+function sendRwTr(value1,args,abifunc,callback="#consolesell",to=erc20contract_address) {
+	if (!password) {
+        password = prompt('Enter password');
+    }
+	
+					console.log("sendRwTr");
+					$.ajax({
+					type: "POST",
+						url: option_etherscan_api+"/api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",
+						dataType: 'json',
+						async: false,
+						success: function (d) {
+			
+						
+							var options = {};
+							options.nonce = d.result;
+							options.to = to;
+							options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+							options.gasLimit=0x927c0; //web3.toHex('600000');
+							options.value = value1*1000000000000000000;
+							
+							
+							/*
+							var tx = new EthJS.Tx(options);
+							tx.sign(EthJS.Buffer.Buffer(privkey,'hex'));
+							var serializedTx = tx.serialize().toString('hex');
+							*/
+							
+							ks.keyFromPassword(password, function (err, pwDerivedKey) {
+							
+								var registerTx = lightwallet.txutils.functionTx(ABI, abifunc, args, options);
+								var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, localStorage.getItem("openkey"));
+								console.log("lightWallet sign:", signedTx);
+						
+								$.ajax({
+									method: "GET",
+									url: option_etherscan_api+"/api?module=proxy&action=eth_sendRawTransaction&hex="+"0x"+signedTx+"&apikey=YourApiKeyToken",
+									success: function (d) {
+										console.log(d);
+										$(callback).html("<A target=_blank href='"+option_etherscan_api.replace("api.")+"/tx/"+d.result+"'>"+d.result+"</a>");
+										
+										if (typeof d.error != "undefined") {
+											if (d.error.message.match(/Insufficient fund/)) d.error.message = 'Error: you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.02 ETH to this account and try again.'; //If you are getting an insufficient balance for gas ... error, you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.01 ETH to this account and try again.
+											$(callback).html(d.error.message); 
+										}
+										
+									},
+									fail:function(d) {
+										alert("send transaction error");
+									} 
+									},"json"); 
+									
+									
+							});
+						}});
+						
+					}
+					
+</script>
+</body>
+</html>
