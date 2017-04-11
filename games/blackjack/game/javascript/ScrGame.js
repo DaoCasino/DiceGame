@@ -1647,7 +1647,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	var data = "";
 	var price = 0;
 	var nameRequest = "sendRaw";
-	var gasPrice="0x737be7600";//web3.toHex('31000000000');
+	var gasPrice="0x9502F9000";//web3.toHex('40000000000');
 	var gasLimit=0x927c0; //web3.toHex('600000');
 	if(name == "deal"){
 		data = "0x"+C_DEAL;
