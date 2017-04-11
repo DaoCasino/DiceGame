@@ -903,7 +903,7 @@ ScrGame.prototype.getCard = function(cardIndex){
 	}else{
 		console.log("UNDEFINED spriteName:", cardIndex, spriteName);
 	}
-	console.log("UNDEFINED spriteName:", cardIndex, spriteName);
+	console.log("spriteName:", cardIndex, spriteName);
 	return newCard;
 }
 
