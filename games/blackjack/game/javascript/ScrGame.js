@@ -41,7 +41,7 @@ var C_DOUBLE_AVAILABLE = "0062a7fa";
 var C_DOUBLE = "8fdb7189";
 var C_PLAYER_SCORE = "dc21d020";
 var C_SPLIT_SCORE = "6dd6cd53";
-var C_IS_GAME = "0da1491d";
+var C_GAME_ID = "c0bd8351";
 
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
@@ -61,7 +61,8 @@ var blockNumber;
 var idOraclizeGame = undefined;
 var resultTxid = undefined;
 var gasAmount = 4000000;
-var isGame = undefined;
+var idGame = -1;
+var idOldGame = -1;
 
 var accounts;
 var account;
@@ -96,6 +97,10 @@ var _oDealerCardOffset;
 var _oReceiveWinOffset;
 var _oFichesDealerOffset;
 var _oRemoveCardsOffset;
+
+// uint8 countDeck = 0;
+// uint8[] arrayDecks = [20, 21, 1, 22, 2, 23, 3, 24, 44]; //split-double
+// uint8[] arrayDecks = [1, 4, 31, 2, 48, 5, 30, 51]; //bj
 
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
@@ -193,7 +198,9 @@ ScrGame.prototype.init = function() {
 	
 	this.createGUI();
 	this.createAccount();
-	this.getIsGame();
+	this.getGameId();
+	idOldGame = idGame || -1;
+	
 	infura.sendRequest("getBalance", openkey, _callback);
 	infura.sendRequest("getBalanceBank", addressContract, _callback);
 	infura.sendRequest("getBlockNumber", undefined, _callback);
@@ -226,7 +233,6 @@ ScrGame.prototype.clearGame = function(){
 	loadHouseCard = 0;
 	stateNow = -1;
 	stateSplit = -1;
-	isGame = false;
 	this.timeTotal = 0;
 	this.timeCloseWnd = 0;
 	this.timeNewCard = 0;
@@ -900,7 +906,7 @@ ScrGame.prototype.getCard = function(cardIndex){
 	console.log("UNDEFINED spriteName:", cardIndex, spriteName);
 	return newCard;
 }
-// [20, 21, 1, 22, 2, 23, 3, 24, 44]
+
 ScrGame.prototype.getPlayerCardsNumber = function() {
 	var data = "0x"+C_PLAYER_CARDS;
 	var params = {"from":openkey,
@@ -955,12 +961,12 @@ ScrGame.prototype.getPlayerBet = function() {
 	infura.sendRequest("getPlayerBet", params, _callback);
 }
 
-ScrGame.prototype.getIsGame = function() {
-	var data = "0x"+C_IS_GAME;
+ScrGame.prototype.getGameId = function() {
+	var data = "0x"+C_GAME_ID;
 	var params = {"from":openkey,
 				"to":addressContract,
 				"data":data};
-	infura.sendRequest("getIsGame", params, _callback);
+	infura.sendRequest("getGameId", params, _callback);
 }
 
 ScrGame.prototype.getHouseCardsNumber = function() {
@@ -1733,7 +1739,7 @@ ScrGame.prototype.response = function(command, value) {
 	// console.log("response:", command, value);
 	if(command == "gameTxHash"){
 		prnt.startGame = true;
-		prnt.getIsGame();
+		prnt.getGameId();
 		infura.sendRequest("getBalance", openkey, _callback);
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
@@ -1794,12 +1800,8 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getHouseCardsNumber"){
 		prnt.countHouseCard = hexToNum(value);
 		prnt.addHouseCard();
-	} else if(command == "getIsGame"){
-		if(hexToNum(value)){
-			isGame = true;
-		} else {
-			isGame = false;
-		}
+	} else if(command == "getGameId"){
+		idGame = hexToNum(value);
 	} else if(command == "getPlayerBet"){
 		if((stateNow == S_IN_PROGRESS ||
 		stateNow == S_IN_PROGRESS_SPLIT)
@@ -1884,16 +1886,14 @@ ScrGame.prototype.response = function(command, value) {
 			}
 		}
 	} else if(command == "getGameState"){
-		if(!isGame){
-			prnt.getIsGame();
-		}
+		prnt.getGameId();
 		
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state|isGame:", stateNow, isGame);
+			console.log("state|idGame:", stateNow, idGame, idOldGame);
 		}
 		
-		if(value != "0x" && isGame){
+		if(value != "0x"){
 			if(stateNow == S_IN_PROGRESS ||
 			stateNow == S_IN_PROGRESS_SPLIT){
 				if(stateNow == S_IN_PROGRESS_SPLIT && !prnt.bStandSplit){
@@ -1929,7 +1929,8 @@ ScrGame.prototype.response = function(command, value) {
 					prnt.showButtons(false);
 					prnt.bWait = true;
 				}
-			} else if(prnt.startGame){
+			} else if(prnt.startGame && idGame > idOldGame){
+				idOldGame = idGame;
 				prnt.showMyPoints();
 				prnt.showMySplitPoints();
 				var _x = _W/2 - 80-75;
@@ -1947,7 +1948,6 @@ ScrGame.prototype.response = function(command, value) {
 				switch (stateNow){
 					case S_BLACKJACK:
 						prnt.showResult("tfBlackjack", _x, _y);
-						isGame = false;
 						break;
 					case S_PLAYER_WON:
 						prnt.showResult("tfWin", _x, _y);
@@ -1965,9 +1965,6 @@ ScrGame.prototype.response = function(command, value) {
 						break;
 				}
 				
-				if(isGame){
-					prnt.getIsGame();
-				}
 				prnt.getSplitCardsNumber();
 				prnt.getPlayerCardsNumber();
 				prnt.getHouseCardsNumber();
@@ -1979,27 +1976,36 @@ ScrGame.prototype.response = function(command, value) {
 				infura.sendRequest("getBalance", openkey, _callback);
 				infura.sendRequest("getBalanceBank", addressContract, _callback);
 				prnt.showButtons(false);
+			} else if(!prnt.startGame && idGame == idOldGame){
+				prnt.clearBet();
+				prnt.bClickStart = false;
+				prnt.bWait = false;
+				prnt.startGame = false;
+				prnt.showChips(true);
+				infura.sendRequest("getBalance", openkey, _callback);
+				infura.sendRequest("getBalanceBank", addressContract, _callback);
+				prnt.showButtons(false);
 			}
 			
 			stateOld = stateNow;
-		} else if(stateNow == S_BLACKJACK && prnt.startGame) {
-			console.log("BLACKJACK");
-			var _x = _W/2 - 80-75;
-			var _y = _H/2 - 35;
-			prnt.showResult("tfBlackjack", _x, _y);
-			isGame = false;
-			prnt.clearBet();
-			prnt.getSplitCardsNumber();
-			prnt.getPlayerCardsNumber();
-			prnt.getHouseCardsNumber();
+		// } else if(stateNow == S_BLACKJACK && prnt.startGame) {
+			// console.log("BLACKJACK");
+			// var _x = _W/2 - 80-75;
+			// var _y = _H/2 - 35;
+			// prnt.showResult("tfBlackjack", _x, _y);
+			// isGame = false;
+			// prnt.clearBet();
+			// prnt.getSplitCardsNumber();
+			// prnt.getPlayerCardsNumber();
+			// prnt.getHouseCardsNumber();
 			
-			prnt.bClickStart = false;
-			prnt.bWait = false;
-			prnt.startGame = false;
-			prnt.showChips(true);
-			infura.sendRequest("getBalance", openkey, _callback);
-			infura.sendRequest("getBalanceBank", addressContract, _callback);
-			prnt.showButtons(false);
+			// prnt.bClickStart = false;
+			// prnt.bWait = false;
+			// prnt.startGame = false;
+			// prnt.showChips(true);
+			// infura.sendRequest("getBalance", openkey, _callback);
+			// infura.sendRequest("getBalanceBank", addressContract, _callback);
+			// prnt.showButtons(false);
 		} else {
 			if(!prnt.bClickStart){
 				prnt.bWait = false;
