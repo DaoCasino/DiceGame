@@ -1976,14 +1976,14 @@ ScrGame.prototype.response = function(command, value) {
 				infura.sendRequest("getBalance", openkey, _callback);
 				infura.sendRequest("getBalanceBank", addressContract, _callback);
 				prnt.showButtons(false);
-			// } else if(!prnt.bClickStart && !prnt.startGame && idGame == idOldGame){
-				// prnt.bClickStart = false;
-				// prnt.bWait = false;
-				// prnt.startGame = false;
-				// prnt.showChips(true);
-				// infura.sendRequest("getBalance", openkey, _callback);
-				// infura.sendRequest("getBalanceBank", addressContract, _callback);
-				// prnt.showButtons(false);
+			} else if(!this.bClear && !prnt.startGame && idGame == idOldGame){
+				prnt.bClickStart = false;
+				prnt.bWait = false;
+				prnt.startGame = false;
+				prnt.showChips(true);
+				infura.sendRequest("getBalance", openkey, _callback);
+				infura.sendRequest("getBalanceBank", addressContract, _callback);
+				prnt.showButtons(false);
 			}
 			
 			stateOld = stateNow;
