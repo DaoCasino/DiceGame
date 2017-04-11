@@ -1976,7 +1976,7 @@ ScrGame.prototype.response = function(command, value) {
 				infura.sendRequest("getBalance", openkey, _callback);
 				infura.sendRequest("getBalanceBank", addressContract, _callback);
 				prnt.showButtons(false);
-			} else if(!prnt.startGame && idGame == idOldGame){
+			} else if(!prnt.bClickStart && !prnt.startGame && idGame == idOldGame){
 				prnt.clearBet();
 				prnt.bClickStart = false;
 				prnt.bWait = false;
@@ -1988,24 +1988,6 @@ ScrGame.prototype.response = function(command, value) {
 			}
 			
 			stateOld = stateNow;
-		// } else if(stateNow == S_BLACKJACK && prnt.startGame) {
-			// console.log("BLACKJACK");
-			// var _x = _W/2 - 80-75;
-			// var _y = _H/2 - 35;
-			// prnt.showResult("tfBlackjack", _x, _y);
-			// isGame = false;
-			// prnt.clearBet();
-			// prnt.getSplitCardsNumber();
-			// prnt.getPlayerCardsNumber();
-			// prnt.getHouseCardsNumber();
-			
-			// prnt.bClickStart = false;
-			// prnt.bWait = false;
-			// prnt.startGame = false;
-			// prnt.showChips(true);
-			// infura.sendRequest("getBalance", openkey, _callback);
-			// infura.sendRequest("getBalanceBank", addressContract, _callback);
-			// prnt.showButtons(false);
 		} else {
 			if(!prnt.bClickStart){
 				prnt.bWait = false;
