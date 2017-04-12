@@ -2,8 +2,15 @@ pragma solidity ^0.4.2;
 import "./Deck.sol";
 import "./owned.sol";
 
+contract ERC20 {
+    function balanceOf(address _addr) returns (uint);
+    function transfer(address _to, uint256 _value);
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
+}
+
 contract BlackJack is owned {
   using Deck for *;
+  ERC20 erc;
 
   uint public minBet = 50 finney;
   uint public maxBet = 5 ether;
@@ -41,7 +48,7 @@ contract BlackJack is owned {
     
     uint id;
   }
-
+  
   mapping (address => Game) public games;
   mapping (address => Game) public splitGames;
 
@@ -71,7 +78,7 @@ contract BlackJack is owned {
   function () payable {
 
   }
-
+  
   function gameInProgress(Game game, bool split)
     constant
     private
@@ -546,7 +553,7 @@ contract BlackJack is owned {
       // game doesn't exist
       throw;
     }
-
+    
     return game.id;
   }
 

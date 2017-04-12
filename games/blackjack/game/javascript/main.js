@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.37"
+var version = "v. 1.0.38"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -17,11 +17,11 @@ var stats; //для вывода статистики справа
 var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var	addressRpcContract = "0xc0951cf7a33d26642c8c48d308345a5444562e15";
+var	addressRpcContract = "0x92ab0c7848d25b68a0248d59ec907312e9cf6cda";
 // var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9"; // work
-// var	addressTestContract = "0xdab19f150ce7e66ca85e9865d1846231840ed151"; // work 2
+var	addressTestContract = "0xdab19f150ce7e66ca85e9865d1846231840ed151"; // work 2
 // var	addressTestContract = "0xf6cd2f2dc28CBE31741f4367CAAB38b0718e63Bc";
-var	addressTestContract = "0xa5f829eece1fb5662f5df7a3ada0643f1d74fcb0"; // sd
+// var	addressTestContract = "0xa5f829eece1fb5662f5df7a3ada0643f1d74fcb0"; // sd
 
 var options_debug = false;
 var options_test = false;
@@ -446,10 +446,14 @@ function saveData() {
 
 function loadData() {
 	if(isLocalStorageAvailable()){
+		if(options_rpc){
+			openkey = "0xf1f42f995046e67b79dd5ebafd224ce964740da3";
+			privkey = "d3b6b98613ce7bd4636c5c98cc17afb0403d690f9c2b646726e08334583de101";
+		} else {
+			openkey = localStorage.getItem('openkey')
+			privkey = localStorage.getItem('privkey')
+		}
 		mainet = localStorage.getItem('mainnet')
-		openkey = localStorage.getItem('openkey')
-		privkey = localStorage.getItem('privkey')
-		console.log("openkey:", openkey);
 		if (localStorage.getItem('daocasino_blackjack')){
 			var login_str = localStorage.getItem('daocasino_blackjack')
 			login_obj = JSON.parse(login_str);

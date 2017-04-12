@@ -100,7 +100,7 @@ var _oRemoveCardsOffset;
 
 // uint8 countDeck = 0;
 // uint8[] arrayDecks = [20, 21, 1, 22, 2, 23, 3, 24, 44]; //split-double
-// uint8[] arrayDecks = [1, 4, 31, 2, 48, 5, 30, 51]; //bj
+// uint8[] arrayDecks = [1, 43, 4, 2, 48, 5, 30, 51]; //bj
 
 ScrGame.prototype.init = function() {
 	this.face_mc = new PIXI.Container();
@@ -210,9 +210,9 @@ ScrGame.prototype.init = function() {
 		this.showError(ERROR_KEY, showHome);
 	}
 	
-	// for(var i=1; i<53; i++){
-		// this.getCard(i);
-	// }
+	for(var i=1; i<53; i++){
+		this.getCard(i);
+	}
 
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -467,7 +467,9 @@ ScrGame.prototype.createGUI = function() {
 	btnHit.visible = false;
 	btnStand.visible = false;
 	
-	this.createButton("btnSmart", 120, _H-60, "Contract", 0.7, 40);
+	if(!options_rpc){
+		this.createButton("btnSmart", 120, _H-60, "Contract", 0.7, 40);
+	}
 	this.createButton("btnDao", _W-120, _H-60, "DAO.CASINO", 0.7, 34);
 	
 	this.btnShare = addButton2("btnFacebookShare", _W - 120, 50, 0.75);
@@ -903,7 +905,7 @@ ScrGame.prototype.getCard = function(cardIndex){
 	}else{
 		console.log("UNDEFINED spriteName:", cardIndex, spriteName);
 	}
-	console.log("spriteName:", cardIndex, spriteName);
+	// console.log("spriteName:", cardIndex, spriteName);
 	return newCard;
 }
 
@@ -1402,6 +1404,7 @@ ScrGame.prototype.loadBet = function(value){
 		var c = 100;
 		this.bBetLoad = true;
 		this.bWait = false;
+		this.arrow.visible = false;
 		betEth = Number(hexToNum(value));
 		betGame = toFixed((betEth/1000000000000000000), 4)*c;
 		betSplitGame = betGame;
@@ -1912,6 +1915,9 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.darkCards(prnt._arMyCards, true);
 						prnt.darkCards(prnt._arMySplitCards, false);
 					}
+				}
+				if(idGame == idOldGame){
+					idOldGame--;
 				}
 				prnt.startGame = true;
 				prnt.btnStart.alpha = 0.5;
