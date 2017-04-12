@@ -2,13 +2,22 @@ pragma solidity ^0.4.2;
 import "./Deck.sol";
 import "./owned.sol";
 
+contract ERC20 {
+    function balanceOf(address _addr) returns (uint);
+    function transfer(address _to, uint256 _value);
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
+}
+
 contract BlackJack is owned {
   using Deck for *;
+  ERC20 erc;
 
   uint public minBet = 50 finney;
   uint public maxBet = 5 ether;
 
   uint8 BLACKJACK = 21;
+
+  uint lastGameId;
 
   enum GameState {
     InProgress,
@@ -34,10 +43,12 @@ contract BlackJack is owned {
     GameState state;
     uint8 seed;
 
-    // uint insurance;
-    // bool insuranceAvailable;
+    uint insurance;
+    bool insuranceAvailable;
+    
+    uint id;
   }
-
+  
   mapping (address => Game) public games;
   mapping (address => Game) public splitGames;
 
@@ -76,7 +87,7 @@ contract BlackJack is owned {
   function () payable {
 
   }
-
+  
   function gameInProgress(Game game, bool split)
     constant
     private
@@ -109,7 +120,7 @@ contract BlackJack is owned {
       throw;
     }
 
-    nextCard = 0;
+    lastGameId = lastGameId + 1;
 
     Game memory game = Game({
       player: msg.sender,
@@ -122,8 +133,9 @@ contract BlackJack is owned {
       houseBigScore: 0,
       state: GameState.InProgress,
       seed: 3,
-      // insurance: 0,
-      // insuranceAvailable: false
+      insurance: 0,
+      insuranceAvailable: false,
+      id: lastGameId
     });
 
     games[msg.sender] = game;
@@ -149,7 +161,9 @@ contract BlackJack is owned {
     if (player) {
       cards = storageGame.playerCards;
     }
-    cards.push(deal(msg.sender, game.seed));
+
+    cards.push(Deck.deal(msg.sender, game.seed));
+	
     if (player) {
       // cards[cards.length - 1] might be further optimized by accessing local game copy.
       storageGame.playerScore = recalculateScore(cards[cards.length - 1], game.playerScore, false);
@@ -281,8 +295,9 @@ contract BlackJack is owned {
       houseBigScore: game.houseBigScore,
       state: GameState.InProgress,
       seed: 128,
-      // insurance: 0,
-      // insuranceAvailable: false
+      insurance: 0,
+      insuranceAvailable: false,
+      id: lastGameId
     });
 
     splitGames[msg.sender] = splitGame;
@@ -309,7 +324,6 @@ contract BlackJack is owned {
     } else if (!gameInProgress(game, false)) {
       throw;
     }
-
 
     if (msg.value != game.bet) {
       // Should double the bet
@@ -344,10 +358,10 @@ contract BlackJack is owned {
         return;
       } else {
         // HOUSE WON
-        // game.state = GameState.HouseWon; // simply finish the game
-        // if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
-        //   if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
-        // }
+        game.state = GameState.HouseWon; // simply finish the game
+        if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
+          if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
+        }
         return;
       }
     } else {
@@ -374,10 +388,10 @@ contract BlackJack is owned {
             stand();
             return;
           }
-          // game.state = GameState.HouseWon; // finish the game
-          // if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
-          //   if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
-          // }
+          game.state = GameState.HouseWon; // finish the game
+          if (game.houseCards.length == 2 && (Deck.valueOf(game.houseCards[0], false) == 10 || Deck.valueOf(game.playerCards[1], false) == 10) && game.insurance > 0) {
+            if (!msg.sender.send(game.insurance * 2)) throw; // send insurance to the player
+          }
           return;
         }
 
@@ -501,13 +515,13 @@ contract BlackJack is owned {
     return splitGames[msg.sender].playerScore;
   }
 
-  // function getInsurance() public constant returns(uint) {
-  //   return games[msg.sender].insurance;
-  // }
+  function getInsurance() public constant returns(uint) {
+    return games[msg.sender].insurance;
+  }
 
-  // function isInsuranceAvailable() public constant returns(bool) {
-  //   return games[msg.sender].insuranceAvailable;
-  // }
+  function isInsuranceAvailable() public constant returns(bool) {
+    return games[msg.sender].insuranceAvailable;
+  }
 
   function getGameState() public constant returns (GameState) {
     Game memory game = games[msg.sender];
@@ -540,6 +554,17 @@ contract BlackJack is owned {
     }
 
     return game.bet;
+  }
+
+  function getGameId() public constant returns(uint) {
+    Game memory game = games[msg.sender];
+
+    if (game.player == 0) {
+      // game doesn't exist
+      throw;
+    }
+    
+    return game.id;
   }
 
   function withdraw(uint amountInWei) onlyOwner {
