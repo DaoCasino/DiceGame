@@ -4,7 +4,22 @@ var _countBy30Days = 0;
 var arGame = [];
 
 function GetLogs() {
-
+var block;
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 74,
+            "jsonrpc": '2.0',
+            "method": 'eth_blockNumber',
+            "params": []
+        }),
+        success: function(d){
+            block = hexToNum(d.result) - 5000;
+        }
+    })
     $.ajax({
         type: "POST",
         url: urlInfura,
@@ -15,7 +30,7 @@ function GetLogs() {
             "jsonrpc": '2.0',
             "method": 'eth_getLogs',
             "params": [{
-                "fromBlock": "599000",
+                "fromBlock": block,
                 "toBlock": "latest",
                 "address": addressContract,
             }]
@@ -64,9 +79,9 @@ function GetLogs() {
         }
     })
     getContractBalance();
-    paids = (call("getTotalEthSended") / 10000000000000000000).toFixed(6);
-    sends = (call("getTotalEthPaid") / 10000000000000000000).toFixed(6);
-    $("#total-rolls").html(call("getTotalRollMade"));
+    paids = (call("getTotalEthSended", openkey) / 10000000000000000000).toFixed(6);
+    sends = (call("getTotalEthPaid", openkey) / 10000000000000000000).toFixed(6);
+    $("#total-rolls").html(call("getTotalRollMade", openkey));
     $("#total-paid").html(paids + ' ETH');
     $("#total-send").html(sends + ' ETH (' + ((paids / sends) * 100).toFixed(2) + '%)');
 };

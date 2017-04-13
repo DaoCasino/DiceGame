@@ -82,9 +82,11 @@ if (localStorage.getItem("isreg")) {
 
 }
 
-var secretSeed = lightwallet.keystore.generateRandomSeed();
-$("#seed").html(secretSeed);
+var secret = lightwallet.keystore.generateRandomSeed();
+$("#seed").html(secret);
 function wallet_open(secretSeed) {
+	if(secretSeed == secret){
+		$('.disclaimer-btn registr-now').html("wait..");
 	var password = prompt('Enter password for encryption');
 	lightwallet.keystore.createVault({
 		password: password,
@@ -106,6 +108,13 @@ function wallet_open(secretSeed) {
 			window.location = 'balance.html';
 		});
 	});
+	
+}
+else{
+	$('#popup-open-text-before').html('Please, enter your seed phrase')
+
+}
+
 
 	// lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
 	// 	ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
@@ -192,22 +201,28 @@ var totalwei;
 function rebalance() {
 	if (!totalwei) $("#balance").html("? ETH");
 	setTimeout(function () {
+		var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+		callData = "0x70a08231";
 		var u = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		if (localStorage.getItem("mainnet") == "on") u = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		$.ajax({
-			type: "POST",
-			url: u,
-			dataType: 'json',
-			async: false,
-			data: JSON.stringify({
-				"id": 0,
-				"jsonrpc": '2.0',
-				"method": 'eth_getBalance',
-				"params": [localStorage.getItem("openkey"), "latest"]
-			}),
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [{
+                "from": openkey,
+                "to": erc20address,
+                "data": callData + pad(numToHex(openkey.substr(2)), 64)
+            }, "latest"]
+        }),
 			success: function (d) {
 				totalwei = d.result;
-				$("#balance").html(d.result / 1000000000000000000 + " ETH");
+				$("#balance").html(d.result / 100000000 + " BET");
 				if (localStorage.getItem("mainnet") == "off" && totalwei == 0) {
 					$.get("https://platform.dao.casino/api/?a=faucet&to=" + localStorage.getItem("openkey"));
 				}

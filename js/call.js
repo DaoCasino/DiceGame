@@ -113,6 +113,22 @@ function getContractBalance() {
     });
 };
 function GetLogs() {
+    var block;
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 74,
+            "jsonrpc": '2.0',
+            "method": 'eth_blockNumber',
+            "params": []
+        }),
+        success: function(d){
+            block = hexToNum(d.result) - 5000;
+        }
+    })
 
     $.ajax({
         type: "POST",
@@ -124,7 +140,7 @@ function GetLogs() {
             "jsonrpc": '2.0',
             "method": 'eth_getLogs',
             "params": [{
-                "fromBlock": "650000",
+                "fromBlock": block,
                 "toBlock": "latest",
                 "address": addressContract,
             }]
