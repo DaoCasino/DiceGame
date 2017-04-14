@@ -14,7 +14,7 @@ $(document).ready(function () {
     $("input#checked-on").prop('disabled', true);
     var clipboard = new Clipboard('#openkey');
     $('#all').click(function () {
-        getAllLogs();
+        //getAllLogs();
         $('.active').removeClass('active')
         $(this).addClass('active');
     });

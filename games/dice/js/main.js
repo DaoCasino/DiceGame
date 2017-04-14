@@ -90,6 +90,8 @@ function call(callname, adr) {
         case "balanceOf":
             callData = "0x70a08231";
             break;
+        case "getTotalData":
+            callData = "0x5d022512"
     }
     $.ajax({
         type: "POST",
@@ -167,7 +169,7 @@ function setContract() {
     } else if (mainnet == "off") {
         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         //addressContract = getContract("Dice", "testnet");
-        addressContract = "0x252773330492d029e8bcb6073049789012f185d9";
+        addressContract = "0x9f93bfe34bdac77e4ddc10971b0ab827e9289f00";
         $('#randomnum').text("");
     }
 };
@@ -183,7 +185,7 @@ setInterval(function () {
         // balance = $('#balance').html();
         // balance = +balance.substr(0, balance.length - 4);
         // balance = +balance.toFixed(8);
-        if (balance < 0.02 && !game) {
+        if (balance < 0.02 && !game || !balance) {
             disabled(true);
             $("#label").text(" NO MONEY ");
             $('#randomnum').text("Please, up balance")
@@ -364,7 +366,7 @@ function startGame() {
 
 function gameend() {
     disabled(false);
-    GetLogs();
+    //GetLogs();
     clearInterval(Timer);
     clearInterval(animate);
     count = new_count;
