@@ -106,7 +106,7 @@ function call(callname, adr) {
                 "from": openkey,
                 "to": addressContract,
                 "data": callData + pad(numToHex(adr.substr(2)), 64)
-            }, "latest"]
+            }, "pending"]
         }),
         success: function (d) {
             result = hexToNum(d.result);
