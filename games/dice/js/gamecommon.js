@@ -14,7 +14,7 @@ $(document).ready(function () {
     $("input#checked-on").prop('disabled', true);
     var clipboard = new Clipboard('#openkey');
     $('#all').click(function () {
-        //getAllLogs();
+        getAllLogs();
         $('.active').removeClass('active')
         $(this).addClass('active');
     });
@@ -41,16 +41,16 @@ $(document).ready(function () {
         betEth = $(this).val();
         Refresh();
     })
-    // $('input#amount-one').keypress(function (e) {
-    //     if (e.which == 13) {
-    //         //Refresh();
-    //         $(this).blur();
-    //     }
-    // })
-    // $('input#amount-one').keypress(function (e) {
-    //     Refresh();
-    //     if (!(e.which == 8 || e.which == 44 || e.which == 45 || e.which == 46 || (e.which > 47 && e.which < 58))) return false;
-    // });
+    $('input#amount-one').keypress(function (e) {
+        if (e.which == 13) {
+            //Refresh();
+            $(this).blur();
+        }
+    })
+    $('input#amount-one').keypress(function (e) {
+        //Refresh();
+        if (!(e.which == 8 || e.which == 44 || e.which == 45 || e.which == 46 || (e.which > 47 && e.which < 58))) return false;
+    });
     // $('input#amount-one').on('input keyup change', function () {
     //     var value = this.value;
     //     Refresh();
@@ -71,12 +71,28 @@ $(document).ready(function () {
 
     });
     $('input#less-than-wins').on('input keyup change', function () {
+ 
         var value = this.value;
         Refresh();
         if (value < 1 || value > 64224)
             this.value = value.slice(0, -1);
 
-        else Refresh();
+        else {Refresh(); console.log("aa")}
+
+    });
+
+     $('input#amount-one').change( function () {
+
+        var value = this.value;
+        //Refresh();
+        if (value < 0.001 || value > maxBetEth)
+            {this.value = value.slice(0, -1);
+}
+
+        else {betEth = +value;
+            Refresh();
+ 
+        }
 
     });
     /* SLIDER UI */
@@ -95,23 +111,27 @@ $(document).ready(function () {
             chance = +value;
             Refresh();
         });
-        // $('#amount-one').change(function () {
-        //     var value = $("#amount-one").val();
 
-        //     if (value > balance) {
-        //         value = balance - 0.0001
-        //         betEth = balance
+        
 
-        //     };
-        //     if (value < 0.0001) {
-        //         value = 0.0001
-        //         betEth = 0.001
-        //     };
-        //     $("#amount-one").val(value);
-        //     $("#slider-dice-one").slider("value", value * 1000);
-        //     betEth = +value;
-        //     //Refresh();
-        // });
+
+        $('#amount-one').change(function () {
+            var value = $("#amount-one").val();
+
+            if (value > maxBetEth) {
+                value = maxBetEth
+                betEth = value
+
+            };
+            if (value < 0.001) {
+                value = 0.001
+                betEth = 0.001
+            };
+            $("#amount-one").val(value);
+            $("#slider-dice-one").slider("value", value * 1000);
+            betEth = +value;
+            //Refresh();
+        });
 
         $("#slider-dice-two").slider({
             range: "min",
@@ -130,10 +150,9 @@ $(document).ready(function () {
         Refresh();
     });
 
-    // setTimeout(function () {
-    //     $('#amount-one').val((maxBetEth).toFixed(3));
-    //     $('#amount-one').change();
-    //     Refresh();
-    // }, 1000);
+    setTimeout(function () {
+
+        Refresh();
+    }, 1000);
 
 })

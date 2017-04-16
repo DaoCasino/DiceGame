@@ -18,7 +18,7 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids, password;
 var game = false;
 var Timer, animate;
-var maxBetEth;
+var maxBetEth ;
 bankroll = 1000;
 
 function toFixed(value, precision) {
@@ -59,7 +59,7 @@ function loadData() {
         privkey = localStorage.getItem('privkey')
         sendingAddr = openkey.substr(2);
     }
-    console.log("version 0.44a Infura") // VERSION !
+    console.log("version 0.5 BET") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -181,20 +181,20 @@ function getContractBalance() {
 
 setInterval(function () {
     if (openkey) {
-        balance = callERC20("balanceOf", openkey)/100000000
-        // balance = $('#balance').html();
-        // balance = +balance.substr(0, balance.length - 4);
-        // balance = +balance.toFixed(8);
+        //balance = callERC20("balanceOf", openkey)/100000000
+        balance = $('#balance').html();
+        balance = +balance.substr(0, balance.length - 4);
+        balance = +balance.toFixed(8);
         if (balance < 0.02 && !game || !balance) {
             disabled(true);
             $("#label").text(" NO MONEY ");
-            $('#randomnum').text("Please, up balance")
+           //$('#randomnum').text("Please, up balance")
         } else if (balance > 0.01 && !game) {
             disabled(false);
             $("#label").text("Click Roll Dice to place your bet:");
         }
         $("#your-balance").val(balance);
-        Refresh();
+        //Refresh();
     } else {
         $("#label").text("Please, sign in");
         disabled(true);
@@ -214,7 +214,7 @@ function initGame() {
     $("#total-send").html(sends + ' BET (' + ((paids / sends) * 100).toFixed(2) + '%)');
     getContractBalance();
     $("#contract").html('<a target="_blank" href="https://ropsten.etherscan.io/address/' + addressContract + '">' + addressContract.slice(0, 24) + '...</a>')
-    //GetLogs();
+    GetLogs();
     $('#all').click();
     Refresh();
 };
@@ -244,12 +244,12 @@ function Refresh() {
         maxBetEth = Math.min(_bet, balance, 10);
         if (betEth > maxBetEth) {
             betEth = +maxBetEth.toFixed(4);
-            $("#slider-dice-one").slider("option", "max", maxBetEth * 1000);
-            $("#amount-one").val(betEth);
+            // $("#slider-dice-one").slider("option", "max", maxBetEth * 1000);
+            // $("#amount-one").val(betEth);
         }
         if (betEth < 0.0001) {
             betEth = 0.0001;
-            $("#amount-one").val(betEth);
+           // $("#amount-one").val(betEth);
         }
         $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
         $("#payout").val("x" + ((65536 - 1310) / chance).toFixed(5));
@@ -366,7 +366,7 @@ function startGame() {
 
 function gameend() {
     disabled(false);
-    //GetLogs();
+    GetLogs();
     clearInterval(Timer);
     clearInterval(animate);
     count = new_count;
