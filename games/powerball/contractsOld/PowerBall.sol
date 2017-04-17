@@ -1,4 +1,4 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.10;
 
 contract owned {
     address public owner;
@@ -194,9 +194,9 @@ contract PowerBall is owned {
     // [1,2,3,4,5],20,0
     function buyTicket(uint16[] wb, uint16 rb, uint8 pp) 
 	    public 
-	    //payable 
-	    //isAcceptTicket
-	    //betValueIsOk 
+	    payable 
+	    isAcceptTicket
+	    betValueIsOk 
 	{
 	    bool bMatch = true;
 	    if(wb.length == 5){
@@ -236,10 +236,25 @@ contract PowerBall is owned {
             tmpSession.id = numSession;
             tmpSession.arrayPlayers[id] = tmpPlayer;
             sessions[numSession] = tmpSession;
+            //logNum(1);
+       /* } else {
+            Player storage player = session.arrayPlayers[id];
+            // create player
+            if(player.id == 0){
+                tmpPlayer.id = id;
+                player = tmpPlayer;
+                logNum(2);
+            } else {
+                logNum(3);
+            }
+            
+            player.arrayIdTickets.push(idTicket);
+            player.arrayTickets[idTicket] = true;
+        }*/
         
         tickets[idTicket] = ticket;
 	}
-	/*
+	
 	function checkResult(uint id) public {
         tmpSession = sessions[numSession];
         tmpPlayer = tmpSession.arrayPlayers[msg.sender];
@@ -320,7 +335,7 @@ contract PowerBall is owned {
         tmpPlayer = tmpSession.arrayPlayers[msg.sender];
         return tmpPlayer.arrayIdTickets;
     }
-    */
+    
     function withdraw(uint amountInWei) onlyOwner {
         if (!msg.sender.send(amountInWei)) {
             throw;
