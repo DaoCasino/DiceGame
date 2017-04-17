@@ -40,7 +40,7 @@ function logPlayerCards(player) {
         for (var i = 0; i < n; ++i) {
             game.getPlayerCard.call(i, { from: player }).then(function(card) {
                 console.log("\t-", cardType[Math.floor(card / 4)], "of", suit[card % 4]);
-            });     
+            });
         }
     })
 }
@@ -55,7 +55,7 @@ function logHouseCards(player) {
         for (var i = 0; i < n; ++i) {
             game.getHouseCard.call(i, { from: player }).then(function(card) {
                 console.log("\t-", cardType[Math.floor(card / 4)], "of", suit[card % 4]);
-            });     
+            });
         }
     })
 }
@@ -70,7 +70,7 @@ function logSplitCards(player) {
         for (var i = 0; i < n; ++i) {
             game.getSplitCard.call(i, { from: player }).then(function(card) {
                 console.log("\t-", cardType[Math.floor(card / 4)], "of", suit[card % 4]);
-            });     
+            });
         }
     })
 }
@@ -159,7 +159,7 @@ function split(player, bet) {
         storage = instance;
         return game.split({
             from: player,
-            gas: 4700000,
+            gas: gasAmount,
             value: web3.toWei(bet, "Ether")
         });
     }).then(function(tx) {
@@ -281,9 +281,12 @@ function testSplitDouble(player, done) {
         game = instance;
         return double(player, 0.1);
     }).then(function() {
-        return game.getSplitGameParams.call({ from: player });
-    }).then(function(params) {
-        printParams(params)
+        return storage.getState.call(true, player, {
+            from: player
+        });
+    }).then(function(state) {
+        gameState = state;
+        console.log("State: " + states[state]);
     }).then(done);
 }
 

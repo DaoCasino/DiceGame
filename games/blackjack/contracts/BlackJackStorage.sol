@@ -4,13 +4,13 @@ import "./Deck.sol";
 
 contract BlackJackStorage {
     using Types for *;
-    
+
     /*
         CONTRACTS
     */
-    
+
     Deck deck;
-    
+
     /*
         CONSTANTS
     */
@@ -23,11 +23,11 @@ contract BlackJackStorage {
 
     mapping (address => Types.Game) public games;
     mapping (address => Types.Game) public splitGames;
-    
+
     /*
         CONSTRUCTOR
     */
-    
+
     function BlackJackStorage(address deckAddress) {
         deck = Deck(deckAddress);
     }
@@ -75,13 +75,13 @@ contract BlackJackStorage {
             id: 0
         });
 
-        splitGames[_player].playerCards.push(games[msg.sender].playerCards[1]);
+        splitGames[_player].playerCards.push(games[_player].playerCards[1]);
 
         games[_player].playerCards = [games[_player].playerCards[0]];
         games[_player].playerScore = deck.valueOf(games[_player].playerCards[0], false);
         games[_player].playerBigScore = deck.valueOf(games[_player].playerCards[0], true);
     }
-    
+
     function syncSplitDealerCards(address player)
         external
     {
@@ -94,7 +94,7 @@ contract BlackJackStorage {
     function dealSplitCard(address player)
         external
         returns (uint8)
-    {   
+    {
         uint8 card = deck.deal(player, splitGames[player].seed);
         splitGames[player].playerCards.push(card);
         splitGames[player].seed += 1;
@@ -104,7 +104,7 @@ contract BlackJackStorage {
     function dealMainCard(address player)
         external
         returns (uint8)
-    {   
+    {
         uint8 card = deck.deal(player, games[player].seed);
         games[player].playerCards.push(card);
         games[player].seed += 1;
@@ -114,7 +114,7 @@ contract BlackJackStorage {
     function dealHouseCard(address player)
         external
         returns (uint8)
-    {   
+    {
         uint8 card = deck.deal(player, games[player].seed);
         games[player].houseCards.push(card);
         games[player].seed += 1;
@@ -157,7 +157,7 @@ contract BlackJackStorage {
 
     function updateInsurance(uint insurance, bool isMain, address player)
         external
-    {   
+    {
         if (isMain) {
             games[player].insurance = insurance;
         } else {
@@ -167,7 +167,7 @@ contract BlackJackStorage {
 
     function updateState(Types.GameState state, bool isMain, address player)
         external
-    {   
+    {
         if (isMain) {
             games[player].state = state;
         } else {
@@ -215,7 +215,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint)
-    {   
+    {
         return games[player].playerCards.length;
     }
 
@@ -231,7 +231,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint)
-    {   
+    {
         if (isMain) {
             return games[player].bet;
         }
@@ -242,7 +242,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint8)
-    {   
+    {
         if (isMain) {
             return getGamePlayerScore(games[player]);
         }
@@ -253,7 +253,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint8)
-    {   
+    {
         if (isMain) {
             return games[player].playerBigScore;
         }
@@ -264,7 +264,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint8)
-    {   
+    {
         if (isMain) {
             return games[player].playerScore;
         }
@@ -275,7 +275,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint8)
-    {   
+    {
         return getGameHouseScore(games[player]);
     }
 
@@ -283,7 +283,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint8)
-    {   
+    {
         return games[player].houseBigScore;
     }
 
@@ -291,7 +291,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint8)
-    {   
+    {
         return games[player].houseScore;
     }
 
@@ -299,7 +299,7 @@ contract BlackJackStorage {
         public
         constant
         returns (Types.GameState)
-    {   
+    {
         if (isMain) {
             return games[player].state;
         }
@@ -310,7 +310,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint32)
-    {   
+    {
         if (isMain) {
             return games[player].id;
         }
@@ -321,7 +321,7 @@ contract BlackJackStorage {
         public
         constant
         returns (uint)
-    {   
+    {
         if (isMain) {
             return games[player].insurance;
         }
@@ -332,7 +332,7 @@ contract BlackJackStorage {
         constant
         public
         returns (bool)
-    {   
+    {
         return getActiveGame(player).insuranceAvailable;
     }
 
@@ -349,7 +349,7 @@ contract BlackJackStorage {
         constant
         public
         returns (bool)
-    {   
+    {
         Types.Game memory game = games[player];
         return isGameInProgress(game) && game.playerCards.length == 2 && deck.valueOf(game.playerCards[0], false) == deck.valueOf(game.playerCards[1], false);
     }
@@ -374,7 +374,7 @@ contract BlackJackStorage {
         constant
         external
         returns (bool)
-    {   
+    {
         Types.Game memory game = games[player];
         if (!isMain) game = splitGames[player];
 
@@ -388,10 +388,10 @@ contract BlackJackStorage {
         constant
         external
         returns (bool)
-    {   
+    {
         Types.Game memory game = games[player];
         if (!isMain) game = splitGames[player];
-        
+
         return getGamePlayerScore(game) == BLACKJACK && game.playerCards.length == 2 &&
                (deck.isTen(game.playerCards[0]) || deck.isTen(game.playerCards[1]));
     }
@@ -422,7 +422,7 @@ contract BlackJackStorage {
         return game.houseBigScore;
     }
 
-    function getActiveGame(address player) 
+    function getActiveGame(address player)
         constant
         private
         returns (Types.Game)
@@ -461,7 +461,7 @@ contract BlackJackStorage {
     function doubleBet(bool isMain, address player)
         external
         returns (uint)
-    {   
+    {
         if (isMain) {
             games[player].bet *= 2;
         }

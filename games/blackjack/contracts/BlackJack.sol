@@ -34,7 +34,7 @@ contract BlackJack is owned {
     /*
         EVENTS
     */
-    
+
     event Deal(
         uint8 _type, // 0 - player, 1 - house, 2 - split player
         uint8 _card
@@ -140,8 +140,8 @@ contract BlackJack is owned {
         lastGameId = lastGameId + 1;
         storageContract.createNewGame(lastGameId, msg.sender, msg.value);
         storageContract.deleteSplitGame(msg.sender);
-       
-                
+
+
         // deal the cards
         dealCard(true, true);
         dealCard(false, true);
@@ -157,11 +157,11 @@ contract BlackJack is owned {
     function hit()
         public
         gameIsGoingOn
-    {   
+    {
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
 
         dealCard(true, true);
-        storageContract.setInsuranceAvailable(false, isMain, msg.sender);       
+        storageContract.setInsuranceAvailable(false, isMain, msg.sender);
 
         checkGameResult(isMain, false);
     }
@@ -171,7 +171,7 @@ contract BlackJack is owned {
         payable
         betIsDoubled
         insuranceAvailable
-    {   
+    {
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
         storageContract.updateInsurance(msg.value, isMain, msg.sender);
         storageContract.setInsuranceAvailable(false, isMain, msg.sender);
@@ -181,7 +181,7 @@ contract BlackJack is owned {
     function stand()
         public
         gameIsGoingOn
-    {   
+    {
          bool isMain = storageContract.isMainGameInProgress(msg.sender);
 
          if (!isMain) {
@@ -230,7 +230,7 @@ contract BlackJack is owned {
         payable
         betIsDoubled
         doubleAvailable
-    {   
+    {
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
 
         storageContract.doubleBet(isMain, msg.sender);
@@ -244,7 +244,7 @@ contract BlackJack is owned {
 
     function dealCard(bool player, bool isMain)
         private
-    {   
+    {
         uint8 newCard;
         if (isMain && player) {
             newCard = storageContract.dealMainCard(msg.sender);
@@ -292,7 +292,7 @@ contract BlackJack is owned {
 
     function checkGameResult(bool isMain, bool finishGame)
         private
-    {   
+    {
         if (storageContract.getHouseScore(msg.sender) == BLACKJACK && storageContract.getPlayerScore(isMain, msg.sender) == BLACKJACK) {
             onTie(isMain, finishGame);
             return;
@@ -358,7 +358,7 @@ contract BlackJack is owned {
     function onPlayerWon(bool isMain, bool finishGame)
         private
         standIfNecessary(finishGame)
-    {   
+    {
         if (storageContract.getPlayerScore(isMain, msg.sender) != BLACKJACK) {
             if (!msg.sender.send(storageContract.getBet(isMain, msg.sender) * 2)) throw;
             // set final state
