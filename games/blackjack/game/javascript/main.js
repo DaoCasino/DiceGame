@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.38"
+var version = "v. 1.0.39"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -17,18 +17,19 @@ var stats; //для вывода статистики справа
 var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var	addressRpcContract = "0x92ab0c7848d25b68a0248d59ec907312e9cf6cda";
+var addressStorage = "";
+var	addressRpcContract = "0xa4d89911e7c155c9a1e0cc3fe222872be07d30a1";
+var	addressRpcStorage = "0x99358ef8e0cdbb788668789460b0fc47e3646ede";
 // var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9"; // work
 var	addressTestContract = "0xdab19f150ce7e66ca85e9865d1846231840ed151"; // work 2
-// var	addressTestContract = "0xf6cd2f2dc28CBE31741f4367CAAB38b0718e63Bc";
-// var	addressTestContract = "0xa5f829eece1fb5662f5df7a3ada0643f1d74fcb0"; // sd
+var	addressTestStorage = "";
 
 var options_debug = false;
 var options_test = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
-var options_rpc = false;
+var options_rpc = true;
 var options_music = true;
 var options_sound = true;
 var options_mobile = true;

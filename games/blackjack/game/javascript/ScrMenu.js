@@ -8,12 +8,6 @@ ScrMenu.prototype.constructor = ScrMenu;
 
 
 ScrMenu.prototype.init = function() {
-	// if(openkey){}else{
-		// var url = "/";
-		// window.open(url, "_self"); // "_blank",  "_self"
-		// return false;
-	// }
-	
 	this._arButtons = [];
 	
 	this.bg = addObj("bgMenu", _W/2, _H/2);
@@ -111,12 +105,6 @@ ScrMenu.prototype.touchHandler = function(evt){
 			if(item_mc._selected){
 				this.clickCell(item_mc);
 				return;
-			}
-		}
-		
-		if(this.startGame){
-			if(this.curLevel == 3 || this.curLevel == 6){
-				this.clickObject();
 			}
 		}
 	}
