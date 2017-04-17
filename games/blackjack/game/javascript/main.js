@@ -18,8 +18,8 @@ var rndBg = String(Math.ceil(Math.random()*2));
 
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 var addressStorage = "";
-var	addressRpcContract = "0xa4d89911e7c155c9a1e0cc3fe222872be07d30a1";
-var	addressRpcStorage = "0x99358ef8e0cdbb788668789460b0fc47e3646ede";
+var	addressRpcContract = "0x2a7f64d8379edadb4f24cf64edea0dbdee0bc3bb";
+var	addressRpcStorage = "0x979251382544687724b0145e356712969f25fd52";
 // var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9"; // work
 var	addressTestContract = "0xdab19f150ce7e66ca85e9865d1846231840ed151"; // work 2
 var	addressTestStorage = "";

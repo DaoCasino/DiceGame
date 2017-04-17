@@ -216,7 +216,7 @@ contract BlackJackStorage {
         constant
         returns (uint)
     {
-        return games[player].playerCards.length;
+        return splitGames[player].playerCards.length;
     }
 
     function getHouseCardsNumber(address player)

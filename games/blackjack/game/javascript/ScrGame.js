@@ -1723,6 +1723,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 
 ScrGame.prototype.response = function(command, value) {
 	var prnt = obj_game["game"];
+	
 	if(value == undefined || options_debug){
 		if(command == "sendRaw" && !options_debug){
 			prnt.showError(ERROR_TRANSACTION);
