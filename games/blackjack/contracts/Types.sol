@@ -13,23 +13,23 @@ library Types {
 
 
     struct Game {
-        uint bet;
-        uint insurance;
+        uint bet;  // 32 bytes
+        uint insurance;  // 32 bytes
 
-        address player;
+        address player;  // 20 bytes
         
         uint8 playerScore;
         uint8 playerBigScore;
         uint8 houseScore;
         uint8 houseBigScore;
 
-        uint8 seed;
-
         GameState state;
 
-        bool insuranceAvailable;
-
         uint32 id;
+
+        uint8 seed;
+
+        bool insuranceAvailable;
 
         uint8[] houseCards;
         uint8[] playerCards;
