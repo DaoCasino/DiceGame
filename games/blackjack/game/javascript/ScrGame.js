@@ -1864,7 +1864,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state|idGame:", stateNow, idGame);
+			// console.log("state|idGame:", stateNow, idGame);
 		}
 		
 		if(!prnt.bBetLoad){

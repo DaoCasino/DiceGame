@@ -160,7 +160,7 @@ contract BlackJack is owned {
     {
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
 
-        dealCard(true, true);
+        dealCard(true, isMain);
         storageContract.setInsuranceAvailable(false, isMain, msg.sender);
 
         checkGameResult(isMain, false);
