@@ -16,13 +16,12 @@ var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
 var rndBg = String(Math.ceil(Math.random()*2));
 
+var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var addressStorage = "";
-var	addressRpcContract = "0x587970d746d44b249d61cff19f17b39f576020f4";
-var	addressRpcStorage = "0xdf48fbab03cf165a8be1cd77e4ef7ef004d5b5ef";
-// var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9"; // work
-var	addressTestContract = "0xdab19f150ce7e66ca85e9865d1846231840ed151"; // work 2
-var	addressTestStorage = "";
+var	addressRpcStorage = "0x7585ab95c3abd9bccb9712e7901befc3b8095eb7";
+var	addressRpcContract = "0x3be59929f76f888690dc88fec7d29d441dc6ea6e";
+var	addressTestStorage = "0x9996b495c247ea17e4e5184e48a031a84e437c2f";
+var	addressTestContract = "0x341fbf8576e79405e9bb2e0ed48d858d12ba6f5e";
 
 var options_debug = false;
 var options_test = false;

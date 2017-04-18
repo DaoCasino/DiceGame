@@ -1392,6 +1392,7 @@ ScrGame.prototype.sendCard = function(obj){
 }
 
 ScrGame.prototype.loadBet = function(value){
+	console.log("loadBet");
 	if(!this.bBetLoad){
 		var c = 100;
 		this.timeGetState = TIME_GET_STATE-1000;
@@ -1802,9 +1803,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameId"){
 		idGame = hexToNum(value);
 	} else if(command == "getPlayerBet"){
-		if((stateNow == S_IN_PROGRESS ||
-		stateNow == S_IN_PROGRESS_SPLIT)
-		&& prnt.tfStatus){
+		if(prnt.tfStatus){
 			prnt.loadBet(value);
 		}
 	} else if(command == "isInsuranceAvailable"){
@@ -1864,10 +1863,11 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			// console.log("state|idGame:", stateNow, idGame);
+			console.log("state|idGame:", stateNow, idGame, prnt.bBetLoad);
 		}
 		
-		if(!prnt.bBetLoad){
+		if(!prnt.bBetLoad && (stateNow == S_IN_PROGRESS ||
+		stateNow == S_IN_PROGRESS_SPLIT)){
 			prnt.getPlayerBet();
 			prnt.showButtons(false);
 			prnt.bWait = true;
