@@ -192,7 +192,7 @@ contract BlackJack is owned {
 		
         if (!isMain) {
             //switch focus to the main game
-            storageContract.updateState(Types.GameState.InProgressSplit, isMain, msg.sender);
+            storageContract.updateState(Types.GameState.InProgress, true, msg.sender);
             checkGameResult(true, false);
             return;
         }
