@@ -1392,32 +1392,29 @@ ScrGame.prototype.sendCard = function(obj){
 }
 
 ScrGame.prototype.loadBet = function(value){
-	console.log("loadBet");
-	if(!this.bBetLoad){
-		var c = 100;
-		this.timeGetState = TIME_GET_STATE-1000;
-		this.bBetLoad = true;
-		this.bWait = false;
-		this.arrow.visible = false;
-		betEth = Number(hexToNum(value));
-		betGame = toFixed((betEth/1000000000000000000), 4)*c;
-		betSplitGame = betGame;
-		betGameCur = betGame;
-		var str = String(betGame/c);
-		if(betGame == 0){
-			str = "";
-		} else {
-			this.startGame = true;
-		}
-		this.tfMyBet.setText(str);
-		this.isSplitAvailable();
-		this.showButtons(true);
-		this.fillChips(betGame);
-		if(stateNow == S_IN_PROGRESS_SPLIT){
-			this.fillChips(betSplitGame, "split");
-			this.tfSplitBet.setText(str);
-			this.tfMyBet.x = _W/2 - 250;
-		}
+	var c = 100;
+	this.timeGetState = TIME_GET_STATE-1000;
+	this.bBetLoad = true;
+	this.bWait = false;
+	this.arrow.visible = false;
+	betEth = Number(hexToNum(value));
+	betGame = toFixed((betEth/1000000000000000000), 4)*c;
+	betSplitGame = betGame;
+	betGameCur = betGame;
+	var str = String(betGame/c);
+	if(betGame == 0){
+		str = "";
+	} else {
+		this.startGame = true;
+	}
+	this.tfMyBet.setText(str);
+	this.isSplitAvailable();
+	this.showButtons(true);
+	this.fillChips(betGame);
+	if(stateNow == S_IN_PROGRESS_SPLIT){
+		this.fillChips(betSplitGame, "split");
+		this.tfSplitBet.setText(str);
+		this.tfMyBet.x = _W/2 - 250;
 	}
 }
 
@@ -1803,8 +1800,14 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameId"){
 		idGame = hexToNum(value);
 	} else if(command == "getPlayerBet"){
-		if(prnt.tfStatus){
-			prnt.loadBet(value);
+		if(!this.bBetLoad){
+			prnt.bBetLoad = true;
+			prnt.bWait = false;
+			if((stateNow == S_IN_PROGRESS ||
+			stateNow == S_IN_PROGRESS_SPLIT)
+			&& prnt.tfStatus){
+				prnt.loadBet(value);
+			}
 		}
 	} else if(command == "isInsuranceAvailable"){
 		if((stateNow == S_IN_PROGRESS ||
@@ -1866,8 +1869,8 @@ ScrGame.prototype.response = function(command, value) {
 			console.log("state|idGame:", stateNow, idGame, prnt.bBetLoad);
 		}
 		
-		if(!prnt.bBetLoad && (stateNow == S_IN_PROGRESS ||
-		stateNow == S_IN_PROGRESS_SPLIT)){
+		if(!prnt.bBetLoad /*&& (stateNow == S_IN_PROGRESS ||
+		stateNow == S_IN_PROGRESS_SPLIT)*/){
 			prnt.getPlayerBet();
 			prnt.showButtons(false);
 			prnt.bWait = true;
