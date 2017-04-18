@@ -172,7 +172,7 @@ contract BlackJack is owned {
 
         checkGameResult(isMain, false);
     }
-
+	
     function requestInsurance()
         public
         payable
@@ -188,15 +188,15 @@ contract BlackJack is owned {
         public
         gameIsGoingOn
     {
-         bool isMain = storageContract.isMainGameInProgress(msg.sender);
-
-         if (!isMain) {
-             //switch focus to the main game
-             storageContract.updateState(Types.GameState.InProgressSplit, isMain, msg.sender);
-             checkGameResult(true, false);
-             return;
-         }
-
+        bool isMain = storageContract.isMainGameInProgress(msg.sender);
+		
+        if (!isMain) {
+            //switch focus to the main game
+            storageContract.updateState(Types.GameState.InProgressSplit, isMain, msg.sender);
+            checkGameResult(true, false);
+            return;
+        }
+		
 		if(storageContract.getPlayerScore(true, msg.sender) >= BLACKJACK &&
 		storageContract.getSplitCardsNumber(msg.sender) == 0){
 			dealCard(false, true);
@@ -206,13 +206,12 @@ contract BlackJack is owned {
 			}
 		}
 
-         checkGameResult(true, true); // finish the main game
+        checkGameResult(true, true); // finish the main game
 		
-         if (storageContract.getState(false, msg.sender) == Types.GameState.InProgressSplit) { // split game exists
-
-             storageContract.syncSplitDealerCards(msg.sender);
-             checkGameResult(false, true); // finish the split game
-         }
+        if (storageContract.getState(false, msg.sender) == Types.GameState.InProgressSplit) { // split game exists
+            storageContract.syncSplitDealerCards(msg.sender);
+            checkGameResult(false, true); // finish the split game
+        }
     }
 
     function split()
