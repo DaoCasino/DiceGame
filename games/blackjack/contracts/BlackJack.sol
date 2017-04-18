@@ -96,6 +96,13 @@ contract BlackJack is owned {
         }
         _;
     }
+	
+    modifier betIsInsurance() {
+        if (storageContract.getBet(true, msg.sender) != msg.value*2) {
+            throw;
+        }
+        _;
+    }
 
     modifier standIfNecessary(bool finishGame) {
         if (!finishGame) {
@@ -169,15 +176,14 @@ contract BlackJack is owned {
     function requestInsurance()
         public
         payable
-        betIsDoubled
+        betIsInsurance
         insuranceAvailable
     {
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
         storageContract.updateInsurance(msg.value, isMain, msg.sender);
         storageContract.setInsuranceAvailable(false, isMain, msg.sender);
     }
-
-
+	
     function stand()
         public
         gameIsGoingOn
@@ -191,13 +197,17 @@ contract BlackJack is owned {
              return;
          }
 
-         while (storageContract.getHouseBigScore(msg.sender) < 17) {
-             dealCard(false, true);
-         }
+		if(storageContract.getPlayerScore(true, msg.sender) >= BLACKJACK &&
+		storageContract.getSplitCardsNumber(msg.sender) == 0){
+			dealCard(false, true);
+		} else {
+			while (storageContract.getHouseBigScore(msg.sender) < 17) {
+				dealCard(false, true);
+			}
+		}
 
          checkGameResult(true, true); // finish the main game
-
-
+		
          if (storageContract.getState(false, msg.sender) == Types.GameState.InProgressSplit) { // split game exists
 
              storageContract.syncSplitDealerCards(msg.sender);

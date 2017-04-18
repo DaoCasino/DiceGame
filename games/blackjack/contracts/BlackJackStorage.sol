@@ -89,8 +89,7 @@ contract BlackJackStorage {
         splitGames[player].houseScore = games[player].houseScore;
         splitGames[player].houseBigScore = games[player].houseBigScore;
     }
-
-
+	
     function dealSplitCard(address player)
         external
         returns (uint8)
