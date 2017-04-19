@@ -9,6 +9,7 @@ var cardType = {0: 'King', 1: 'Ace', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: 
 var states = {0: 'In Progress', 1: 'Player Won', 2: 'House Won', 3: 'Tie', 4: 'Split Game is in Progress', 5: 'Player BlackJack'};
 
 var gameState;
+var splitGameState;
 
 function logCard(event) {
     var card = event.args['_card']['c'][0];
@@ -122,6 +123,12 @@ function stand(player) {
     }).then(function(state) {
         gameState = state;
         console.log("State: " + states[state]);
+        return storage.getState.call(false, player, {
+            from: player
+        });
+    }).then(function(state) {
+        splitGameState = state;
+        console.log("Split State: " + states[state]);
     });
 }
 
@@ -171,6 +178,12 @@ function split(player, bet) {
     }).then(function(state) {
         gameState = state;
         console.log("State: " + states[state]);
+        return storage.getState.call(false, player, {
+            from: player
+        });
+    }).then(function(state) {
+        splitGameState = state;
+        console.log("Split State: " + states[state]);
     });
 }
 
@@ -277,8 +290,12 @@ function testSplit(player, done) {
 
 function testSplitDouble(player, done) {
     var game;
+    var storage;
     return BlackJack.deployed().then(function(instance) {
         game = instance;
+        return BlackJackStorage.deployed();
+    }).then(function(instance) {
+        storage = instance;
         return double(player, 0.1);
     }).then(function() {
         return storage.getState.call(true, player, {
@@ -302,7 +319,7 @@ contract('BlackJack', function(accounts) {
 
     it("Should stand", function() {
         if (gameState != 0) {
-            console.log("The game is already finished, state: " + gameState);
+            console.log("The game is already finished, state: " + states[gameState]);
             return;
         }
         return stand(player);
@@ -313,12 +330,16 @@ contract('BlackJack', function(accounts) {
     });
 
     it("Should request one more card", function() {
+        if (gameState != 0) {
+            console.log("The game is already finished, state: " + states[gameState]);
+            return;
+        }
         return hit(player);
     });
 
     it("Should stand", function() {
         if (gameState != 0) {
-            console.log("The game is already finished, state: " + gameState);
+            console.log("The game is already finished, state: " + states[gameState]);
             return;
         }
         return stand(player);
@@ -326,5 +347,21 @@ contract('BlackJack', function(accounts) {
 
     it("Should check split logic", function(done) {
         playUntilSplit(player, done);
+    });
+
+    it("Should stand in the split game", function() {
+        if (splitGameState != 0) {
+            console.log("The split game is already finished, state: " + states[splitGameState]);
+            return;
+        }
+        return stand(player);
+    });
+
+    it("Should stand in the main game", function() {
+        if (gameState != 0) {
+            console.log("The split game is already finished, state: " + states[gameState]);
+            return;
+        }
+        return stand(player);
     });
 });

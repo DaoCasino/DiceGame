@@ -20,4 +20,19 @@ module.exports = function(deployer, network) {
             });
         });
     }
+
+    if (network == "testnet") {
+        deployer.deploy(Deck).then(function() {
+            return deployer.deploy(BlackJackStorage, Deck.address);
+        }).then(function() {
+            return deployer.deploy(BlackJack, Deck.address, BlackJackStorage.address);
+        }).then(function() {
+            web3.eth.sendTransaction({
+                from: "0x42ccb9b37dd47dec2bbf85d01b0202ca237e109d",
+                to: BlackJack.address,
+                value: web3.toWei(1, "ether"),
+                gas: 400000,
+            });
+        });
+    }
 };
