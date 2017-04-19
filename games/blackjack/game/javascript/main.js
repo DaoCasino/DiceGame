@@ -15,12 +15,12 @@ var fontMain = "Arial";
 var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
 var rndBg = String(Math.ceil(Math.random()*2));
-
+// main
 var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
-var	addressRpcStorage = "0xdf48fbab03cf165a8be1cd77e4ef7ef004d5b5ef";
-var	addressRpcContract = "0x587970d746d44b249d61cff19f17b39f576020f4";
+var	addressRpcStorage = "0x21eaa29db3b883227b0fdfaee80598014e7d7fe4";
+var	addressRpcContract = "0x4da4e49a39d70797a454a697ddb08fa6201cd145";
 // testnet
 var	addressTestStorage = "0x9996b495c247ea17e4e5184e48a031a84e437c2f";
 var	addressTestContract = "0x341fbf8576e79405e9bb2e0ed48d858d12ba6f5e";
@@ -41,7 +41,7 @@ var ERROR_KEYTHEREUM = 1;
 var ERROR_BUF = 2;
 var ERROR_KEY = 3;
 var ERROR_BANK = 4;
-var ERROR_TRANSACTION = 5;
+var ERROR_CONTRACT = 5;
 var ERROR_BALANCE = 6;
 var ERROR_DEAL = 7;
 var ERROR_MAX_BET = 8;

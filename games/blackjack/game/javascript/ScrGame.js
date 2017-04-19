@@ -1492,8 +1492,8 @@ ScrGame.prototype.showError = function(value, callback) {
 		case ERROR_BANK:
 			str = "OOOPS! \n No money in the bank. \n Please contact to administrator."
 			break;
-		case ERROR_TRANSACTION:
-			str = "OOOPS! \n The transaction is not sent. \n Try another bet."
+		case ERROR_CONTRACT:
+			str = "OOOPS! \n The transaction is not sent. \n Contact technical support."
 			break;
 		case ERROR_BALANCE:
 			str = "OOOPS! \n You do not have enough money."
@@ -1723,8 +1723,9 @@ ScrGame.prototype.response = function(command, value) {
 	var prnt = obj_game["game"];
 	
 	if(value == undefined || options_debug){
-		if(command == "sendRaw" && !options_debug){
-			prnt.showError(ERROR_TRANSACTION);
+		console.log("command:", command);
+		if((command == "sendRaw" || command == "gameTxHash") && !options_debug){
+			prnt.showError(ERROR_CONTRACT);
 			prnt.clearBet();
 			prnt.tfStatus.setText("");
 			prnt.bWait = false;
@@ -1866,7 +1867,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			// console.log("state|idGame:", stateNow, idGame, prnt.bBetLoad);
+			console.log("state|idGame:", stateNow, idGame, idOldGame);
 		}
 		
 		if(!prnt.bBetLoad){
@@ -1928,7 +1929,7 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.clearBet();
 				prnt.getPlayerScore();
 				if(prnt._arMySplitCards.length > 0){		
-					prnt.getPlayerScore();	
+					prnt.getPlayerScore(0);	
 				}				
 				
 				switch (stateNow){
@@ -2081,7 +2082,6 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		var curBet = betEth/1000000000000000000;
 		
 		if(betEth >= minBet && obj_game["balanceBank"] >= curBet*3){
-			console.log("1");
 			item_mc.alpha = 0.5;
 			this.btnClear.alpha = 0.5;
 			this.bWait = true;
