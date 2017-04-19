@@ -1866,11 +1866,10 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state|idGame:", stateNow, idGame, prnt.bBetLoad);
+			// console.log("state|idGame:", stateNow, idGame, prnt.bBetLoad);
 		}
 		
-		if(!prnt.bBetLoad /*&& (stateNow == S_IN_PROGRESS ||
-		stateNow == S_IN_PROGRESS_SPLIT)*/){
+		if(!prnt.bBetLoad){
 			prnt.getPlayerBet();
 			prnt.showButtons(false);
 			prnt.bWait = true;
@@ -2080,7 +2079,9 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnDeal"){
 		var curBet = betEth/1000000000000000000;
-		if(betEth >= minBet && obj_game["balanceBank"] >= curBet*5){
+		
+		if(betEth >= minBet && obj_game["balanceBank"] >= curBet*3){
+			console.log("1");
 			item_mc.alpha = 0.5;
 			this.btnClear.alpha = 0.5;
 			this.bWait = true;
@@ -2100,14 +2101,11 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				this.startGameEth();
 			}
 		} else {
-			var curBet = betEth/1000000000000000000;			
-			if(obj_game["balanceBank"] < curBet*2.5){
-				console.log("balanceBank:", obj_game["balanceBank"]);
-				obj_game["game"].showError(ERROR_BANK);
-				obj_game["game"].clearBet();
-				obj_game["game"].bWait = false;
-				obj_game["game"].showChips(true);
-			}
+			console.log("balanceBank:", obj_game["balanceBank"]);
+			obj_game["game"].showError(ERROR_BANK);
+			obj_game["game"].clearBet();
+			obj_game["game"].bWait = false;
+			obj_game["game"].showChips(true);
 		}
 	} else if(item_mc.name == "btnSmart"){
 		this.showSmartContract();
