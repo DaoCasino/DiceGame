@@ -4,6 +4,7 @@ var version = "v. 1.0.0"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
+var nameSave = "daocasino_powerball";
 var openkey, privkey, mainet;
 var currentScreen, scrContainer;
 var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
@@ -17,16 +18,19 @@ var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
 var rndBg = String(Math.ceil(Math.random()*2));
 
+// main
 var addressContract = "";
-var	addressRpcContract = "";
-var	addressTestContract = "0x4c6a80e1893ae523407f5ad4240fb46cc28b14de";
+// testrpc
+var	addressRpcContract = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
+// testnet
+var	addressTestContract = "";
 
 var options_debug = false;
 var options_test = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
-var options_rpc = false;
+var options_rpc = true;
 var options_music = true;
 var options_sound = true;
 var options_mobile = true;
@@ -358,7 +362,7 @@ function update() {
 function saveData() {
 	if(isLocalStorageAvailable()){
 		var login_str = JSON.stringify(login_obj);
-		localStorage.setItem('daocasino_blackjack', login_str);
+		localStorage.setItem(nameSave, login_str);
 		localStorage.setItem('options_music', options_music);
 		localStorage.setItem('options_sound', options_sound);
 		// console.log("Saving: ok!");
@@ -367,12 +371,17 @@ function saveData() {
 
 function loadData() {
 	if(isLocalStorageAvailable()){
+		if(options_rpc){
+			openkey = "0xf1f42f995046e67b79dd5ebafd224ce964740da3";
+			privkey = "d3b6b98613ce7bd4636c5c98cc17afb0403d690f9c2b646726e08334583de101";
+		} else {
+			openkey = localStorage.getItem('openkey')
+			privkey = localStorage.getItem('privkey')
+		}
 		mainet = localStorage.getItem('mainnet')
-		openkey = localStorage.getItem('openkey')
-		privkey = localStorage.getItem('privkey')
 		
-		if (localStorage.getItem('daocasino_blackjack')){
-			var login_str = localStorage.getItem('daocasino_blackjack')
+		if (localStorage.getItem(nameSave)){
+			var login_str = localStorage.getItem(nameSave)
 			login_obj = JSON.parse(login_str);
 			options_music = localStorage.getItem('options_music')=='true';
 			options_sound = localStorage.getItem('options_sound')=='true';

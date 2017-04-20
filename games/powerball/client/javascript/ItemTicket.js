@@ -14,8 +14,11 @@ ItemTicket.prototype.init = function(_prnt) {
 	this._arButtons = [];
 	this._arWhite = [];
 	this._arRed = [];
+	this._arWhiteBalls = [];
 	this.countWhite = 0;
 	this.countRed = 0;
+	this.redBall = 0;
+	this.lock = false;
 	
 	this.initArt();
 
@@ -128,6 +131,26 @@ ItemTicket.prototype.selectNumber = function(item_mc) {
 		}
 	}
 	
+	if(this.countWhite == MAX_WHITE && this.countRed == MAX_RED){
+		this._arWhiteBalls = [];
+		this.redBall = 0;
+		
+		for (var i = 0; i < this._arWhite.length; i++) {
+			var cellW = this._arWhite[i];
+			if(cellW.selectNumber){
+				this._arWhiteBalls.push(cellW.id);
+			}
+		}
+		
+		for (var i = 0; i < this._arRed.length; i++) {
+			var cellR = this._arRed[i];
+			if(cellR.selectNumber){
+				this.redBall = cellW.id;
+				break;
+			}
+		}
+	}
+	
 	this._prnt.checkBuy(this.countWhite, this.countRed);
 }
 
@@ -158,6 +181,9 @@ ItemTicket.prototype.checkButtons = function(evt){
 }
 
 ItemTicket.prototype.touchHandler = function(evt){
+	if(this.lock){
+		return false;
+	}
 	var phase = evt.type;
 	
 	if(phase=='mousemove' || phase == 'touchmove' || phase == 'touchstart'){

@@ -18,6 +18,7 @@ var urlBalance = "";
 var obj_game = {};
 var _wndInfo;
 var _callback;
+var _curTicket;
 var _mouseX = 0;
 var _mouseY = 0;
 var priceTicket = 20000000000000000; // 0.02 ether
@@ -108,7 +109,7 @@ ScrGame.prototype.initGUI = function(){
 	this.icoEthereum = icoEthereum;
 	this.icoTime = icoTime;
 	
-	this.checkBuy();
+	this.checkBuy(0,0);
 }
 
 ScrGame.prototype.initText = function(){
@@ -207,13 +208,21 @@ ScrGame.prototype.testGame  = function(){
 	ticket.x = _W/2;
 	ticket.y = _H/2;
 	this.game_mc.addChild(ticket);
+	
+	_curTicket = ticket;
 }
 
-ScrGame.prototype.buyTicket  = function(){
+ScrGame.prototype.buyTicket = function(){
 	if(openkey == undefined){
 		obj_game["game"].showError(ERROR_KEY, showHome);
 		return false;
 	}
+	if(_curTicket){
+		return false;
+	}
+	
+	_curTicket.lock = true;
+	
 	// [1,2,3,4,5],5,0
 	infura.sendRequest("buyTicket", openkey, _callback);
 }
@@ -227,9 +236,18 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	var gasPrice="0x9502F9000";//web3.toHex('40000000000');
 	var gasLimit=0x927c0; //web3.toHex('600000');
 	if(name == "buyTicket"){
-		data = "0x"+C_BUY_TICKET;
+		data = "0x"+C_BUY_TICKET +
+				// pad(numToHex(_curTicket.redBall), 64) + 
+				pad(numToHex(_curTicket.redBall), 64);
 		price = priceTicket;
 		nameRequest = "gameTxHash";
+		
+	
+		// var key = openkey.substr(2);
+		// var data = "0x"+C_GET_BET + pad(numToHex(isMain), 64) + pad(key, 64);
+		// var params = {"from":openkey,
+					// "to":addressStorage,
+					// "data":data};
 	}
 	
 	infura.sendRequest("getBalance", openkey, _callback);
@@ -271,7 +289,6 @@ ScrGame.prototype.response = function(command, value) {
 		infura.sendRequest("getBalance", openkey, _callback);
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
-		login_obj["balance"] = obj_game["balance"];
 		prnt.tfBalance.setText(obj_game["balance"]);
 	}
 }

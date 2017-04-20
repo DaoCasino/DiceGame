@@ -145,6 +145,12 @@ contract PowerBall is owned {
             getBalls(arWhiteBalls);
         }
     }
+	
+    function insexOf(uint[] storage self, uint value) private returns (uint) {
+		for(uint i = 0; i < self.length; i++)
+			if(self[i] == value) return i;
+		return uint(-1);
+	}
     
     // array.insexOf()
     function checkBalls(uint16[] ar) private returns (bool){

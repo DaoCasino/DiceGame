@@ -14,44 +14,42 @@ var Infura = function() {
 };
 
 Infura.prototype.sendRequest = function(name, params, callback){
-	if(options_ethereum && openkey){
-		var method = name;
-		var arParams = [params, "latest"];
-		
-		switch(name){
-			case "buyTicket":
-				method = "eth_getTransactionCount";
-				break;
-			case "gameTxHash":
-			case "sendRaw":
-				method = "eth_sendRawTransaction";
-				arParams = [params];
-				break;
-			case "getBalance":
-			case "getBalanceBank":
-				method = "eth_getBalance";
-				break;
-			case "getBlockNumber":
-				method = "eth_blockNumber";
-				arParams = [];
-				break;
-			default:
-				method = "eth_call";
-				break;
-		}
-		
-		$.ajax({
-			type: "POST",
-			url: urlInfura,
-			dataType: 'json',
-			async: false,
-			data: JSON.stringify({"jsonrpc":'2.0',
-									"method":method,
-									"params":arParams,
-									"id":1}),
-			success: function (d) {
-				callback(name, d.result);
-			}
-		})
+	var method = name;
+	var arParams = [params, "latest"];
+	
+	switch(name){
+		case "buyTicket":
+			method = "eth_getTransactionCount";
+			break;
+		case "gameTxHash":
+		case "sendRaw":
+			method = "eth_sendRawTransaction";
+			arParams = [params];
+			break;
+		case "getBalance":
+		case "getBalanceBank":
+			method = "eth_getBalance";
+			break;
+		case "getBlockNumber":
+			method = "eth_blockNumber";
+			arParams = [];
+			break;
+		default:
+			method = "eth_call";
+			break;
 	}
+	
+	$.ajax({
+		type: "POST",
+		url: urlInfura,
+		dataType: 'json',
+		async: false,
+		data: JSON.stringify({"jsonrpc":'2.0',
+								"method":method,
+								"params":arParams,
+								"id":1}),
+		success: function (d) {
+			callback(name, d.result);
+		}
+	})
 };
