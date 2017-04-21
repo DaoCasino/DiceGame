@@ -212,6 +212,8 @@ function loadManifest(){
 	preloader.add("btnTweetShare", "images/buttons/btnTweetShare.png");
 	preloader.add("btnFrame", "images/buttons/btnFrame.png");
 	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
+	preloader.add("btnRed", "images/buttons/btnRed.png");
+	preloader.add("btnGreen", "images/buttons/btnGreen.png");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);

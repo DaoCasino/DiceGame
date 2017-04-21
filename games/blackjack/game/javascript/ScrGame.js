@@ -140,6 +140,7 @@ ScrGame.prototype.init = function() {
 	this.oldBalance = -1;
 	this.cardSuit = undefined;
 	this.wndInfo;
+	this.wndInsurance;
 	this.curWindow;
 	this.startGame = false;
 	this._gameOver = false;
@@ -545,6 +546,20 @@ ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
 	this.wndInfo.show(str, callback, addStr)
 	this.wndInfo.visible = true;
 	this.curWindow = this.wndInfo;
+}
+
+ScrGame.prototype.showWndInsurance = function(str, callback) {
+	if(this.wndInsurance == undefined){
+		this.wndInsurance = new WndInsurance(this);
+		this.wndInsurance.x = _W/2;
+		this.wndInsurance.y = _H/2;
+		this.face_mc.addChild(this.wndInsurance);
+	}
+	
+	this.bWindow = true;
+	this.wndInsurance.show(str, callback)
+	this.wndInsurance.visible = true;
+	this.curWindow = this.wndInsurance;
 }
 
 ScrGame.prototype.closeWindow = function(wnd) {
@@ -1543,7 +1558,7 @@ ScrGame.prototype.showTestEther = function() {
 
 ScrGame.prototype.showInsurance = function() {
 	var str = "Do you want Insurance?";
-	this.createWndInfo(str, this.clickInsurance);
+	this.showWndInsurance(str, this.clickInsurance);
 	this.bInsurance = 0;
 }
 
