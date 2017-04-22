@@ -379,7 +379,7 @@ contract BlackJackStorage {
 
         return getGamePlayerScore(game) != BLACKJACK &&
                game.houseCards.length == 2 &&
-               (deck.valueOf(game.houseCards[0], false) == 10 || deck.valueOf(game.playerCards[1], false) == 10) &&
+               (deck.valueOf(game.houseCards[0], false) == 10 || deck.valueOf(game.houseCards[1], false) == 10) &&
                game.insurance > 0;
     }
 
@@ -392,7 +392,8 @@ contract BlackJackStorage {
         if (!isMain) game = splitGames[player];
 
         return getGamePlayerScore(game) == BLACKJACK && game.playerCards.length == 2 &&
-               (deck.isTen(game.playerCards[0]) || deck.isTen(game.playerCards[1]));
+               // (deck.isTen(game.playerCards[0]) || deck.isTen(game.playerCards[1]));
+               (deck.valueOf(game.playerCards[0], false) == 10 || deck.valueOf(game.playerCards[1], false) == 10);
     }
 
     /*

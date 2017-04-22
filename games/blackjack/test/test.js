@@ -31,6 +31,15 @@ function logCards(tx) {
     }
 }
 
+function printLogs(tx) {
+    for (var i = 0; i < tx.logs.length; i++) {
+        var log = tx.logs[i];
+        if (log.event == "Log") {
+            console.log("log: " + log.args['_id']['c']);
+        }
+    }
+}
+
 function logPlayerCards(player) {
     var game;
     console.log("Player cards:")
@@ -117,6 +126,7 @@ function stand(player) {
     }).then(function(tx) {
         console.log("Stand: " + tx.tx);
         logCards(tx);
+        printLogs(tx);
         return storage.getState.call(true, player, {
             from: player
         });
@@ -187,6 +197,31 @@ function split(player, bet) {
     });
 }
 
+function requestInsurance(player, bet) {
+    var game;
+    var storage;
+    return BlackJack.deployed().then(function (instance) {
+        game = instance;
+        return BlackJackStorage.deployed();
+    }).then(function(instance) {
+        storage = instance;
+        return game.requestInsurance({
+            from: player,
+            gas: gasAmount,
+            value: web3.toWei(bet, "Ether")
+        });
+    }).then(function(tx) {
+        console.log("Request Insurance: " + tx.tx);
+        logCards(tx);
+        return storage.getState.call(true, player, {
+            from: player
+        });
+    }).then(function(state) {
+        gameState = state;
+        console.log("State: " + states[state]);
+    });
+}
+
 function double(player, bet) {
     var game;
     var storage;
@@ -217,6 +252,18 @@ function isSplitAvailable(player) {
     return BlackJackStorage.deployed().then(function (instance) {
         storage = instance;
         return storage.isSplitAvailable.call(player, {
+            from: player
+        });
+    }).then(function(flag) {
+        return flag;
+    });
+}
+
+function isInsuranceAvailable(player) {
+    var storage;
+    return BlackJackStorage.deployed().then(function (instance) {
+        storage = instance;
+        return storage.isInsuranceAvailable.call(player, {
             from: player
         });
     }).then(function(flag) {
@@ -288,6 +335,65 @@ function testSplit(player, done) {
     });
 }
 
+function playUntilInsurance(player, done) {
+    var chain;
+
+    if (gameState != 0) {
+        chain = deal(player, 5);
+    } else {
+        chain = stand(player).then(function() {
+            return deal(player, 5);
+        })
+    }
+
+    chain.then(function() {
+        if (gameState == 5) {
+            console.log("Player BlackJack");
+            done();
+        } else {
+            return isInsuranceAvailable(player);
+        }
+    }).then(function(flag) {
+        if (flag) {
+            console.log("Insurance is available!");
+            return testInsurance(player, done);
+        } else {
+            return playUntilInsurance(player, done);
+        }
+    });
+    return chain;
+}
+
+function testInsurance(player, done) {
+    var game;
+    var storage;
+    var playerBalance
+    return BlackJack.deployed().then(function(instance) {
+        game = instance;
+        return BlackJackStorage.deployed();
+    }).then(function(instance) {
+        storage = instance;
+        return requestInsurance(player, 2.5);
+    }).then(function() {
+        return storage.getInsurance.call(true, player, { from: player });
+    }).then(function(insurance) {
+        assert.equal(web3.fromWei(insurance.toNumber(), "ether"), 2.5, "insurance must be equal to 0.05 eth");
+        playerBalance = web3.fromWei(web3.eth.getBalance(player), "Ether")
+        return stand(player);
+    }).then(function() {
+        var newBalance = web3.fromWei(web3.eth.getBalance(player), "Ether")
+        if (gameState == 2) {
+            if (newBalance > playerBalance) {
+                console.log("House won. Insurance was payed: " + (newBalance - playerBalance));
+            } else {
+                console.log("House won. Insurance wasn't payed: " + (newBalance - playerBalance));
+            }
+        } else {
+            console.log("House didn't win");
+        }
+    }).then(done);
+}
+
 function testSplitDouble(player, done) {
     var game;
     var storage;
@@ -304,6 +410,12 @@ function testSplitDouble(player, done) {
     }).then(function(state) {
         gameState = state;
         console.log("State: " + states[state]);
+        return storage.getState.call(false, player, {
+            from: player
+        });
+    }).then(function(state) {
+        splitGameState = state;
+        console.log("Split State: " + states[state]);
     }).then(done);
 }
 
@@ -364,4 +476,9 @@ contract('BlackJack', function(accounts) {
         }
         return stand(player);
     });
+
+    // it("Should check insurance payment", function(done) {
+    //     // Doesn't work in case of natural blackjack
+    //     playUntilInsurance(player, done);
+    // });
 });
