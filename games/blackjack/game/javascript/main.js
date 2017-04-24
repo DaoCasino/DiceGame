@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.41"
+var version = "v. 1.0.42"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -130,90 +130,7 @@ function loadManifest(){
 	preloader.add("bgGame2", "images/bg/bgGame2.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
-	preloader.add("icoKey", "images/items/icoKey.png");
-	preloader.add("icoEthereum", "images/items/icoEthereum.png");
-	preloader.add("icoTime", "images/items/icoTime.png");
-	preloader.add("chip_1", "images/items/chip_1.png");
-	preloader.add("chip_2", "images/items/chip_2.png");
-	preloader.add("chip_3", "images/items/chip_3.png");
-	preloader.add("chip_4", "images/items/chip_4.png");
-	preloader.add("chip_5", "images/items/chip_5.png");
-	preloader.add("chip_6", "images/items/chip_6.png");
-	preloader.add("seat", "images/items/seat.png");
-	preloader.add("hintArrow", "images/items/hintArrow.png");
-	preloader.add("metal", "images/items/metal.png");
-	preloader.add("cardsLeft", "images/items/cardsLeft.png");
-	preloader.add("cardsRight", "images/items/cardsRight.png");
-	preloader.add("descBet", "images/items/descBet.png");
-	
-	preloader.add("1_A", "images/cards/1_A.png")
-	preloader.add("1_2", "images/cards/1_2.png")
-	preloader.add("1_3", "images/cards/1_3.png")
-	preloader.add("1_4", "images/cards/1_4.png")
-	preloader.add("1_5", "images/cards/1_5.png")
-	preloader.add("1_6", "images/cards/1_6.png")
-	preloader.add("1_7", "images/cards/1_7.png")
-	preloader.add("1_8", "images/cards/1_8.png")
-	preloader.add("1_9", "images/cards/1_9.png")
-	preloader.add("1_10", "images/cards/1_10.png")
-	preloader.add("1_J", "images/cards/1_J.png")
-	preloader.add("1_Q", "images/cards/1_Q.png")
-	preloader.add("1_K", "images/cards/1_K.png")
-	preloader.add("2_A", "images/cards/2_A.png")
-	preloader.add("2_2", "images/cards/2_2.png")
-	preloader.add("2_3", "images/cards/2_3.png")
-	preloader.add("2_4", "images/cards/2_4.png")
-	preloader.add("2_5", "images/cards/2_5.png")
-	preloader.add("2_6", "images/cards/2_6.png")
-	preloader.add("2_7", "images/cards/2_7.png")
-	preloader.add("2_8", "images/cards/2_8.png")
-	preloader.add("2_9", "images/cards/2_9.png")
-	preloader.add("2_10", "images/cards/2_10.png")
-	preloader.add("2_J", "images/cards/2_J.png")
-	preloader.add("2_Q", "images/cards/2_Q.png")
-	preloader.add("2_K", "images/cards/2_K.png")
-	preloader.add("3_A", "images/cards/3_A.png")
-	preloader.add("3_2", "images/cards/3_2.png")
-	preloader.add("3_3", "images/cards/3_3.png")
-	preloader.add("3_4", "images/cards/3_4.png")
-	preloader.add("3_5", "images/cards/3_5.png")
-	preloader.add("3_6", "images/cards/3_6.png")
-	preloader.add("3_7", "images/cards/3_7.png")
-	preloader.add("3_8", "images/cards/3_8.png")
-	preloader.add("3_9", "images/cards/3_9.png")
-	preloader.add("3_10", "images/cards/3_10.png")
-	preloader.add("3_J", "images/cards/3_J.png")
-	preloader.add("3_Q", "images/cards/3_Q.png")
-	preloader.add("3_K", "images/cards/3_K.png")
-	preloader.add("4_A", "images/cards/4_A.png")
-	preloader.add("4_2", "images/cards/4_2.png")
-	preloader.add("4_3", "images/cards/4_3.png")
-	preloader.add("4_4", "images/cards/4_4.png")
-	preloader.add("4_5", "images/cards/4_5.png")
-	preloader.add("4_6", "images/cards/4_6.png")
-	preloader.add("4_7", "images/cards/4_7.png")
-	preloader.add("4_8", "images/cards/4_8.png")
-	preloader.add("4_9", "images/cards/4_9.png")
-	preloader.add("4_10", "images/cards/4_10.png")
-	preloader.add("4_J", "images/cards/4_J.png")
-	preloader.add("4_Q", "images/cards/4_Q.png")
-	preloader.add("4_K", "images/cards/4_K.png")
-	preloader.add("suit", "images/cards/suit.png")
-	
-	preloader.add("btnClose", "images/buttons/btnClose.png");
-	preloader.add("btnClearBets", "images/buttons/btnClearBets.png");
-	preloader.add("btnDeal", "images/buttons/btnDeal.png");
-	preloader.add("btnDouble", "images/buttons/btnDouble.png");
-	preloader.add("btnHit", "images/buttons/btnHit.png");
-	preloader.add("btnSplit", "images/buttons/btnSplit.png");
-	preloader.add("btnStand", "images/buttons/btnStand.png");
-	preloader.add("btnDefault", "images/buttons/btnDefault.png");
-	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");
-	preloader.add("btnTweetShare", "images/buttons/btnTweetShare.png");
-	preloader.add("btnFrame", "images/buttons/btnFrame.png");
-	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
-	preloader.add("btnRed", "images/buttons/btnRed.png");
-	preloader.add("btnGreen", "images/buttons/btnGreen.png");
+	preloader.add("images/texture/ItemsTexure.json");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
@@ -242,8 +159,7 @@ function spritesLoad() {
 function textureLoad() {
 	if(!options_test){
 		// iniSet("images/texture/AnimaTexture.json");
-		// iniSet("images/texture/Anima2Texture.json");
-		// iniSetArt("images/buttons/ButtonsTexture.json");
+		iniSetArt("images/texture/ItemsTexure.json");
 	}
 }
 
@@ -582,24 +498,26 @@ function addScreen(name) {
 	currentScreen.name = name;
 }
 
-function addButton(name, _x, _y, _scGr) {
+function addButton(name, _x, _y, _scGr, _scaleX, _scaleY) {
 	if(_x){}else{_x = 0};
 	if(_y){}else{_y = 0};
 	if(_scGr){}else{_scGr = 1};
+	if(_scaleX){}else{_scaleX = 1};
+	if(_scaleY){}else{_scaleY = 1};
 	var obj = new PIXI.Container();
 	
 	var objImg = null;
 	obj.setImg = function(name){
-		objImg = addObj(name, 0, 0, _scGr);
+		objImg = addObj(name);
 		obj.addChild(objImg);
-		obj.over = addObj(name + "Over", 0, 0, _scGr);
+		obj.over = addObj(name + "Over");
 		if(obj.over){
 			obj.over.visible = false;
 			obj.addChild(obj.over);
 		} else {
 			obj.over = null;
 		}
-		obj.lock = addObj(name + "Lock", 0, 0, _scGr);
+		obj.lock = addObj(name + "Lock");
 		if(obj.lock){
 			obj.lock.visible = false;
 			obj.addChild(obj.lock);
@@ -608,12 +526,14 @@ function addButton(name, _x, _y, _scGr) {
 		}
 		
 		obj.sc = _scGr;
-		obj.vX = 1;
-		obj.vY = 1;
+		obj.scale.x = _scGr*_scaleX;
+		obj.scale.y = _scGr*_scaleY;
+		obj.vX = _scaleX;
+		obj.vY = _scaleY;
 		obj.x = _x;
 		obj.y = _y;
-		obj.w = objImg.w;
-		obj.h = objImg.h;
+		obj.w = objImg.width*_scGr;
+		obj.h = objImg.height*_scGr;
 		obj.r = obj.w/2;
 		obj.rr = obj.r*obj.r;
 		obj.name = name;

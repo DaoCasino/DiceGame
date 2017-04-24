@@ -15,7 +15,7 @@ ScrMenu.prototype.init = function() {
 	this.bg.scale.y =  _H/this.bg.h;
 	this.addChild(this.bg);
 	
-	var btnDao = addButton2("btnDefault", _W/2, _H/2+100);
+	var btnDao = addButton("btnDefault", _W/2, _H/2+100);
 	btnDao.interactive = true;
 	btnDao.buttonMode=true;
 	this.addChild(btnDao);

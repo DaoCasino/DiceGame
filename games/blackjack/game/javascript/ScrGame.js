@@ -358,7 +358,7 @@ ScrGame.prototype.createGUI = function() {
 	this.face_mc.addChild(icoEthereum);
 	var icoTime = addObj("icoTime", 40, 40+stepY*2, scGui);
 	this.face_mc.addChild(icoTime);
-	var btnFrame = addButton2("btnFrame", 345, 38, 1, 1.2);
+	var btnFrame = addButton("btnFrame", 345, 38, 1, 1.2);
 	btnFrame.name = "btnKey";
 	btnFrame.interactive = true;
 	btnFrame.buttonMode=true;
@@ -482,7 +482,7 @@ ScrGame.prototype.createGUI = function() {
 	}
 	this.createButton("btnDao", _W-120, _H-60, "DAO.CASINO", 0.7, 34);
 	
-	this.btnShare = addButton2("btnFacebookShare", _W - 120, 50, 0.75);
+	this.btnShare = addButton("btnFacebookShare", _W - 120, 50, 0.75);
 	this.btnShare.name = "btnShare";
 	this.btnShare.interactive = true;
 	this.btnShare.buttonMode=true;
@@ -493,7 +493,7 @@ ScrGame.prototype.createGUI = function() {
 	tfFb.x = 20;
 	tfFb.y = -tfFb.height/2;
 	this.btnShare.addChild(tfFb);
-	this.btnTweetShare = addButton2("btnTweetShare", _W - 120, 140, 0.75);
+	this.btnTweetShare = addButton("btnTweetShare", _W - 120, 140, 0.75);
 	this.btnTweetShare.name = "btnTweet";
 	this.btnTweetShare.interactive = true;
 	this.btnTweetShare.buttonMode=true;
@@ -587,7 +587,7 @@ ScrGame.prototype.addChip = function(name, x, y, type) {
 }
 
 ScrGame.prototype.addBtnChip = function(name, x, y) {	
-	var chip = addButton2(name, x, y, scaleChip);
+	var chip = addButton(name, x, y, scaleChip);
 	chip.interactive = true;
 	chip.buttonMode=true;
 	chip.overSc=true;
@@ -602,7 +602,7 @@ ScrGame.prototype.createButton = function(name, x, y, label, sc, size) {
 	
 	var skin = "btnDefault";
 	
-	var btn = addButton2(skin, x, y, sc);
+	var btn = addButton(skin, x, y, sc);
 	btn.name = name;
 	btn.interactive = true;
 	btn.buttonMode=true;
@@ -624,7 +624,7 @@ ScrGame.prototype.createButton = function(name, x, y, label, sc, size) {
 ScrGame.prototype.createButton2 = function(name, title, x, y, sc) {
 	if(sc){}else{sc=1}
 	
-	var btn = addButton2(name, x, y, sc);
+	var btn = addButton(name, x, y, sc);
 	btn.interactive = true;
 	btn.buttonMode=true;
 	btn.overSc=true;
@@ -1852,7 +1852,6 @@ ScrGame.prototype.response = function(command, value) {
 		if(!prnt.bBetLoad){
 			prnt.bBetLoad = true;
 			prnt.bWait = false;
-			console.log("getPlayerBet:", prnt.startGame, prnt.bWait);
 			if((stateNow == S_IN_PROGRESS ||
 			stateNow == S_IN_PROGRESS_SPLIT)
 			&& prnt.tfStatus){
@@ -1984,9 +1983,6 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.darkCards(prnt._arMySplitCards, false);
 					}
 				}
-				// if(idGame == idOldGame){
-					// idOldGame--;
-				// }
 				prnt.btnStart.alpha = 0.5;
 				prnt.btnClear.alpha = 0.5;
 				prnt.showChips(false);
