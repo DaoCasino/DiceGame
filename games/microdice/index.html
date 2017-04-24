@@ -1,5 +1,5 @@
 <html>
-
+	
 <head>
 <script src='/js/lightwallet.js'></script>
 <meta charset="utf-8"> 
@@ -14,23 +14,111 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 </head>
 <body>
 
- <input type='button' onclick='startGame();' value='Start game'>
+<input type='button' onclick='startGame(50,1111111111);' value='RollDice 50'>
+<div id='vv'>V = web3.toBigNumber("0x2E73E5971326F0c04f3533fd9D82B4e70763dd03").c.join(""); | 1111111111</div>
  
-<div style='display:none' id='gamvca'>
-<h2>Ugaday chislo 1,2,3?</h2>
-<div id='console'></div>
+<input type='button' onclick='check();' value='Check'>
+ 
+<script>
+addressContract = '0x1ccF0edEE5737657ADa6DBa4E7133715390b023A';
 
-<form action='' method='post'>
- <select onchange='roll()' id='mychoise'>
-	<option>select</option>
-	 <option>1</option>
-	 <option>2</option>
-	 <option>3</option>
- </select> <- jmi suda
- 
-</div>
- 
- 
+function check() {
+	$.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 1,
+            "jsonrpc": '2.0',
+            "method": 'eth_getLogs',
+            "params": [{
+                "fromBlock": "799180",
+                "toBlock": "latest",
+                "address": addressContract,
+            }]
+        }),
+        success: function (objData) {
+			objData.result.forEach(function(item, i, arr) {
+			if (i>1) return true;
+				console.log("---game----");
+				console.log(item.data);
+			  game = coder.decodeParams(["uint","bytes32"],item.data.replace("0x",""));
+			  console.log(game);
+			  
+			  var n = game[0].toFixed();
+			  var hash = game[1];
+			  
+			  console.log("n,hash",n,hash);			  
+			  var sha2hash = ethUtil.sha3(hash);
+				
+			  var rsv = ethUtil.ecsign(sha2hash,new buf(privkey,"hex")); //TODO отправляем в контракт r,s,v 
+			  
+			  console.log("hash,v,r,s:",'"'+n+","+rsv.v+",","0x"+rsv.r.toString("hex")+"\", \"0x"+rsv.s.toString("hex")+"\"");
+			  
+			  $.ajax({
+					type: "POST",
+						url: urlInfura,
+						dataType: 'json',
+						async: false,
+						data: JSON.stringify({"jsonrpc":"2.0",
+											"method":"eth_getTransactionCount",
+											"params":[openkey,"latest"],
+											"id":1}),
+						success: function (d) {
+							var options = {};
+							options.nonce = d.result;
+							options.to = addressContract;
+							// call function game() in contract
+							console.log("[n,rsv.v,rsv.r,rsv.s]",[n,rsv.v,rsv.r,rsv.s]);
+							options.data = "0x9ad927f5"+coder.encodeParams(["uint256","uint8","bytes32","bytes32"], [n,rsv.v,"0x"+rsv.r.toString("hex"),"0x"+rsv.s.toString("hex")]); 
+						
+							
+							//putRoll(address gamer,bytes32 hash, uint8 v, bytes32 r, bytes32 s)
+							
+							console.log("options.data",options.data);
+							options.gasPrice="0x737be7600";//web3.toHex('31000000000');
+							options.gasLimit=0x927c0; //web3.toHex('600000');
+							options.value = 0;
+							
+							if(privkey){
+								if(buf == undefined){
+									console.log(ERROR_TRANSACTION);
+								} else {
+									//приватный ключ игрока, подписываем транзакцию
+									var tx = new EthereumTx(options);
+									tx.sign(new buf(privkey, 'hex'));
+
+									var serializedTx = tx.serialize().toString('hex');
+									//obj_game["game"].bSendRequest = false;
+									//console.log("The transaction was signed",serializedTx);
+									
+									$.ajax({
+										type: "POST",
+										url: urlInfura,
+										dataType: 'json',
+										async: false,
+										data: JSON.stringify({"id":0,
+															"jsonrpc":'2.0',
+															"method":'eth_sendRawTransaction',
+															"params":["0x"+String(serializedTx)]}),
+										success: function (d) {
+											console.log("lighter sended");
+											
+											$("#gamvca").show();//gamvca
+										}
+									}); 
+								}
+							}
+							}
+				});
+			  
+			});
+			
+		}
+	});
+}	
+</script>
 <br>
  
 </form>
@@ -41,77 +129,37 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 <br><br><br><br><br>
 dev console:<br>
 <textarea style='width:500px;height:200px' id='gametable'></textarea> <br>
-<input type='submit' name='' class='btn' onclick='putRandom(openkey,$("#gametable").val())' value='Finish session'>
-<input type='text' name=''  id='rgen' class='form-control' disabled value='0x3ab348fa07fce0fa342cc0a201b019f75f21fb97'>
+
 <a href='' target='_blank' id='ff'>contract</a>
 <script>
-addressContract = "";
+
 $("#ff").prop("href","https://testnet.etherscan.io/address/"+addressContract);
 </script>
 <script>
 
-openkey = "0x3ab348fa07fce0fa342cc0a201b019f75f21fb97";
-privkey = "f6c40cd9f562585cd4b7b961fc8503691097e0a52bcc31fb0b7d8e9ab5f0dc19";
+openkey = "0x..";
+privkey = "{}";
 
 
 
 var number;
 var stack = new Array();
 
-function pingRandom(gamenumber) {
-	stack.push(gamenumber);
-	number = Math.floor(Math.random() * 2) + 1;
-	
-	hash1 = hashCode("123"+number);
-	
-	stack.push(hash1);
-	
-	return hash1;
-}
-
-function sendMyHash2R(hash2) {
-	stack.push(hash2);
-	stack.push(number);
-	return number;
-}
-
-function sendMyNumber2R(number2) {
-	stack.push(number2);
-	
-	$("#gametable").html($("#gametable").html()+stack.join(",")+"/");
-	stack = new Array();
-	
-	
-}
-
 var i=1;
 var signedhash;
-function roll() {
-	number1 = $("#mychoise").val();
-	//ping 
-	var myseed = number1+Math.random()*10000; //генерим рандомный сид
-	var myhash = ethUtil.sha3(myseed).toString("hex"); // генерим свой хеш
-	
-	signedhash = callBankRoll(myhash);
-	
-	if (number2 == number) {
-		result = "win";
-	} else {
-		result = "lose";
-	}
-	$("#console").html($("#console").html()+"<Br>game "+i+", your choise "+number1+", yourhash:"+myhash+", signed hash:"+signedhash+", finalrandom: "+number2+" = "+result);
-	$("#mychoise").val(0);
-	i++;
-	
-}
+
 
 function callBankRoll(userhash) {
 	var r = ethUtil.ecsign(ethUtil.sha3(userhash),new buf(privkey,"hex")); //TODO отправляем в контракт r,s,v 
-	(r)
+	//(r)
 }
 
-function startGame() {
-return true;
+function confirm() {
+
+}
+
+function startGame(bet,seed) {
+
 $.ajax({
 	type: "POST",
 		url: urlInfura,
@@ -128,7 +176,7 @@ $.ajax({
 			options.to = addressContract;
 			// call function game() in contract
 			
-			options.data = "0xd12ad3c8"+coder.encodeParams(["address","uint8","bytes32","bytes32"], [$("#rgen").val(),v,s]); //  putRoll(address gamer, uint8 v, bytes32 r, bytes32 s)
+			options.data = "0x3307f6a5"+coder.encodeParams(["uint256","uint96"], [bet,seed]); 
 			
 			//putRoll(address gamer,bytes32 hash, uint8 v, bytes32 r, bytes32 s)
 			
@@ -172,84 +220,40 @@ $.ajax({
 }
 
 
-function putRandom(player,table) {
-	console.log("кладем рандом в контракт");
-	$.ajax({
-	type: "POST",
-		url: urlInfura,
-		dataType: 'json',
-		async: false,
-		data: JSON.stringify({"jsonrpc":"2.0",
-							"method":"eth_getTransactionCount",
-							"params":[openkey,"latest"],
-							"id":1}),
-		success: function (d) {
-			console.log("get nonce "+d.result);
-			var options = {};
-			options.nonce = d.result;
-			options.to = addressContract;
-			// call function game() in contract
-			options.data = "0xa29c482d"+coder.encodeParams(["address",
-															"string"], 
-														[$("#rgen").val(),
-														$("#gametable").val()
-														]); // game();
-			console.log("options.data",options.data);
-			options.gasPrice="0x737be7600";//web3.toHex('31000000000');
-			options.gasLimit=0x927c0; //web3.toHex('600000');
-			options.value = 0;
-			
-			if(privkey){
-				if(buf == undefined){
-					console.log(ERROR_TRANSACTION);
-				} else {
-					//приватный ключ игрока, подписываем транзакцию
-					var tx = new EthereumTx(options);
-					tx.sign(new buf(privkey, 'hex'));
 
-					var serializedTx = tx.serialize().toString('hex');
-					//obj_game["game"].bSendRequest = false;
-					console.log("The transaction was signed",serializedTx);
-					
-					$.ajax({
-						type: "POST",
-						url: urlInfura,
-						dataType: 'json',
-						async: false,
-						data: JSON.stringify({"id":0,
-											"jsonrpc":'2.0',
-											"method":'eth_sendRawTransaction',
-											"params":["0x"+String(serializedTx)]}),
-						success: function (d) {
-							//console.log("gameTxHash", d.result) 
-							console.log("The transaction send:", d);
-							window.location.reload();
-						}
-					})
-				}
-			}
-		}
-	});
-	//1,"114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9","0xca35b7d915458ef540ade6068dfe2f44e8fa733c"
-}
+function Utf8ArrayToStr(array) {
+    var out, i, len, c;
+    var char2, char3;
 
-
-var hashCode = function(s) {
-    /* Simple hash function. */
-    var a = 1, c = 0, h, o;
-    if (s) {
-        a = 0;
-        /*jshint plusplus:false bitwise:false*/
-        for (h = s.length - 1; h >= 0; h--) {
-            o = s.charCodeAt(h);
-            a = (a<<6&268435455) + o + (o<<14);
-            c = a & 266338304;
-            a = c!==0?a^c>>21:a;
-        }
+    out = "";
+    len = array.length;
+    i = 0;
+    while(i < len) {
+    c = array[i++];
+    switch(c >> 4)
+    { 
+      case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+        // 0xxxxxxx
+        out += String.fromCharCode(c);
+        break;
+      case 12: case 13:
+        // 110x xxxx   10xx xxxx
+        char2 = array[i++];
+        out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+        break;
+      case 14:
+        // 1110 xxxx  10xx xxxx  10xx xxxx
+        char2 = array[i++];
+        char3 = array[i++];
+        out += String.fromCharCode(((c & 0x0F) << 12) |
+                       ((char2 & 0x3F) << 6) |
+                       ((char3 & 0x3F) << 0));
+        break;
     }
-    return String(a);
-};
+    }
 
+    return out;
+}
 
 </script>
 </body>
