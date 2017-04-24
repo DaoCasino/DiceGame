@@ -1,7 +1,7 @@
 pragma solidity ^0.4.2;
 import "./Deck.sol";
 import "./BlackJackStorage.sol";
-// import "./ERC20.sol";
+import "./ERC20.sol";
 import "./Types.sol";
 import "./owned.sol";
 
@@ -13,7 +13,7 @@ contract BlackJack is owned {
     */
 
     // Stores tokens
-    // ERC20 token;
+    ERC20 token;
 
     Deck deck;
 
@@ -114,7 +114,8 @@ contract BlackJack is owned {
 
     modifier payInsuranceIfNecessary(bool isMain) {
         if (storageContract.isInsurancePaymentRequired(isMain, msg.sender)) {
-            if (!msg.sender.send(storageContract.getInsurance(isMain, msg.sender) * 2)) throw; // send insurance to the player
+            // if (!msg.sender.send(storageContract.getInsurance(isMain, msg.sender) * 2)) throw; // send insurance to the player
+           token.transfer(msg.sender, storageContract.getInsurance(isMain, msg.sender) * 2); // send insurance to the player
         }
         _;
     }
@@ -123,29 +124,33 @@ contract BlackJack is owned {
         CONSTRUCTOR
     */
 
-    function BlackJack(address deckAddress, address storageAddress/*, address tokenAddress*/) {
+    function BlackJack(address deckAddress, address storageAddress, address tokenAddress) {
         deck = Deck(deckAddress);
         storageContract = BlackJackStorage(storageAddress);
-        // token = ERC20(tokenAddress);
+        token = ERC20(tokenAddress);
     }
 
     function () payable {
 
     }
-
+	
     /*
         MAIN FUNCTIONS
     */
 
-    function deal()
+    function deal(uint value)
         public
-        payable
+        //payable
         gameFinished
         betIsSuitable
     {
+		if (!token.transferFrom(msg.sender, this, value)) {
+            throw;
+        }
 
         lastGameId = lastGameId + 1;
-        storageContract.createNewGame(lastGameId, msg.sender, msg.value);
+        // storageContract.createNewGame(lastGameId, msg.sender, msg.value);
+        storageContract.createNewGame(lastGameId, msg.sender, value);
         storageContract.deleteSplitGame(msg.sender);
 
 
@@ -173,14 +178,19 @@ contract BlackJack is owned {
         checkGameResult(isMain, false);
     }
 	
-    function requestInsurance()
+    function requestInsurance(uint value)
         public
-        payable
+        // payable
         betIsInsurance
         insuranceAvailable
     {
+		if (!token.transferFrom(msg.sender, this, value)) {
+            throw;
+        }
+		
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
-        storageContract.updateInsurance(msg.value, isMain, msg.sender);
+        // storageContract.updateInsurance(msg.value, isMain, msg.sender);
+        storageContract.updateInsurance(value, isMain, msg.sender);
         storageContract.setInsuranceAvailable(false, isMain, msg.sender);
     }
 	
@@ -215,14 +225,18 @@ contract BlackJack is owned {
         }
     }
 
-    function split()
+    function split(uint value)
         public
-        payable
+        // payable
         betIsDoubled
         splitAvailable
     {
+		if (!token.transferFrom(msg.sender, this, value)) {
+            throw;
+        }
         storageContract.updateState(Types.GameState.InProgressSplit, true, msg.sender); // switch to the split game
-        storageContract.createNewSplitGame(msg.sender, msg.value);
+        // storageContract.createNewSplitGame(msg.sender, msg.value);
+        storageContract.createNewSplitGame(msg.sender, value);
 
         // Deal extra cards in each game.
         dealCard(true, true);
@@ -235,12 +249,15 @@ contract BlackJack is owned {
         }
     }
 
-    function double()
+    function double(uint value)
         public
-        payable
+        // payable
         betIsDoubled
         doubleAvailable
     {
+		if (!token.transferFrom(msg.sender, this, value)) {
+            throw;
+        }
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
 
         storageContract.doubleBet(isMain, msg.sender);
@@ -250,7 +267,15 @@ contract BlackJack is owned {
             stand();
         }
     }
-
+	
+    function getBank() 
+		public 
+		constant 
+		returns(uint) 
+	{
+        return token.balanceOf(this);
+    }
+	
     /*
         SUPPORT FUNCTIONS
     */
@@ -353,7 +378,8 @@ contract BlackJack is owned {
         standIfNecessary(finishGame)
     {
         // return bet to the player
-        if (!msg.sender.send(storageContract.getBet(isMain, msg.sender))) throw;
+        // if (!msg.sender.send(storageContract.getBet(isMain, msg.sender))) throw;
+		token.transfer(msg.sender, storageContract.getBet(isMain, msg.sender));
 
         // set final state
         storageContract.updateState(Types.GameState.Tie, isMain, msg.sender);
@@ -373,16 +399,19 @@ contract BlackJack is owned {
         standIfNecessary(finishGame)
     {
         if (storageContract.getPlayerScore(isMain, msg.sender) != BLACKJACK) {
-            if (!msg.sender.send(storageContract.getBet(isMain, msg.sender) * 2)) throw;
+            // if (!msg.sender.send(storageContract.getBet(isMain, msg.sender) * 2)) throw;
+            token.transfer(msg.sender, storageContract.getBet(isMain, msg.sender) * 2);
             // set final state
             storageContract.updateState(Types.GameState.PlayerWon, isMain, msg.sender);
             return;
         }
 
         if (storageContract.isNaturalBlackJack(isMain, msg.sender)) {
-            if (!msg.sender.send((storageContract.getBet(isMain, msg.sender) * 5) / 2)) throw;
+            // if (!msg.sender.send((storageContract.getBet(isMain, msg.sender) * 5) / 2)) throw;
+			token.transfer(msg.sender, (storageContract.getBet(isMain, msg.sender) * 5) / 2);
         } else {
-            if (!msg.sender.send(storageContract.getBet(isMain, msg.sender) * 2)) throw;
+            // if (!msg.sender.send(storageContract.getBet(isMain, msg.sender) * 2)) throw;
+			token.transfer(msg.sender, (storageContract.getBet(isMain, msg.sender) * 2));
         }
 
         // set final state
@@ -393,11 +422,18 @@ contract BlackJack is owned {
     /*
         OWNER FUNCTIONS
     */
-
+	
+	function setTokenAddress(address tokenAddress) 
+		onlyOwner
+	{
+        token = ERC20(tokenAddress);
+    }
+	
     function withdraw(uint amountInWei)
         onlyOwner
     {
-        if (!msg.sender.send(amountInWei)) throw;
+        // if (!msg.sender.send(amountInWei)) throw;
+		token.transfer(msg.sender, amountInWei);
     }
 
 }

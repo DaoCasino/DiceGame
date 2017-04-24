@@ -1,16 +1,16 @@
 var BlackJack = artifacts.require("BlackJack.sol");
 var BlackJackStorage = artifacts.require("BlackJackStorage.sol");
 var Deck = artifacts.require("Deck.sol");
+var ERC20 = artifacts.require("ERC20.sol");
 
 module.exports = function(deployer, network) {
-    deployer.deploy(Deck);
-    deployer.link(Deck, BlackJack);
-
     if (network == "development") {
         deployer.deploy(Deck, "0xaec3ae5d2be00bfc91597d7a1b2c43818d84396a").then(function() {
             return deployer.deploy(BlackJackStorage, Deck.address);
         }).then(function() {
-            return deployer.deploy(BlackJack, Deck.address, BlackJackStorage.address);
+            return deployer.deploy(ERC20);
+        }).then(function() {
+            return deployer.deploy(BlackJack, Deck.address, BlackJackStorage.address, ERC20.address);
         }).then(function() {
             web3.eth.sendTransaction({
                 from: "0xaec3ae5d2be00bfc91597d7a1b2c43818d84396a",
@@ -25,7 +25,7 @@ module.exports = function(deployer, network) {
         deployer.deploy(Deck).then(function() {
             return deployer.deploy(BlackJackStorage, Deck.address);
         }).then(function() {
-            return deployer.deploy(BlackJack, Deck.address, BlackJackStorage.address);
+            return deployer.deploy(BlackJack, Deck.address, BlackJackStorage.address, ERC20.address);
         }).then(function() {
             web3.eth.sendTransaction({
                 from: "0x7e1952131872feee40061360d7ccaf0a72964f9c",
