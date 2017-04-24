@@ -1,7 +1,7 @@
 tite: BlackJack
 tags: card,blackjack
 category: Card games
-autor: J0xFlash
+autor: J0xFlash, bushalex
 description: Blackjack with splits
 img: https://platform.dao.casino/img/img-game3.jpg
 liecence:
