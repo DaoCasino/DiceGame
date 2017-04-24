@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.40"
+var version = "v. 1.0.41"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -19,18 +19,18 @@ var rndBg = String(Math.ceil(Math.random()*2));
 var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
-var	addressRpcStorage = "0x2dcac3906b00cbecbafe7b1e1afc2eb23a8e1ec7";
-var	addressRpcContract = "0xaac95cc5a4ef340f44612339dd55982a7ed7d28b";
+var	addressRpcStorage = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
+var	addressRpcContract = "0xce9a7e79f6669f443cd3aeabefb8c33e77631cf5";
 // testnet
-var	addressTestStorage = "0xfe4a5784c55e2602e4ca3aabb6a701ed17fc11ea";
-var	addressTestContract = "0x99d63d8c461e9733d51e9a25c628d53e51dc86e6";
+var	addressTestStorage = "0x7ba71c2a381a6f5fe5cd9e6406889b09d8f2656e";
+var	addressTestContract = "0x89f090a89f7f8649c69056bd7af8510d1ab9eaa8";
 
 var options_debug = false;
 var options_test = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
-var options_rpc = false;
+var options_rpc = true;
 var options_music = true;
 var options_sound = true;
 var options_mobile = true;

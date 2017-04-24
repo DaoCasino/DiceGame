@@ -1557,17 +1557,19 @@ ScrGame.prototype.showTestEther = function() {
 }
 
 ScrGame.prototype.showInsurance = function() {
-	var str = "Do you want Insurance?";
+	var price = betEth/2;
+	price = toFixed((price/1000000000000000000), 4);
+	var str = "Do you want Insurance? \n " + price + " eth.";
 	this.showWndInsurance(str, this.clickInsurance);
 	this.bInsurance = 0;
 }
 
 ScrGame.prototype.showResult = function(_name, _x, _y) {
 	var prnt = obj_game["game"];
+	var delay = this._arNewCards.length+2;
 	var tf = prnt.createObj({x:_x, y:_y}, _name);
 	tf.alpha = 0;
-	
-	createjs.Tween.get(tf).wait(3000).to({y:_y, alpha:1},300).to({y:_y-50},500);
+	createjs.Tween.get(tf).wait(1000*delay).to({y:_y, alpha:1},300).to({y:_y-50},500);
 }
 
 ScrGame.prototype.shareTwitter = function() {
@@ -1933,7 +1935,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			// console.log("state|idGame:", stateNow, idGame, idOldGame);
+			console.log("state|idGame:", stateNow, idGame, idOldGame);
 		}
 		
 		if(!prnt.bBetLoad){
@@ -1998,7 +2000,11 @@ ScrGame.prototype.response = function(command, value) {
 				if(prnt._arMySplitCards.length > 0){
 					prnt.checkGameState(false);
 					prnt.getPlayerScore(false);	
-				}				
+				}			
+				
+				prnt.getSplitCardsNumber();
+				prnt.getPlayerCardsNumber();
+				prnt.getHouseCardsNumber();
 				
 				switch (stateNow){
 					case S_BLACKJACK:
@@ -2019,10 +2025,6 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.showResult("tfPush", _x, _y);
 						break;
 				}
-				
-				prnt.getSplitCardsNumber();
-				prnt.getPlayerCardsNumber();
-				prnt.getHouseCardsNumber();
 				
 				prnt.bClickStart = false;
 				prnt.bWait = false;
