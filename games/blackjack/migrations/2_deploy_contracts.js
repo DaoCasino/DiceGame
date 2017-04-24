@@ -28,7 +28,7 @@ module.exports = function(deployer, network) {
             return deployer.deploy(BlackJack, Deck.address, BlackJackStorage.address);
         }).then(function() {
             web3.eth.sendTransaction({
-                from: "0x42ccb9b37dd47dec2bbf85d01b0202ca237e109d",
+                from: "0x7e1952131872feee40061360d7ccaf0a72964f9c",
                 to: BlackJack.address,
                 value: web3.toWei(1, "ether"),
                 gas: 400000,
