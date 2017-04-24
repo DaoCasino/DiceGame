@@ -166,8 +166,12 @@ ScrGame.prototype.init = function() {
 	this.bg.scale.y = scaleBack;
 	this.addChild(this.bg);
 	
-	if(options_debug){
-		var tfDebug = addText("Debug", 20, "#FF0000", "#000000", "right", 400)
+	if(options_debug || options_rpc){
+		var str = "Debug";
+		if(options_rpc){
+			str = "RPC";
+		}
+		var tfDebug = addText(str, 20, "#FF0000", "#000000", "right", 400)
 		tfDebug.x = _W-20;
 		tfDebug.y = _H-30;
 		this.face_mc.addChild(tfDebug);
@@ -1446,6 +1450,8 @@ ScrGame.prototype.loadBet = function(value){
 		str = "";
 	} else {
 		this.startGame = true;
+		this.bClickStart = true;
+		idOldGame--;
 	}
 	this.tfMyBet.setText(str);
 	this.isSplitAvailable();
@@ -1743,11 +1749,12 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	
 	if(privkey){
 		if(buf == undefined){
-			obj_game["game"].showError(ERROR_BUF);
-			obj_game["game"].clearBet();
-			obj_game["game"].tfStatus.setText("");
-			obj_game["game"].bWait = false;
-			obj_game["game"].showChips(true);
+			prnt.showError(ERROR_BUF);
+			prnt.clearBet();
+			prnt.tfStatus.setText("");
+			prnt.bWait = false;
+			prnt.showChips(true);
+			prnt.bClickStart = false;
 		} else {
 			// The transaction was signed
 			var tx = new EthereumTx(options);
@@ -1769,6 +1776,7 @@ ScrGame.prototype.response = function(command, value) {
 			prnt.clearBet();
 			prnt.tfStatus.setText("");
 			prnt.bWait = false;
+			prnt.bClickStart = false;
 			prnt.showChips(true);
 		}
 		return false;
@@ -1841,13 +1849,16 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameId"){
 		idGame = hexToNum(value);
 	} else if(command == "getPlayerBet"){
-		if(!this.bBetLoad){
+		if(!prnt.bBetLoad){
 			prnt.bBetLoad = true;
 			prnt.bWait = false;
+			console.log("getPlayerBet:", prnt.startGame, prnt.bWait);
 			if((stateNow == S_IN_PROGRESS ||
 			stateNow == S_IN_PROGRESS_SPLIT)
 			&& prnt.tfStatus){
 				prnt.loadBet(value);
+			} else {
+				prnt.showChips(true);
 			}
 		}
 	} else if(command == "isInsuranceAvailable"){
@@ -1935,13 +1946,13 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state|idGame:", stateNow, idGame, idOldGame);
+			console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.bWait);
 		}
 		
 		if(!prnt.bBetLoad){
-			prnt.getPlayerBet();
-			prnt.showButtons(false);
 			prnt.bWait = true;
+			prnt.showButtons(false);
+			prnt.getPlayerBet();
 			return false;
 		}
 		
@@ -1973,9 +1984,9 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.darkCards(prnt._arMySplitCards, false);
 					}
 				}
-				if(idGame == idOldGame){
-					idOldGame--;
-				}
+				// if(idGame == idOldGame){
+					// idOldGame--;
+				// }
 				prnt.btnStart.alpha = 0.5;
 				prnt.btnClear.alpha = 0.5;
 				prnt.showChips(false);
