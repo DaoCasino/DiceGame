@@ -202,7 +202,7 @@ contract BlackJack is owned {
 		storageContract.getSplitCardsNumber(msg.sender) == 0){
 			dealCard(false, true);
 		} else {
-			while (storageContract.getHouseBigScore(msg.sender) < 17) {
+			while (storageContract.getHouseScore(msg.sender) < 17) {
 				dealCard(false, true);
 			}
 		}
