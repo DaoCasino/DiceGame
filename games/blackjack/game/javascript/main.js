@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.42"
+var version = "v. 1.0.43"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -22,8 +22,8 @@ var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 var	addressRpcStorage = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
 var	addressRpcContract = "0xce9a7e79f6669f443cd3aeabefb8c33e77631cf5";
 // testnet
-var	addressTestStorage = "0x7ba71c2a381a6f5fe5cd9e6406889b09d8f2656e";
-var	addressTestContract = "0x89f090a89f7f8649c69056bd7af8510d1ab9eaa8";
+var	addressTestStorage = "0x8b4f7e6364fad92b590102f1664336056ba82d3b";
+var	addressTestContract = "0x766931817eae2b5756e5f9f5987af1e610e76243";
 
 var options_debug = false;
 var options_test = false;

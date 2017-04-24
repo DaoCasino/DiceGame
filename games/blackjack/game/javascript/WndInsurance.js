@@ -19,13 +19,13 @@ WndInsurance.prototype.init = function(_prnt) {
 	var bg = addObj("wndInfo",0,0,0.3);
 	this.addChild(bg);
 	
-	var btnClose = addButton2("btnClose", 230, -150, 0.5);
+	var btnClose = addButton("btnClose", 230, -150, 0.5);
 	this.addChild(btnClose);
 	this._arButtons.push(btnClose);
-	var btnOk = addButton2("btnGreen", 140, 100, 0.75);
+	var btnOk = addButton("btnGreen", 140, 100, 0.75);
 	this.addChild(btnOk);
 	this._arButtons.push(btnOk);
-	var btnCancel = addButton2("btnRed", -140, 100, 0.75);
+	var btnCancel = addButton("btnRed", -140, 100, 0.75);
 	this.addChild(btnCancel);
 	this._arButtons.push(btnCancel);
 	
