@@ -16,11 +16,7 @@ contract ERC20 {
 
     /* This generates a public event on the blockchain that will notify clients */
     event Transfer(address indexed from, address indexed to, uint256 value);
-
-	function ERC20 (){
-		// balanceOf[0xaec3ae5d2be00bfc91597d7a1b2c43818d84396a] = 1000000000000;
-		// balanceOf[0xf1f42f995046e67b79dd5ebafd224ce964740da3] = 1000000000000;
-	}
+	
     /* Initializes contract with initial supply tokens to the creator of the contract */
 
     // for test purposes only
