@@ -23,6 +23,10 @@ contract ERC20 {
 	}
     /* Initializes contract with initial supply tokens to the creator of the contract */
 
+    // for test purposes only
+    function issueTokens(address to, uint256 value) {
+        balanceOf[to] += value * 100000000;
+    }
 
     /* Send coins */
     function transfer(address _to, uint256 _value) {
@@ -61,6 +65,12 @@ contract ERC20 {
         allowance[_from][msg.sender] -= _value;
         Transfer(_from, _to, _value);
         return true;
+    }
+
+    /// @dev Returns number of tokens owned by given address.
+    /// @param _owner Address of token owner.
+    function balanceOf(address _owner) constant returns (uint256 balance) {
+        return balanceOf[_owner];
     }
 
     /* This unnamed function is called whenever someone tries to send ether to it */
