@@ -335,6 +335,7 @@ ScrGame.prototype.createAccount = function() {
 			privateKey = privateKey.toString('hex');
 			privkey = privateKey;
 			openkey = address;
+			sendingAddr = openkey.substr(2);
 			this.tfIdUser.setText(address);
 			if(options_testnet){
 				this.showButtons(false);
@@ -1731,7 +1732,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	var gasPrice="0x9502F9000";//web3.toHex('40000000000');
 	var gasLimit=0x927c0; //web3.toHex('600000');
 	if(name == "deal"){
-		data = "0x"+C_DEAL;
+		data = "0x"+C_DEAL+pad(numToHex(betGame), 64);
 		price = betGame;
 		betGameCur = betGame;
 		nameRequest = "gameTxHash";
@@ -1770,10 +1771,12 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	var options = {};
 	options.nonce = value;
 	options.to = addressContract;
-	// options.data = data; // method from contact
 	options.gasPrice = gasPrice;
 	options.gasLimit = gasLimit;
 	// options.value = price;
+	if(options_rpc){
+		options.data = data; // method from contact
+	}
 	
 	if(privkey){
 		if(buf == undefined){
@@ -1791,21 +1794,29 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 			// var serializedTx = tx.serialize().toString('hex'); // old
 			// var params = "0x"+String(serializedTx); // old
 			// infura.sendRequest(nameRequest, params, _callback); // old
-			if(ks){
-				ks.keyFromPassword(passwordUser, function (err, pwDerivedKey) {
-					console.log("betGame:", betGame, "("+convertToken(betGame)+")");
-					var args = [betGame];
-					var registerTx = lightwallet.txutils.functionTx(abi, name, args, options);
-					var params = "0x"+lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr);
-					infura.sendRequest(nameRequest, params, _callback);
-				})
+			console.log("betGame:", betGame, "("+convertToken(betGame)+")");
+			if(options_rpc){
+				var tx = new EthereumTx(options);
+				tx.sign(new buf(privkey, 'hex'));
+				var serializedTx = tx.serialize().toString('hex');
+				var params = "0x"+String(serializedTx);
+				infura.sendRequest(nameRequest, params, _callback);
 			} else {
-				prnt.showError(ERROR_BUF);
-				prnt.clearBet();
-				prnt.tfStatus.setText("");
-				prnt.bWait = false;
-				prnt.showChips(true);
-				prnt.bClickStart = false;
+				if(ks){
+					ks.keyFromPassword(passwordUser, function (err, pwDerivedKey) {
+						var args = [betGame];
+						var registerTx = lightwallet.txutils.functionTx(abi, name, args, options);
+						var params = "0x"+lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr);
+						infura.sendRequest(nameRequest, params, _callback);
+					})
+				} else {
+					prnt.showError(ERROR_BUF);
+					prnt.clearBet();
+					prnt.tfStatus.setText("");
+					prnt.bWait = false;
+					prnt.showChips(true);
+					prnt.bClickStart = false;
+				}
 			}
 		}
 	}

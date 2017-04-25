@@ -21,9 +21,9 @@ var abi = [{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name"
 var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
-var	addressRpcErc = "0x09a09b253c4e4d0bdbd12407af0586c3546607a4";
-var	addressRpcStorage = "0x20fbf47adaf583ef7a843410814c74c4152c9433";
-var	addressRpcContract = "0x04c5bce0e11ac662d2d6b3b6f6d320870f7d80ce";
+var	addressRpcErc = "0x2b3fd51f83346d5dd2e506742672608902d9ead6";
+var	addressRpcStorage = "0x587970d746d44b249d61cff19f17b39f576020f4";
+var	addressRpcContract = "0x22bdcf5d6bbf380e73ebc46c95371dd9b772e1a7";
 // testnet
 var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 var	addressTestStorage = "0x1363513ed5fde96036b010db3eda7fd12b1d5cd6";
