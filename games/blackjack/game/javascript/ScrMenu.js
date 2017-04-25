@@ -61,6 +61,9 @@ ScrMenu.prototype.clickCell = function(item_mc) {
 	}
 	
 	if(item_mc.name == "btnDefault"){
+		if(!passwordUser){
+			passwordUser = prompt("enter your password");
+		}
 		this.removeAllListener();
 		showGame();
 	}

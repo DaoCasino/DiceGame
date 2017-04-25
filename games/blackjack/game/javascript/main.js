@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.43"
+var version = "v. 1.0.44"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -10,20 +10,26 @@ var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
-var infura, soundManager;
+var infura, soundManager, ks, passwordUser, sendingAddr;
 var fontMain = "Arial";
 var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
+var valToken = 100000000; // 1 token
 var rndBg = String(Math.ceil(Math.random()*2));
+var abi = [{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"requestInsurance","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"tokenAddress","type":"address"}],"name":"setTokenAddress","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"hit","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"amountInWei","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"maxBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBank","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"minBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"stand","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"deal","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"split","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"double","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"deckAddress","type":"address"},{"name":"storageAddress","type":"address"},{"name":"tokenAddress","type":"address"}],"payable":false,"type":"constructor"},{"payable":true,"type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_type","type":"uint8"},{"indexed":false,"name":"_card","type":"uint8"}],"name":"Deal","type":"event"}]
 // main
 var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
-var	addressRpcStorage = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
-var	addressRpcContract = "0xce9a7e79f6669f443cd3aeabefb8c33e77631cf5";
+var	addressRpcErc = "0x09a09b253c4e4d0bdbd12407af0586c3546607a4";
+var	addressRpcStorage = "0x20fbf47adaf583ef7a843410814c74c4152c9433";
+var	addressRpcContract = "0x04c5bce0e11ac662d2d6b3b6f6d320870f7d80ce";
 // testnet
-var	addressTestStorage = "0x8b4f7e6364fad92b590102f1664336056ba82d3b";
-var	addressTestContract = "0x766931817eae2b5756e5f9f5987af1e610e76243";
+var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+var	addressTestStorage = "0x1363513ed5fde96036b010db3eda7fd12b1d5cd6";
+var	addressTestContract = "0x75f94d59223b0159d98b3b120b8a58249a91edef";
+
+var addressCurErc = "";
 
 var options_debug = false;
 var options_test = false;
@@ -45,6 +51,12 @@ var ERROR_CONTRACT = 5;
 var ERROR_BALANCE = 6;
 var ERROR_DEAL = 7;
 var ERROR_MAX_BET = 8;
+
+if(options_rpc){
+	addressCurErc = addressRpcErc;
+} else {
+	addressCurErc = addressTestErc;
+}
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
@@ -374,6 +386,11 @@ function loadData() {
 			privkey = localStorage.getItem('privkey')
 		}
 		mainet = localStorage.getItem('mainnet')
+		sendingAddr = openkey.substr(2);
+		var keystore = localStorage.getItem('keystore');
+		if(keystore){
+			ks = lightwallet.keystore.deserialize(keystore);
+		}
 		if (localStorage.getItem('daocasino_blackjack')){
 			var login_str = localStorage.getItem('daocasino_blackjack')
 			login_obj = JSON.parse(login_str);
@@ -768,6 +785,11 @@ function jiggle(t){
 	t.scale.y = t.scale.x
 }
 
+
+function convertToken(value){
+	var val = value/valToken;
+	return val;
+}
 function rad(qdeg){
 	return qdeg * (Math.PI / 180);
 }

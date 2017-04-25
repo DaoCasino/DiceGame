@@ -4,6 +4,12 @@ import "./BlackJackStorage.sol";
 import "./ERC20.sol";
 import "./Types.sol";
 import "./owned.sol";
+/*
+contract ERC20 {
+    function balanceOf(address _addr) returns (uint);
+    function transfer(address _to, uint256 _value);
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
+}*/
 
 contract BlackJack is owned {
     using Types for *;
@@ -13,7 +19,8 @@ contract BlackJack is owned {
     */
 
     // Stores tokens
-    ERC20 token;
+	//address addressToken = 0x95a48dca999c89e4e284930d9b9af973a7481287;
+    ERC20 token;// = ERC20(addressToken);
 
     Deck deck;
 
@@ -24,8 +31,10 @@ contract BlackJack is owned {
         CONSTANTS
     */
 
-    uint public minBet = 50 finney;
-    uint public maxBet = 5 ether;
+    // uint public minBet = 50 finney;
+    // uint public maxBet = 5 ether;
+    uint public minBet = 5000000;
+    uint public maxBet = 500000000;
 
     uint32 lastGameId;
 
@@ -57,12 +66,12 @@ contract BlackJack is owned {
         }
         _;
     }
-
-    modifier betIsSuitable() {
-        if (msg.value < minBet || msg.value > maxBet) {
+	
+	modifier betIsSuitable(uint value) {
+        if (value < minBet || value > maxBet) {
             throw; // incorrect bet
         }
-        if (msg.value * 5 > this.balance * 2) {
+        if (value * 5 > getBank() * 2) {
             // Not enough money on the contract to pay the player.
             throw;
         }
@@ -90,15 +99,15 @@ contract BlackJack is owned {
         _;
     }
 
-    modifier betIsDoubled() {
-        if (storageContract.getBet(true, msg.sender) != msg.value) {
+    modifier betIsDoubled(uint value) {
+        if (storageContract.getBet(true, msg.sender) != value) {
             throw;
         }
         _;
     }
 	
-    modifier betIsInsurance() {
-        if (storageContract.getBet(true, msg.sender) != msg.value*2) {
+    modifier betIsInsurance(uint value) {
+        if (storageContract.getBet(true, msg.sender) != value*2) {
             throw;
         }
         _;
@@ -115,7 +124,7 @@ contract BlackJack is owned {
     modifier payInsuranceIfNecessary(bool isMain) {
         if (storageContract.isInsurancePaymentRequired(isMain, msg.sender)) {
             // if (!msg.sender.send(storageContract.getInsurance(isMain, msg.sender) * 2)) throw; // send insurance to the player
-           token.transfer(msg.sender, storageContract.getInsurance(isMain, msg.sender) * 2); // send insurance to the player
+           token.transfer(msg.sender, storageContract.getInsurance(isMain, msg.sender) * 2);  // send insurance to the player
         }
         _;
     }
@@ -142,7 +151,7 @@ contract BlackJack is owned {
         public
         //payable
         gameFinished
-        betIsSuitable
+        betIsSuitable(value)
     {
 		if (!token.transferFrom(msg.sender, this, value)) {
             throw;
@@ -181,7 +190,7 @@ contract BlackJack is owned {
     function requestInsurance(uint value)
         public
         // payable
-        betIsInsurance
+        betIsInsurance(value)
         insuranceAvailable
     {
 		if (!token.transferFrom(msg.sender, this, value)) {
@@ -228,7 +237,7 @@ contract BlackJack is owned {
     function split(uint value)
         public
         // payable
-        betIsDoubled
+        betIsDoubled(value)
         splitAvailable
     {
 		if (!token.transferFrom(msg.sender, this, value)) {
@@ -252,7 +261,7 @@ contract BlackJack is owned {
     function double(uint value)
         public
         // payable
-        betIsDoubled
+        betIsDoubled(value)
         doubleAvailable
     {
 		if (!token.transferFrom(msg.sender, this, value)) {
@@ -279,7 +288,7 @@ contract BlackJack is owned {
     /*
         SUPPORT FUNCTIONS
     */
-
+	
     function dealCard(bool player, bool isMain)
         private
     {
