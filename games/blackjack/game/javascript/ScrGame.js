@@ -211,9 +211,6 @@ ScrGame.prototype.init = function() {
 	this.createGUI();
 	this.createAccount();
 	this.getGameId();
-	// if(login_obj["allowance"]){}else{
-		this.showWndApprove();
-	// }
 	idOldGame = idGame || -1;
 	
 	infura.sendRequest("getBalance", openkey, _callback);
@@ -224,6 +221,9 @@ ScrGame.prototype.init = function() {
 	infura.sendRequest("getBlockNumber", undefined, _callback);
 	this.checkGameState(true);
 	console.log("balanceBank:", login_obj["balanceBank"]);
+	// if(login_obj["allowance"]){}else{
+		this.showWndApprove();
+	// }
 	
 	if(openkey){} else {
 		this.showError(ERROR_KEY, showHome);
@@ -2279,7 +2279,6 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	}
 	
 	if(item_mc.name == "btnDeal"){
-		console.log("!!!:", obj_game["balanceBank"], (betGame/valToken)*3, obj_game["balancePlEth"]);
 		if(betGame >= minBet && obj_game["balanceBank"] >= (betGame/valToken)*3){
 			if(obj_game["balancePlEth"] > 0){
 				item_mc.alpha = 0.5;
