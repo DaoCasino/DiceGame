@@ -21,14 +21,14 @@ var abi = [{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name"
 var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
-var	addressRpcErc = "0x454dc306bf74ba864bef554118618b1ceedd1824";
-var	addressRpcStorage = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
-var	addressRpcContract = "0xce9a7e79f6669f443cd3aeabefb8c33e77631cf5";
+var	addressRpcErc = "0x5d7d1991119f2defd0a440246bd4f362c61be33c";
+var	addressRpcStorage = "0xde1c7198b037fc8365778e4ae038d7944011e50d";
+var	addressRpcContract = "0xb82790a487de9e19ceeb0dae9d73dcaae465d87a";
 // testnet
 var addressTestDeck = "0x0625e83b456d24567585c0e544a85282d3d813ff"; // const
 var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // 0x95a48dca999c89e4e284930d9b9af973a7481287 !!!
-var	addressTestStorage = "0x6e30001092dedab1aeac5526eb09e4459eaa2cef";
-var	addressTestContract = "0x40ce95745be6b63e89fb189a95229f0061cae869";
+var	addressTestStorage = "0xe6fb646095e9d3e0241695311d3ccdabf6e92561";
+var	addressTestContract = "0x2234a2b420972c95cd272b33c5abe614d4219af3";
 // "0x0625e83b456d24567585c0e544a85282d3d813ff", "0x44bf6a32c345da54973041dbe29bdcc925b846b5", "0x95a48dca999c89e4e284930d9b9af973a7481287"
 var addressCurErc = "";
 
@@ -57,6 +57,10 @@ if(options_rpc){
 	addressCurErc = addressRpcErc;
 } else {
 	addressCurErc = addressTestErc;
+	if(addressTestErc != "0x95a48dca999c89e4e284930d9b9af973a7481287"){
+		console.log("warning: change addressTestErc");
+		addressCurErc = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+	}
 }
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame

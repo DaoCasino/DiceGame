@@ -157,6 +157,7 @@ ScrGame.prototype.init = function() {
 	this.bEndTurnSplit = false;
 	this.bClickStart = false;
 	this.bInsurance = -1;
+	login_obj["allowance"] = false;
 	
 	obj_game = {};
 	this.clearBet();
@@ -611,12 +612,12 @@ ScrGame.prototype.showWndInsurance = function(str, callback) {
 }
 
 ScrGame.prototype.checkApprove = function() {
-	if(login_obj["allowance"] || options_rpc){
-		return true;
-	}else{
+	// if(login_obj["allowance"] || options_rpc){
+		// return true;
+	// }else{
 		this.showWndApprove();
-		return false;
-	}
+		// return false;
+	// }
 }
 
 ScrGame.prototype.acceptApprove = function() {
@@ -1557,7 +1558,8 @@ ScrGame.prototype.loadBet = function(value){
 }
 
 ScrGame.prototype.clickChip = function(item_mc){
-	if(!this.checkApprove()){
+	if(login_obj["allowance"] || options_rpc){}else{
+		this.checkApprove();
 		return false;
 	}
 	
@@ -1999,7 +2001,7 @@ ScrGame.prototype.response = function(command, value) {
 		houseScore = Number(hexToNum(value));
 	} else if(command == "getPlayerSplitScore"){
 		var point = Number(hexToNum(value));
-		var bet = betGameCur/100;
+		var bet = betGameCur/valToken;
 		var strResult = "";
 		switch (stateSplit){
 			case S_PLAYER_WON:
@@ -2023,7 +2025,7 @@ ScrGame.prototype.response = function(command, value) {
 		prnt.tfSplitBet.setText(strResult);
 	} else if(command == "getPlayerScore"){
 		var point = Number(hexToNum(value));
-		var bet = betGameCur/100;
+		var bet = betGameCur/valToken;
 		var strResult = "";
 		switch (stateNow){
 			case S_PLAYER_WON:
