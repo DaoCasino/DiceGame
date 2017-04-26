@@ -211,7 +211,9 @@ ScrGame.prototype.init = function() {
 	this.createGUI();
 	this.createAccount();
 	this.getGameId();
-	this.showWndApprove();
+	// if(login_obj["allowance"]){}else{
+		this.showWndApprove();
+	// }
 	idOldGame = idGame || -1;
 	
 	infura.sendRequest("getBalance", openkey, _callback);
@@ -616,7 +618,11 @@ ScrGame.prototype.acceptApprove = function() {
 	
 ScrGame.prototype.showWndApprove = function() {
 	var str = "Do you want to approve the cancellation of 15 tokens inside the game?";
-	this.createWndInfo(str, this.acceptApprove, "Approve");
+	if(obj_game["balancePlEth"] > 0]){
+		this.createWndInfo(str, this.acceptApprove, "Approve");
+	} else {
+		this.showError(ERROR_BALANCE);
+	}
 }
 
 ScrGame.prototype.closeWindow = function(wnd) {

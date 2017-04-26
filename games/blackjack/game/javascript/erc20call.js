@@ -216,6 +216,10 @@ function approve(approveValue) {
                         "params": ["0x" + signedTx]
                     }),
                     success: function (d) {
+						if(login_obj){
+							login_obj["allowance"] = true;
+						}
+						saveData();
                         console.log("The transaction was signed:", d.result);
                     }
                 })
