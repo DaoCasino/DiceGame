@@ -2278,8 +2278,9 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		item_mc.scale.y = 1*item_mc.sc;
 	}
 	
-	if(item_mc.name == "btnDeal"){		
-		if(betGame >= minBet && obj_game["balanceBank"] >= betGame*3){
+	if(item_mc.name == "btnDeal"){
+		console.log("!!!:", obj_game["balanceBank"], (betGame/valToken)*3, obj_game["balancePlEth"]);
+		if(betGame >= minBet && obj_game["balanceBank"] >= (betGame/valToken)*3){
 			if(obj_game["balancePlEth"] > 0){
 				item_mc.alpha = 0.5;
 				this.btnClear.alpha = 0.5;
