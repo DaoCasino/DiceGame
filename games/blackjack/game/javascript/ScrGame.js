@@ -221,9 +221,9 @@ ScrGame.prototype.init = function() {
 	infura.sendRequest("getBlockNumber", undefined, _callback);
 	this.checkGameState(true);
 	console.log("balanceBank:", login_obj["balanceBank"]);
-	// if(login_obj["allowance"]){}else{
+	if(login_obj["allowance"]){}else{
 		this.showWndApprove();
-	// }
+	}
 	
 	if(openkey){} else {
 		this.showError(ERROR_KEY, showHome);
