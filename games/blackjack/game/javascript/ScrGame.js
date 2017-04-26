@@ -220,10 +220,8 @@ ScrGame.prototype.init = function() {
 	this.getBalanceErc();
 	infura.sendRequest("getBlockNumber", undefined, _callback);
 	this.checkGameState(true);
+	this.checkApprove();
 	console.log("balanceBank:", login_obj["balanceBank"]);
-	if(login_obj["allowance"]){}else{
-		this.showWndApprove();
-	}
 	
 	if(openkey){} else {
 		this.showError(ERROR_KEY, showHome);
@@ -610,6 +608,15 @@ ScrGame.prototype.showWndInsurance = function(str, callback) {
 	this.wndInsurance.show(str, callback)
 	this.wndInsurance.visible = true;
 	this.curWindow = this.wndInsurance;
+}
+
+ScrGame.prototype.checkApprove = function() {
+	if(login_obj["allowance"] || options_rpc){
+		return true;
+	}else{
+		this.showWndApprove();
+		return false;
+	}
 }
 
 ScrGame.prototype.acceptApprove = function() {
@@ -1550,6 +1557,10 @@ ScrGame.prototype.loadBet = function(value){
 }
 
 ScrGame.prototype.clickChip = function(item_mc){
+	if(!this.checkApprove()){
+		return false;
+	}
+	
 	var name = item_mc.name;
 	var value = chipVale[Number(name.substr(5))]*valToken;
 	var oldBet = betGame;
@@ -1850,13 +1861,13 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 			// var params = "0x"+String(serializedTx); // old
 			// infura.sendRequest(nameRequest, params, _callback); // old
 			console.log("betGame:", betGame, "("+convertToken(betGame)+")");
-			// if(options_rpc){
-				// var tx = new EthereumTx(options);
-				// tx.sign(new buf(privkey, 'hex'));
-				// var serializedTx = tx.serialize().toString('hex');
-				// var params = "0x"+String(serializedTx);
-				// infura.sendRequest(nameRequest, params, _callback);
-			// } else {
+			if(options_rpc){
+				var tx = new EthereumTx(options);
+				tx.sign(new buf(privkey, 'hex'));
+				var serializedTx = tx.serialize().toString('hex');
+				var params = "0x"+String(serializedTx);
+				infura.sendRequest(nameRequest, params, _callback);
+			} else {
 				if(ks){
 					ks.keyFromPassword(passwordUser, function (err, pwDerivedKey) {
 						if (err) {
@@ -1876,7 +1887,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 					prnt.showChips(true);
 					prnt.bClickStart = false;
 				}
-			// }
+			}
 		}
 	}
 }

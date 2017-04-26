@@ -21,14 +21,15 @@ var abi = [{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name"
 var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
-var	addressRpcErc = "0x2a7f64d8379edadb4f24cf64edea0dbdee0bc3bb";
-var	addressRpcStorage = "0xed76008c2c30b2e43a578de5009310334186e2e4";
-var	addressRpcContract = "0x2e9c5a28a1946d66d0a558c1f9750d7e851bda03";
+var	addressRpcErc = "0x454dc306bf74ba864bef554118618b1ceedd1824";
+var	addressRpcStorage = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
+var	addressRpcContract = "0xce9a7e79f6669f443cd3aeabefb8c33e77631cf5";
 // testnet
+var addressTestDeck = "0x0625e83b456d24567585c0e544a85282d3d813ff"; // const
 var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // 0x95a48dca999c89e4e284930d9b9af973a7481287 !!!
-var	addressTestStorage = "0x44bf6a32c345da54973041dbe29bdcc925b846b5";
-var	addressTestContract = "0xf8ad91da73d34a74b347a5eb5f58727718534599";
-
+var	addressTestStorage = "0xf73009975fd0c9144eb1497839460b5a38fc21f0";
+var	addressTestContract = "0x5cad0164fe642f6a01a606c50896d4b6fd01fa4e";
+// "0x0625e83b456d24567585c0e544a85282d3d813ff", "0x44bf6a32c345da54973041dbe29bdcc925b846b5", "0x95a48dca999c89e4e284930d9b9af973a7481287"
 var addressCurErc = "";
 
 var options_debug = false;
