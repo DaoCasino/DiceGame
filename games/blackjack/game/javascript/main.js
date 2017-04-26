@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.46"
+var version = "v. 1.0.47"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -27,8 +27,8 @@ var	addressRpcContract = "0xce9a7e79f6669f443cd3aeabefb8c33e77631cf5";
 // testnet
 var addressTestDeck = "0x0625e83b456d24567585c0e544a85282d3d813ff"; // const
 var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // 0x95a48dca999c89e4e284930d9b9af973a7481287 !!!
-var	addressTestStorage = "0xf73009975fd0c9144eb1497839460b5a38fc21f0";
-var	addressTestContract = "0x5cad0164fe642f6a01a606c50896d4b6fd01fa4e";
+var	addressTestStorage = "0x6e30001092dedab1aeac5526eb09e4459eaa2cef";
+var	addressTestContract = "0x40ce95745be6b63e89fb189a95229f0061cae869";
 // "0x0625e83b456d24567585c0e544a85282d3d813ff", "0x44bf6a32c345da54973041dbe29bdcc925b846b5", "0x95a48dca999c89e4e284930d9b9af973a7481287"
 var addressCurErc = "";
 

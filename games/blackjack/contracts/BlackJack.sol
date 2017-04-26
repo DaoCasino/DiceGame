@@ -150,12 +150,12 @@ contract BlackJack is owned {
     function deal(uint value)
         public
         //payable
-        gameFinished
-        betIsSuitable(value)
+        // gameFinished
+        // betIsSuitable(value)
     {
-		if (!token.transferFrom(msg.sender, this, value)) {
-            throw;
-        }
+		// if (!token.transferFrom(msg.sender, this, value)) {
+            // throw;
+        // }
 
         lastGameId = lastGameId + 1;
         // storageContract.createNewGame(lastGameId, msg.sender, msg.value);
