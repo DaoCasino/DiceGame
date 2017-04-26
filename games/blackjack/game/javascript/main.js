@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.44"
+var version = "v. 1.0.45"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -21,9 +21,9 @@ var abi = [{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name"
 var addressStorage = " ";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
-var	addressRpcErc = "0x2b3fd51f83346d5dd2e506742672608902d9ead6";
-var	addressRpcStorage = "0x587970d746d44b249d61cff19f17b39f576020f4";
-var	addressRpcContract = "0x22bdcf5d6bbf380e73ebc46c95371dd9b772e1a7";
+var	addressRpcErc = "0x2a7f64d8379edadb4f24cf64edea0dbdee0bc3bb";
+var	addressRpcStorage = "0xed76008c2c30b2e43a578de5009310334186e2e4";
+var	addressRpcContract = "0x2e9c5a28a1946d66d0a558c1f9750d7e851bda03";
 // testnet
 var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 var	addressTestStorage = "0x1363513ed5fde96036b010db3eda7fd12b1d5cd6";
@@ -379,6 +379,8 @@ function saveData() {
 function loadData() {
 	if(isLocalStorageAvailable()){
 		if(options_rpc){
+			// openkey = "0xeaab5b73c8092a4395ef4bb2c815a29de4dc6b3d";
+			// privkey = "845d3cca6be851f4d4da2c1be30ce36bd3122817b6de80bc5c03d81ea0b59fb1";
 			openkey = "0xf1f42f995046e67b79dd5ebafd224ce964740da3";
 			privkey = "d3b6b98613ce7bd4636c5c98cc17afb0403d690f9c2b646726e08334583de101";
 		} else {

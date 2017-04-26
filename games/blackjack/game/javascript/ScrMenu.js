@@ -43,6 +43,10 @@ ScrMenu.prototype.init = function() {
 	tf1.y = tf2.y - tf1.height;
 	this.addChild(tf1);
 	
+	if(options_rpc){
+		passwordUser = "1";
+	} 
+	
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);

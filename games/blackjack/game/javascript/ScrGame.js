@@ -139,8 +139,10 @@ ScrGame.prototype.init = function() {
 	this.housePoints = 0;
 	this.oldBalance = -1;
 	this.cardSuit = undefined;
+	this.tooltip;
 	this.wndInfo;
 	this.wndInsurance;
+	this.wndApprove;
 	this.curWindow;
 	this.startGame = false;
 	this._gameOver = false;
@@ -209,6 +211,7 @@ ScrGame.prototype.init = function() {
 	this.createGUI();
 	this.createAccount();
 	this.getGameId();
+	this.showWndApprove();
 	idOldGame = idGame || -1;
 	
 	infura.sendRequest("getBalance", openkey, _callback);
@@ -234,6 +237,23 @@ ScrGame.prototype.init = function() {
 	this.on('touchstart', this.touchHandler);
 	this.on('touchmove', this.touchHandler);
 	this.on('touchend', this.touchHandler);
+}
+
+ScrGame.prototype.resetGame = function(){
+	this.tfStatus.setText("");
+	this.tfMyPoints.setText("");
+	this.tfMySplitPoints.setText("");
+	this.tfHousePoints.setText("");
+	this._arMyPoints = [];
+	this._arMySplitPoints = [];
+	this._arHousePoints = [];
+	this._arMyCards = [];
+	this._arMySplitCards = [];
+	this._arHouseCards = [];
+	this.bClear = true;
+	this.bWait = false;
+	this.clearBet();
+	this.clearGame();
 }
 
 ScrGame.prototype.clearGame = function(){
@@ -325,7 +345,7 @@ ScrGame.prototype.createAccount = function() {
 		tfCreateKey.x = _W/2;
 		tfCreateKey.y = 120;
 		this.face_mc.addChild(tfCreateKey);
-		createjs.Tween.get(tfCreateKey).wait(2000).to({alpha:0},500)
+		createjs.Tween.get(tfCreateKey).wait(3000).to({alpha:0},500)
 		
 		if(keyethereum){
 			var dk = keyethereum.create();
@@ -472,6 +492,11 @@ ScrGame.prototype.createGUI = function() {
 	var btnDouble = this.createButton2("btnDouble", "Double", 1500, 890, scGui);
 	this.btnDouble = btnDouble;
 	
+	btnDeal.hint = "Choose a bet to activate the button";
+	btnClear.hint = "You do not have a bet to clear";
+	btnSplit.hint = "You must have two cards with the same name";
+	btnDouble.hint = "You must have 9-11 points";
+	
 	btnDeal.alpha = 0.5;
 	btnClear.alpha = 0.5;
 	btnHit.alpha = 0.5;
@@ -557,6 +582,20 @@ ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
 	this.curWindow = this.wndInfo;
 }
 
+ScrGame.prototype.showTooltip = function(str, _x, _y) {
+	if(_x){}else{_x=_W/2}
+	if(_y){}else{_y=_H/2}
+	if(this.tooltip == undefined){
+		this.tooltip = new tooltip(this);
+		this.face_mc.addChild(this.tooltip);
+	}
+	
+	this.tooltip.x = _x;
+	this.tooltip.y = _y-100;
+	this.tooltip.show(str);
+	this.tooltip.visible = true;
+}
+
 ScrGame.prototype.showWndInsurance = function(str, callback) {
 	if(this.wndInsurance == undefined){
 		this.wndInsurance = new WndInsurance(this);
@@ -569,6 +608,15 @@ ScrGame.prototype.showWndInsurance = function(str, callback) {
 	this.wndInsurance.show(str, callback)
 	this.wndInsurance.visible = true;
 	this.curWindow = this.wndInsurance;
+}
+
+ScrGame.prototype.acceptApprove = function() {
+	approve(1500000000);
+}
+	
+ScrGame.prototype.showWndApprove = function() {
+	var str = "Do you want to approve the cancellation of 15 tokens inside the game?";
+	this.createWndInfo(str, this.acceptApprove, "Approve");
 }
 
 ScrGame.prototype.closeWindow = function(wnd) {
@@ -1232,7 +1280,7 @@ ScrGame.prototype.clickDouble = function(){
 }
 
 ScrGame.prototype.clickSplit = function(){
-	if(obj_game["balance"] < betGame){
+	if(obj_game["balance"] < betGame && obj_game["balancePlEth"] == 0){
 		obj_game["game"].showError(ERROR_BALANCE);
 		return false;
 	}
@@ -1502,7 +1550,7 @@ ScrGame.prototype.clickChip = function(item_mc){
 	betGame += value;
 	betGame = toFixed(betGame, 2);
 	
-	if(betGame > obj_game["balance"]){
+	if(betGame > obj_game["balance"] && obj_game["balancePlEth"] == 0){
 		obj_game["game"].showError(ERROR_BALANCE);
 		betGame = oldBet;
 	} else if(betGame > maxBet){
@@ -1553,13 +1601,14 @@ ScrGame.prototype.showSmartContract = function() {
 
 ScrGame.prototype.showError = function(value, callback) {
 	var str = "ERR"
+	var prnt = obj_game["game"];
 	switch(value){
 		case ERROR_KEYTHEREUM:
 			str = "OOOPS! \n The key is not created. Try a different browser."
 			break;
 		case ERROR_BUF:
 			str = "OOOPS! \n Transaction failed."
-			this.resetGame();
+			prnt.resetGame();
 			break;
 		case ERROR_KEY:
 			str = "OOOPS! \n The key is not valid."
@@ -1583,7 +1632,7 @@ ScrGame.prototype.showError = function(value, callback) {
 			str = "ERR: " + value;
 			break;
 	}
-	this.createWndInfo(str, callback);
+	prnt.createWndInfo(str, callback);
 }
 
 ScrGame.prototype.showTestEther = function() {
@@ -1601,7 +1650,7 @@ ScrGame.prototype.showInsurance = function() {
 
 ScrGame.prototype.showResult = function(_name, _x, _y) {
 	var prnt = obj_game["game"];
-	var delay = this._arNewCards.length+2;
+	var delay = this._arNewCards.length+4;
 	var tf = prnt.createObj({x:_x, y:_y}, _name);
 	tf.alpha = 0;
 	createjs.Tween.get(tf).wait(1000*delay).to({y:_y, alpha:1},300).to({y:_y-50},500);
@@ -1795,15 +1844,19 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 			// var params = "0x"+String(serializedTx); // old
 			// infura.sendRequest(nameRequest, params, _callback); // old
 			console.log("betGame:", betGame, "("+convertToken(betGame)+")");
-			if(options_rpc){
-				var tx = new EthereumTx(options);
-				tx.sign(new buf(privkey, 'hex'));
-				var serializedTx = tx.serialize().toString('hex');
-				var params = "0x"+String(serializedTx);
-				infura.sendRequest(nameRequest, params, _callback);
-			} else {
+			// if(options_rpc){
+				// var tx = new EthereumTx(options);
+				// tx.sign(new buf(privkey, 'hex'));
+				// var serializedTx = tx.serialize().toString('hex');
+				// var params = "0x"+String(serializedTx);
+				// infura.sendRequest(nameRequest, params, _callback);
+			// } else {
 				if(ks){
 					ks.keyFromPassword(passwordUser, function (err, pwDerivedKey) {
+						if (err) {
+							prnt.showError(ERROR_BUF);
+							return false;
+						}
 						var args = [betGame];
 						var registerTx = lightwallet.txutils.functionTx(abi, name, args, options);
 						var params = "0x"+lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr);
@@ -1817,7 +1870,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 					prnt.showChips(true);
 					prnt.bClickStart = false;
 				}
-			}
+			// }
 		}
 	}
 }
@@ -2283,20 +2336,26 @@ ScrGame.prototype.clickCell = function(item_mc) {
 ScrGame.prototype.checkButtons = function(evt){
 	_mouseX = evt.data.global.x;
 	_mouseY = evt.data.global.y;
+	if(this.tooltip){
+		this.tooltip.visible = false;
+	}
 	
 	for (var i = 0; i < this._arButtons.length; i++) {
 		var item_mc = this._arButtons[i];
 		if(hit_test_rec(item_mc, item_mc.w, item_mc.h, _mouseX, _mouseY) &&
-		item_mc.visible && item_mc.dead != true && item_mc.disabled != true &&
-		item_mc.alpha == 1){
-			if(item_mc._selected == false){
-				item_mc._selected = true;
-				if(item_mc.over){
-					item_mc.over.visible = true;
-				} else if(item_mc.overSc){
-					item_mc.scale.x = 1.1*item_mc.sc;
-					item_mc.scale.y = 1.1*item_mc.sc;
+		item_mc.visible && item_mc.dead != true){
+			if(item_mc.disabled != true && item_mc.alpha == 1){
+				if(item_mc._selected == false){
+					item_mc._selected = true;
+					if(item_mc.over){
+						item_mc.over.visible = true;
+					} else if(item_mc.overSc){
+						item_mc.scale.x = 1.1*item_mc.sc;
+						item_mc.scale.y = 1.1*item_mc.sc;
+					}
 				}
+			} else if(item_mc.hint){
+				this.showTooltip(item_mc.hint, item_mc.x, item_mc.y);
 			}
 		} else {
 			if(item_mc._selected){
