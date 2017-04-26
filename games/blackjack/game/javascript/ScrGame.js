@@ -618,7 +618,7 @@ ScrGame.prototype.acceptApprove = function() {
 	
 ScrGame.prototype.showWndApprove = function() {
 	var str = "Do you want to approve the cancellation of 15 tokens inside the game?";
-	if(obj_game["balancePlEth"] > 0]){
+	if(obj_game["balancePlEth"] > 0){
 		this.createWndInfo(str, this.acceptApprove, "Approve");
 	} else {
 		this.showError(ERROR_BALANCE);

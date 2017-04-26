@@ -49,7 +49,7 @@ module.exports = function(deployer, network) {
 		}).then(function() {
 			return deployer.deploy(BlackJack, Deck.address, BlackJackStorage.address, erc20); // deploy storage contract
 		}).then(function(tx) {
-            console.log(" - Send 1000 tokens to the BJ contract");
+            console.log(" - Send 1 tokens to the BJ contract");
 			return tokenContract.transfer(BlackJack.address, 1, { from: owner });
         });
         
