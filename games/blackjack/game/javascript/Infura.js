@@ -16,15 +16,14 @@ var Infura = function() {
 Infura.prototype.sendRequest = function(name, params, callback){
 	if(options_ethereum && openkey){
 		var method = name;
-		var arParams = [params, "latest"];
+		var arParams = [params, "latest"]; // latest, pending
 		
 		switch(name){
 			case "deal":
 			case "hit":
-			case "hitS":
 			case "stand":
 			case "split":
-			case "insurance":
+			case "requestInsurance":
 			case "double":
 				method = "eth_getTransactionCount";
 				break;

@@ -76,8 +76,8 @@ WndInsurance.prototype.clickObj = function(item_mc) {
 	}
 	this._prnt.closeWindow(this);
 	
-	if(name == "btnDefault"){
-		if(this.btnGreen){
+	if(name == "btnGreen"){
+		if(this._callback){
 			this._callback();
 		}
 	}

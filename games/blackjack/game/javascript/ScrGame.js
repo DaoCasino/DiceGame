@@ -616,10 +616,11 @@ ScrGame.prototype.showWndInsurance = function(str, callback) {
 }
 
 ScrGame.prototype.acceptApprove = function() {
+	var prnt = obj_game["game"];
 	approve(100000000000); // 1000 tokens
-	this.bClickApprove = true;
-	this.bWait = true;
-	this.showChips(false);
+	prnt.bClickApprove = true;
+	prnt.bWait = true;
+	prnt.showChips(false);
 }
 	
 ScrGame.prototype.showWndApprove = function() {
@@ -1359,7 +1360,7 @@ ScrGame.prototype.clickSplit = function(){
 ScrGame.prototype.clickInsurance = function(){
 	var prnt = obj_game["game"];
 	prnt.bInsurance = 1;
-	infura.sendRequest("insurance", openkey, _callback);
+	infura.sendRequest("requestInsurance", openkey, _callback);
 	prnt.bWait = true;
 	prnt.showButtons(false);
 }
@@ -1576,7 +1577,7 @@ ScrGame.prototype.clickChip = function(item_mc){
 	betGame += value;
 	betGame = toFixed(betGame, 2);
 	
-	if(betGame > obj_game["balance"] && obj_game["balancePlEth"] == 0){
+	if(betGame > obj_game["balance"] || obj_game["balancePlEth"] == 0){
 		obj_game["game"].showError(ERROR_BALANCE);
 		betGame = oldBet;
 	} else if(betGame > maxBet){
@@ -1820,7 +1821,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		gasLimit=0xf4240; //1000000
 		prnt.offsetCards("player", _W/2 - 200);
 		prnt.darkCards(prnt._arMyCards, true);
-	} else if(name == "insurance"){
+	} else if(name == "requestInsurance"){
 		data = "0x"+C_INSURANCE;
 		price = betGame/2;
 		prnt.bInsurance = 2;
@@ -1880,7 +1881,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 							prnt.showError(ERROR_BUF);
 							return false;
 						}
-						var args = [betGame];
+						var args = [price];
 						var registerTx = lightwallet.txutils.functionTx(abi, name, args, options);
 						var params = "0x"+lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr);
 						infura.sendRequest(nameRequest, params, _callback);
@@ -2196,7 +2197,7 @@ ScrGame.prototype.response = function(command, value) {
 			command == "stand" ||
 			command == "split" ||
 			command == "double" ||
-			command == "insurance"){
+			command == "requestInsurance"){
 		prnt.responseTransaction(command, value);
 	} else if(command == "getInsurance"){
 		if(valInsurance == 0){
@@ -2204,6 +2205,7 @@ ScrGame.prototype.response = function(command, value) {
 			if(valInsurance > 0){
 				prnt.bWait = false;
 				prnt.showButtons(true);
+				prnt.createWndInfo("The insurance was successful.");
 			}
 		}
 	} else if(command == "getAllowance"){
