@@ -2211,7 +2211,7 @@ ScrGame.prototype.response = function(command, value) {
 		if(hexToNum(value)){
 			prnt.bApprove = true;
 			if(prnt.bClickApprove){
-				this.showChips(true);
+				prnt.showChips(true);
 				prnt.createWndInfo("The approval was completed successfully.");
 			}
 		}
