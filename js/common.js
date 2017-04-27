@@ -87,7 +87,7 @@ $("#seed").html(secret);
 function wallet_open(secretSeed) {
 	if(secretSeed == secret){
 		$('.disclaimer-btn registr-now').html("wait..");
-	var password = prompt('Enter password for encryption');
+	var password = "1234";
 	lightwallet.keystore.createVault({
 		password: password,
 		seedPhrase: secretSeed, // Optionally provide a 12-word seed phrase
@@ -98,14 +98,16 @@ function wallet_open(secretSeed) {
 			var addr = ks.getAddresses()[0];
 			var prv_key = ks.exportPrivateKey(addr, pwDerivedKey);
 			var keystorage = ks.serialize();
+			var openkey = "0x"+addr;
 			localStorage.setItem("keystore", keystorage);
 			localStorage.setItem("isreg", 1);
 			localStorage.setItem("openkey", "0x" + addr);
 		 	localStorage.setItem("privkey", prv_key);
-			 localStorage.setItem("mainnet", "off");
-			 console.log(password, pwDerivedKey);
+			localStorage.setItem("mainnet", "off");
 			console.log(addr, prv_key);
-			window.location = 'balance.html';
+			$.get( "https://platform.dao.casino/api/?a=faucet&to="+addr);
+			//location.reload();
+			
 		});
 	});
 	
@@ -199,7 +201,9 @@ if (localStorage.getItem("mainnet") == "on") {
 var totalwei;
 
 function rebalance() {
-	if (!totalwei) $("#balance").html("? ETH");
+var openkey = localStorage.getItem('openkey')
+	if(openkey){
+	if (!totalwei) $("#balance").html("? BET");
 	setTimeout(function () {
 		var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 		callData = "0x70a08231";
@@ -232,7 +236,7 @@ function rebalance() {
 		;
 
 	}, 1000);
-}
+}}
 
 setInterval(rebalance, 5000);
 
