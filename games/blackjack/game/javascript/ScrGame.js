@@ -21,12 +21,12 @@ var R_BUST = "BUST!";
 var R_PUSH = "PUSH";
 var R_BLACKJACK = "BLACKJACK";
 
-var C_DEAL = "553df021";
+var C_DEAL = "c959c42b";
 var C_HIT = "2ae3594a";
-var C_SPLIT = "f7654176";
+var C_SPLIT = "dbceb005";
 var C_STAND = "c2897b10";
-var C_INSURANCE = "7ce8154a";
-var C_DOUBLE = "8fdb7189";
+var C_INSURANCE = "262b497d";
+var C_DOUBLE = "eee97206";
 
 var C_GET_BET = "f8aec9f5";
 var C_HOUSE_CARD = "792cc6be";
@@ -42,6 +42,7 @@ var C_SPLIT_CARDS = "f61849d8";
 var C_GAME_STATE = "fcc19d69";
 var C_DOUBLE_AVAILABLE = "9b2f2e86";
 var C_INSURANCE_AVAILABLE = "715c07b6";
+var C_ALLOWANCE = "dd62ed3e";
 
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
@@ -99,7 +100,6 @@ var _oReceiveWinOffset;
 var _oFichesDealerOffset;
 var _oRemoveCardsOffset;
 
-// uint8 countDeck = 0;
 // uint8[] arrayDecks = [20, 21, 1, 22, 2, 23, 3, 24, 44]; //split-double
 // uint8[] arrayDecks = [1, 43, 4, 2, 48, 5, 30, 51]; //bj
 
@@ -156,6 +156,8 @@ ScrGame.prototype.init = function() {
 	this.bStandSplit = false;
 	this.bEndTurnSplit = false;
 	this.bClickStart = false;
+	this.bApprove = false;
+	this.bClickApprove = false;
 	this.bInsurance = -1;
 	login_obj["allowance"] = false;
 	
@@ -215,13 +217,15 @@ ScrGame.prototype.init = function() {
 	idOldGame = idGame || -1;
 	
 	infura.sendRequest("getBalance", openkey, _callback);
-	// infura.sendRequest("getBalanceBank", addressContract, _callback);
 	this.getBalancePlayer();
 	this.getBalanceBank();
 	this.getBalanceErc();
 	infura.sendRequest("getBlockNumber", undefined, _callback);
 	this.checkGameState(true);
-	this.checkApprove();
+	this.getAllowance();
+	if(!this.bApprove){
+		this.showWndApprove();
+	}
 	console.log("balanceBank:", login_obj["balanceBank"]);
 	
 	if(openkey){} else {
@@ -493,10 +497,10 @@ ScrGame.prototype.createGUI = function() {
 	var btnDouble = this.createButton2("btnDouble", "Double", 1500, 890, scGui);
 	this.btnDouble = btnDouble;
 	
-	btnDeal.hint = "Choose a bet to activate the button";
-	btnClear.hint = "You do not have a bet to clear";
-	btnSplit.hint = "You must have two cards with the same name";
-	btnDouble.hint = "You must have 9-11 points";
+	btnDeal.hint = 'To activate "Deal" please choose a bet';
+	btnClear.hint = 'To "Clear" please choose a bet';
+	btnSplit.hint = 'To play "Split" wait for dealt a pair (two of the same card)';
+	btnDouble.hint = 'To play "Double"  on hard 9-11 points';
 	
 	btnDeal.alpha = 0.5;
 	btnClear.alpha = 0.5;
@@ -611,21 +615,15 @@ ScrGame.prototype.showWndInsurance = function(str, callback) {
 	this.curWindow = this.wndInsurance;
 }
 
-ScrGame.prototype.checkApprove = function() {
-	// if(login_obj["allowance"] || options_rpc){
-		// return true;
-	// }else{
-		this.showWndApprove();
-		// return false;
-	// }
-}
-
 ScrGame.prototype.acceptApprove = function() {
-	approve(1500000000);
+	approve(100000000000); // 1000 tokens
+	this.bClickApprove = true;
+	this.bWait = true;
+	this.showChips(false);
 }
 	
 ScrGame.prototype.showWndApprove = function() {
-	var str = "Do you want to approve the cancellation of 15 tokens inside the game?";
+	var str = "Do you want to approve the cancellation of 1000 tokens inside the game?";
 	if(obj_game["balancePlEth"] > 0){
 		this.createWndInfo(str, this.acceptApprove, "Approve");
 	} else {
@@ -1016,6 +1014,16 @@ ScrGame.prototype.getSplitCardsNumber = function() {
 	infura.sendRequest("getSplitCardsNumber", params, _callback);
 }
 
+ScrGame.prototype.getAllowance = function() {
+	var key = openkey.substr(2);
+	var spender = addressContract.substr(2);
+	var data = "0x"+C_ALLOWANCE + pad(key, 64) + pad(spender, 64);
+	var params = {"from":openkey,
+				"to":addressCurErc,
+				"data":data};
+	infura.sendRequest("getAllowance", params, _callback);
+}
+
 ScrGame.prototype.getInsurance = function(isMain) {
 	if(isMain){}else{isMain = 1}
 	var key = openkey.substr(2);
@@ -1243,12 +1251,10 @@ ScrGame.prototype.getBalanceBank = function(){
 }
 
 ScrGame.prototype.getBalanceErc = function(){
-	console.log("addressErc:", addressCurErc);
 	var prnt = obj_game["game"];
 	var value = callERC20("balanceOf", addressCurErc);
 	obj_game["balanceErc"] = Number(value);
 	login_obj["balanceErc"] = obj_game["balanceErc"];
-	console.log("balanceErc:", login_obj["balanceErc"]);
 }
 
 ScrGame.prototype.clickHit = function(){
@@ -1545,6 +1551,7 @@ ScrGame.prototype.loadBet = function(value){
 		this.startGame = true;
 		this.bClickStart = true;
 		idOldGame--;
+		this.tfYourBet.setText("Your bet: " + str);
 	}
 	this.tfMyBet.setText(str);
 	this.isSplitAvailable();
@@ -1558,8 +1565,8 @@ ScrGame.prototype.loadBet = function(value){
 }
 
 ScrGame.prototype.clickChip = function(item_mc){
-	if(login_obj["allowance"] || options_rpc){}else{
-		this.checkApprove();
+	if(this.bApprove || options_rpc){}else{
+		this.showWndApprove();
 		return false;
 	}
 	
@@ -1792,7 +1799,6 @@ ScrGame.prototype.sendUrlRequest = function(url, name) {
 }
 
 ScrGame.prototype.responseTransaction = function(name, value) {
-	console.log("get nonce action: ", name);
 	var prnt = obj_game["game"];
 	var data = "";
 	var price = 0;
@@ -1834,7 +1840,6 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 		}
 	}
 	
-	// infura.sendRequest("getBalance", openkey, _callback);
 	prnt.getBalancePlayer();
 	var options = {};
 	options.nonce = value;
@@ -1862,7 +1867,6 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 			// var serializedTx = tx.serialize().toString('hex'); // old
 			// var params = "0x"+String(serializedTx); // old
 			// infura.sendRequest(nameRequest, params, _callback); // old
-			console.log("betGame:", betGame, "("+convertToken(betGame)+")");
 			if(options_rpc){
 				var tx = new EthereumTx(options);
 				tx.sign(new buf(privkey, 'hex'));
@@ -1913,14 +1917,12 @@ ScrGame.prototype.response = function(command, value) {
 	if(command == "gameTxHash"){
 		prnt.startGame = true;
 		prnt.getGameId();
-		// infura.sendRequest("getBalance", openkey, _callback);
 		prnt.getBalancePlayer();
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
 		if(prnt.tfGetEth){
 			prnt.tfGetEth.setText("Your 1 test ether will be available shortly (about minute)");
 		}
-		// infura.sendRequest("getBalance", openkey, _callback);
 		prnt.getBalancePlayer();
 	} else if(command == "getBalance"){
 		obj_game["balancePlEth"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
@@ -2007,7 +2009,7 @@ ScrGame.prototype.response = function(command, value) {
 			case S_PLAYER_WON:
 				if(point == 21 && prnt._arMySplitCards.length == 2){
 					bet = bet * 2.5;
-				} else if(point == 21){
+				} else {
 					bet = bet * 2;
 				}
 				strResult = "+"+String(bet);
@@ -2019,6 +2021,7 @@ ScrGame.prototype.response = function(command, value) {
 				strResult = "-"+String(bet);
 				break;
 			case S_TIE:
+				strResult = "+"+String(bet);
 				break;
 		}
 		
@@ -2031,7 +2034,7 @@ ScrGame.prototype.response = function(command, value) {
 			case S_PLAYER_WON:
 				if(point == 21 && prnt._arMyCards.length == 2){
 					bet = bet * 2.5;
-				} else if(point == 21){
+				} else {
 					bet = bet * 2;
 				}
 				strResult = "+"+String(bet);
@@ -2043,6 +2046,7 @@ ScrGame.prototype.response = function(command, value) {
 				strResult = "-"+String(bet);
 				break;
 			case S_TIE:
+				strResult = "+"+String(bet);
 				break;
 		}
 		
@@ -2086,6 +2090,7 @@ ScrGame.prototype.response = function(command, value) {
 		}
 		
 		prnt.getGameId();
+		prnt.getBalancePlayer();
 		
 		if(value != "0x"){
 			if(stateNow == S_IN_PROGRESS && betGame == 0){
@@ -2167,9 +2172,6 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.bWait = false;
 				prnt.startGame = false;
 				prnt.showChips(true);
-				// infura.sendRequest("getBalance", openkey, _callback);
-				// infura.sendRequest("getBalanceBank", addressContract, _callback);
-				prnt.getBalancePlayer();
 				prnt.getBalanceBank();
 				prnt.showButtons(false);
 			} else if(!this.bClear && !prnt.startGame && idGame == idOldGame){
@@ -2177,9 +2179,6 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.bWait = false;
 				prnt.startGame = false;
 				prnt.showChips(true);
-				// infura.sendRequest("getBalance", openkey, _callback);
-				// infura.sendRequest("getBalanceBank", addressContract, _callback);
-				prnt.getBalancePlayer();
 				prnt.getBalanceBank();
 				prnt.showButtons(false);
 			}
@@ -2207,8 +2206,15 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.showButtons(true);
 			}
 		}
+	} else if(command == "getAllowance"){
+		if(hexToNum(value)){
+			prnt.bApprove = true;
+			if(prnt.bClickApprove){
+				this.showChips(true);
+				prnt.createWndInfo("The approval was completed successfully.");
+			}
+		}
 	} else if(command == "sendRaw"){
-		// infura.sendRequest("getBalance", openkey, _callback);
 		prnt.getBalancePlayer();
 	}
 }
@@ -2221,7 +2227,7 @@ ScrGame.prototype.update = function(){
 	var diffTime = getTimer() - this.startTime;
 	
 	if(this.startGame || 
-	this.bClickStart || 
+	// this.bClickStart || 
 	stateNow == S_IN_PROGRESS || 
 	stateNow == S_IN_PROGRESS_SPLIT){
 		this.timeTotal += diffTime;
@@ -2233,8 +2239,11 @@ ScrGame.prototype.update = function(){
 		this.timeGetState = 0;
 		this.checkGameState(true);
 		if(obj_game["balance"]==0){
-			// infura.sendRequest("getBalance", openkey, _callback);
 			this.getBalancePlayer();
+		}
+		
+		if(login_obj["allowance"] && !this.bApprove){
+			this.getAllowance();
 		}
 	}
 	
