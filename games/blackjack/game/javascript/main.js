@@ -395,7 +395,9 @@ function loadData() {
 			privkey = localStorage.getItem('privkey')
 		}
 		mainet = localStorage.getItem('mainnet')
-		sendingAddr = openkey.substr(2);
+		if(openkey){
+			sendingAddr = openkey.substr(2);
+		}
 		var keystore = localStorage.getItem('keystore');
 		if(keystore){
 			ks = lightwallet.keystore.deserialize(keystore);
