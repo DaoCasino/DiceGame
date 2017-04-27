@@ -46,6 +46,7 @@ var options_mobile = true;
 var options_pause = false;
 var options_txt_offset = 0;
 
+var ERROR_CONNECTION = 0;
 var ERROR_KEYTHEREUM = 1;
 var ERROR_BUF = 2;
 var ERROR_KEY = 3;
@@ -399,7 +400,7 @@ function loadData() {
 			sendingAddr = openkey.substr(2);
 		}
 		var keystore = localStorage.getItem('keystore');
-		if(keystore){
+		if(keystore && lightwallet){
 			ks = lightwallet.keystore.deserialize(keystore);
 		}
 		if (localStorage.getItem('daocasino_blackjack')){

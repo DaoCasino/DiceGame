@@ -47,7 +47,6 @@ ScrMenu.prototype.init = function() {
 		passwordUser = "1";
 	} 
 	
-	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
 	this.on('mousemove', this.touchHandler);

@@ -214,7 +214,6 @@ ScrGame.prototype.init = function() {
 	this.createGUI();
 	this.createAccount();
 	this.getGameId();
-	idOldGame = idGame || -1;
 	
 	infura.sendRequest("getBalance", openkey, _callback);
 	this.getBalancePlayer();
@@ -1980,6 +1979,9 @@ ScrGame.prototype.response = function(command, value) {
 		prnt.addHouseCard();
 	} else if(command == "getGameId"){
 		idGame = hexToNum(value);
+		if(idOldGame == -1){
+			idOldGame = idGame;
+		}
 	} else if(command == "getPlayerBet"){
 		if(!prnt.bBetLoad){
 			prnt.bBetLoad = true;
@@ -2079,7 +2081,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.bWait);
+			console.log("state|idGame:", stateNow, idGame, idOldGame);
 		}
 		
 		if(!prnt.bBetLoad){
@@ -2268,9 +2270,9 @@ ScrGame.prototype.update = function(){
 		}
 	}
 	
-	if(stateNow > -1){
+	// if(stateNow > -1){
 		this.mixingCard.visible = this.bWait;
-	}
+	// }
 	
 	if(this.bWait){
 		this.timeWait += diffTime;

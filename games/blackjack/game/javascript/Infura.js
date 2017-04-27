@@ -1,6 +1,6 @@
 /**
  * Created by Sergey Pomorin on 07.03.2017.
- * v 1.0.0
+ * v 1.0.1
  */
  
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -56,6 +56,11 @@ Infura.prototype.sendRequest = function(name, params, callback){
 									"id":1}),
 			success: function (d) {
 				callback(name, d.result);
+			},
+			error: function(jQXHR, textStatus, errorThrown)
+			{
+				alert("An error occurred whilst trying to contact the server: " + 
+						jQXHR.status + " " + textStatus + " " + errorThrown);
 			}
 		})
 	}
