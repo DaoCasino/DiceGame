@@ -226,7 +226,6 @@ ScrGame.prototype.init = function() {
 	if(!this.bApprove){
 		this.showWndApprove();
 	}
-	console.log("balanceBank:", login_obj["balanceBank"]);
 	
 	if(openkey){} else {
 		this.showError(ERROR_KEY, showHome);
