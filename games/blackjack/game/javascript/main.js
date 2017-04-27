@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.47"
+var version = "v. 1.0.48"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -10,7 +10,8 @@ var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
-var infura, soundManager, ks, passwordUser, sendingAddr;
+var infura, soundManager, ks, sendingAddr;
+var passwordUser = "1234";
 var fontMain = "Arial";
 var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
@@ -18,18 +19,19 @@ var valToken = 100000000; // 1 token
 var rndBg = String(Math.ceil(Math.random()*2));
 var abi = [{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"requestInsurance","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"tokenAddress","type":"address"}],"name":"setTokenAddress","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"hit","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"amountInWei","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"maxBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBank","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"minBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"stand","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"deal","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"split","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"double","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"deckAddress","type":"address"},{"name":"storageAddress","type":"address"},{"name":"tokenAddress","type":"address"}],"payable":false,"type":"constructor"},{"payable":true,"type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_type","type":"uint8"},{"indexed":false,"name":"_card","type":"uint8"}],"name":"Deal","type":"event"}]
 // main
-var addressStorage = " ";
+var addressRpcErc = "";
+var addressStorage = "";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
 // testrpc
 var	addressRpcErc = "0x5d7d1991119f2defd0a440246bd4f362c61be33c";
 var	addressRpcStorage = "0xde1c7198b037fc8365778e4ae038d7944011e50d";
 var	addressRpcContract = "0xb82790a487de9e19ceeb0dae9d73dcaae465d87a";
 // testnet
-var addressTestDeck = "0x0625e83b456d24567585c0e544a85282d3d813ff"; // const
+var addressTestDeck = "0x75dacdec23342b26ff598e3304d3ff632b42077a"; // const
 var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // 0x95a48dca999c89e4e284930d9b9af973a7481287 !!!
-var	addressTestStorage = "0xe6fb646095e9d3e0241695311d3ccdabf6e92561";
-var	addressTestContract = "0x2234a2b420972c95cd272b33c5abe614d4219af3";
-// "0x0625e83b456d24567585c0e544a85282d3d813ff", "0x44bf6a32c345da54973041dbe29bdcc925b846b5", "0x95a48dca999c89e4e284930d9b9af973a7481287"
+var	addressTestStorage = "0x18d4bd271a6123335edca33eec83318b75ae8ae0";
+var	addressTestContract = "0x1903eef30317204fb5aabd9533659d9b23a7ec37";
+
 var addressCurErc = "";
 
 var options_debug = false;

@@ -4,12 +4,6 @@ import "./BlackJackStorage.sol";
 import "./ERC20.sol";
 import "./Types.sol";
 import "./owned.sol";
-/*
-contract ERC20 {
-    function balanceOf(address _addr) returns (uint);
-    function transfer(address _to, uint256 _value);
-    function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
-}*/
 
 contract BlackJack is owned {
     using Types for *;
@@ -19,8 +13,7 @@ contract BlackJack is owned {
     */
 
     // Stores tokens
-	//address addressToken = 0x95a48dca999c89e4e284930d9b9af973a7481287;
-    ERC20 token;// = ERC20(addressToken);
+    ERC20 token;
 
     Deck deck;
 
@@ -30,9 +23,7 @@ contract BlackJack is owned {
     /*
         CONSTANTS
     */
-
-    // uint public minBet = 50 finney;
-    // uint public maxBet = 5 ether;
+	
     uint public minBet = 5000000;
     uint public maxBet = 500000000;
 
@@ -149,7 +140,6 @@ contract BlackJack is owned {
 
     function deal(uint value)
         public
-        //payable
         gameFinished
         betIsSuitable(value)
     {
@@ -158,7 +148,6 @@ contract BlackJack is owned {
         }
 
         lastGameId = lastGameId + 1;
-        // storageContract.createNewGame(lastGameId, msg.sender, msg.value);
         storageContract.createNewGame(lastGameId, msg.sender, value);
         storageContract.deleteSplitGame(msg.sender);
 		
@@ -188,7 +177,6 @@ contract BlackJack is owned {
 	
     function requestInsurance(uint value)
         public
-        // payable
         betIsInsurance(value)
         insuranceAvailable
     {
@@ -197,7 +185,6 @@ contract BlackJack is owned {
         }
 		
         bool isMain = storageContract.isMainGameInProgress(msg.sender);
-        // storageContract.updateInsurance(msg.value, isMain, msg.sender);
         storageContract.updateInsurance(value, isMain, msg.sender);
         storageContract.setInsuranceAvailable(false, isMain, msg.sender);
     }
@@ -235,7 +222,6 @@ contract BlackJack is owned {
 
     function split(uint value)
         public
-        // payable
         betIsDoubled(value)
         splitAvailable
     {
@@ -243,7 +229,6 @@ contract BlackJack is owned {
             throw;
         }
         storageContract.updateState(Types.GameState.InProgressSplit, true, msg.sender); // switch to the split game
-        // storageContract.createNewSplitGame(msg.sender, msg.value);
         storageContract.createNewSplitGame(msg.sender, value);
 
         // Deal extra cards in each game.
@@ -259,7 +244,6 @@ contract BlackJack is owned {
 
     function double(uint value)
         public
-        // payable
         betIsDoubled(value)
         doubleAvailable
     {
