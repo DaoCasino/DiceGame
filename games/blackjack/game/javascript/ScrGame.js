@@ -2088,6 +2088,9 @@ ScrGame.prototype.response = function(command, value) {
 			prnt.getPlayerBet();
 			return false;
 		}
+		if(!prnt.bApprove){
+			return false;
+		}
 		
 		prnt.getGameId();
 		prnt.getBalancePlayer();
