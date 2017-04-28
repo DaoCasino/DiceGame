@@ -2009,7 +2009,7 @@ ScrGame.prototype.response = function(command, value) {
 		if((stateNow == S_IN_PROGRESS ||
 		stateNow == S_IN_PROGRESS_SPLIT) && 
 		prnt.bInsurance == -1 && prnt._arMyCards.length == 2 &&
-		hexToNum(value) && valInsurance == 0){
+		hexToNum(value) && valInsurance == 0 && obj_game["balance"] > 0){
 			prnt.showInsurance();
 		}
 	} else if(command == "getHouseScore"){
