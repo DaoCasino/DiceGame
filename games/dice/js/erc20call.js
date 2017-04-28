@@ -172,6 +172,7 @@ var erc20abi = [{
 var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 
 
+
 function approve(approveValue) {
     if (!password) {
         password = prompt('Enter password');

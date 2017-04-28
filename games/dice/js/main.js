@@ -1,10 +1,8 @@
-var abi = [{"constant":true,"inputs":[{"name":"player","type":"address"}],"name":"getStateByAddress","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"addr_erc20","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBank","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"PlayerBet","type":"uint256"},{"name":"PlayerNumber","type":"uint256"}],"name":"roll","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthPaid","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"games","outputs":[{"name":"player","type":"address"},{"name":"bet","type":"uint256"},{"name":"chance","type":"uint256"},{"name":"rnd","type":"uint256"},{"name":"state","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalRollsByUser","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"ownerStoped","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"Stop","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"}],"name":"getShowRnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"countRolls","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adr","type":"address"}],"name":"setAddress","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthSended","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"payable":true,"type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"bet","type":"uint256"},{"indexed":false,"name":"chance","type":"uint256"},{"indexed":false,"name":"rnd","type":"uint256"}],"name":"logGame","type":"event"}]
-
-newMode = true;
+var abi = [{"constant":true,"inputs":[{"name":"player","type":"address"}],"name":"getStateByAddress","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"games","outputs":[{"name":"player","type":"address"},{"name":"bet","type":"uint256"},{"name":"chance","type":"uint256"},{"name":"seed","type":"uint256"},{"name":"random","type":"uint256"},{"name":"vcontact","type":"bytes32"},{"name":"state","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"addr_erc20","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"idconcat","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"state","outputs":[{"name":"player","type":"address"},{"name":"bet","type":"uint256"},{"name":"chance","type":"uint256"},{"name":"seed","type":"uint256"},{"name":"random","type":"uint256"},{"name":"vcontact","type":"bytes32"},{"name":"state","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint256"}],"name":"gamesOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthPaid","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"EndGames","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalRollsByUser","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_id","type":"uint256"},{"name":"_v","type":"uint8"},{"name":"_r","type":"bytes32"},{"name":"_s","type":"bytes32"}],"name":"confirm","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"PlayerBet","type":"uint256"},{"name":"PlayerNumber","type":"uint256"},{"name":"_seed","type":"uint96"}],"name":"roll","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"countRolls","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint96"}],"name":"usedRandom","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthSended","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"inGame","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"}]
 var ks = localStorage.getItem('keystore');
 ks = lightwallet.keystore.deserialize(ks);
 var sendingAddr;
-
+var rawMsg;
 
 var balance = 1;
 var urlBalance = ""; //balance
@@ -18,7 +16,7 @@ var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids, password;
 var game = false;
 var Timer, animate;
-var maxBetEth ;
+var maxBetEth;
 bankroll = 1000;
 
 function toFixed(value, precision) {
@@ -91,7 +89,9 @@ function call(callname, adr) {
             callData = "0x70a08231";
             break;
         case "getTotalData":
-            callData = "0x5d022512"
+            callData = "0x5d022512";
+        case "endGame":
+            callData = "0x87628db8";
     }
     $.ajax({
         type: "POST",
@@ -169,14 +169,14 @@ function setContract() {
     } else if (mainnet == "off") {
         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         //addressContract = getContract("Dice", "testnet");
-        addressContract = "0x9f93bfe34bdac77e4ddc10971b0ab827e9289f00";
+        addressContract = "0xb3dffe5f8a1f7a9feccaffd072db1de71f89e307";
         $('#randomnum').text("");
     }
 };
 
 function getContractBalance() {
     bankroll = callERC20("balanceOf", addressContract)
-    $('#contractBalance').html("CONTRACT ( " + bankroll/100000000 + " BET )");
+    $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
 
 setInterval(function () {
@@ -188,7 +188,7 @@ setInterval(function () {
         if (balance < 0.02 && !game || !balance) {
             disabled(true);
             $("#label").text(" NO MONEY ");
-           //$('#randomnum').text("Please, up balance")
+            //$('#randomnum').text("Please, up balance")
         } else if (balance > 0.01 && !game) {
             disabled(false);
             $("#label").text("Click Roll Dice to place your bet:");
@@ -204,8 +204,8 @@ setInterval(function () {
 function initGame() {
     loadData();
     setContract();
-    paids = (call("getTotalEthSended", openkey))/100000000;
-    sends = (call("getTotalEthPaid", openkey))/100000000;
+    paids = (call("getTotalEthSended", openkey)) / 100000000;
+    sends = (call("getTotalEthPaid", openkey)) / 100000000;
     setContract();
     count = call("totalRollsByUser", openkey)
     console.log("old_count", count);
@@ -236,7 +236,7 @@ function disabled(status) {
 };
 
 function Refresh() {
-    if(betEth == NaN){
+    if (betEth == NaN) {
         betEth = 0;
     }
     if (balance != 0) {
@@ -249,7 +249,7 @@ function Refresh() {
         }
         if (betEth < 0.0001) {
             betEth = 0.0001;
-           // $("#amount-one").val(betEth);
+            // $("#amount-one").val(betEth);
         }
         $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
         $("#payout").val("x" + ((65536 - 1310) / chance).toFixed(5));
@@ -260,9 +260,6 @@ function Refresh() {
 };
 
 function startGame() {
-    if (!password) {
-        password = prompt('Enter password');
-    }
     game = true;
     if (openkey) {
         $.ajax({
@@ -274,7 +271,7 @@ function startGame() {
                 "id": 0,
                 "jsonrpc": '2.0',
                 "method": "eth_getTransactionCount",
-                "params": [openkey, "latest"]
+                "params": [openkey, "pending"]
             }),
             success: function (d) {
                 console.log("urlInfura:", urlInfura);
@@ -298,8 +295,10 @@ function startGame() {
                 // tx.sign(new buf(privkey, 'hex'));
                 // var serializedTx = tx.serialize().toString('hex');
                 // console.log("The transaction was signed: " + serializedTx);
-                ks.keyFromPassword(password, function (err, pwDerivedKey) {
-                    var args = [betEth*100000000,chance];
+                ks.keyFromPassword("1234", function (err, pwDerivedKey) {
+                    var rnd = Math.floor(Math.random() * (9999 - 1)) + 1;
+                    var args = [betEth * 100000000, chance, rnd];
+                    console.log(args);
                     var registerTx = lightwallet.txutils.functionTx(abi, 'roll', args, options)
                     var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
                     console.log("lightWallet sign:", signedTx)
@@ -331,7 +330,7 @@ function startGame() {
                                     console.log("detected count:", new_count, count);
                                     if (new_count != count) {
                                         console.log("getStatusGame");
-                                        var result = call("getStateByAddress",openkey);
+                                        var result = call("getStateByAddress", openkey);
                                         switch (result) {
                                             case 1:
                                                 console.log("YOU WIN!");
@@ -376,3 +375,78 @@ function gameend() {
     $("#randomnum").fadeIn("slow", 1)
     Refresh();
 };
+
+function Confirm() {
+    
+    console.log("...load...");
+    var count = call("endGame",openkey);
+    var total = call("getTotalRollMade", openkey)
+    if(total != count){
+    console.log("confirm",count,total)
+    var options = {};
+    options.to = addressContract;
+    options.gasPrice = "0x737be7600";
+    options.gasLimit = "0x927c0";
+    options.value = 0;
+    ks.keyFromPassword('1234', function (err, pwDerivedKey) {
+        $.ajax({
+            type: "POST",
+            url: urlInfura,
+            dataType: 'json',
+            async: false,
+            data: JSON.stringify({
+                "id": 0,
+                "jsonrpc": '2.0',
+                "method": "eth_getTransactionCount",
+                "params": [openkey, "pending"]
+            }),
+            success: function (d) {
+                console.log("nonce:",d.result)
+            options.nonce = d.result;
+        $.ajax({
+                type: "POST",
+                url: urlInfura,
+                dataType: 'json',
+                async: false,
+                data: JSON.stringify({
+                    "id": 0,
+                    "jsonrpc": '2.0',
+                    "method": "eth_call",
+                    "params": [{
+                        "from": openkey,
+                        "to": addressContract,
+                        "data": "0x2254f5b0" + pad(numToHex(count), 64)
+                    }, "pending"]
+                }),
+                success: function (d) {
+                    rawMsg = d.result;
+                    console.log("rawMsg:",d.result)
+                }
+            });
+        }});
+        var vrs = lightwallet.signing.signMsg(ks, pwDerivedKey, rawMsg, sendingAddr)
+        var signature = lightwallet.signing.concatSig(vrs);
+        var r = signature.slice(0, 66);
+        var s = '0x' + signature.slice(66, 130);
+        var v = vrs.v;
+        var args = [count, v, r, s];
+        console.log("vrs:",count,v,r,s)
+        var registerTx = lightwallet.txutils.functionTx(abi, 'confirm', args, options)
+        var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
+        $.ajax({
+            type: "POST",
+            url: urlInfura,
+            dataType: 'json',
+            async: false,
+            data: JSON.stringify({
+                "id": 0,
+                "jsonrpc": '2.0',
+                "method": "eth_sendRawTransaction",
+                "params": ["0x" + signedTx]
+            }),
+            success: function (d) {
+                console.log("confirm:",d.result);
+            }
+        })
+    
+})}}
