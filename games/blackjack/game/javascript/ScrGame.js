@@ -1383,6 +1383,7 @@ ScrGame.prototype.fillChips = function(value, type){
 		posX += 200;
 	} else if(this.bSplit || 
 	stateNow == S_IN_PROGRESS_SPLIT || 
+	this.countPlayerSplitCard > 0 || 
 	type == "main"){
 		this.clearChips();
 		posX -= 200;
@@ -1459,6 +1460,9 @@ ScrGame.prototype.sendCard = function(obj){
 		// IN_PROGRESS_SPLIT
 		if(prnt.mySplitPoints > 0){
 			_x = _W/2 - 200 + lastPlayerCard*30;
+			if(prnt.bSplit){
+				card.img.tint = 0x999999;
+			}
 		} else {
 			_x = _W/2 - 80 + lastPlayerCard*30;
 		}
@@ -1471,6 +1475,9 @@ ScrGame.prototype.sendCard = function(obj){
 	} else if(type == "split"){
 		_x = _W/2 + 200 + lastPlayerSplitCard*30;
 		_y = _H/2 + 70;
+		if(!prnt.bSplit){
+			card.img.tint = 0x999999;
+		}
 		prnt.showPlayerSplitCard(card);
 		if(betGame > 0){
 			prnt.timeShowButtons = TIME_SHOW_BTN + prnt._arNewCards.length*1000;
@@ -1568,10 +1575,8 @@ ScrGame.prototype.loadBet = function(value){
 	}
 	this.tfMyBet.setText(str);
 	this.isSplitAvailable();
-	// this.showButtons(true);
-	this.timeShowButtons = TIME_SHOW_BTN + this._arNewCards.length*1000;
 	this.fillChips(betGame);
-	if(stateNow == S_IN_PROGRESS_SPLIT){
+	if(this.countPlayerSplitCard > 0){
 		this.fillChips(betSplitGame, "split");
 		this.tfSplitBet.setText(str);
 		this.tfMyBet.x = _W/2 - 250;
@@ -2004,6 +2009,9 @@ ScrGame.prototype.response = function(command, value) {
 			if((stateNow == S_IN_PROGRESS ||
 			stateNow == S_IN_PROGRESS_SPLIT)
 			&& prnt.tfStatus){
+				prnt.getSplitCardsNumber();
+				prnt.getPlayerCardsNumber();
+				prnt.getHouseCardsNumber();
 				prnt.loadBet(value);
 			} else {
 				prnt.showChips(true);
@@ -2025,7 +2033,7 @@ ScrGame.prototype.response = function(command, value) {
 		switch (stateSplit){
 			case S_BLACKJACK:
 			case S_PLAYER_WON:
-				if(point == 21 && prnt._arMySplitCards.length == 2){
+				if(point == 21 && prnt.countPlayerSplitCard == 2){
 					bet = bet * 2.5;
 				} else {
 					bet = bet * 2;
@@ -2051,7 +2059,7 @@ ScrGame.prototype.response = function(command, value) {
 		switch (stateNow){
 			case S_BLACKJACK:
 			case S_PLAYER_WON:
-				if(point == 21 && prnt._arMyCards.length == 2){
+				if(point == 21 && prnt.countPlayerCard == 2){
 					bet = bet * 2.5;
 				} else {
 					bet = bet * 2;
@@ -2081,7 +2089,11 @@ ScrGame.prototype.response = function(command, value) {
 						prnt.showResult("tfWin", _x, _y);
 					break;
 				case S_BLACKJACK:
-						prnt.showResult("tfBlackjack", _x, _y);
+						if(prnt.countPlayerSplitCard == 2){
+							prnt.showResult("tfBlackjack", _x, _y);
+						} else {
+							prnt.showResult("tfWin", _x, _y);
+						}
 					break;
 				case S_HOUSE_WON:
 					// if(prnt.mySplitPoints > 21){
@@ -2098,7 +2110,7 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state|idGame:", stateNow, idGame, idOldGame);
+			console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.bSplit);
 		}
 		
 		if(!prnt.bApprove){
@@ -2161,20 +2173,23 @@ ScrGame.prototype.response = function(command, value) {
 					_x = _W/2 - 200-75;
 				}
 				prnt.clearBet();
+				prnt.getSplitCardsNumber();
+				prnt.getPlayerCardsNumber();
+				prnt.getHouseCardsNumber();
 				prnt.getHouseScore();
 				prnt.getPlayerScore(true);
 				if(prnt._arMySplitCards.length > 0){
 					prnt.checkGameState(false);
 					prnt.getPlayerScore(false);	
-				}			
-				
-				prnt.getSplitCardsNumber();
-				prnt.getPlayerCardsNumber();
-				prnt.getHouseCardsNumber();
+				}
 				
 				switch (stateNow){
-					case S_BLACKJACK:
-						prnt.showResult("tfBlackjack", _x, _y);
+					case S_BLACKJACK:						
+						if(prnt.countPlayerCard == 2){
+							prnt.showResult("tfBlackjack", _x, _y);
+						} else {
+							prnt.showResult("tfWin", _x, _y);
+						}
 						break;
 					case S_PLAYER_WON:
 						prnt.showResult("tfWin", _x, _y);
