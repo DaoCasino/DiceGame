@@ -1049,10 +1049,11 @@ ScrGame.prototype.isInsuranceAvailable = function() {
 ScrGame.prototype.isDoubleAvailable = function() {
 	if(stateNow == S_IN_PROGRESS || 
 	stateNow == S_IN_PROGRESS_SPLIT){
-		if((stateNow == S_IN_PROGRESS && this._arMyCards.length == 2 && 
+		if(((stateNow == S_IN_PROGRESS && this._arMyCards.length == 2 && 
 		this.myPoints > 8 && this.myPoints < 12) ||
 		(stateNow == S_IN_PROGRESS_SPLIT && this._arMySplitCards.length == 2 &&
-		this.mySplitPoints > 8 && this.mySplitPoints < 12)){
+		this.mySplitPoints > 8 && this.mySplitPoints < 12)) &&
+		obj_game["balance"] >= betGame){
 			return true;
 		}
 	}
@@ -1093,7 +1094,7 @@ ScrGame.prototype.isSplitAvailable = function() {
 	
 	if(stateNow == S_IN_PROGRESS && 
 	this._arMyCards.length == 2 &&
-	Math.floor(obj_game["balance"]*100) > betGame &&
+	obj_game["balance"] >= betGame &&
 	this.bSplit == false &&
 	betGame > 0 &&
 	this._arMySplitCards.length == 0 &&
@@ -1241,7 +1242,8 @@ ScrGame.prototype.getBalancePlayer = function(){
 		prnt.tfGetEth.setText("");
 		if(prnt.oldBalance == -1){
 			prnt.oldBalance = Number(obj_game["balance"]);
-			prnt.showButtons(true);
+			prnt.timeShowButtons = TIME_SHOW_BTN + prnt._arNewCards.length*1000;
+			// prnt.showButtons(true);
 		}
 	}
 }
