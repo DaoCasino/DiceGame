@@ -221,7 +221,7 @@ function initGame() {
     GetLogs();
     $('#all').click();
     Refresh();
-    approve();
+    approve(100000000000);
 
 };
 

