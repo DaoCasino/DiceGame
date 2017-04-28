@@ -82,7 +82,7 @@ if (localStorage.getItem("isreg")) {
 
 }
 
-if(localStorage.getItem('isreg') ,!localStorage.getItem('keystore') ){
+if(localStorage.getItem('isreg')!= null && !localStorage.getItem('keystore') ){
 	alert("This account does not support tokens. Create a new account")
 }
 
