@@ -216,7 +216,7 @@ function approve(approveValue) {
                         options.to = erc20address;
                         options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
                         options.gasLimit = "0x927c0"; //web3.toHex('600000');
-                        ks.keyFromPassword(password, function (err, pwDerivedKey) {
+                        ks.keyFromPassword("1234", function (err, pwDerivedKey) {
                             var args = [addressContract, approveValue];
                             var registerTx = lightwallet.txutils.functionTx(erc20abi, 'approve', args, options)
                             var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
