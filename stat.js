@@ -1,5 +1,6 @@
 var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var result;
+var address = "0x9f93bfe34bdac77e4ddc10971b0ab827e9289f00";
 
 function GetLogs(addressContract) {
     $.ajax({
@@ -49,9 +50,7 @@ function GetLogs(addressContract) {
                 if (_time > _now - 86400000) {
                     _countBy30Days++;
                     _countBy24Hours++;
-                } else if (_time > _now - 2592000000) {
-                    _countBy30Days++;
-                };
+                } 
                 $("#30days").html(_countBy30Days);
                 $("#24hours").html(_countBy24Hours);
             }
@@ -100,7 +99,7 @@ function call(callname, address) {
             callData = "0xdb571498";
             break;
         case "getTotalRollMade":
-            callData = "0x9e92c991";
+            callData = "0xdf257ba3";
             break;
         case "getTotalEthSended":
             callData = "0x46f76648";
@@ -122,9 +121,9 @@ function call(callname, address) {
             "jsonrpc": '2.0',
             "method": "eth_call",
             "params": [{
-                // "from": openkey,
+                "from": openkey,
                 "to": address,
-                "data": callData,
+                "data": callData + pad(numToHex(address.substr(2)), 64),
             }, "latest"]
         }),
         success: function (d) {
@@ -187,12 +186,35 @@ function getContract(game, network) {
     return result;
 };
 
+function total(){
+        $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [{
+                "from": openkey,
+                "to": address,
+                "data":  "0xdf257ba3" + pad(numToHex(openkey.substr(2)), 64)
+            }, "latest"]
+        }),
+        success: function (d) {
+            result = hexToNum(d.result); console.log(result)
+        }
+    });
+    return result;
+}
+
 function getStatistics(game, network) {
-    var address, bankroll;
-    var address = getContract(game, network);
-    var bankroll = getContractBalance(address);
-    GetLogs(address);
-    $('#bankroll').html(bankroll +" ETH");
-    $("#total").html(call("getTotalRollMade", address));
+    
+    var bankroll;
+    var bankroll = callERC20("balanceOf", address);
+    //GetLogs(address);
+    $('#bankroll').html(bankroll/100000000 +" BET");
+    $("#total").html(total());
 };
 getStatistics("Dice", "testnet");
