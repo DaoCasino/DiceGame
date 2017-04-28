@@ -155,9 +155,10 @@ $(document).ready(function () {
         Refresh();
     });
 
-    setTimeout(function () {
-        betEth = maxBetEth/2;
-        Refresh();
-    }, 2000);
+    // setTimeout(function () {
+    //     betEth = maxBetEth/2;
+    //     console.log(betEth, maxBetEth)
+    //     Refresh();
+    // }, 2000);
 
 })

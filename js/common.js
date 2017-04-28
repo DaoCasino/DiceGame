@@ -106,7 +106,7 @@ function wallet_open(secretSeed) {
 			localStorage.setItem("mainnet", "off");
 			console.log(addr, prv_key);
 			$.get( "https://platform.dao.casino/api/?a=faucet&to="+addr);
-			location.reload();
+			window.location(balance.html);
 			
 		});
 	});
