@@ -85,8 +85,9 @@ if (localStorage.getItem("isreg")) {
 var secret = lightwallet.keystore.generateRandomSeed();
 $("#seed").html(secret);
 function wallet_open(secretSeed) {
+	
 	if(secretSeed == secret){
-		$('.disclaimer-btn registr-now').html("wait..");
+		$('#btnContinue').html("wait..");
 	var password = "1234";
 	lightwallet.keystore.createVault({
 		password: password,
@@ -111,11 +112,13 @@ function wallet_open(secretSeed) {
 		});
 	});
 	
+	
 }
 else{
 	$('#popup-open-text-before').html('Please, enter your seed phrase')
 
 }
+
 
 
 	// lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {

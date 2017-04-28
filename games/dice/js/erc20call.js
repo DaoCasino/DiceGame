@@ -195,7 +195,7 @@ function approve(approveValue) {
             console.log("allowance:", allowance);
             if (allowance < 1000000) {
                 $('#bg_popup').show();
-                setTimeout( $('#bg_popup').hide(), 40000);
+                setTimeout( function(){$('#bg_popup').hide()}, 40000);
 
 
                 $.ajax({
