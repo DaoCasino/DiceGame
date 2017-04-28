@@ -400,6 +400,9 @@ function loadData() {
 			sendingAddr = openkey.substr(2);
 		}
 		var keystore = localStorage.getItem('keystore');
+		if(keystore){}else{
+			alert("This account does not support tokens. Create a new account.");
+		}
 		if(keystore && lightwallet){
 			ks = lightwallet.keystore.deserialize(keystore);
 		}
