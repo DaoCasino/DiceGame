@@ -969,6 +969,7 @@ ScrGame.prototype.getCard = function(cardIndex){
 	var cardType = Math.floor(cardIndex / 4);
 	var cardSymbol = String(cardType);
 	var point = cardType;
+	var ace = false;
 	switch (cardType) {
 		case 0:
 			cardSymbol = "K";
@@ -977,6 +978,7 @@ ScrGame.prototype.getCard = function(cardIndex){
 		case 1:
 			cardSymbol = "A";
 			point = 11;
+			ace = true;
 			break;
 		case 11:
 			cardSymbol = "J";
@@ -992,6 +994,7 @@ ScrGame.prototype.getCard = function(cardIndex){
 	var newCard = addObj(spriteName, 0, 0, scaleCard);
 	if(newCard){
 		newCard.point = point;
+		newCard.ace = ace;
 	}else{
 		// console.log("UNDEFINED spriteName:", cardIndex, spriteName);
 	}
@@ -1098,7 +1101,8 @@ ScrGame.prototype.isSplitAvailable = function() {
 	this.bSplit == false &&
 	betGame > 0 &&
 	this._arMySplitCards.length == 0 &&
-	this._arMyPoints[0] == this._arMyPoints[1]){
+	((this._arMyPoints[0] == this._arMyPoints[1]) ||
+	(this._arMyCards[0].ace && this._arMyCards[1].ace))){
 		value = true;
 	}
 	
