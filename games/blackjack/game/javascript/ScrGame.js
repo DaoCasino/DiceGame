@@ -1679,7 +1679,7 @@ ScrGame.prototype.showTestEther = function() {
 ScrGame.prototype.showInsurance = function() {
 	var price = betGame/2;
 	price = toFixed((convertToken(price)), 4);
-	var str = "Do you want Insurance? \n " + price + " eth.";
+	var str = "Do you want Insurance? \n " + price + " BET.";
 	this.showWndInsurance(str, this.clickInsurance);
 	this.bInsurance = 0;
 }
@@ -2223,7 +2223,7 @@ ScrGame.prototype.response = function(command, value) {
 			if(valInsurance > 0){
 				prnt.bWait = false;
 				prnt.showButtons(true);
-				prnt.createWndInfo("The insurance was successful.");
+				prnt.createWndInfo("The insurance was successful.", undefined, "OK");
 			}
 		}
 	} else if(command == "getAllowance"){
@@ -2231,7 +2231,7 @@ ScrGame.prototype.response = function(command, value) {
 			prnt.bApprove = true;
 			if(prnt.bClickApprove){
 				prnt.showChips(true);
-				prnt.createWndInfo("The approval was completed successfully.");
+				prnt.createWndInfo("The approval was completed successfully.", undefined, "OK");
 			}
 		}
 	} else if(command == "sendRaw"){
