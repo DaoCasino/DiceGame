@@ -2099,17 +2099,17 @@ ScrGame.prototype.response = function(command, value) {
 			console.log("state|idGame:", stateNow, idGame, idOldGame);
 		}
 		
+		if(!prnt.bApprove){
+			return false;
+		}
+		prnt.getGameId();
 		if(!prnt.bBetLoad){
 			prnt.bWait = true;
 			prnt.showButtons(false);
 			prnt.getPlayerBet();
 			return false;
 		}
-		if(!prnt.bApprove){
-			return false;
-		}
 		
-		prnt.getGameId();
 		prnt.getBalancePlayer();
 		
 		if(value != "0x"){
