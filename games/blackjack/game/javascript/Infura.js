@@ -46,10 +46,10 @@ Infura.prototype.sendRequest = function(name, params, callback){
 		}
 		
 		$.ajax({
-			type: "POST",
 			url: urlInfura,
-			dataType: 'json',
+			type: "POST",
 			async: false,
+			dataType: 'json',
 			data: JSON.stringify({"jsonrpc":'2.0',
 									"method":method,
 									"params":arParams,

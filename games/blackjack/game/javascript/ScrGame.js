@@ -9,6 +9,8 @@ ScrGame.prototype.constructor = ScrGame;
 
 var TIME_GET_STATE = 10000;
 var TIME_WAIT = 500;
+var TIME_SHOW_BTN_CHIPS = 3000;
+var TIME_SHOW_BTN = 300;
 var S_IN_PROGRESS = 0;	
 var S_PLAYER_WON = 1;	
 var S_HOUSE_WON = 2;	
@@ -130,6 +132,8 @@ ScrGame.prototype.init = function() {
 	this.timeWait = 0;
 	this.timeCloseWnd = 0;
 	this.timeNewCard = 0;
+	this.timeShowBtnChips = 0;
+	this.timeShowButtons = 0;
 	this.countPlayerCard = 0;
 	this.countPlayerSplitCard = 0;
 	this.countHouseCard = 0;
@@ -1455,14 +1459,16 @@ ScrGame.prototype.sendCard = function(obj){
 		_y = _H/2 + 70;
 		prnt.showPlayerCard(card);
 		if(betGame > 0){
-			prnt.showButtons(true);
+			prnt.timeShowButtons = TIME_SHOW_BTN + prnt._arNewCards.length*1000;
+			// prnt.showButtons(true);
 		}
 	} else if(type == "split"){
 		_x = _W/2 + 200 + lastPlayerSplitCard*30;
 		_y = _H/2 + 70;
 		prnt.showPlayerSplitCard(card);
 		if(betGame > 0){
-			prnt.showButtons(true);
+			prnt.timeShowButtons = TIME_SHOW_BTN + prnt._arNewCards.length*1000;
+			// prnt.showButtons(true);
 		}
 	} else if(type == "house"){
 		_x = _W/2 - 80 + lastHouseCard*30;
@@ -1509,7 +1515,8 @@ ScrGame.prototype.sendCard = function(obj){
 										} else if(lastHouseCard == 3){
 											prnt.clearBet();
 											prnt.startGame = false;
-											prnt.showChips(true);
+											// prnt.showChips(true);
+											prnt.timeShowBtnChips = TIME_SHOW_BTN_CHIPS;
 											prnt.showButtons(true);
 										}
 									}
@@ -1525,7 +1532,8 @@ ScrGame.prototype.sendCard = function(obj){
 										} else if(lastHouseCard == 3){
 											prnt.clearBet();
 											prnt.startGame = false;
-											prnt.showChips(true);
+											// prnt.showChips(true);
+											prnt.timeShowBtnChips = TIME_SHOW_BTN_CHIPS;
 											prnt.showButtons(true);
 										}
 									}
@@ -1554,7 +1562,8 @@ ScrGame.prototype.loadBet = function(value){
 	}
 	this.tfMyBet.setText(str);
 	this.isSplitAvailable();
-	this.showButtons(true);
+	// this.showButtons(true);
+	this.timeShowButtons = TIME_SHOW_BTN + this._arNewCards.length*1000;
 	this.fillChips(betGame);
 	if(stateNow == S_IN_PROGRESS_SPLIT){
 		this.fillChips(betSplitGame, "split");
@@ -2053,7 +2062,7 @@ ScrGame.prototype.response = function(command, value) {
 		}
 		
 		prnt.tfMyBet.setText(strResult);
-		prnt.showChips(true);
+		// prnt.showChips(true);
 	} else if(command == "getSplitState"){
 		if(value != "0x"){
 			stateSplit = hexToNum(value);
@@ -2111,12 +2120,14 @@ ScrGame.prototype.response = function(command, value) {
 				}
 				if(stateNow == S_IN_PROGRESS && stateOld == S_IN_PROGRESS_SPLIT){
 					prnt.bWait = false;
-					prnt.showButtons(true);	
+					// prnt.showButtons(true);
+					prnt.timeShowButtons = TIME_SHOW_BTN + prnt._arNewCards.length*1000;
 					prnt.darkCards(prnt._arMyCards, false);
 					prnt.darkCards(prnt._arMySplitCards, true);
 				}
 				if(stateOld == -1){
-					prnt.showButtons(true);	
+					// prnt.showButtons(true);	
+					prnt.timeShowButtons = TIME_SHOW_BTN + prnt._arNewCards.length*1000;
 					
 					if(prnt.bSplit){
 						prnt.darkCards(prnt._arMyCards, true);
@@ -2176,10 +2187,11 @@ ScrGame.prototype.response = function(command, value) {
 				prnt.bClickStart = false;
 				prnt.bWait = false;
 				prnt.startGame = false;
-				prnt.showChips(true);
+				// prnt.showChips(true);
+				prnt.timeShowBtnChips = TIME_SHOW_BTN_CHIPS + prnt._arNewCards.length*1000;
 				prnt.getBalanceBank();
 				prnt.showButtons(false);
-			} else if(!this.bClear && !prnt.startGame && idGame == idOldGame){
+			} else if(!prnt.bClear && !prnt.startGame && idGame == idOldGame){
 				prnt.bClickStart = false;
 				prnt.bWait = false;
 				prnt.startGame = false;
@@ -2270,8 +2282,23 @@ ScrGame.prototype.update = function(){
 		}
 	}
 	
+	if(this.timeShowBtnChips > 0){
+		this.timeShowBtnChips -= diffTime;
+		if(this.timeShowBtnChips <= 0){
+			this.showChips(true);
+		}
+	}
+	
+	if(this.timeShowButtons > 0){
+		this.timeShowButtons -= diffTime;
+		if(this.timeShowButtons <= 0){
+			this.showButtons(true);
+		}
+	}
+	
 	// if(stateNow > -1){
 		this.mixingCard.visible = this.bWait;
+		this.mixingCard.update(diffTime);
 	// }
 	
 	if(this.bWait){
@@ -2428,8 +2455,8 @@ ScrGame.prototype.removeAllListener = function(){
 	if(this.wndInfo){
 		this.wndInfo.removeAllListener();
 	}
-	if(this.wndResult){
-		this.wndResult.removeAllListener();
+	if(this.wndInsurance){
+		this.wndInsurance.removeAllListener();
 	}
 	
 	this.interactive = false;
