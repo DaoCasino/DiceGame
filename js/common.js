@@ -106,7 +106,7 @@ function wallet_open(secretSeed) {
 			localStorage.setItem("mainnet", "off");
 			console.log(addr, prv_key);
 			$.get( "https://platform.dao.casino/api/?a=faucet&to="+addr);
-			//location.reload();
+			location.reload();
 			
 		});
 	});
@@ -137,6 +137,7 @@ else{
 
 	// });
 }
+
 
 
 function setCookie(name, value, options) {
@@ -207,7 +208,7 @@ var openkey = localStorage.getItem('openkey')
 	setTimeout(function () {
 		var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 		callData = "0x70a08231";
-		var u = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+		var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";	
 		if (localStorage.getItem("mainnet") == "on") u = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		$.ajax({
         type: "POST",
@@ -228,7 +229,6 @@ var openkey = localStorage.getItem('openkey')
 				totalwei = d.result;
 				$("#balance").html(d.result / 100000000 + " BET");
 				if (localStorage.getItem("mainnet") == "off" && totalwei == 0) {
-					$.get("https://platform.dao.casino/api/?a=faucet&to=" + localStorage.getItem("openkey"));
 				}
 			}
 		})
@@ -252,4 +252,10 @@ $.removeCookie = function (key, options) {
 		expires: -1
 	}));
 	return !$.cookie(key);
+};
+
+function pad(num, size) {
+    var s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
 };
