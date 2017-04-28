@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.26"
+var version = "v. 1.0.49"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -10,15 +10,29 @@ var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
 var LoadPercent = null;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
-var infura, soundManager;
+var infura, soundManager, ks, sendingAddr;
+var passwordUser = "1234";
 var fontMain = "Arial";
 var fontDigital = "Digital-7";
 var stats; //для вывода статистики справа
+var valToken = 100000000; // 1 token
 var rndBg = String(Math.ceil(Math.random()*2));
-
+var abi = [{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"requestInsurance","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"tokenAddress","type":"address"}],"name":"setTokenAddress","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"hit","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"amountInWei","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"maxBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBank","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"minBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"stand","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"deal","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"split","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"double","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"deckAddress","type":"address"},{"name":"storageAddress","type":"address"},{"name":"tokenAddress","type":"address"}],"payable":false,"type":"constructor"},{"payable":true,"type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_type","type":"uint8"},{"indexed":false,"name":"_card","type":"uint8"}],"name":"Deal","type":"event"}]
+// main
+var addressRpcErc = "";
+var addressStorage = "";
 var addressContract = "0xa65d59708838581520511d98fb8b5d1f76a96cad";
-var	addressRpcContract = "0xc0951cf7a33d26642c8c48d308345a5444562e15";
-var	addressTestContract = "0xfa4f75db04222b0057f1b0b4fa23e55e55e1fde9";
+// testrpc
+var	addressRpcErc = "0x5d7d1991119f2defd0a440246bd4f362c61be33c";
+var	addressRpcStorage = "0xde1c7198b037fc8365778e4ae038d7944011e50d";
+var	addressRpcContract = "0xb82790a487de9e19ceeb0dae9d73dcaae465d87a";
+// testnet
+var addressTestDeck = "0x75dacdec23342b26ff598e3304d3ff632b42077a"; // const
+var addressTestErc = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // 0x95a48dca999c89e4e284930d9b9af973a7481287 !!!
+var	addressTestStorage = "0x18d4bd271a6123335edca33eec83318b75ae8ae0";
+var	addressTestContract = "0x1903eef30317204fb5aabd9533659d9b23a7ec37";
+
+var addressCurErc = "";
 
 var options_debug = false;
 var options_test = false;
@@ -32,14 +46,25 @@ var options_mobile = true;
 var options_pause = false;
 var options_txt_offset = 0;
 
+var ERROR_CONNECTION = 0;
 var ERROR_KEYTHEREUM = 1;
 var ERROR_BUF = 2;
 var ERROR_KEY = 3;
 var ERROR_BANK = 4;
-var ERROR_TRANSACTION = 5;
+var ERROR_CONTRACT = 5;
 var ERROR_BALANCE = 6;
 var ERROR_DEAL = 7;
 var ERROR_MAX_BET = 8;
+
+if(options_rpc){
+	addressCurErc = addressRpcErc;
+} else {
+	addressCurErc = addressTestErc;
+	if(addressTestErc != "0x95a48dca999c89e4e284930d9b9af973a7481287"){
+		console.log("warning: change addressTestErc");
+		addressCurErc = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+	}
+}
 
 var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
     || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
@@ -125,88 +150,7 @@ function loadManifest(){
 	preloader.add("bgGame2", "images/bg/bgGame2.jpg");
 	preloader.add("wndInfo", "images/bg/wndInfo.png");
 	
-	preloader.add("icoKey", "images/items/icoKey.png");
-	preloader.add("icoEthereum", "images/items/icoEthereum.png");
-	preloader.add("icoTime", "images/items/icoTime.png");
-	preloader.add("chip_1", "images/items/chip_1.png");
-	preloader.add("chip_2", "images/items/chip_2.png");
-	preloader.add("chip_3", "images/items/chip_3.png");
-	preloader.add("chip_4", "images/items/chip_4.png");
-	preloader.add("chip_5", "images/items/chip_5.png");
-	preloader.add("chip_6", "images/items/chip_6.png");
-	preloader.add("seat", "images/items/seat.png");
-	preloader.add("hintArrow", "images/items/hintArrow.png");
-	preloader.add("metal", "images/items/metal.png");
-	preloader.add("cardsLeft", "images/items/cardsLeft.png");
-	preloader.add("cardsRight", "images/items/cardsRight.png");
-	preloader.add("descBet", "images/items/descBet.png");
-	
-	preloader.add("1_A", "images/cards/1_A.png")
-	preloader.add("1_2", "images/cards/1_2.png")
-	preloader.add("1_3", "images/cards/1_3.png")
-	preloader.add("1_4", "images/cards/1_4.png")
-	preloader.add("1_5", "images/cards/1_5.png")
-	preloader.add("1_6", "images/cards/1_6.png")
-	preloader.add("1_7", "images/cards/1_7.png")
-	preloader.add("1_8", "images/cards/1_8.png")
-	preloader.add("1_9", "images/cards/1_9.png")
-	preloader.add("1_10", "images/cards/1_10.png")
-	preloader.add("1_J", "images/cards/1_J.png")
-	preloader.add("1_Q", "images/cards/1_Q.png")
-	preloader.add("1_K", "images/cards/1_K.png")
-	preloader.add("2_A", "images/cards/2_A.png")
-	preloader.add("2_2", "images/cards/2_2.png")
-	preloader.add("2_3", "images/cards/2_3.png")
-	preloader.add("2_4", "images/cards/2_4.png")
-	preloader.add("2_5", "images/cards/2_5.png")
-	preloader.add("2_6", "images/cards/2_6.png")
-	preloader.add("2_7", "images/cards/2_7.png")
-	preloader.add("2_8", "images/cards/2_8.png")
-	preloader.add("2_9", "images/cards/2_9.png")
-	preloader.add("2_10", "images/cards/2_10.png")
-	preloader.add("2_J", "images/cards/2_J.png")
-	preloader.add("2_Q", "images/cards/2_Q.png")
-	preloader.add("2_K", "images/cards/2_K.png")
-	preloader.add("3_A", "images/cards/3_A.png")
-	preloader.add("3_2", "images/cards/3_2.png")
-	preloader.add("3_3", "images/cards/3_3.png")
-	preloader.add("3_4", "images/cards/3_4.png")
-	preloader.add("3_5", "images/cards/3_5.png")
-	preloader.add("3_6", "images/cards/3_6.png")
-	preloader.add("3_7", "images/cards/3_7.png")
-	preloader.add("3_8", "images/cards/3_8.png")
-	preloader.add("3_9", "images/cards/3_9.png")
-	preloader.add("3_10", "images/cards/3_10.png")
-	preloader.add("3_J", "images/cards/3_J.png")
-	preloader.add("3_Q", "images/cards/3_Q.png")
-	preloader.add("3_K", "images/cards/3_K.png")
-	preloader.add("4_A", "images/cards/4_A.png")
-	preloader.add("4_2", "images/cards/4_2.png")
-	preloader.add("4_3", "images/cards/4_3.png")
-	preloader.add("4_4", "images/cards/4_4.png")
-	preloader.add("4_5", "images/cards/4_5.png")
-	preloader.add("4_6", "images/cards/4_6.png")
-	preloader.add("4_7", "images/cards/4_7.png")
-	preloader.add("4_8", "images/cards/4_8.png")
-	preloader.add("4_9", "images/cards/4_9.png")
-	preloader.add("4_10", "images/cards/4_10.png")
-	preloader.add("4_J", "images/cards/4_J.png")
-	preloader.add("4_Q", "images/cards/4_Q.png")
-	preloader.add("4_K", "images/cards/4_K.png")
-	preloader.add("suit", "images/cards/suit.png")
-	
-	preloader.add("btnClose", "images/buttons/btnClose.png");
-	preloader.add("btnClearBets", "images/buttons/btnClearBets.png");
-	preloader.add("btnDeal", "images/buttons/btnDeal.png");
-	preloader.add("btnDouble", "images/buttons/btnDouble.png");
-	preloader.add("btnHit", "images/buttons/btnHit.png");
-	preloader.add("btnSplit", "images/buttons/btnSplit.png");
-	preloader.add("btnStand", "images/buttons/btnStand.png");
-	preloader.add("btnDefault", "images/buttons/btnDefault.png");
-	preloader.add("btnFacebookShare", "images/buttons/btnFacebookShare.png");
-	preloader.add("btnTweetShare", "images/buttons/btnTweetShare.png");
-	preloader.add("btnFrame", "images/buttons/btnFrame.png");
-	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
+	preloader.add("images/texture/ItemsTexure.json");
 	
 	//сохраняем счетчик кол-ва файлов для загрузки
 	preloader.on("progress", handleProgress);
@@ -235,8 +179,7 @@ function spritesLoad() {
 function textureLoad() {
 	if(!options_test){
 		// iniSet("images/texture/AnimaTexture.json");
-		// iniSet("images/texture/Anima2Texture.json");
-		// iniSetArt("images/buttons/ButtonsTexture.json");
+		iniSetArt("images/texture/ItemsTexure.json");
 	}
 }
 
@@ -443,10 +386,26 @@ function saveData() {
 
 function loadData() {
 	if(isLocalStorageAvailable()){
+		if(options_rpc){
+			// openkey = "0xeaab5b73c8092a4395ef4bb2c815a29de4dc6b3d";
+			// privkey = "845d3cca6be851f4d4da2c1be30ce36bd3122817b6de80bc5c03d81ea0b59fb1";
+			openkey = "0xf1f42f995046e67b79dd5ebafd224ce964740da3";
+			privkey = "d3b6b98613ce7bd4636c5c98cc17afb0403d690f9c2b646726e08334583de101";
+		} else {
+			openkey = localStorage.getItem('openkey')
+			privkey = localStorage.getItem('privkey')
+		}
 		mainet = localStorage.getItem('mainnet')
-		openkey = localStorage.getItem('openkey')
-		privkey = localStorage.getItem('privkey')
-		console.log("openkey:", openkey);
+		if(openkey){
+			sendingAddr = openkey.substr(2);
+		}
+		var keystore = localStorage.getItem('keystore');
+		if(keystore){}else{
+			alert("This account does not support tokens. Create a new account.");
+		}
+		if(keystore && lightwallet){
+			ks = lightwallet.keystore.deserialize(keystore);
+		}
 		if (localStorage.getItem('daocasino_blackjack')){
 			var login_str = localStorage.getItem('daocasino_blackjack')
 			login_obj = JSON.parse(login_str);
@@ -571,24 +530,26 @@ function addScreen(name) {
 	currentScreen.name = name;
 }
 
-function addButton(name, _x, _y, _scGr) {
+function addButton(name, _x, _y, _scGr, _scaleX, _scaleY) {
 	if(_x){}else{_x = 0};
 	if(_y){}else{_y = 0};
 	if(_scGr){}else{_scGr = 1};
+	if(_scaleX){}else{_scaleX = 1};
+	if(_scaleY){}else{_scaleY = 1};
 	var obj = new PIXI.Container();
 	
 	var objImg = null;
 	obj.setImg = function(name){
-		objImg = addObj(name, 0, 0, _scGr);
+		objImg = addObj(name);
 		obj.addChild(objImg);
-		obj.over = addObj(name + "Over", 0, 0, _scGr);
+		obj.over = addObj(name + "Over");
 		if(obj.over){
 			obj.over.visible = false;
 			obj.addChild(obj.over);
 		} else {
 			obj.over = null;
 		}
-		obj.lock = addObj(name + "Lock", 0, 0, _scGr);
+		obj.lock = addObj(name + "Lock");
 		if(obj.lock){
 			obj.lock.visible = false;
 			obj.addChild(obj.lock);
@@ -597,12 +558,14 @@ function addButton(name, _x, _y, _scGr) {
 		}
 		
 		obj.sc = _scGr;
-		obj.vX = 1;
-		obj.vY = 1;
+		obj.scale.x = _scGr*_scaleX;
+		obj.scale.y = _scGr*_scaleY;
+		obj.vX = _scaleX;
+		obj.vY = _scaleY;
 		obj.x = _x;
 		obj.y = _y;
-		obj.w = objImg.w;
-		obj.h = objImg.h;
+		obj.w = objImg.width*_scGr;
+		obj.h = objImg.height*_scGr;
 		obj.r = obj.w/2;
 		obj.rr = obj.r*obj.r;
 		obj.name = name;
@@ -837,6 +800,11 @@ function jiggle(t){
 	t.scale.y = t.scale.x
 }
 
+
+function convertToken(value){
+	var val = value/valToken;
+	return val;
+}
 function rad(qdeg){
 	return qdeg * (Math.PI / 180);
 }

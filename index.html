@@ -129,7 +129,7 @@
 								
 								<div id='isreg' style='display:none'>
 									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
-										? ETH
+										? BET
 									</a>
 									<a onclick='$.removeCookie("popup");localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
 										exit
@@ -184,17 +184,17 @@
 										Total bankroll
 									</span>
 									<span class="jackpot-txt__namber" id="bankroll">
-										<span>..</span> ETH
+										<span>..</span> BET
 									</span>
 								</div>
-								<div class="jackpot-txt">
+								<!--<div class="jackpot-txt">
 									<span class="jackpot-txt__name" >
 										24h games
 									</span>
 									<span class="jackpot-txt__namber" id="24hours">
 										<span>..</span>
 									</span>
-								</div>
+								</div>-->
 								<div class="jackpot-txt">
 									<span class="jackpot-txt__name">
 										Total games
@@ -362,7 +362,7 @@
 
 			<div class="window-open-registr dialog-window-two">
 				<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
-				<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("wait..")'>CONTINUE</button>
+				<button id='btnContinue' class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());'>CONTINUE</button>
 				<span class="dialog-window-cancel">cancel</span>
 			</div>
 
@@ -394,6 +394,7 @@
 	
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script> <!-- DEV VERSION !! -->
 	<script src="js/common.js"></script>
+	<script src="js/erc20call.js"></script>
 	<script src="stat.js"></script>
 	<Script>
 	

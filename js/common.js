@@ -82,26 +82,69 @@ if (localStorage.getItem("isreg")) {
 
 }
 
-var secretSeed = lightwallet.keystore.generateRandomSeed();
-$("#seed").html(secretSeed);
-
-function wallet_open(secretSeed) { //box aerobic sweet proof warfare alone atom snake amateur spy couple side
-	lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
-		var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
-		ks.generateNewAddress(pwDerivedKey, 1);
-		var address = ks.getAddresses()[0];
-		var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
-
-		localStorage.setItem("openkey", "0x" + address);
-		localStorage.setItem("privkey", prv_key);
-		localStorage.setItem("isreg", 1);
-		localStorage.setItem("mainnet", "off");
-		console.log('address and key: ', address, prv_key);
-		window.location = 'balance.html';
-
-
-	});
+if(localStorage.getItem('isreg')!= null && !localStorage.getItem('keystore') ){
+	alert("This account does not support tokens. Create a new account")
 }
+
+var secret = lightwallet.keystore.generateRandomSeed();
+$("#seed").html(secret);
+function wallet_open(secretSeed) {
+	
+	if(secretSeed == secret){
+		$('#btnContinue').html("wait..");
+	var password = "1234";
+	lightwallet.keystore.createVault({
+		password: password,
+		seedPhrase: secretSeed, // Optionally provide a 12-word seed phrase
+	}, function (err, ks) {
+		ks.keyFromPassword(password, function (err, pwDerivedKey) {
+			if (err) throw err;
+			ks.generateNewAddress(pwDerivedKey, 1);
+			var addr = ks.getAddresses()[0];
+			var prv_key = ks.exportPrivateKey(addr, pwDerivedKey);
+			var keystorage = ks.serialize();
+			var openkey = "0x"+addr;
+			localStorage.setItem("keystore", keystorage);
+			localStorage.setItem("isreg", 1);
+			localStorage.setItem("openkey", "0x" + addr);
+		 	localStorage.setItem("privkey", prv_key);
+			localStorage.setItem("mainnet", "off");
+			console.log(addr, prv_key);
+			$.get( "https://platform.dao.casino/api/?a=faucet&to="+openkey);
+			window.location = "balance.html";
+			
+		});
+	});
+	
+	
+}
+else{
+	$('#popup-open-text-before').html('Please, enter your seed phrase')
+
+}
+
+
+
+	// lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {
+	// 	ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
+	// 	ks.generateNewAddress(pwDerivedKey, 1);
+	// 	var ser = ks.serialize()
+	// 	console.log(ser);
+
+	// 	var address = ks.getAddresses()[0];
+	// 	var prv_key = ks.exportPrivateKey(address, pwDerivedKey);
+	// 	localStorage.setItem("openkey", "0x" + address);
+	// 	localStorage.setItem("privkey", prv_key);
+	// 	localStorage.setItem("isreg", 1);
+	// 	localStorage.setItem("mainnet", "off");
+	// 	localStorage.setItem("keystore", ser);
+	// 	console.log('address and key: ', address, prv_key);
+	// 	//
+
+
+	// });
+}
+
 
 
 function setCookie(name, value, options) {
@@ -166,31 +209,33 @@ if (localStorage.getItem("mainnet") == "on") {
 var totalwei;
 
 function rebalance() {
-	if (!totalwei) $("#balance").html("? ETH");
-	
+var openkey = localStorage.getItem('openkey')
+	if(openkey){
+	if (!totalwei) $("#balance").html("? BET");
 	setTimeout(function () {
-		var u = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+		var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+		callData = "0x70a08231";
+		var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";	
 		if (localStorage.getItem("mainnet") == "on") u = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		$.ajax({
-			type: "POST",
-			url: u,
-			dataType: 'json',
-			async: false,
-			data: JSON.stringify({
-				"id": 0,
-				"jsonrpc": '2.0',
-				"method": 'eth_getBalance',
-				"params": [localStorage.getItem("openkey"), "latest"]
-			}),
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_call",
+            "params": [{
+                "from": openkey,
+                "to": erc20address,
+                "data": callData + pad(numToHex(openkey.substr(2)), 64)
+            }, "latest"]
+        }),
 			success: function (d) {
-			
 				totalwei = d.result;
-				$("#balance").html(d.result / 1000000000000000000 + " ETH");
-				
-				if (localStorage.getItem("mainnet") == "off" && parseInt(totalwei,16) == 0 && (parseInt(localStorage.getItem("testsend")) < 3 || localStorage.getItem("testsend") == null)) {
-					var tsended = parseInt(localStorage.getItem("testsend")) + 1;
-					localStorage.setItem("tsended",tsended);
-					$.get("https://platform.dao.casino/api/?a=faucet&to=" + localStorage.getItem("openkey"));
+				$("#balance").html(d.result / 100000000 + " BET");
+				if (localStorage.getItem("mainnet") == "off" && totalwei == 0) {
 				}
 			}
 		})
@@ -198,7 +243,7 @@ function rebalance() {
 		;
 
 	}, 1000);
-}
+}}
 
 setInterval(rebalance, 5000);
 
@@ -214,4 +259,10 @@ $.removeCookie = function (key, options) {
 		expires: -1
 	}));
 	return !$.cookie(key);
+};
+
+function pad(num, size) {
+    var s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
 };

@@ -129,7 +129,7 @@
 								<div id='isreg' style='display:none'>
 
 									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
-										? ETH
+										? BET
 									</a>-
 									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
 										exit
@@ -167,7 +167,7 @@
 									<div class="col-md-4">
 										<div class="player-stats">
 											<p class="label-numbers">Total Money Paid</p>
-											<h2 class="status-numbers" id="total-paid">..::. ETH</h2>
+											<h2 class="status-numbers" id="total-paid">..::. BET</h2>
 										</div>
 									</div>
 								</div>
@@ -308,7 +308,7 @@
 										<div class="col-md-4">
 											<div class="player-stats">
 												<p class="label-numbers">Paid/Send</p>
-												<h2 class="status-numbers" id="total-send">..::. ETH</h2>
+												<h2 class="status-numbers" id="total-send">..::. BET</h2>
 											</div>
 										</div>
 									</div>
@@ -322,21 +322,19 @@
 		<!-- FOOTER -->
 		<footer>
 			<div class="container">
-				<div class="footer-open-menu">
+				<!--<div class="footer-open-menu">
 					<a class="open-menu">
 						<span></span>
 						<span></span>
 						<span></span>
 					</a>
-				</div>
+				</div>-->
 				<nav class="footer-menu">
 					<ul>
 						<li><a href="../blackjack">blackjack</a></li>
 						<li><a href="../HackDAO">HackDAO</a></li>
 						<!--<li><a href="https://twitter.com/daocasino">Twitter</a></li>
 						<li><a href="https://github.com/DaoCasino">GitHub</a></li>-->
-
-
 					</ul>
 				</nav>
 			</div>
@@ -386,6 +384,7 @@
 	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
 	<script src="libs/respond/respond.min.js"></script>
 	<![endif]-->
+	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 		<script src="../../js/clipboard.min.js"></script>
 		<script src="js/data.js" async></script>
 		<script src="libs/jquery/jquery-1.11.2.min.js"></script>
@@ -396,7 +395,7 @@
 		<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 		<script src="js/eth_api.js"></script>
 		<script src="js/main.js"></script>
-		<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
+		<script src="js/erc20call.js"></script>
 
 		<script src="js/gamecommon.js" async></script>
 		
@@ -407,7 +406,7 @@
 <!-- Popup -->
 		<div id="bg_popup" >
 	<div id="popup">
-		<h1>Infura connection error. <br>  Try later</h1>
+		<h1>please wait <br></h1>
 	</div>
 </div>
 </body>

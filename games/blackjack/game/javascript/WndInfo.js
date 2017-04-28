@@ -19,10 +19,10 @@ WndInfo.prototype.init = function(_prnt) {
 	var bg = addObj("wndInfo",0,0,0.3);
 	this.addChild(bg);
 	
-	var btnClose = addButton2("btnClose", 230, -150, 0.5);
+	var btnClose = addButton("btnClose", 230, -150, 0.5);
 	this.addChild(btnClose);
 	this._arButtons.push(btnClose);
-	this.btnOk = addButton2("btnDefault", 0, 150, 0.75);
+	this.btnOk = addButton("btnDefault", 0, 150, 0.75);
 	this.addChild(this.btnOk);
 	this._arButtons.push(this.btnOk);
 	

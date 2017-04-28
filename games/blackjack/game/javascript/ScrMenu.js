@@ -8,12 +8,6 @@ ScrMenu.prototype.constructor = ScrMenu;
 
 
 ScrMenu.prototype.init = function() {
-	// if(openkey){}else{
-		// var url = "/";
-		// window.open(url, "_self"); // "_blank",  "_self"
-		// return false;
-	// }
-	
 	this._arButtons = [];
 	
 	this.bg = addObj("bgMenu", _W/2, _H/2);
@@ -21,7 +15,7 @@ ScrMenu.prototype.init = function() {
 	this.bg.scale.y =  _H/this.bg.h;
 	this.addChild(this.bg);
 	
-	var btnDao = addButton2("btnDefault", _W/2, _H/2+100);
+	var btnDao = addButton("btnDefault", _W/2, _H/2+100);
 	btnDao.interactive = true;
 	btnDao.buttonMode=true;
 	this.addChild(btnDao);
@@ -49,6 +43,9 @@ ScrMenu.prototype.init = function() {
 	tf1.y = tf2.y - tf1.height;
 	this.addChild(tf1);
 	
+	if(options_rpc){
+		passwordUser = "1";
+	} 
 	
 	this.interactive = true;
 	this.on('mousedown', this.touchHandler);
@@ -67,6 +64,9 @@ ScrMenu.prototype.clickCell = function(item_mc) {
 	}
 	
 	if(item_mc.name == "btnDefault"){
+		if(!passwordUser){
+			passwordUser = prompt("enter your password");
+		}
 		this.removeAllListener();
 		showGame();
 	}
@@ -111,12 +111,6 @@ ScrMenu.prototype.touchHandler = function(evt){
 			if(item_mc._selected){
 				this.clickCell(item_mc);
 				return;
-			}
-		}
-		
-		if(this.startGame){
-			if(this.curLevel == 3 || this.curLevel == 6){
-				this.clickObject();
 			}
 		}
 	}

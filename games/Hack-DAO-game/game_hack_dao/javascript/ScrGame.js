@@ -80,7 +80,7 @@ ScrGame.prototype.init = function() {
 	resultTxid = undefined;
 	
 	if(options_testnet){
-		urlEtherscan = "https://testnet.etherscan.io/";
+		urlEtherscan = "https://ropsten.etherscan.io/";
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		addressContract = addressTestContract;
 	} else {

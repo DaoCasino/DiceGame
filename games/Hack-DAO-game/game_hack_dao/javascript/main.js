@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.12"
+var version = "v. 1.1.13"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -22,6 +22,7 @@ var	addressTestContract = "0xb22cd5f9e5f0d62d47e52110d9eec3a45be54498";
 
 var options_debug = false;
 var options_test = false;
+var options_unlock = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
