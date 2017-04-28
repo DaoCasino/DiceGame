@@ -210,7 +210,7 @@ function total(){
 }
 
 function getStatistics(game, network) {
-    console.log("Platform version: 0.1")
+    console.log("Platform version: 0.11")
     var bankroll;
     var bankroll = callERC20("balanceOf", address);
     //GetLogs(address);
