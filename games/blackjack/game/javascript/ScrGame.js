@@ -2023,6 +2023,7 @@ ScrGame.prototype.response = function(command, value) {
 		var bet = betGameCur/valToken;
 		var strResult = "";
 		switch (stateSplit){
+			case S_BLACKJACK:
 			case S_PLAYER_WON:
 				if(point == 21 && prnt._arMySplitCards.length == 2){
 					bet = bet * 2.5;
@@ -2048,6 +2049,7 @@ ScrGame.prototype.response = function(command, value) {
 		var bet = betGameCur/valToken;
 		var strResult = "";
 		switch (stateNow){
+			case S_BLACKJACK:
 			case S_PLAYER_WON:
 				if(point == 21 && prnt._arMyCards.length == 2){
 					bet = bet * 2.5;
