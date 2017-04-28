@@ -82,11 +82,16 @@ if (localStorage.getItem("isreg")) {
 
 }
 
+if(localStorage.getItem('isreg')!= null && !localStorage.getItem('keystore') ){
+	alert("This account does not support tokens. Create a new account")
+}
+
 var secret = lightwallet.keystore.generateRandomSeed();
 $("#seed").html(secret);
 function wallet_open(secretSeed) {
+	
 	if(secretSeed == secret){
-		$('.disclaimer-btn registr-now').html("wait..");
+		$('#btnContinue').html("wait..");
 	var password = "1234";
 	lightwallet.keystore.createVault({
 		password: password,
@@ -105,17 +110,19 @@ function wallet_open(secretSeed) {
 		 	localStorage.setItem("privkey", prv_key);
 			localStorage.setItem("mainnet", "off");
 			console.log(addr, prv_key);
-			$.get( "https://platform.dao.casino/api/?a=faucet&to="+addr);
-			location.reload();
+			$.get( "https://platform.dao.casino/api/?a=faucet&to="+openkey);
+			window.location = "balance.html";
 			
 		});
 	});
+	
 	
 }
 else{
 	$('#popup-open-text-before').html('Please, enter your seed phrase')
 
 }
+
 
 
 	// lightwallet.keystore.deriveKeyFromPassword('123123', function (err, pwDerivedKey) {

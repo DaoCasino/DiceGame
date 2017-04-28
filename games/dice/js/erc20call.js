@@ -172,11 +172,9 @@ var erc20abi = [{
 var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 
 
-
+var openkey = localStorage.getItem('openkey');
 function approve(approveValue) {
-    if (!password) {
-        password = prompt('Enter password');
-    }
+    console.log("approve")
     $.ajax({
         type: "POST",
         url: urlInfura,
@@ -185,21 +183,19 @@ function approve(approveValue) {
         data: JSON.stringify({
             "id": 0,
             "jsonrpc": '2.0',
-            "method": "eth_getTransactionCount",
-            "params": [openkey, "latest"]
+            "method": "eth_call",
+            "params": [{
+                "from": openkey,
+                "to": erc20address,
+                "data": "0xdd62ed3e" + pad(openkey.substr(2), 64) + pad(addressContract.substr(2), 64)
+            }, "latest"]
         }),
         success: function (d) {
-            console.log("get nonce action " + d.result);
-            var options = {};
-            options.nonce = d.result;
-            options.to = erc20address;
-            options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
-            options.gasLimit = "0x927c0"; //web3.toHex('600000');
-            ks.keyFromPassword(password, function (err, pwDerivedKey) {
-                var args = [addressContract, approveValue];
-                var registerTx = lightwallet.txutils.functionTx(erc20abi, 'approve', args, options)
-                var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
-                console.log("lightWallet sign:", signedTx)
+            var allowance = hexToNum(d.result);
+            console.log("allowance:", allowance);
+            if (allowance < 1000000) {
+                $('#bg_popup').show();
+                setTimeout( function(){$('#bg_popup').hide()}, 40000);
                 $.ajax({
                     type: "POST",
                     url: urlInfura,
@@ -208,19 +204,48 @@ function approve(approveValue) {
                     data: JSON.stringify({
                         "id": 0,
                         "jsonrpc": '2.0',
-                        "method": "eth_sendRawTransaction",
-                        "params": ["0x" + signedTx]
+                        "method": "eth_getTransactionCount",
+                        "params": [openkey, "latest"]
                     }),
                     success: function (d) {
-                        console.log("Транзакция отправлена в сеть:", d.result);
+                        console.log("get nonce action " + d.result);
+                        var options = {};
+                        options.nonce = d.result;
+                        options.to = erc20address;
+                        options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
+                        options.gasLimit = "0x927c0"; //web3.toHex('600000');
+                        ks.keyFromPassword("1234", function (err, pwDerivedKey) {
+                            var args = [addressContract, approveValue];
+                            var registerTx = lightwallet.txutils.functionTx(erc20abi, 'approve', args, options)
+                            var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
+                            console.log("lightWallet sign:", signedTx)
+                            $.ajax({
+                                type: "POST",
+                                url: urlInfura,
+                                dataType: 'json',
+                                async: false,
+                                data: JSON.stringify({
+                                    "id": 0,
+                                    "jsonrpc": '2.0',
+                                    "method": "eth_sendRawTransaction",
+                                    "params": ["0x" + signedTx]
+                                }),
+                                success: function (d) {
+                                    console.log("Транзакция отправлена в сеть:", d.result);
+                                    if(d.result == undefined){
+                                        approve(100000000000);
+                                    }
+                                }
+                            })
+                        })
                     }
                 })
-            })
+            }
         }
-    })
+    });
 };
 
-function callERC20(callname,adr) {
+function callERC20(callname, adr) {
     var result;
     var callData;
     switch (callname) {

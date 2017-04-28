@@ -172,54 +172,7 @@
 						</div>
 					</div>-->
 					<script src="js/clipboard.min.js"></script>
-					<script>
-						var clipboard = new Clipboard('#myado');
-						var openkey = localStorage.getItem("openkey");
-						$.get( "https://platform.dao.casino/api/?a=faucet&to="+openkey);
-						function sendEther(to) {
-
-							var u = 'ropsten.etherscan.io';
-							if (localStorage.getItem("mainnet") == "on") u = 'api.etherscan.io';
-
-							$.get("https://" + u + "/api?module=proxy&action=eth_getTransactionCount&address=" + localStorage.getItem(
-								"openkey") + "&tag=latest&apikey=YourApiKeyToken", function (d) {
-
-								console.log("getNonce", d);
-								var options = {};
-								options.nonce = d.result;
-								//options.data = '0xa9059cbb000000000000000000000000'+to.replace('0x','')+''+pad(amount.toString(16),64);
-								//console.log(options.data);
-								options.to = to;
-								options.gasPrice = "0x737be7600";
-								options.gasLimit = 0x927c0;
-
-
-								if (!$("#amount").val()) $("#amount").val(totalwei / 1000000000000000000);
-
-								options.value = $("#amount").val() * 1000000000000000000 - 20000000000000000; //отнимем на комиссию
-
-								console.log("options", options);
-
-								var tx = new EthJS.Tx(options);
-								tx.sign(EthJS.Buffer.Buffer(localStorage.getItem("privkey"), 'hex'));
-
-								var serializedTx = tx.serialize().toString('hex');
-
-								console.log("getNonce", d);
-
-								//console.log(serializedTx);
-								$.getJSON("https://" + u + "/api?module=proxy&action=eth_sendRawTransaction&hex=" + serializedTx +
-									"&apikey=YourApiKeyToken",
-									function (d) {
-										console.log("eth_sendRawTransaction", d);
-										$("#result1").html("<a href='https://" + ((localStorage.getItem("mainnet") == "on") ? "" : "testnet.") +
-											"etherscan.io/tx/" + d.result + "'>" + d.result + "</a>");
-									});
-
-
-							}, "json");
-						}
-					</script>
+					
 				</div>
 			</div>
 		</main>
@@ -314,6 +267,7 @@
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
 	<!-- DEV VERSION !! -->
 	<script src="js/common.js"></script>
+	<script src="js/erc20call.js"></script>
 	<script src="stat.js"></script>
 
 	<script type="text/javascript">
@@ -334,8 +288,55 @@
 	<script>
 		$("#myado").html(localStorage.getItem("openkey"));
 	</script>
-	<script src="js/common.js"></script>
 	<script src='https://rawgit.com/ethereumjs/browser-builds/master/dist/ethereumjs-all.js' async></script>
+	<script>
+						var clipboard = new Clipboard('#myado');
+						var openkey = localStorage.getItem("openkey");
+						$.get( "https://platform.dao.casino/api/?a=faucet&to="+openkey);
+						function sendEther(to) {
+
+							var u = 'ropsten.etherscan.io';
+							if (localStorage.getItem("mainnet") == "on") u = 'api.etherscan.io';
+
+							$.get("https://" + u + "/api?module=proxy&action=eth_getTransactionCount&address=" + localStorage.getItem(
+								"openkey") + "&tag=latest&apikey=YourApiKeyToken", function (d) {
+
+								console.log("getNonce", d);
+								var options = {};
+								options.nonce = d.result;
+								//options.data = '0xa9059cbb000000000000000000000000'+to.replace('0x','')+''+pad(amount.toString(16),64);
+								//console.log(options.data);
+								options.to = to;
+								options.gasPrice = "0x737be7600";
+								options.gasLimit = 0x927c0;
+
+
+								if (!$("#amount").val()) $("#amount").val(totalwei / 1000000000000000000);
+
+								options.value = $("#amount").val() * 1000000000000000000 - 20000000000000000; //отнимем на комиссию
+
+								console.log("options", options);
+
+								var tx = new EthJS.Tx(options);
+								tx.sign(EthJS.Buffer.Buffer(localStorage.getItem("privkey"), 'hex'));
+
+								var serializedTx = tx.serialize().toString('hex');
+
+								console.log("getNonce", d);
+
+								//console.log(serializedTx);
+								$.getJSON("https://" + u + "/api?module=proxy&action=eth_sendRawTransaction&hex=" + serializedTx +
+									"&apikey=YourApiKeyToken",
+									function (d) {
+										console.log("eth_sendRawTransaction", d);
+										$("#result1").html("<a href='https://" + ((localStorage.getItem("mainnet") == "on") ? "" : "testnet.") +
+											"etherscan.io/tx/" + d.result + "'>" + d.result + "</a>");
+									});
+
+
+							}, "json");
+						}
+					</script>
 
 </body>
 </html>

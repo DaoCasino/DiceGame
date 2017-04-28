@@ -8,7 +8,7 @@ var balance = 1;
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 var addressContract = "0x049b6cc848808623de8e91d01d10714b8e21efad";
-var betEth = 1; //0,2 ставка эфира
+var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
 var chance = 32768;
 //var urlInfura = "http://46.101.244.101:8545";
@@ -109,7 +109,7 @@ function call(callname, adr) {
                 "from": openkey,
                 "to": addressContract,
                 "data": callData + pad(numToHex(adr.substr(2)), 64)
-            }, "latest"]
+            }, "pending"]
         }),
         success: function (d) {
             result = hexToNum(d.result);
@@ -154,7 +154,7 @@ function getContract(game, network) {
                 "from": openkey,
                 "to": "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051",
                 "data": "0x3d185fc5" + pad(numToHex(gameid), 64) + pad(numToHex(networkid), 64)
-            }, "latest"]
+            }, "pending"]
         }),
         success: function (d) {
             result = "0x" + d.result.substr(26);
@@ -205,6 +205,7 @@ setInterval(function () {
 }, 1000);
 
 function initGame() {
+    
     loadData();
     setContract();
     paids = (call("getTotalEthSended", openkey)) / 100000000;
@@ -220,6 +221,8 @@ function initGame() {
     GetLogs();
     $('#all').click();
     Refresh();
+    approve(100000000000);
+
 };
 
 function disabled(status) {
@@ -274,7 +277,7 @@ function startGame() {
                 "id": 0,
                 "jsonrpc": '2.0',
                 "method": "eth_getTransactionCount",
-                "params": [openkey, "latest"]
+                "params": [openkey, "pending"]
             }),
             success: function (d) {
                 console.log("urlInfura:", urlInfura);

@@ -31,21 +31,19 @@ var block;
             "jsonrpc": '2.0',
             "method": 'eth_getLogs',
             "params": [{
-                "fromBlock": block,
-                "toBlock": "pending",
+                "fromBlock": "760000",
+                "toBlock": "latest",
                 "address": addressContract,
             }]
         }),
         success: function (objData) {
-            console.log(objData.result)
-            if(objData.result > 0){
+            if(objData.result.length > 0){
 
             // if(objData.result.length == 0){
             //         $("#bg_popup").show();
             //     }
 
             var array = [];
-            
             for(var i = 0; i < objData.result.length;i++){
                 var d = objData.result[i].data.substr(2);
                 array[0] = objData.result[i].transactionHash;

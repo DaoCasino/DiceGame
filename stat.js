@@ -199,7 +199,7 @@ function total(){
             "params": [{
                 "from": openkey,
                 "to": address,
-                "data":  "0xdf257ba3" + pad(numToHex(openkey.substr(2)), 64)
+                "data":  "0xdf257ba3"
             }, "latest"]
         }),
         success: function (d) {
@@ -210,7 +210,7 @@ function total(){
 }
 
 function getStatistics(game, network) {
-    
+    console.log("Platform version: 0.11")
     var bankroll;
     var bankroll = callERC20("balanceOf", address);
     //GetLogs(address);
