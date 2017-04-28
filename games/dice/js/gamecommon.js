@@ -32,6 +32,11 @@ $(document).ready(function () {
         }, 1000);
         startGame();
     });
+
+    $("#confirm").click(function () {
+        Confirm();
+    });
+
     $(".toggle-bg").click(function () {
         setContract();
         GetLogs();
@@ -151,8 +156,8 @@ $(document).ready(function () {
     });
 
     setTimeout(function () {
-
+        betEth = maxBetEth/2;
         Refresh();
-    }, 1000);
+    }, 2000);
 
 })

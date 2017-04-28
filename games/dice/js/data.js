@@ -32,14 +32,17 @@ var block;
             "method": 'eth_getLogs',
             "params": [{
                 "fromBlock": block,
-                "toBlock": "latest",
+                "toBlock": "pending",
                 "address": addressContract,
             }]
         }),
         success: function (objData) {
-            if(objData.result.length == 0){
-                    $("#bg_popup").show();
-                }
+            console.log(objData.result)
+            if(objData.result > 0){
+
+            // if(objData.result.length == 0){
+            //         $("#bg_popup").show();
+            //     }
 
             var array = [];
             
@@ -56,7 +59,7 @@ var block;
                 array = [];
             }
 
-        }})
+        }}})
             
                 
 
