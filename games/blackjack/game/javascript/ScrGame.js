@@ -2303,12 +2303,12 @@ ScrGame.prototype.resetTimer  = function(){
 	
 }
 
-ScrGame.prototype.update = function(){
+ScrGame.prototype.update = function(diffTime){
 	if(options_pause){
 		return false;
 	}
 	
-	var diffTime = getTimer() - this.startTime;
+	// var diffTime = getTimer() - this.startTime;
 	
 	if(this.startGame || 
 	// this.bClickStart || 
@@ -2383,7 +2383,7 @@ ScrGame.prototype.update = function(){
 		}
 	}
 	
-	this.startTime = getTimer();
+	// this.startTime = getTimer();
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {

@@ -8,6 +8,7 @@ var openkey, privkey, mainet;
 var currentScreen, scrContainer;
 var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
 var LoadPercent = null;
+var startTime;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
 var infura, soundManager, ks, sendingAddr;
@@ -308,11 +309,11 @@ function getTimer(){
 
 function refreshTime(){
 	startTime = getTimer();
-	if(currentScreen){
-		if(ScreenGame){
-			ScreenGame.resetTimer();
-		}
-	}
+	// if(currentScreen){
+		// if(ScreenGame){
+			// ScreenGame.resetTimer();
+		// }
+	// }
 }
 
 function get_normal_time(ms){
@@ -378,12 +379,26 @@ function removeAllScreens() {
 }
 
 function update() {
-	if(ScreenGame){
-		ScreenGame.update();
-	}
+	// if(ScreenGame){
+		// ScreenGame.update();
+	// }
 	
-	requestAnimationFrame(update);
+	// requestAnimationFrame(update);
+	// renderer.render(stage);
+	
+	raf(update);
 	renderer.render(stage);
+	if(options_pause){
+		return;
+	}
+	var diffTime = getTimer() - startTime;
+	if(diffTime > 29){
+		if (ScreenGame) {
+			ScreenGame.update(diffTime);
+		}
+		
+		startTime = getTimer();
+	}
 }
 
 function saveData() {
@@ -868,6 +883,7 @@ function visGame() {
 	//play
 	options_pause = false;
 	refreshTime();
+	console.log("visGame:", options_pause);
 }
 
 function hideGame() {
@@ -875,6 +891,7 @@ function hideGame() {
 	options_pause = true;
 	// music_stop();
 	refreshTime();
+	console.log("hideGame:", options_pause);
 }
 
 visibly.onVisible(visGame)
