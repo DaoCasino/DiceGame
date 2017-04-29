@@ -2308,8 +2308,6 @@ ScrGame.prototype.update = function(diffTime){
 		return false;
 	}
 	
-	// var diffTime = getTimer() - this.startTime;
-	
 	if(this.startGame || 
 	// this.bClickStart || 
 	stateNow == S_IN_PROGRESS || 
@@ -2362,10 +2360,8 @@ ScrGame.prototype.update = function(diffTime){
 		}
 	}
 	
-	// if(stateNow > -1){
-		this.mixingCard.visible = this.bWait;
-		this.mixingCard.update(diffTime);
-	// }
+	this.mixingCard.visible = this.bWait;
+	this.mixingCard.update(diffTime);
 	
 	if(this.bWait){
 		this.timeWait += diffTime;
@@ -2382,8 +2378,6 @@ ScrGame.prototype.update = function(diffTime){
 			}
 		}
 	}
-	
-	// this.startTime = getTimer();
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {

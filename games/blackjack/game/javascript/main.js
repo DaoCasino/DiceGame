@@ -379,13 +379,6 @@ function removeAllScreens() {
 }
 
 function update() {
-	// if(ScreenGame){
-		// ScreenGame.update();
-	// }
-	
-	// requestAnimationFrame(update);
-	// renderer.render(stage);
-	
 	raf(update);
 	renderer.render(stage);
 	if(options_pause){
@@ -883,7 +876,6 @@ function visGame() {
 	//play
 	options_pause = false;
 	refreshTime();
-	console.log("visGame:", options_pause);
 }
 
 function hideGame() {
@@ -891,7 +883,6 @@ function hideGame() {
 	options_pause = true;
 	// music_stop();
 	refreshTime();
-	console.log("hideGame:", options_pause);
 }
 
 visibly.onVisible(visGame)
