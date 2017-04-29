@@ -195,9 +195,8 @@ function approve(approveValue) {
             options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
             options.gasLimit = "0x927c0"; //web3.toHex('600000');
             ks.keyFromPassword(passwordUser, function (err, pwDerivedKey) {
-				console.log("err:", err);
-				console.log("pwDerivedKey:", pwDerivedKey);
 				if (err) {
+					console.log("err:", err);
 					return false;
 				}
                 var args = [addressContract, approveValue];

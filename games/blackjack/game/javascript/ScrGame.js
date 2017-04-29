@@ -2301,6 +2301,10 @@ ScrGame.prototype.resetTimer  = function(){
 }
 
 ScrGame.prototype.update = function(){
+	if(options_pause){
+		return false;
+	}
+	
 	var diffTime = getTimer() - this.startTime;
 	
 	if(this.startGame || 
