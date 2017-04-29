@@ -1603,6 +1603,11 @@ ScrGame.prototype.clickChip = function(item_mc){
 		return false;
 	}
 	
+	if(betGame == 0){
+		this.clearChips();
+		this.clearSplitChips();
+	}
+	
 	var name = item_mc.name;
 	var value = chipVale[Number(name.substr(5))]*valToken;
 	var oldBet = betGame;
@@ -2104,7 +2109,6 @@ ScrGame.prototype.response = function(command, value) {
 		}
 		
 		prnt.tfMyBet.setText(strResult);
-		// prnt.showChips(true);
 	} else if(command == "getSplitState"){
 		if(value != "0x"){
 			stateSplit = hexToNum(value);
@@ -2199,7 +2203,6 @@ ScrGame.prototype.response = function(command, value) {
 				if(prnt.mySplitPoints > 0){
 					_x = _W/2 - 200-75;
 				}
-				// prnt.clearBet();
 				prnt.clearText();
 				prnt.getBet(false);
 				prnt.getBet(true);
@@ -2216,8 +2219,8 @@ ScrGame.prototype.response = function(command, value) {
 				betSplitGame = 0;
 				betGameOld = 0;
 				valInsurance = 0;
-				prnt.clearChips();
-				prnt.clearSplitChips();
+				// prnt.clearChips();
+				// prnt.clearSplitChips();
 				
 				switch (stateNow){
 					case S_BLACKJACK:						
