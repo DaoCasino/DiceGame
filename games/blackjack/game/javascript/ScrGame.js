@@ -431,7 +431,7 @@ ScrGame.prototype.createGUI = function() {
 	this.tfIdUser.x = icoKey.x + 30;
 	this.tfIdUser.y = icoKey.y - 12;
 	this.face_mc.addChild(this.tfIdUser);
-	this.tfBalance = addText(String(obj_game["balance"]), fontSize, "#ffffff", "#000000", "left", 400, 4)
+	this.tfBalance = addText(String(obj_game["balance"]) + " BET", fontSize, "#ffffff", "#000000", "left", 400, 4)
 	this.tfBalance.x = icoEthereum.x + 30;
 	this.tfBalance.y = icoEthereum.y - 12;
 	this.face_mc.addChild(this.tfBalance);
@@ -515,32 +515,35 @@ ScrGame.prototype.createGUI = function() {
 	btnStand.visible = false;
 	
 	if(!options_rpc){
-		this.createButton("btnSmart", 120, _H-60, "Contract", 0.7, 40);
+		var btnContract = addButton("btnContract", 80, _H - 80);
+		btnContract.name = "btnSmart";
+		btnContract.interactive = true;
+		btnContract.buttonMode=true;
+		btnContract.overSc = true;
+		this.addChild(btnContract);
+		this._arButtons.push(btnContract);
 	}
-	this.createButton("btnDao", _W-120, _H-60, "DAO.CASINO", 0.7, 34);
 	
-	this.btnShare = addButton("btnFacebookShare", _W - 120, 50, 0.75);
-	this.btnShare.name = "btnShare";
-	this.btnShare.interactive = true;
-	this.btnShare.buttonMode=true;
-	this.btnShare.overSc = true;
-	this.addChild(this.btnShare);
-	this._arButtons.push(this.btnShare);
-	var tfFb = addText("Share", 40, "#FFFFFF", undefined, "center", 200)
-	tfFb.x = 20;
-	tfFb.y = -tfFb.height/2;
-	this.btnShare.addChild(tfFb);
-	this.btnTweetShare = addButton("btnTweetShare", _W - 120, 140, 0.75);
-	this.btnTweetShare.name = "btnTweet";
-	this.btnTweetShare.interactive = true;
-	this.btnTweetShare.buttonMode=true;
-	this.btnTweetShare.overSc = true;
-	var tfTw = addText("Tweet", 40, "#FFFFFF", undefined, "center", 200)
-	tfTw.x = 20;
-	tfTw.y = -tfTw.height/2;
-	this.btnTweetShare.addChild(tfTw);
-	this.addChild(this.btnTweetShare);
-	this._arButtons.push(this.btnTweetShare);
+	var btnDao = addButton("btnDao", _W - 80, _H - 80);
+	btnDao.interactive = true;
+	btnDao.buttonMode=true;
+	btnDao.overSc = true;
+	this.addChild(btnDao);
+	this._arButtons.push(btnDao);
+	var btnFB = addButton("btnFacebookShare", _W - 80, 70, 0.35);
+	btnFB.name = "btnShare";
+	btnFB.interactive = true;
+	btnFB.buttonMode=true;
+	btnFB.overSc = true;
+	this.addChild(btnFB);
+	this._arButtons.push(btnFB);
+	var btnTweet = addButton("btnTweetShare", _W - 80, 180, 0.35);
+	btnTweet.name = "btnTweet";
+	btnTweet.interactive = true;
+	btnTweet.buttonMode=true;
+	btnTweet.overSc = true;
+	this.addChild(btnTweet);
+	this._arButtons.push(btnTweet);
 	
 	var posX = _W/2-680;
 	var posY = _H/2+180+offsetY;
@@ -1241,7 +1244,7 @@ ScrGame.prototype.getBalancePlayer = function(){
 	var value = callERC20("balanceOf", openkey);
 	obj_game["balance"] = Number(value);
 	login_obj["balance"] = obj_game["balance"];
-	prnt.tfBalance.setText(convertToken(obj_game["balance"]));
+	prnt.tfBalance.setText(convertToken(obj_game["balance"]) + " BET");
 	if(obj_game["balance"] > 0){
 		prnt.tfGetEth.setText("");
 		if(prnt.oldBalance == -1){
@@ -1341,7 +1344,7 @@ ScrGame.prototype.clickSplit = function(){
 		this.tfMySplitPoints.setText(this._arMyCards[0].point);
 		this.showButtons(true);
 		obj_game["balance"] -= betGame;
-		this.tfBalance.setText(obj_game["balance"]);
+		this.tfBalance.setText(obj_game["balance"] + " BET");
 	} else {
 		this.bWait = true;
 		this.bWaitSplit = true;
@@ -2366,7 +2369,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				if(options_debug){
 					stateNow = S_IN_PROGRESS;
 					obj_game["balance"] -= betGame;
-					this.tfBalance.setText(obj_game["balance"]);
+					this.tfBalance.setText(obj_game["balance"]) + " BET";
 					this.startGame = true;
 					this.countPlayerCard = 2;
 					this.countHouseCard = 1;
@@ -2394,7 +2397,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.showSmartContract();
 	} else if(item_mc.name == "btnDao"){
 		this.removeAllListener();
-		var url = "https://platform.dao.casino/";
+		// var url = "https://platform.dao.casino/";
+		var url = "/";
 		window.open(url, "_self");
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();

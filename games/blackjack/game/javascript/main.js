@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.49"
+var version = "v. 1.0.50"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -283,9 +283,21 @@ function handleComplete(evt) {
 		version = version + " testnet"
 	}
 	
+	// remove tile cub
+	addCSSRule(document.styleSheets[2], "#preloadko", "background-image: none", 1);
+	
 	infura = new Infura();
 	
 	start();
+}
+
+function addCSSRule(sheet, selector, rules, index) {
+	if(sheet.insertRule) {
+		sheet.insertRule(selector + "{" + rules + "}", index);
+	}
+	else {
+		sheet.addRule(selector, rules, index);
+	}
 }
 
 function getTimer(){
