@@ -37,7 +37,7 @@ WndInfo.prototype.init = function(_prnt) {
 	this.tf.y = -70;
 	this.addChild(this.tf);
 	this.tfBtn = addText("", 26, "#FFFFFF", "#000000", "center", 350)
-	this.tfBtn.y = this.btnOk.y - 12;
+	this.tfBtn.y = this.btnOk.y - this.tfBtn.height/2;
 	this.addChild(this.tfBtn);
 	
 	this.interactive = true;
@@ -54,6 +54,8 @@ WndInfo.prototype.show = function(str, callback, addStr) {
 		this._callback = callback;
 		this.btnOk.visible = true;
 		if(addStr=""){}else{addStr="OK"};
+	}else if(addStr!=""){
+		this.btnOk.visible = true;
 	}else{
 		this._callback = undefined;
 		this.btnOk.visible = false;
