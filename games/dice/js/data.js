@@ -103,6 +103,7 @@ var block;
 
 
 function getMyLogs() {
+    console.log("my")
     $('tbody').empty();
     if (arGame.length > 10) {
         var i = arGame.length - 10;}
@@ -116,8 +117,8 @@ function getMyLogs() {
                 var bet = arGame[i][3] / 100000000;
                 var chance = arGame[i][4] / 65536 * 100;
                 var rnd = arGame[i][5];
-                var payout = bet * chance;
-                var profit = payout - bet;
+                var payout = ((65536 - 1310) / arGame[i][4]);
+                var profit = payout*bet - bet;
                 var result;
                 
                 if (rnd < arGame[i][4] ) {
@@ -128,9 +129,17 @@ function getMyLogs() {
                     profit = -bet;
                     color = "gray";
                 }
+                console.log(player,openkey)
+                if(player == openkey){
+                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                }
+                else{
+                    console.log("No")
+                }
                 if (player == openkey && ($('tbody tr').length != 10)) {
+                    console.log("__________________!_______________________")
                 $(".dice-table#table").append('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
-                    "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance.toFixed() + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + result + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + (payout / bet / 10).toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
+                    "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance.toFixed() + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + result + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
                 }
             }
         }
@@ -151,12 +160,12 @@ function getAllLogs() {
         for (var i ; i < arGame.length; i++) {
             if (arGame[i].length > 5) {
                 var tx = arGame[i][0];
-                var player = '0x' + arGame[i][2].substr(26);
+                var player = '0x' + arGame[i][2].substr(24);
                 var bet = arGame[i][3] / 100000000;
                 var chance = arGame[i][4] / 65536 * 100;
                 var rnd = arGame[i][5];
-                var payout = bet * chance;
-                var profit = payout - bet;
+                var payout = ((65536 - 1310) / arGame[i][4]);
+                var profit = payout*bet - bet;
                 var result;
                 
                 if (rnd < arGame[i][4] ) {
@@ -169,7 +178,7 @@ function getAllLogs() {
                 }
 
                 $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + ' "> 0x' + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
-                    "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance.toFixed() + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + result + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + (payout / bet / 10).toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
+                    "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance.toFixed() + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + result + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
             }
         }
     }

@@ -83,7 +83,7 @@ if (localStorage.getItem("isreg")) {
 }
 
 if(localStorage.getItem('isreg')!= null && !localStorage.getItem('keystore') ){
-	alert("This account does not support tokens. Create a new account")
+	$('#alarm').html("THIS ACCOUNT DOES NOT SUPPORT TOKENS.<br> CREATE A NEW ACCOUNT!")
 }
 
 var secret = lightwallet.keystore.generateRandomSeed();
