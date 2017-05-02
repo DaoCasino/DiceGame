@@ -1725,7 +1725,7 @@ ScrGame.prototype.shareTwitter = function() {
 	if(twttr){
 		var urlGame = 'http://platform.dao.casino/';
 		var url="https://twitter.com/intent/tweet";
-		var str='Play blackjack for ether '+ " " + urlGame;
+		var str='Play blackjack for tokens '+ " " + urlGame;
 		var hashtags="blockchain,ethereum,blackjack";
 		var via="daocasino";
 		window.open(url+"?text="+str+";hashtags="+hashtags+";via="+via,"","width=500,height=300");
@@ -1735,7 +1735,7 @@ ScrGame.prototype.shareTwitter = function() {
 ScrGame.prototype.shareFB = function() {
 	if (typeof(FB) != 'undefined' && FB != null ) {
 		var urlGame = 'http://platform.dao.casino/';
-		var urlImg = "http://platform.dao.casino/games/blackjack/game/images/share/bgGame.jpg";
+		var urlImg = "http://platform.dao.casino/games/blackjack/game/images/share/bgMenu.jpg";
 		
 		FB.ui({
 		  method: 'feed',
@@ -2300,7 +2300,7 @@ ScrGame.prototype.response = function(command, value) {
 }
 
 ScrGame.prototype.resetTimer  = function(){
-	
+	this.timeGetState = TIME_GET_STATE;
 }
 
 ScrGame.prototype.update = function(diffTime){

@@ -309,11 +309,6 @@ function getTimer(){
 
 function refreshTime(){
 	startTime = getTimer();
-	// if(currentScreen){
-		// if(ScreenGame){
-			// ScreenGame.resetTimer();
-		// }
-	// }
 }
 
 function get_normal_time(ms){
@@ -876,6 +871,12 @@ function visGame() {
 	//play
 	options_pause = false;
 	refreshTime();
+	
+	if(currentScreen){
+		if(ScreenGame){
+			ScreenGame.resetTimer();
+		}
+	}
 }
 
 function hideGame() {
