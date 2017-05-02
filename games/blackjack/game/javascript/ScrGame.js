@@ -227,7 +227,8 @@ ScrGame.prototype.init = function() {
 	this.checkGameState(true);
 	this.getAllowance();
 	if(!this.bApprove){
-		this.showWndApprove();
+		// this.showWndApprove();
+		this.acceptApprove();
 	}
 	
 	if(openkey){} else {
@@ -626,10 +627,14 @@ ScrGame.prototype.showWndInsurance = function(str, callback) {
 
 ScrGame.prototype.acceptApprove = function() {
 	var prnt = obj_game["game"];
-	approve(100000000000); // 1000 tokens
-	prnt.bClickApprove = true;
-	prnt.bWait = true;
-	prnt.showChips(false);
+	if(obj_game["balancePlEth"] > 0){
+		approve(100000000000); // 1000 tokens
+		prnt.bClickApprove = true;
+		prnt.bWait = true;
+		prnt.showChips(false);
+	} else {
+		prnt.showError(ERROR_BALANCE);
+	}
 }
 	
 ScrGame.prototype.showWndApprove = function() {
