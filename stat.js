@@ -203,7 +203,7 @@ function total(){
             }, "latest"]
         }),
         success: function (d) {
-            result = hexToNum(d.result); console.log(result)
+            result = hexToNum(d.result);
         }
     });
     return result;
