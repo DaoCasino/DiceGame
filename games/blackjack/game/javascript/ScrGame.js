@@ -1959,8 +1959,10 @@ ScrGame.prototype.response = function(command, value) {
 	// console.log("response:", command, value);
 	if(command == "gameTxHash"){
 		prnt.startGame = true;
-		prnt.getGameId();
 		prnt.getBalancePlayer();
+		prnt.timeGetState = 0;
+		prnt.checkGameState(true);
+		// prnt.getGameId();
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
 		if(prnt.tfGetEth){
