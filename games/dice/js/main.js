@@ -58,7 +58,7 @@ function loadData() {
         privkey = localStorage.getItem('privkey')
         sendingAddr = openkey.substr(2);
     }
-    console.log("version 0.52 BET") // VERSION !
+    console.log("version 0.54 BET") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -214,8 +214,8 @@ function initGame() {
     count = call("totalRollsByUser", openkey)
     console.log("old_count", count);
     $("#total-rolls").html(call("getTotalRollMade", openkey));
-    $("#total-paid").html(paids + ' BET');
-    $("#total-send").html(sends + ' BET (' + ((paids / sends) * 100).toFixed(2) + '%)');
+    $("#total-paid").html(paids.toFixed(3) + ' BET');
+    $("#total-send").html(sends.toFixed(3) + ' BET (' + ((paids / sends) * 100).toFixed(2) + '%)');
     getContractBalance();
     $("#contract").html('<a target="_blank" href="https://ropsten.etherscan.io/address/' + addressContract + '">' + addressContract.slice(0, 24) + '...</a>')
     GetLogs();

@@ -227,7 +227,8 @@ ScrGame.prototype.init = function() {
 	this.checkGameState(true);
 	this.getAllowance();
 	if(!this.bApprove){
-		this.showWndApprove();
+		// this.showWndApprove();
+		this.acceptApprove();
 	}
 	
 	if(openkey){} else {
@@ -307,13 +308,7 @@ ScrGame.prototype.clearGame = function(){
 	}
 }
 
-ScrGame.prototype.clearBet = function(){
-	betGame = 0;
-	betSplitGame = 0;
-	betGameOld = 0;
-	valInsurance = 0;
-	this.clearChips();
-	this.clearSplitChips();
+ScrGame.prototype.clearText = function(){
 	if(this.btnClear){
 		this.btnClear.alpha = 0.5;
 		this.btnStart.alpha = 0.5;
@@ -324,6 +319,16 @@ ScrGame.prototype.clearBet = function(){
 		this.tfSplitBet.setText("");
 		this.tfStatus.x = _W/2;
 	}
+}
+
+ScrGame.prototype.clearBet = function(){
+	betGame = 0;
+	betSplitGame = 0;
+	betGameOld = 0;
+	valInsurance = 0;
+	this.clearChips();
+	this.clearSplitChips();
+	this.clearText();
 }
 
 ScrGame.prototype.clearChips = function(){
@@ -431,7 +436,7 @@ ScrGame.prototype.createGUI = function() {
 	this.tfIdUser.x = icoKey.x + 30;
 	this.tfIdUser.y = icoKey.y - 12;
 	this.face_mc.addChild(this.tfIdUser);
-	this.tfBalance = addText(String(obj_game["balance"]), fontSize, "#ffffff", "#000000", "left", 400, 4)
+	this.tfBalance = addText(String(obj_game["balance"]) + " BET", fontSize, "#ffffff", "#000000", "left", 400, 4)
 	this.tfBalance.x = icoEthereum.x + 30;
 	this.tfBalance.y = icoEthereum.y - 12;
 	this.face_mc.addChild(this.tfBalance);
@@ -501,7 +506,7 @@ ScrGame.prototype.createGUI = function() {
 	
 	btnDeal.hint = 'To activate "Deal" please choose a bet';
 	btnClear.hint = 'To "Clear" please choose a bet';
-	btnSplit.hint = 'To play "Split" wait for dealt a pair (two of the same card)';
+	btnSplit.hint = 'To play "Split" wait for dealt a pair';
 	btnDouble.hint = 'To play "Double"  on hard 9-11 points';
 	
 	btnDeal.alpha = 0.5;
@@ -515,32 +520,35 @@ ScrGame.prototype.createGUI = function() {
 	btnStand.visible = false;
 	
 	if(!options_rpc){
-		this.createButton("btnSmart", 120, _H-60, "Contract", 0.7, 40);
+		var btnContract = addButton("btnContract", 80, _H - 80);
+		btnContract.name = "btnSmart";
+		btnContract.interactive = true;
+		btnContract.buttonMode=true;
+		btnContract.overSc = true;
+		this.addChild(btnContract);
+		this._arButtons.push(btnContract);
 	}
-	this.createButton("btnDao", _W-120, _H-60, "DAO.CASINO", 0.7, 34);
 	
-	this.btnShare = addButton("btnFacebookShare", _W - 120, 50, 0.75);
-	this.btnShare.name = "btnShare";
-	this.btnShare.interactive = true;
-	this.btnShare.buttonMode=true;
-	this.btnShare.overSc = true;
-	this.addChild(this.btnShare);
-	this._arButtons.push(this.btnShare);
-	var tfFb = addText("Share", 40, "#FFFFFF", undefined, "center", 200)
-	tfFb.x = 20;
-	tfFb.y = -tfFb.height/2;
-	this.btnShare.addChild(tfFb);
-	this.btnTweetShare = addButton("btnTweetShare", _W - 120, 140, 0.75);
-	this.btnTweetShare.name = "btnTweet";
-	this.btnTweetShare.interactive = true;
-	this.btnTweetShare.buttonMode=true;
-	this.btnTweetShare.overSc = true;
-	var tfTw = addText("Tweet", 40, "#FFFFFF", undefined, "center", 200)
-	tfTw.x = 20;
-	tfTw.y = -tfTw.height/2;
-	this.btnTweetShare.addChild(tfTw);
-	this.addChild(this.btnTweetShare);
-	this._arButtons.push(this.btnTweetShare);
+	var btnDao = addButton("btnDao", _W - 80, _H - 80);
+	btnDao.interactive = true;
+	btnDao.buttonMode=true;
+	btnDao.overSc = true;
+	this.addChild(btnDao);
+	this._arButtons.push(btnDao);
+	var btnFB = addButton("btnFacebookShare", _W - 80, 70, 0.35);
+	btnFB.name = "btnShare";
+	btnFB.interactive = true;
+	btnFB.buttonMode=true;
+	btnFB.overSc = true;
+	this.addChild(btnFB);
+	this._arButtons.push(btnFB);
+	var btnTweet = addButton("btnTweetShare", _W - 80, 180, 0.35);
+	btnTweet.name = "btnTweet";
+	btnTweet.interactive = true;
+	btnTweet.buttonMode=true;
+	btnTweet.overSc = true;
+	this.addChild(btnTweet);
+	this._arButtons.push(btnTweet);
 	
 	var posX = _W/2-680;
 	var posY = _H/2+180+offsetY;
@@ -619,10 +627,14 @@ ScrGame.prototype.showWndInsurance = function(str, callback) {
 
 ScrGame.prototype.acceptApprove = function() {
 	var prnt = obj_game["game"];
-	approve(100000000000); // 1000 tokens
-	prnt.bClickApprove = true;
-	prnt.bWait = true;
-	prnt.showChips(false);
+	if(obj_game["balancePlEth"] > 0){
+		approve(100000000000); // 1000 tokens
+		prnt.bClickApprove = true;
+		prnt.bWait = true;
+		prnt.showChips(false);
+	} else {
+		prnt.showError(ERROR_BALANCE);
+	}
 }
 	
 ScrGame.prototype.showWndApprove = function() {
@@ -772,9 +784,9 @@ ScrGame.prototype.showPlayerCard = function(card){
 		if(this.mySplitPoints > 0){
 			card.x = _W/2 - 200 + lastPlayerCard*30;
 			this.tfMyPoints.x = _W/2-270;
-			if(this.bSplit && !this.bStandSplit){
-				card.img.tint = 0x999999;
-			}
+			// if(this.bSplit && !this.bStandSplit){
+				// card.img.tint = 0x999999;
+			// }
 		} else {
 			card.x = _W/2 - 80 + lastPlayerCard*30;
 			this.tfMyPoints.x = _W/2-150;
@@ -795,9 +807,9 @@ ScrGame.prototype.showPlayerSplitCard = function(card){
 		var offsetY = 50;
 		card.x = _W/2 + 200 + lastPlayerSplitCard*30;
 		card.y = _H/2 + 70;
-		if(!this.bSplit && this.bStandSplit){
-			card.img.tint = 0x999999;
-		}
+		// if(!this.bSplit && this.bStandSplit){
+			// card.img.tint = 0x999999;
+		// }
 		this.cards_mc.addChild(card);
 		lastPlayerSplitCard++;
 		dealedCards.push(card);
@@ -1064,14 +1076,21 @@ ScrGame.prototype.isDoubleAvailable = function() {
 	return false;
 }
 
-ScrGame.prototype.getPlayerBet = function(isMain) {
-	if(isMain){}else{isMain = 1}
+ScrGame.prototype.getBet = function(isMain) {
+	var val = 0;
+	if(isMain){
+		val = 1;
+	}
 	var key = openkey.substr(2);
-	var data = "0x"+C_GET_BET + pad(numToHex(isMain), 64) + pad(key, 64);
+	var data = "0x"+C_GET_BET + pad(numToHex(val), 64) + pad(key, 64);
 	var params = {"from":openkey,
 				"to":addressStorage,
 				"data":data};
-	infura.sendRequest("getPlayerBet", params, _callback);
+	if(isMain){
+		infura.sendRequest("getPlayerBet", params, _callback);
+	} else {
+		infura.sendRequest("getSplitBet", params, _callback);
+	}
 }
 
 ScrGame.prototype.getGameId = function() {
@@ -1241,7 +1260,7 @@ ScrGame.prototype.getBalancePlayer = function(){
 	var value = callERC20("balanceOf", openkey);
 	obj_game["balance"] = Number(value);
 	login_obj["balance"] = obj_game["balance"];
-	prnt.tfBalance.setText(convertToken(obj_game["balance"]));
+	prnt.tfBalance.setText(convertToken(obj_game["balance"]) + " BET");
 	if(obj_game["balance"] > 0){
 		prnt.tfGetEth.setText("");
 		if(prnt.oldBalance == -1){
@@ -1341,7 +1360,7 @@ ScrGame.prototype.clickSplit = function(){
 		this.tfMySplitPoints.setText(this._arMyCards[0].point);
 		this.showButtons(true);
 		obj_game["balance"] -= betGame;
-		this.tfBalance.setText(obj_game["balance"]);
+		this.tfBalance.setText(obj_game["balance"] + " BET");
 	} else {
 		this.bWait = true;
 		this.bWaitSplit = true;
@@ -1562,7 +1581,7 @@ ScrGame.prototype.loadBet = function(value){
 	this.bWait = false;
 	this.arrow.visible = false;
 	betGame = Number(hexToNum(value));
-	betSplitGame = betGame;
+	// betSplitGame = betGame;
 	betGameCur = betGame;
 	var str = String(convertToken(betGame));
 	if(betGame == 0){
@@ -1577,8 +1596,8 @@ ScrGame.prototype.loadBet = function(value){
 	this.isSplitAvailable();
 	this.fillChips(betGame);
 	if(this.countPlayerSplitCard > 0){
-		this.fillChips(betSplitGame, "split");
-		this.tfSplitBet.setText(str);
+		// this.fillChips(betSplitGame, "split");
+		// this.tfSplitBet.setText(str);
 		this.tfMyBet.x = _W/2 - 250;
 	}
 }
@@ -1587,6 +1606,11 @@ ScrGame.prototype.clickChip = function(item_mc){
 	if(this.bApprove || options_rpc){}else{
 		this.showWndApprove();
 		return false;
+	}
+	
+	if(betGame == 0){
+		this.clearChips();
+		this.clearSplitChips();
 	}
 	
 	var name = item_mc.name;
@@ -1706,7 +1730,7 @@ ScrGame.prototype.shareTwitter = function() {
 	if(twttr){
 		var urlGame = 'http://platform.dao.casino/';
 		var url="https://twitter.com/intent/tweet";
-		var str='Play blackjack for ether '+ " " + urlGame;
+		var str='Play blackjack for tokens '+ " " + urlGame;
 		var hashtags="blockchain,ethereum,blackjack";
 		var via="daocasino";
 		window.open(url+"?text="+str+";hashtags="+hashtags+";via="+via,"","width=500,height=300");
@@ -1716,7 +1740,7 @@ ScrGame.prototype.shareTwitter = function() {
 ScrGame.prototype.shareFB = function() {
 	if (typeof(FB) != 'undefined' && FB != null ) {
 		var urlGame = 'http://platform.dao.casino/';
-		var urlImg = "http://platform.dao.casino/games/blackjack/game/images/share/bgGame.jpg";
+		var urlImg = "http://platform.dao.casino/games/blackjack/game/images/share/bgMenu.jpg";
 		
 		FB.ui({
 		  method: 'feed',
@@ -1935,8 +1959,11 @@ ScrGame.prototype.response = function(command, value) {
 	// console.log("response:", command, value);
 	if(command == "gameTxHash"){
 		prnt.startGame = true;
-		prnt.getGameId();
 		prnt.getBalancePlayer();
+		prnt.timeGetState = TIME_GET_STATE - 1000;
+		// prnt.timeGetState = 0;
+		// prnt.checkGameState(true);
+		// prnt.getGameId();
 	} else if(command == "getEthereum"){
 		var obj = JSON.parse(value);
 		if(prnt.tfGetEth){
@@ -2016,6 +2043,18 @@ ScrGame.prototype.response = function(command, value) {
 			} else {
 				prnt.showChips(true);
 			}
+		} else {
+			betGame = Number(hexToNum(value));
+			if(betGame > 0 && prnt._arMyCards.length > 0){
+				prnt.fillChips(betGame);
+				prnt.tfMyBet.setText(betGame/valToken);
+			}
+		}
+	} else if(command == "getSplitBet"){
+		betSplitGame = Number(hexToNum(value));
+		if(betSplitGame > 0 && (prnt._arMySplitCards.length > 0 || !prnt.bBetLoad)){
+			prnt.fillChips(betSplitGame, "split");
+			prnt.tfSplitBet.setText(betSplitGame/valToken);
 		}
 	} else if(command == "isInsuranceAvailable"){
 		if((stateNow == S_IN_PROGRESS ||
@@ -2028,7 +2067,7 @@ ScrGame.prototype.response = function(command, value) {
 		houseScore = Number(hexToNum(value));
 	} else if(command == "getPlayerSplitScore"){
 		var point = Number(hexToNum(value));
-		var bet = betGameCur/valToken;
+		var bet = betSplitGame/valToken;
 		var strResult = "";
 		switch (stateSplit){
 			case S_BLACKJACK:
@@ -2054,7 +2093,7 @@ ScrGame.prototype.response = function(command, value) {
 		prnt.tfSplitBet.setText(strResult);
 	} else if(command == "getPlayerScore"){
 		var point = Number(hexToNum(value));
-		var bet = betGameCur/valToken;
+		var bet = betGame/valToken;
 		var strResult = "";
 		switch (stateNow){
 			case S_BLACKJACK:
@@ -2078,7 +2117,6 @@ ScrGame.prototype.response = function(command, value) {
 		}
 		
 		prnt.tfMyBet.setText(strResult);
-		// prnt.showChips(true);
 	} else if(command == "getSplitState"){
 		if(value != "0x"){
 			stateSplit = hexToNum(value);
@@ -2110,7 +2148,6 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getGameState"){
 		if(value != "0x"){
 			stateNow = hexToNum(value);
-			console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.bSplit);
 		}
 		
 		if(!prnt.bApprove){
@@ -2120,9 +2157,11 @@ ScrGame.prototype.response = function(command, value) {
 		if(!prnt.bBetLoad){
 			prnt.bWait = true;
 			prnt.showButtons(false);
-			prnt.getPlayerBet();
+			prnt.getBet(false);
+			prnt.getBet(true);
 			return false;
 		}
+		console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.bSplit);
 		
 		prnt.getBalancePlayer();
 		
@@ -2172,7 +2211,9 @@ ScrGame.prototype.response = function(command, value) {
 				if(prnt.mySplitPoints > 0){
 					_x = _W/2 - 200-75;
 				}
-				prnt.clearBet();
+				prnt.clearText();
+				prnt.getBet(false);
+				prnt.getBet(true);
 				prnt.getSplitCardsNumber();
 				prnt.getPlayerCardsNumber();
 				prnt.getHouseCardsNumber();
@@ -2182,6 +2223,12 @@ ScrGame.prototype.response = function(command, value) {
 					prnt.checkGameState(false);
 					prnt.getPlayerScore(false);	
 				}
+				betGame = 0;
+				betSplitGame = 0;
+				betGameOld = 0;
+				valInsurance = 0;
+				// prnt.clearChips();
+				// prnt.clearSplitChips();
 				
 				switch (stateNow){
 					case S_BLACKJACK:						
@@ -2261,11 +2308,13 @@ ScrGame.prototype.response = function(command, value) {
 }
 
 ScrGame.prototype.resetTimer  = function(){
-	
+	this.timeGetState = TIME_GET_STATE;
 }
 
-ScrGame.prototype.update = function(){
-	var diffTime = getTimer() - this.startTime;
+ScrGame.prototype.update = function(diffTime){
+	if(options_pause){
+		return false;
+	}
 	
 	if(this.startGame || 
 	// this.bClickStart || 
@@ -2319,10 +2368,8 @@ ScrGame.prototype.update = function(){
 		}
 	}
 	
-	// if(stateNow > -1){
-		this.mixingCard.visible = this.bWait;
-		this.mixingCard.update(diffTime);
-	// }
+	this.mixingCard.visible = this.bWait;
+	this.mixingCard.update(diffTime);
 	
 	if(this.bWait){
 		this.timeWait += diffTime;
@@ -2339,8 +2386,6 @@ ScrGame.prototype.update = function(){
 			}
 		}
 	}
-	
-	this.startTime = getTimer();
 }
 
 ScrGame.prototype.clickCell = function(item_mc) {
@@ -2366,7 +2411,7 @@ ScrGame.prototype.clickCell = function(item_mc) {
 				if(options_debug){
 					stateNow = S_IN_PROGRESS;
 					obj_game["balance"] -= betGame;
-					this.tfBalance.setText(obj_game["balance"]);
+					this.tfBalance.setText(obj_game["balance"]) + " BET";
 					this.startGame = true;
 					this.countPlayerCard = 2;
 					this.countHouseCard = 1;
@@ -2394,7 +2439,8 @@ ScrGame.prototype.clickCell = function(item_mc) {
 		this.showSmartContract();
 	} else if(item_mc.name == "btnDao"){
 		this.removeAllListener();
-		var url = "https://platform.dao.casino/";
+		// var url = "https://platform.dao.casino/";
+		var url = "/";
 		window.open(url, "_self");
 	} else if(item_mc.name == "btnHit"){
 		this.clickHit();

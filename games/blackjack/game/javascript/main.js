@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.49"
+var version = "v. 1.0.50"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -8,6 +8,7 @@ var openkey, privkey, mainet;
 var currentScreen, scrContainer;
 var ScreenMenu, ScreenGame, ScreenLevels, ScreenTest;
 var LoadPercent = null;
+var startTime;
 var renderer, stage, preloader; // pixi;
 var sprites_loaded = false;
 var infura, soundManager, ks, sendingAddr;
@@ -283,9 +284,21 @@ function handleComplete(evt) {
 		version = version + " testnet"
 	}
 	
+	// remove tile cub
+	addCSSRule(document.styleSheets[2], "#preloadko", "background-image: none", 1);
+	
 	infura = new Infura();
 	
 	start();
+}
+
+function addCSSRule(sheet, selector, rules, index) {
+	if(sheet.insertRule) {
+		sheet.insertRule(selector + "{" + rules + "}", index);
+	}
+	else {
+		sheet.addRule(selector, rules, index);
+	}
 }
 
 function getTimer(){
@@ -296,11 +309,6 @@ function getTimer(){
 
 function refreshTime(){
 	startTime = getTimer();
-	if(currentScreen){
-		if(ScreenGame){
-			ScreenGame.resetTimer();
-		}
-	}
 }
 
 function get_normal_time(ms){
@@ -366,12 +374,19 @@ function removeAllScreens() {
 }
 
 function update() {
-	if(ScreenGame){
-		ScreenGame.update();
-	}
-	
-	requestAnimationFrame(update);
+	raf(update);
 	renderer.render(stage);
+	if(options_pause){
+		return;
+	}
+	var diffTime = getTimer() - startTime;
+	if(diffTime > 29){
+		if (ScreenGame) {
+			ScreenGame.update(diffTime);
+		}
+		
+		startTime = getTimer();
+	}
 }
 
 function saveData() {
@@ -856,6 +871,12 @@ function visGame() {
 	//play
 	options_pause = false;
 	refreshTime();
+	
+	if(currentScreen){
+		if(ScreenGame){
+			ScreenGame.resetTimer();
+		}
+	}
 }
 
 function hideGame() {
