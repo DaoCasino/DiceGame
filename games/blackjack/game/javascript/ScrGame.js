@@ -137,6 +137,8 @@ ScrGame.prototype.init = function() {
 	this.countPlayerCard = 0;
 	this.countPlayerSplitCard = 0;
 	this.countHouseCard = 0;
+	this.valPlayerScore = 0;
+	this.valSplitScore = 0;
 	this.countWait = 0;
 	this.myPoints = 0;
 	this.mySplitPoints = 0;
@@ -283,6 +285,8 @@ ScrGame.prototype.clearGame = function(){
 	this.countPlayerSplitCard = 0;
 	this.myPoints = 0;
 	this.mySplitPoints = 0;
+	this.valPlayerScore = 0;
+	this.valSplitScore = 0;
 	this.bStand = false;
 	this.bSplit = false;
 	this.bStandSplit = false;
@@ -2069,6 +2073,7 @@ ScrGame.prototype.response = function(command, value) {
 		var point = Number(hexToNum(value));
 		var bet = betSplitGame/valToken;
 		var strResult = "";
+		prnt.valSplitScore = point;
 		switch (stateSplit){
 			case S_BLACKJACK:
 			case S_PLAYER_WON:
@@ -2095,6 +2100,7 @@ ScrGame.prototype.response = function(command, value) {
 		var point = Number(hexToNum(value));
 		var bet = betGame/valToken;
 		var strResult = "";
+		prnt.valPlayerScore = point;
 		switch (stateNow){
 			case S_BLACKJACK:
 			case S_PLAYER_WON:
@@ -2231,7 +2237,8 @@ ScrGame.prototype.response = function(command, value) {
 				// prnt.clearSplitChips();
 				
 				switch (stateNow){
-					case S_BLACKJACK:						
+					case S_BLACKJACK:
+						console.log("BLACKJACK:", prnt.valPlayerScore);
 						if(prnt.countPlayerCard == 2){
 							prnt.showResult("tfBlackjack", _x, _y);
 						} else {
