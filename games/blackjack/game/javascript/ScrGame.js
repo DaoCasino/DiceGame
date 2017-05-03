@@ -2362,6 +2362,7 @@ ScrGame.prototype.update = function(diffTime){
 	if(this.timeWaitResponse > 0){
 		this.timeWaitResponse -= diffTime;
 		if(this.timeWaitResponse <= 0){
+			this.bWait = false;
 			this.showError(ERROR_DEAL);
 		}
 	}
