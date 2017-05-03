@@ -11,6 +11,7 @@ var TIME_GET_STATE = 10000;
 var TIME_WAIT = 500;
 var TIME_SHOW_BTN_CHIPS = 3000;
 var TIME_SHOW_BTN = 300;
+var TIME_LONG_RESPONSE = 1000*60*3;
 var S_IN_PROGRESS = 0;	
 var S_PLAYER_WON = 1;	
 var S_HOUSE_WON = 2;	
@@ -134,6 +135,7 @@ ScrGame.prototype.init = function() {
 	this.timeNewCard = 0;
 	this.timeShowBtnChips = 0;
 	this.timeShowButtons = 0;
+	this.timeWaitResponse = 0;
 	this.countPlayerCard = 0;
 	this.countPlayerSplitCard = 0;
 	this.countHouseCard = 0;
@@ -281,6 +283,7 @@ ScrGame.prototype.clearGame = function(){
 	this.timeTotal = 0;
 	this.timeCloseWnd = 0;
 	this.timeNewCard = 0;
+	this.timeWaitResponse = 0;
 	this.countWait = 0;
 	this.countPlayerSplitCard = 0;
 	this.myPoints = 0;
@@ -1929,6 +1932,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 						var registerTx = lightwallet.txutils.functionTx(abi, name, args, options);
 						var params = "0x"+lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr);
 						infura.sendRequest(nameRequest, params, _callback);
+						prnt.timeWaitResponse = TIME_LONG_RESPONSE;
 					})
 				} else {
 					prnt.showError(ERROR_BUF);
@@ -1951,11 +1955,13 @@ ScrGame.prototype.response = function(command, value) {
 	if(value == undefined || options_debug){
 		if((command == "sendRaw" || command == "gameTxHash") && !options_debug){
 			prnt.showError(ERROR_CONTRACT);
-			prnt.clearBet();
-			prnt.tfStatus.setText("");
 			prnt.bWait = false;
-			prnt.bClickStart = false;
-			prnt.showChips(true);
+			if(prnt.countPlayerCard == 0){
+				prnt.clearBet();
+				prnt.tfStatus.setText("");
+				prnt.bClickStart = false;
+				prnt.showChips(true);
+			}
 		}
 		return false;
 	}
@@ -1965,6 +1971,7 @@ ScrGame.prototype.response = function(command, value) {
 		prnt.startGame = true;
 		prnt.getBalancePlayer();
 		prnt.timeGetState = TIME_GET_STATE - 1000;
+		prnt.timeWaitResponse = 0;
 		// prnt.timeGetState = 0;
 		// prnt.checkGameState(true);
 		// prnt.getGameId();
@@ -2167,7 +2174,7 @@ ScrGame.prototype.response = function(command, value) {
 			prnt.getBet(true);
 			return false;
 		}
-		console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.bSplit);
+		console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.startGame);
 		
 		prnt.getBalancePlayer();
 		
@@ -2310,6 +2317,7 @@ ScrGame.prototype.response = function(command, value) {
 			}
 		}
 	} else if(command == "sendRaw"){
+		prnt.timeWaitResponse = 0;
 		prnt.getBalancePlayer();
 	}
 }
@@ -2349,6 +2357,13 @@ ScrGame.prototype.update = function(diffTime){
 		this.timeNewCard = 1000;
 		this.sendCard(this._arNewCards[0]);
 		this._arNewCards.shift();
+	}
+	
+	if(this.timeWaitResponse > 0){
+		this.timeWaitResponse -= diffTime;
+		if(this.timeWaitResponse <= 0){
+			this.showError(ERROR_DEAL);
+		}
 	}
 	
 	if(this.timeCloseWnd > 0 && this.curWindow){
