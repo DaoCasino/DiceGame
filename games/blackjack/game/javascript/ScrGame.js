@@ -126,7 +126,7 @@ ScrGame.prototype.init = function() {
 	this._arHouseCards = [];
 	this._arNewCards = [];
 	this._arHolder = [];
-	this.timeGetState = 0;
+	this.timeGetState = TIME_GET_STATE-1000;
 	this.timeGetCards = 0;
 	this.timeTotal = 0;
 	this.timeWait = 0;
@@ -1585,7 +1585,6 @@ ScrGame.prototype.loadBet = function(value){
 	this.bWait = false;
 	this.arrow.visible = false;
 	betGame = Number(hexToNum(value));
-	// betSplitGame = betGame;
 	betGameCur = betGame;
 	var str = String(convertToken(betGame));
 	if(betGame == 0){
@@ -1600,8 +1599,6 @@ ScrGame.prototype.loadBet = function(value){
 	this.isSplitAvailable();
 	this.fillChips(betGame);
 	if(this.countPlayerSplitCard > 0){
-		// this.fillChips(betSplitGame, "split");
-		// this.tfSplitBet.setText(str);
 		this.tfMyBet.x = _W/2 - 250;
 	}
 }
@@ -1907,6 +1904,7 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 			prnt.showChips(true);
 			prnt.bClickStart = false;
 		} else {
+			console.log("The transaction was signed:", name);
 			// The transaction was signed
 			// var tx = new EthereumTx(options); // old
 			// tx.sign(new buf(privkey, 'hex')); // old
@@ -1934,11 +1932,13 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 					})
 				} else {
 					prnt.showError(ERROR_BUF);
-					prnt.clearBet();
-					prnt.tfStatus.setText("");
+					if(prnt.countPlayerCard == 0){
+						prnt.clearBet();
+						prnt.tfStatus.setText("");
+						prnt.showChips(true);
+						prnt.bClickStart = false;
+					}
 					prnt.bWait = false;
-					prnt.showChips(true);
-					prnt.bClickStart = false;
 				}
 			}
 		}

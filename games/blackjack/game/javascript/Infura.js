@@ -55,6 +55,9 @@ Infura.prototype.sendRequest = function(name, params, callback){
 									"params":arParams,
 									"id":1}),
 			success: function (d) {
+				if(method == "eth_sendRawTransaction"){
+					console.log("success gameTxHash:", d.result);
+				}
 				callback(name, d.result);
 			},
 			error: function(jQXHR, textStatus, errorThrown)
