@@ -2240,6 +2240,7 @@ ScrGame.prototype.response = function(command, value) {
 				betSplitGame = 0;
 				betGameOld = 0;
 				valInsurance = 0;
+				prnt.timeWaitResponse = 0;
 				// prnt.clearChips();
 				// prnt.clearSplitChips();
 				
