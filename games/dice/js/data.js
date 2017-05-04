@@ -20,7 +20,7 @@ var block;
             block = hexToNum(d.result) - 5000;
         }
     })
-
+	/*
     $.ajax({
         type: "POST",
         url: urlInfura,
@@ -58,7 +58,7 @@ var block;
             }
 
         }}})
-            
+            */
                 
 
             // function getArTh(thId) {
