@@ -231,7 +231,7 @@ function approve(approveValue) {
                                     "params": ["0x" + signedTx]
                                 }),
                                 success: function (d) {
-                                    console.log("Транзакция отправлена в сеть:", d.result);
+                                    console.log("The transaction was signed:", d.result);
                                     if(d.result == undefined){
                                         approve(100000000000);
                                     }

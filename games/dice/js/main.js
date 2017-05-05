@@ -3,7 +3,7 @@ var ks = localStorage.getItem('keystore');
 ks = lightwallet.keystore.deserialize(ks);
 var sendingAddr;
 var rawMsg;
-var confirmedGames = [];
+var login_obj = {};
 
 var balance = 1;
 var urlBalance = ""; //balance
@@ -59,8 +59,22 @@ function isLocalStorageAvailable() {
     }
 };
 
+function saveData() {
+	if(isLocalStorageAvailable()){
+		var login_str = JSON.stringify(login_obj);
+		localStorage.setItem('daocasino_dice', login_str);
+	}
+}
+
 function loadData() {
     if (isLocalStorageAvailable()) {
+		if (localStorage.getItem('daocasino_dice')){
+			var login_str = localStorage.getItem('daocasino_dice')
+			login_obj = JSON.parse(login_str);
+		} else {
+			login_obj["confirmedGames"] = {};
+		}
+		
         testnetAddress = localStorage.getItem(' testnetAddress')
         mainnetAddress = localStorage.getItem('mainnetAddress')
         mainnet = localStorage.getItem('mainnet')
@@ -215,7 +229,6 @@ setInterval(function () {
 }, 1000);
 
 function initGame() {
-    
     loadData();
     setContract();
     paids = (call("getTotalEthSended", openkey)) / 100000000;
@@ -437,10 +450,9 @@ function Confirm() {
 	})
 }
 
-	
 function sendRandom(rawMsg){
-	if(confirmedGames[rawMsg]){}else{
-		console.log("sendRandom:", rawMsg);
+	if(login_obj["confirmedGames"][rawMsg]){
+	}else{
 		var options = {};
 		options.to = addressContract;
 		options.gasPrice = "0x737be7600";
@@ -469,7 +481,7 @@ function sendRandom(rawMsg){
 			var s = '0x' + signature.slice(66, 130);
 			var v = vrs.v;
 			var args = [rawMsg, v, r, s];
-			console.log("vrs:",rawMsg,v,r,s)
+			// console.log("vrs:",rawMsg,v,r,s)
 			var registerTx = lightwallet.txutils.functionTx(abi, 'confirm', args, options)
 			var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
 			$.ajax({
@@ -484,7 +496,8 @@ function sendRandom(rawMsg){
 					"params": ["0x" + signedTx]
 				}),
 				success: function (d) {
-					confirmedGames.push(rawMsg);
+					login_obj["confirmedGames"][rawMsg] = true;
+					saveData();
 					// console.log("confirm:",d.result);
 				}
 			})
