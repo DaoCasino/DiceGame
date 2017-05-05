@@ -2355,10 +2355,11 @@ ScrGame.prototype.update = function(diffTime){
 		return false;
 	}
 	
-	if(this.startGame || 
+	// if(this.startGame || 
 	// this.bClickStart || 
-	stateNow == S_IN_PROGRESS || 
-	stateNow == S_IN_PROGRESS_SPLIT){
+	// stateNow == S_IN_PROGRESS || 
+	// stateNow == S_IN_PROGRESS_SPLIT){
+	if(this.startGame){
 		this.timeTotal += diffTime;
 		this.tfTotalTime.setText(Math.round(this.timeTotal/1000));
 	}
@@ -2383,7 +2384,7 @@ ScrGame.prototype.update = function(diffTime){
 		this._arNewCards.shift();
 	}
 	
-	if(this.timeWaitResponse > 0){
+	if(this.timeWaitResponse > 0 && this.bWait){
 		this.timeWaitResponse -= diffTime;
 		if(this.timeWaitResponse <= 0){
 			this.bWait = false;
