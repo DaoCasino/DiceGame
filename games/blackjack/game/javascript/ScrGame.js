@@ -408,6 +408,7 @@ ScrGame.prototype.createGUI = function() {
 	btnFrame.buttonMode=true;
 	this.face_mc.addChild(btnFrame);
 	this._arButtons.push(btnFrame);
+	this.btnFrame = btnFrame;
 	
 	_oStartingCardOffset = new vector(1487,298);
 	_oDealerCardOffset = new vector(_W/2-80,_H/2-200);
@@ -511,11 +512,6 @@ ScrGame.prototype.createGUI = function() {
 	var btnDouble = this.createButton2("btnDouble", "Double", 1500, 890, scGui);
 	this.btnDouble = btnDouble;
 	
-	btnDeal.hint = 'To activate "Deal" please choose a bet';
-	btnClear.hint = 'To "Clear" please choose a bet';
-	btnSplit.hint = 'To play "Split" wait for dealt a pair';
-	btnDouble.hint = 'To play "Double"  on hard 9-11 points';
-	
 	btnDeal.alpha = 0.5;
 	btnClear.alpha = 0.5;
 	btnHit.alpha = 0.5;
@@ -532,6 +528,7 @@ ScrGame.prototype.createGUI = function() {
 		btnContract.interactive = true;
 		btnContract.buttonMode=true;
 		btnContract.overSc = true;
+		btnContract.hint2 = 'Show contract';
 		this.addChild(btnContract);
 		this._arButtons.push(btnContract);
 	}
@@ -556,6 +553,14 @@ ScrGame.prototype.createGUI = function() {
 	btnTweet.overSc = true;
 	this.addChild(btnTweet);
 	this._arButtons.push(btnTweet);
+	
+	btnDeal.hint = 'To activate "Deal" please choose a bet';
+	btnClear.hint = 'To "Clear" please choose a bet';
+	btnSplit.hint = 'To play "Split" wait for dealt a pair';
+	btnDouble.hint = 'To play "Double"  on hard 9-11 points';
+	btnFB.hint2 = 'Share Facebook';
+	btnTweet.hint2 = 'Tweet';
+	btnDao.hint2 = 'Home';
 	
 	var posX = _W/2-680;
 	var posY = _H/2+180+offsetY;
@@ -604,16 +609,34 @@ ScrGame.prototype.createWndInfo = function(str, callback, addStr) {
 	this.curWindow = this.wndInfo;
 }
 
-ScrGame.prototype.showTooltip = function(str, _x, _y) {
+ScrGame.prototype.showTooltip = function(item, str, _x, _y) {
 	if(_x){}else{_x=_W/2}
 	if(_y){}else{_y=_H/2}
 	if(this.tooltip == undefined){
 		this.tooltip = new tooltip(this);
-		this.face_mc.addChild(this.tooltip);
+		this.addChild(this.tooltip);
 	}
+	var w = this.tooltip.width;
+	var h = this.tooltip.height;
 	
 	this.tooltip.x = _x;
 	this.tooltip.y = _y-100;
+	if(this.tooltip.x - w/2 < 20){
+		this.tooltip.x = 20 + w/2;
+	} else if(this.tooltip.x + w/2 > _W-20){
+		this.tooltip.x = _W-20 - w/2;
+	}
+	if(this.tooltip.y - h/2 < 20){
+		this.tooltip.y = 20 + h/2;
+		if(hit_test_rec(item, w, h, this.tooltip.x, this.tooltip.y)){
+			this.tooltip.y += this.tooltip.height;
+		}
+	} else if(this.tooltip.y + h/2 > _H-20){
+		this.tooltip.y = _W-20 - h/2;
+		if(hit_test_rec(item, w, h, this.tooltip.x, this.tooltip.y)){
+			this.tooltip.y -= this.tooltip.height;
+		}
+	}
 	this.tooltip.show(str);
 	this.tooltip.visible = true;
 }
@@ -2507,9 +2530,15 @@ ScrGame.prototype.checkButtons = function(evt){
 						item_mc.scale.x = 1.1*item_mc.sc;
 						item_mc.scale.y = 1.1*item_mc.sc;
 					}
+					if(item_mc.name == "icoKey"){
+						this.btnFrame.over.visible = true;
+					}
+				}
+				if(item_mc.hint2){
+					this.showTooltip(item_mc, item_mc.hint2, item_mc.x, item_mc.y);
 				}
 			} else if(item_mc.hint){
-				this.showTooltip(item_mc.hint, item_mc.x, item_mc.y);
+				this.showTooltip(item_mc, item_mc.hint, item_mc.x, item_mc.y);
 			}
 		} else {
 			if(item_mc._selected){
@@ -2519,6 +2548,9 @@ ScrGame.prototype.checkButtons = function(evt){
 				} else if(item_mc.overSc){
 					item_mc.scale.x = 1*item_mc.sc;
 					item_mc.scale.y = 1*item_mc.sc;
+				}
+				if(item_mc.name == "icoKey"){
+					this.btnFrame.over.visible = false;
 				}
 			}
 		}

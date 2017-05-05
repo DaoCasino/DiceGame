@@ -350,6 +350,16 @@ function pad(num, size) {
     while (s.length < size) s = "0" + s;
     return s;
 }
+function string2Bin(str) {
+	var result = [];
+	for (var i = 0; i < str.length; i++) {
+		result.push(str.charCodeAt(i));
+	}
+	return result;
+}
+function bin2String(array) {
+	return String.fromCharCode.apply(String, array);
+}
 function copyToClipboard(value) {
   window.prompt("Copy to clipboard: Ctrl+C", value);
 }
