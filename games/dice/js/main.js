@@ -9,7 +9,7 @@ var balance = 1;
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 // var addressContract = "0x049b6cc848808623de8e91d01d10714b8e21efad"; //old work
-var addressContract = "0x2d9cf52cdd9b224d556b06708817607a50fe9c5c";
+var addressContract = "0x04010e34df5139ac91ce4147ef6e50dbb060c66d";
 
 var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
@@ -196,13 +196,13 @@ function setContract() {
     } else if (mainnet == "off") {
         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         //addressContract = getContract("Dice", "testnet");
-        addressContract = "0x2d9cf52cdd9b224d556b06708817607a50fe9c5c";
+        addressContract = "0x04010e34df5139ac91ce4147ef6e50dbb060c66d";
         $('#randomnum').text("");
     }
 };
 
 function getContractBalance() {
-    bankroll = callERC20("balanceOf", addressContract)
+    bankroll = callERC20("balanceOf", addressContract);
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
 
@@ -228,6 +228,14 @@ setInterval(function () {
     }
 }, 1000);
 
+setInterval(function () {
+    if (openkey) {
+		if(game){
+			Confirm();
+		}
+    }
+}, 10000);
+
 function initGame() {
     loadData();
     setContract();
@@ -245,7 +253,6 @@ function initGame() {
     $('#all').click();
     Refresh();
     approve(100000000000);
-
 };
 
 function disabled(status) {
