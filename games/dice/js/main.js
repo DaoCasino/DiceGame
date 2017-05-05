@@ -44,6 +44,12 @@ function pad(num, size) {
     return s;
 };
 
+function getTimer(){
+	var d = new Date();
+	var n = d.getTime();
+	return n;
+}
+
 function isLocalStorageAvailable() {
     try {
         return 'localStorage' in window && window['localStorage'] !== null;
@@ -273,8 +279,13 @@ function makeid(){
     var str = "0x";
     var possible = "abcdef0123456789";
 
-    for( var i=0; i < 64; i++ )
-        str += possible.charAt(Math.floor(Math.random() * possible.length));
+    for( var i=0; i < 64; i++ ){
+		if(getTimer()%2==0){
+			str += possible.charAt(Math.floor(Math.random() * possible.length));
+		} else {
+			str += possible.charAt(Math.floor(Math.random() * (possible.length-1)));
+		}
+	}
 
 	str = numToHex(str);
 	console.log("makeid:", str);
