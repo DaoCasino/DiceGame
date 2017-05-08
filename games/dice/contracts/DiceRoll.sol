@@ -1,470 +1,249 @@
-pragma solidity ^0.4.2;
-import "./Types.sol";
-import "./Deck.sol";
+pragma solidity ^ 0.4.9;
 
-contract BlackJackStorage {
-    using Types for *;
+contract owned {
+    address public owner;
+
+    function owned() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner {
+        if (msg.sender != owner) throw;
+        _;
+    }
+
+    function transferOwnership(address newOwner) onlyOwner {
+        owner = newOwner;
+    }
+}
+
+contract ERC20 {
+    function balanceOf(address _addr) returns(uint);
+
+    function transfer(address _to, uint256 _value);
+
+    function transferFrom(address _from, address _to, uint256 _value) returns(bool success);
+}
+
+contract DiceRoll is owned {
+
+    address public addr_erc20 = 0x95a48dca999c89e4e284930d9b9af973a7481287;
+    ERC20 erc = ERC20(addr_erc20);
+    bool public ownerStoped = false;
+    uint public minBet = 100000;
+    uint public maxBet = 1000000000;
+    uint public countRolls = 0;
+    uint public totalEthSended = 0;
+    uint public totalEthPaid = 0;
+
+    mapping(address => uint) public totalRollsByUser;
+    /**
+     * @dev List of used random numbers 
+     */
+    mapping( bytes32 => bool) public usedRandom;
+    enum GameState {
+        InProgress,
+        PlayerWon,
+        PlayerLose,
+        NoBank
+    }
+
+    event logGame(
+        uint time,
+        address sender,
+        uint bet,
+        uint chance,
+        uint96 seed,
+        uint rnd
+    );
     
-    /*
-        CONTRACTS
-    */
-    
-    Deck deck;
-    
-    /*
-        CONSTANTS
-    */
+    event logId(bytes32 Id);
 
-    uint8 BLACKJACK = 21;
-
-    /*
-        STORAGE
-    */
-
-    mapping (address => Types.Game) public games;
-    mapping (address => Types.Game) public splitGames;
-    
-    /*
-        CONSTRUCTOR
-    */
-    
-    function BlackJackStorage(address deckAddress) {
-        deck = Deck(deckAddress);
+    struct Game {
+        address player;
+        uint bet;
+        uint chance;
+        bytes32 seed;
+        GameState state;
+        uint rnd;
     }
 
-    /*
-        PUBLIC FUNCTIONS
-    */
+    mapping(address => Game) public games;
+    mapping(bytes32 => Game) public listGames;
 
-    function createNewGame(uint32 gameId, address _player, uint _bet)
-        external
-    {
-        games[_player] = Types.Game({
-            player: _player,
-            bet: _bet,
-            houseCards: new uint8[](0),
-            playerCards: new uint8[](0),
-            playerScore: 0,
-            playerBigScore: 0,
-            houseScore: 0,
-            houseBigScore: 0,
-            state: Types.GameState.InProgress,
-            seed: 3,
-            insurance: 0,
-            insuranceAvailable: false,
-            id: gameId
-        });
-    }
-
-    function createNewSplitGame(address _player, uint _bet)
-        external
-    {
-        splitGames[_player] = Types.Game({
-            player: _player,
-            bet: _bet,
-            houseCards: games[_player].houseCards,
-            playerCards: new uint8[](0),
-            playerScore: deck.valueOf(games[_player].playerCards[1], false),
-            playerBigScore: deck.valueOf(games[_player].playerCards[1], true),
-            houseScore: games[_player].houseScore,
-            houseBigScore: games[_player].houseBigScore,
-            state: Types.GameState.InProgress,
-            seed: 128,
-            insurance: 0,
-            insuranceAvailable: false,
-            id: 0
-        });
-
-        splitGames[_player].playerCards.push(games[_player].playerCards[1]);
-
-        games[_player].playerCards = [games[_player].playerCards[0]];
-        games[_player].playerScore = deck.valueOf(games[_player].playerCards[0], false);
-        games[_player].playerBigScore = deck.valueOf(games[_player].playerCards[0], true);
-    }
-    
-    function syncSplitDealerCards(address player)
-        external
-    {
-        splitGames[player].houseCards = games[player].houseCards;
-        splitGames[player].houseScore = games[player].houseScore;
-        splitGames[player].houseBigScore = games[player].houseBigScore;
+    modifier gameIsNotInProgress() {
+        if (gameInProgress(games[msg.sender])) {
+            throw;
+        }
+        _;
     }
 
 
-    function dealSplitCard(address player)
-        external
-        returns (uint8)
-    {   
-        uint8 card = deck.deal(player, splitGames[player].seed);
-        splitGames[player].playerCards.push(card);
-        splitGames[player].seed += 1;
-        return card;
+    modifier stoped() {
+        if (ownerStoped == true) {
+            throw;
+        }
+        _;
     }
 
-    function dealMainCard(address player)
-        external
-        returns (uint8)
-    {   
-        uint8 card = deck.deal(player, games[player].seed);
-        games[player].playerCards.push(card);
-        games[player].seed += 1;
-        return card;
-    }
-
-    function dealHouseCard(address player)
-        external
-        returns (uint8)
-    {   
-        uint8 card = deck.deal(player, games[player].seed);
-        games[player].houseCards.push(card);
-        games[player].seed += 1;
-        return card;
-    }
-
-    function deleteSplitGame(address player)
-        external
-    {
-        delete splitGames[player];
-    }
-
-    function updatePlayerScore(uint8 score, uint8 bigScore, address player)
-        external
-    {
-        games[player].playerScore = score;
-        games[player].playerBigScore = bigScore;
-    }
-
-    function updatePlayerSplitScore(uint8 score, uint8 bigScore, address player)
-        external
-    {
-        splitGames[player].playerScore = score;
-        splitGames[player].playerBigScore = bigScore;
-    }
-
-    function updateHouseScore(uint8 score, uint8 bigScore, address player)
-        external
-    {
-        games[player].houseScore = score;
-        games[player].houseBigScore = bigScore;
-    }
-
-    function updateHouseSplitScore(uint8 score, uint8 bigScore, address player)
-        external
-    {
-        splitGames[player].houseScore = score;
-        splitGames[player].houseBigScore = bigScore;
-    }
-
-    function updateInsurance(uint insurance, bool isMain, address player)
-        external
-    {   
-        if (isMain) {
-            games[player].insurance = insurance;
+    function Stop() public onlyOwner {
+        if (ownerStoped == false) {
+            ownerStoped = true;
         } else {
-            splitGames[player].insurance = insurance;
+            ownerStoped = false;
         }
     }
 
-    function updateState(Types.GameState state, bool isMain, address player)
-        external
-    {   
-        if (isMain) {
-            games[player].state = state;
+    function setAddress(address adr) public onlyOwner{
+        addr_erc20 = adr;
+        ERC20 erc = ERC20(adr);
+    }
+
+    function gameInProgress(Game game)
+    constant
+    private
+    returns(bool) {
+        if (game.player == 0) {
+            return false;
+        }
+        if (game.state == GameState.InProgress) {
+            return true;
         } else {
-            splitGames[player].state = state;
+            return false;
         }
     }
 
-    /*
-        PUBLIC GETTERS
-    */
-
-    function getPlayerCard(uint8 id, address player)
-        public
-        constant
-        returns(uint8)
+    function getBank() public constant returns(uint) {
+        return erc.balanceOf(this);
+    }
+    // starts a new game
+    function roll(uint PlayerBet, uint PlayerNumber, bytes32 seed) public
+        //gameIsNotInProgress
+        stoped
     {
-        return games[player].playerCards[id];
-    }
-
-    function getSplitCard(uint8 id, address player)
-        public
-        constant
-        returns(uint8)
-    {
-        return splitGames[player].playerCards[id];
-    }
-
-    function getHouseCard(uint8 id, address player)
-        public
-        constant
-        returns(uint8)
-    {
-        return games[player].houseCards[id];
-    }
-
-    function getPlayerCardsNumber(address player)
-        public
-        constant
-        returns(uint)
-    {
-        return games[player].playerCards.length;
-    }
-
-    function getSplitCardsNumber(address player)
-        public
-        constant
-        returns (uint)
-    {   
-        return splitGames[player].playerCards.length;
-    }
-
-    function getHouseCardsNumber(address player)
-        public
-        constant
-        returns (uint)
-    {
-        return games[player].houseCards.length;
-    }
-
-    function getBet(bool isMain, address player)
-        public
-        constant
-        returns (uint)
-    {   
-        if (isMain) {
-            return games[player].bet;
+        if (!erc.transferFrom(msg.sender, this, PlayerBet)) {
+            throw;
         }
-        return splitGames[player].bet;
-    }
-
-    function getPlayerScore(bool isMain, address player)
-        public
-        constant
-        returns (uint8)
-    {   
-        if (isMain) {
-            return getGamePlayerScore(games[player]);
+        /*if (gameInProgress(games[msg.sender])) {
+            throw;
+        }*/
+        if (PlayerBet < minBet || PlayerBet > maxBet) {
+            throw; // incorrect bet
         }
-        return getGamePlayerScore(splitGames[player]);
-    }
-
-    function getPlayerBigScore(bool isMain, address player)
-        public
-        constant
-        returns (uint8)
-    {   
-        if (isMain) {
-            return games[player].playerBigScore;
-        }
-        return splitGames[player].playerBigScore;
-    }
-
-    function getPlayerSmallScore(bool isMain, address player)
-        public
-        constant
-        returns (uint8)
-    {   
-        if (isMain) {
-            return games[player].playerScore;
-        }
-        return splitGames[player].playerScore;
-    }
-
-    function getHouseScore(address player)
-        public
-        constant
-        returns (uint8)
-    {   
-        return getGameHouseScore(games[player]);
-    }
-
-    function getHouseBigScore(address player)
-        public
-        constant
-        returns (uint8)
-    {   
-        return games[player].houseBigScore;
-    }
-
-    function getHouseSmallScore(address player)
-        public
-        constant
-        returns (uint8)
-    {   
-        return games[player].houseScore;
-    }
-
-    function getState(bool isMain, address player)
-        public
-        constant
-        returns (Types.GameState)
-    {   
-        if (isMain) {
-            return games[player].state;
-        }
-        return splitGames[player].state;
-    }
-
-    function getId(bool isMain, address player)
-        public
-        constant
-        returns (uint32)
-    {   
-        if (isMain) {
-            return games[player].id;
-        }
-        return splitGames[player].id;
-    }
-
-    function getInsurance(bool isMain, address player)
-        public
-        constant
-        returns (uint)
-    {   
-        if (isMain) {
-            return games[player].insurance;
-        }
-        return splitGames[player].insurance;
-    }
-
-    function isInsuranceAvailable(address player)
-        constant
-        public
-        returns (bool)
-    {   
-        return getActiveGame(player).insuranceAvailable;
-    }
-
-     function isDoubleAvailable(address player)
-         constant
-         public
-         returns (bool)
-     {
-         Types.Game memory game = getActiveGame(player);
-         return game.state == Types.GameState.InProgress && game.playerScore > 8 && game.playerScore < 12 && game.playerCards.length == 2;
-    }
-
-    function isSplitAvailable(address player)
-        constant
-        public
-        returns (bool)
-    {   
-        Types.Game memory game = games[player];
-        return isGameInProgress(game) && game.playerCards.length == 2 && deck.valueOf(game.playerCards[0], false) == deck.valueOf(game.playerCards[1], false);
-    }
-
-    function isMainGameInProgress(address player)
-        constant
-        public
-        returns (bool)
-    {
-        return isGameInProgress(games[player]);
-    }
-
-    function isSplitGameInProgress(address player)
-        constant
-        public
-        returns (bool)
-    {
-        return isGameInProgress(splitGames[player]);
-    }
-
-    function isInsurancePaymentRequired(bool isMain, address player)
-        constant
-        external
-        returns (bool)
-    {   
-        Types.Game memory game = games[player];
-        if (!isMain) game = splitGames[player];
-
-        return getGamePlayerScore(game) != BLACKJACK &&
-               game.houseCards.length == 2 &&
-               (deck.valueOf(game.houseCards[0], false) == 10 || deck.valueOf(game.playerCards[1], false) == 10) &&
-               game.insurance > 0;
-    }
-
-    function isNaturalBlackJack(bool isMain, address player)
-        constant
-        external
-        returns (bool)
-    {   
-        Types.Game memory game = games[player];
-        if (!isMain) game = splitGames[player];
         
-        return getGamePlayerScore(game) == BLACKJACK && game.playerCards.length == 2 &&
-               (deck.isTen(game.playerCards[0]) || deck.isTen(game.playerCards[1]));
+        if (usedRandom[seed]) {
+            throw;
+        }
+        
+        usedRandom[seed] = true;
+        if(PlayerNumber > 65536 - 1310){
+            throw;
+        }
+        uint bet = PlayerBet;
+        uint chance = PlayerNumber;
+        uint payout = bet * (65536 - 1310) / chance;
+        bytes32 rnd = seed;
+        bool isBank = true;
+        // generate uniq id (hash message)
+        //bytes32 random_id = bytes32(uint256(msg.sender) << 96 | seed);
+        logId(seed);
+        Game memory game = Game({
+            player: msg.sender,
+            bet: bet,
+            chance: chance,
+            seed: seed,
+            state: GameState.InProgress,
+            rnd: 0 
+        });
+
+        /*if (payout > getBank()) {
+            isBank = false;
+            games[msg.sender].state = GameState.NoBank;
+            throw;
+        }*/
+
+        games[msg.sender] = game;
+        listGames[seed] = game;
+        totalRollsByUser[msg.sender]++;
+        
+        
     }
 
-    /*
-        PRIVATE GETTERS
-    */
-
-    function getGamePlayerScore(Types.Game game)
-        constant
-        private
-        returns (uint8)
+    function confirm(bytes32 random_id, uint8 _v, bytes32 _r, bytes32 _s) public
     {
-        if (game.playerBigScore > BLACKJACK) {
-            return game.playerScore;
+        if(listGames[random_id].state == GameState.PlayerWon ||
+        listGames[random_id].state == GameState.PlayerLose){
+            throw;
         }
-        return game.playerBigScore;
-    }
-
-    function getGameHouseScore(Types.Game game)
-        constant
-        private
-        returns (uint8)
-    {
-        if (game.houseBigScore > BLACKJACK) {
-            return game.houseScore;
-        }
-        return game.houseBigScore;
-    }
-
-    function getActiveGame(address player) 
-        constant
-        private
-        returns (Types.Game)
-    {
-        if (isMainGameInProgress(player)) {
-            return games[player];
-        }
-        if (isSplitGameInProgress(player)) {
-            return splitGames[player];
-        }
-        throw;
-    }
-
-    function isGameInProgress(Types.Game game)
-        constant
-        private
-        returns (bool)
-    {
-        return game.player != 0 && game.state == Types.GameState.InProgress;
-    }
-
-    /*
-        PUBLIC SETTERS
-    */
-
-    function setInsuranceAvailable(bool flag, bool isMain, address player)
-        external
-    {
-        if (isMain) {
-            games[player].insuranceAvailable = flag;
-        } else {
-            splitGames[player].insuranceAvailable = flag;
+        
+        if (ecrecover(random_id, _v, _r, _s) != "0x9e3d69305Da51f34eE29BfB52721e3A824d59e69") {// owner
+            Game game = listGames[random_id];
+            uint payout = game.bet * (65536 - 1310) / game.chance;
+            uint rnd = uint256(sha3(_v, _r, _s))%65536;
+            game.rnd = rnd;
+            if (game.state != GameState.NoBank) {
+                countRolls++;
+                uint profit = payout - game.bet;
+                //logGame(now, msg.sender, bet, chance, rnd);
+                totalEthPaid += game.bet;
+                //Ограничение выплаты 1/10BR
+                /*if ((payout - game.bet) > getBank() / 10) {
+                    throw;
+                }*/
+                
+                if (rnd > game.chance) {
+                    games[msg.sender].state = GameState.PlayerLose;
+                    listGames[random_id].state = GameState.PlayerLose;
+                } 
+                else {
+                    games[msg.sender].state = GameState.PlayerWon;
+                    listGames[random_id].state = GameState.PlayerWon;
+                    erc.transfer(this, payout);
+                    totalEthSended += payout;
+                }
+                //logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
+            }
         }
     }
+    
+    function getStateById(bytes32 random_id) public constant returns(GameState) {
+        Game memory game = listGames[random_id];
 
-    function doubleBet(bool isMain, address player)
-        external
-        returns (uint)
-    {   
-        if (isMain) {
-            games[player].bet *= 2;
+        if (game.player == 0) {
+            // game doesn't exist
+            throw;
         }
-        splitGames[player].bet *= 2;
+
+        return game.state;
+    }
+
+    function getCount() public constant returns(uint) {
+        return totalRollsByUser[msg.sender];
+    }
+
+    function getShowRnd(address player) public constant returns(uint) {
+        Game memory game = games[player];
+
+        if (game.player == 0) {
+            // game doesn't exist
+            throw;
+        }
+
+        return game.rnd;
+    }
+
+    function getStateByAddress(address player) public constant returns(GameState) {
+        Game memory game = games[player];
+
+        if (game.player == 0) {
+            // game doesn't exist
+            throw;
+        }
+
+        return game.state;
+    }
+
+    function withdraw(uint amount) public onlyOwner {
+        if (msg.sender.send(amount)) {}
     }
 }
