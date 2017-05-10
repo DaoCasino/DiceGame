@@ -110,7 +110,7 @@ Infura.prototype.checkJson = function(name, seed, callback){
 			if(obj){
 				if(obj.arMyCards){
 					repeatRequest = 0;
-					console.log("checkJson:", seed);
+					// console.log("checkJson:", seed);
 					// callback(name, obj);
 				} else {
 					setTimeout(function () {

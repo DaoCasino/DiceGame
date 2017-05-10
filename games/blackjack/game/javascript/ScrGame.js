@@ -2131,7 +2131,8 @@ ScrGame.prototype.response = function(command, value) {
 		}
 	} else if(command == "getSplitBet"){
 		betSplitGame = Number(hexToNum(value));
-		if(betSplitGame > 0 && (prnt._arMySplitCards.length > 0 || !prnt.bBetLoad)){
+		if(betGame > 0 && betSplitGame > 0 && 
+		(prnt._arMySplitCards.length > 0 || !prnt.bBetLoad)){
 			prnt.fillChips(betSplitGame, "split");
 			prnt.tfSplitBet.setText(betSplitGame/valToken);
 		}
@@ -2238,8 +2239,8 @@ ScrGame.prototype.response = function(command, value) {
 		if(!prnt.bBetLoad){
 			prnt.bWait = true;
 			prnt.showButtons(false);
-			prnt.getBet(false);
 			prnt.getBet(true);
+			prnt.getBet(false); // todo fixed load bet
 			return false;
 		}
 		console.log("state|idGame:", stateNow, idGame, idOldGame, prnt.startGame);
