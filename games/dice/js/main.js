@@ -5,11 +5,16 @@ var sendingAddr;
 var rawMsg;
 var login_obj = {};
 
+var options_mainet = false;
+var options_testnet = true;
+var options_rpc = false;
+
 var balance = 1;
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 // var addressContract = "0x049b6cc848808623de8e91d01d10714b8e21efad"; //old work
-var addressContract = "0x04010e34df5139ac91ce4147ef6e50dbb060c66d";
+// var addressContract = "0x04010e34df5139ac91ce4147ef6e50dbb060c66d"; //old work 2
+var addressContract = "0xda05b14ab2452bacf9bdb0c842ec855d32b54736";
 
 var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
@@ -20,6 +25,10 @@ var lastTx, count, new_count, sends, paids, password;
 var game = false;
 var Timer, animate;
 var maxBetEth;
+var infura = new Infura();
+var _callback;
+var _arGames = [];
+var _arUnconfirmedGames = [];
 bankroll = 1000;
 
 var RndGen;
@@ -196,7 +205,7 @@ function setContract() {
     } else if (mainnet == "off") {
         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         //addressContract = getContract("Dice", "testnet");
-        addressContract = "0x04010e34df5139ac91ce4147ef6e50dbb060c66d";
+        addressContract = "0xda05b14ab2452bacf9bdb0c842ec855d32b54736";
         $('#randomnum').text("");
     }
 };
@@ -205,6 +214,10 @@ function getContractBalance() {
     bankroll = callERC20("balanceOf", addressContract);
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
+
+function timeout() {
+	
+}
 
 setInterval(function () {
     if (openkey) {
@@ -228,17 +241,20 @@ setInterval(function () {
     }
 }, 1000);
 
-setInterval(function () {
+/*setInterval(function () {
     if (openkey) {
 		if(game){
-			Confirm();
+			// Confirm();
+			timeout();
 		}
     }
-}, 10000);
+}, 1000*60*5);*/
 
 function initGame() {
+	g = this;
     loadData();
     setContract();
+	_callback = response;
     paids = (call("getTotalEthSended", openkey)) / 100000000;
     sends = (call("getTotalEthPaid", openkey)) / 100000000;
     setContract();
@@ -313,106 +329,131 @@ function makeid(){
 }
 
 function startGame() {
-    game = true;
-    if (openkey) {
-        $.ajax({
-            type: "POST",
-            url: urlInfura,
-            dataType: 'json',
-            async: false,
-            data: JSON.stringify({
-                "id": 0,
-                "jsonrpc": '2.0',
-                "method": "eth_getTransactionCount",
-                "params": [openkey, "pending"]
-            }),
-            success: function (d) {
-                console.log("urlInfura:", urlInfura);
-                console.log("get nonce action " + d.result);
-                //var callData = "0x1f7b4f30";
-                var options = {};
-                options.nonce = d.result;
-                options.to = addressContract;
-                //options.data = callData + pad(numToHex(chance), 64); // method from contact
-                options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
-                options.gasLimit = "0x927c0"; //web3.toHex('600000');
-                options.value = 0;
-                //options.value = betEth * 1000000000000000000;
-                // if (privkey) {
-                //     if (buf == undefined) {
-                //         console.log("ERROR_TRANSACTION");
-                //     } else {
-                //приватный ключ игрока, подписываем транзакцию
+	if(openkey){
+		game = true;
+		infura.sendRequest("roll", openkey, _callback);
+	} else {
+		console.log("openkey: undefined");
+	}
+}
 
-                // var tx = new EthereumTx(options);
-                // tx.sign(new buf(privkey, 'hex'));
-                // var serializedTx = tx.serialize().toString('hex');
-                // console.log("The transaction was signed: " + serializedTx);
-                ks.keyFromPassword("1234", function (err, pwDerivedKey) {
+function responseServer(value, seed) {
+	console.log("responseServer:", value);
+	
+	var chance = _arGames[seed];
+	if(chance){
+		if (value > chance) {
+			console.log("YOU WIN!");
+			$("#randomnum").text("YOU WIN!");
+			gameend();
+		} else {
+			console.log("LOSS");
+			$("#randomnum").text("YOU LOSE");
+			gameend();
+		}
+	} else {
+		console.log("Game " + seed + " undefined");
+	}
+}
+
+function responseTransaction(name, value) {
+	var data = "";
+	var price = 0;
+	var nameRequest = "sendRaw";
+	var gasPrice="0x9502F9000";//web3.toHex('40000000000');
+	var gasLimit=0x927c0; //web3.toHex('600000');
+	if(name == "roll"){
+		data = "0x1f7b4f30" + pad(numToHex(chance), 64);
+		price = betEth * 100000000;
+	}
+	
+	var options = {};
+	options.nonce = value;
+	options.to = addressContract;
+	options.gasPrice = gasPrice;
+	options.gasLimit = gasLimit;
+	// options.value = price;
+	// options.data = data;
+	
+	if(privkey){
+		if(buf == undefined){
+			console.log("ERROR_TRANSACTION");
+		} else {
+			console.log("The transaction was signed:", name);
+			
+			if(ks){
+				ks.keyFromPassword("1234", function (err, pwDerivedKey) {
+					if (err) {
+						console.log("ERROR_TRANSACTION:", err);
+						return false;
+					}
 					var seed = makeid();
-                    var args = [betEth * 100000000, chance, seed];
-                    console.log(args);
-                    var registerTx = lightwallet.txutils.functionTx(abi, 'roll', args, options)
-                    var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
-                    console.log("lightWallet sign:", signedTx)
+					var args = [price, chance, seed];
+					var registerTx = lightwallet.txutils.functionTx(abi, name, args, options);
+					var params = "0x"+lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr);
+					infura.sendRequest(nameRequest, params, _callback, seed);
+					// create list games
+					_arGames[seed] = chance;
+					// var objGame = {time=getTimer(), seed=seed, endGame=false};
+					// _arUnconfirmedGames.push(objGame);
+				})
+			} else {
+				console.log("ERROR_TRANSACTION");
+			}
+		}
+	}
+}
 
-                    $.ajax({
-                        type: "POST",
-                        url: urlInfura,
-                        dataType: 'json',
-                        async: false,
-                        data: JSON.stringify({
-                            "id": 0,
-                            "jsonrpc": '2.0',
-                            "method": "eth_sendRawTransaction",
-                            "params": ["0x" + signedTx]
-                        }),
-                        success: function (d) {
-                            console.log("The transaction was signed:", d.result);
-                            lastTx = d.result;
-                            if (lastTx == undefined) {
-                                $("#randomnum").text("Sorry, transaction failed");
-                                gameend();
-                            } else {
-                                $("#Tx").html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
-                                $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
-                                disabled(true);
-                                $("#randomnum").text("Please, wait . . . ");
-                                Timer = setInterval(function () {
-                                    new_count = call("totalRollsByUser", openkey);
-                                    // console.log("detected count:", new_count, count);
-                                    if (new_count != count) {
-                                        // console.log("getStatusGame");
-                                        var result = call("getStateByAddress", openkey);
-                                        switch (result) {
-                                            case 1:
-                                                console.log("YOU WIN!");
-                                                $("#randomnum").text("YOU WIN!");
-                                                gameend();
-                                                break;
-                                            case 2:
-                                                console.log("LOSS");
-                                                $("#randomnum").text("YOU LOSE");
-                                                gameend();
-                                                break;
-                                            case 3:
-                                                console.log("Sorry, No money in the bank");
-                                                $("#randomnum").text("Sorry, no money in the bank");
-                                                gameend();
-                                                break;
-                                            default:
-                                                // console.log("идет игра");
-												break;
-                                        }
-                                    }
-                                }, 3000);
-                            }
-                        }
-                    })
-                }) 
-            }
-        })
-    }
+function response(command, value, seed) {
+	if(value == undefined){
+		if(command == "sendRaw"){
+			$("#randomnum").text("Sorry, transaction failed");
+            gameend();
+		}
+		return false;
+	}
+	
+	if(command == "sendRaw"){
+		console.log("sendRaw:", value);
+		var lastTx = value;
+		$("#Tx").html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
+		$(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
+		disabled(true);
+		$("#randomnum").text("Please, wait . . . ");
+		
+		Timer = setInterval(function () {
+			new_count = call("totalRollsByUser", openkey);
+			// console.log("detected count:", new_count, count);
+			if (new_count != count) {
+				var result = call("getStateByAddress", openkey);
+				// console.log("getStatusGame:", result);
+				switch (result) {
+					case 1:
+						console.log("YOU WIN!");
+						$("#randomnum").text("YOU WIN!");
+						gameend();
+						break;
+					case 2:
+						console.log("LOSS");
+						$("#randomnum").text("YOU LOSE");
+						gameend();
+						break;
+					case 3:
+						console.log("Sorry, No money in the bank");
+						$("#randomnum").text("Sorry, no money in the bank");
+						gameend();
+						break;
+					default:
+						// console.log("run game");
+						break;
+				}
+			}
+		}, 3000);
+	} else if(command == "responseServer"){
+		responseServer(value, seed);
+	} else if(command == "roll"){
+		responseTransaction(command, value);
+	}
 }
 
 function gameend() {

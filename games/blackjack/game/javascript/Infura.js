@@ -4,11 +4,11 @@
  */
  
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-var g;
+var gThis;
 var repeatRequest = 0;
 
 var Infura = function() {
-	g = this;
+	gThis = this;
 	if(options_rpc){
 		urlInfura = "http://46.101.244.101:8545";
     } else if(options_testnet){
@@ -75,7 +75,7 @@ Infura.prototype.sendRequest = function(name, params, callback){
 									"id":1}),
 			success: function (d) {
 				if(method == "eth_sendRawTransaction"){
-					g.sendRequestServer("responseServer", d.result, callback);
+					gThis.sendRequestServer("responseServer", d.result, callback);
 				}
 				callback(name, d.result);
 			},
@@ -95,7 +95,7 @@ Infura.prototype.sendRequestServer = function(name, txid, callback){
 	var url = "https://platform.dao.casino/api/proxy.php?a=roll&";
 	$.get(url+"txid="+txid+"&vconcat="+seed, 
 		function(d){
-			g.checkJson(name, seed, callback);
+			gThis.checkJson(name, seed, callback);
 		}
 	);
 }
@@ -114,17 +114,17 @@ Infura.prototype.checkJson = function(name, seed, callback){
 					// callback(name, obj);
 				} else {
 					setTimeout(function () {
-						if(repeat < 20){
+						if(repeatRequest < 20){
 							repeatRequest++;
-							g.checkJson(name, seed);
+							gThis.checkJson(name, seed);
 						}
 					}, 1000);
 				}
 			} else {
 				setTimeout(function () {
-					if(repeat < 20){
+					if(repeatRequest < 20){
 						repeatRequest++;
-						g.checkJson(name, seed);
+						gThis.checkJson(name, seed);
 					}
 				}, 1000);
 			}

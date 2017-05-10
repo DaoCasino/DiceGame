@@ -131,7 +131,7 @@ contract BlackJack is owned {
     }
 
     function () payable {
-
+		
     }
 	
     /*
