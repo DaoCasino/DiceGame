@@ -343,12 +343,12 @@ function responseServer(value, seed) {
 	var chance = _arGames[seed];
 	if(chance){
 		if (value > chance) {
-			console.log("YOU WIN!");
-			$("#randomnum").text("YOU WIN!");
-			gameend();
-		} else {
 			console.log("LOSS");
 			$("#randomnum").text("YOU LOSE");
+			gameend();
+		} else {
+			console.log("YOU WIN!");
+			$("#randomnum").text("YOU WIN!");
 			gameend();
 		}
 	} else {

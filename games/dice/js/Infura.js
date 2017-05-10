@@ -85,7 +85,6 @@ Infura.prototype.sendRequest = function(name, params, callback, seed){
 Infura.prototype.sendRequestServer = function(name, txid, callback, seed){
 	console.log("success gameTxHash:", txid);
 	repeatRequest = 0;
-	// var seed = this.makeID();
 	var url = "https://platform.dao.casino/api/proxy.php?a=roll&";
 	$.get(url+"txid="+txid+"&vconcat="+seed, 
 		function(d){
@@ -99,10 +98,9 @@ Infura.prototype.checkJson = function(name, seed, callback){
 		url: "https://platform.dao.casino/api/proxy.php?a=get&vconcat="+seed,
 		type: "POST",
 		async: false,
-		dataType: 'json',
 		success: function (obj) {
 			if(obj){
-				if(obj.result){
+				if(obj > 0){
 					repeatRequest = 0;
 					// console.log("checkJson:", seed);
 					callback(name, obj, seed);
@@ -110,7 +108,7 @@ Infura.prototype.checkJson = function(name, seed, callback){
 					setTimeout(function () {
 						if(repeatRequest < 60){
 							repeatRequest++;
-							gThis.checkJson(name, seed);
+							gThis.checkJson(name, seed, callback);
 						}
 					}, 1000);
 				}
@@ -118,7 +116,7 @@ Infura.prototype.checkJson = function(name, seed, callback){
 				setTimeout(function () {
 					if(repeatRequest < 60){
 						repeatRequest++;
-						gThis.checkJson(name, seed);
+						gThis.checkJson(name, seed, callback);
 					}
 				}, 1000);
 			}
