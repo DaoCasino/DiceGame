@@ -1,6 +1,6 @@
 var _W = 1920;
 var _H = 1080;
-var version = "v. 1.0.50"
+var version = "v. 1.0.52"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -45,7 +45,7 @@ var options_music = true;
 var options_sound = true;
 var options_mobile = true;
 var options_pause = false;
-var options_txt_offset = 0;
+var options_fullscreen = false;
 
 var ERROR_CONNECTION = 0;
 var ERROR_KEYTHEREUM = 1;
@@ -349,6 +349,16 @@ function pad(num, size) {
     var s = num+"";
     while (s.length < size) s = "0" + s;
     return s;
+}
+function string2Bin(str) {
+	var result = [];
+	for (var i = 0; i < str.length; i++) {
+		result.push(str.charCodeAt(i));
+	}
+	return result;
+}
+function bin2String(array) {
+	return String.fromCharCode.apply(String, array);
 }
 function copyToClipboard(value) {
   window.prompt("Copy to clipboard: Ctrl+C", value);
@@ -747,7 +757,7 @@ function addText(text, size, color, glow, _align, width, px, font){
 	var obj = new PIXI.Container();
 	
 	var tfMain = new PIXI.Text(text, style);
-	tfMain.y = options_txt_offset;
+	tfMain.y = 0;
 	obj.addChild(tfMain);
 	if(_align == "left"){
 		tfMain.x = 0;

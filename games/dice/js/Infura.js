@@ -32,21 +32,15 @@ Infura.prototype.makeID = function(){
     return str;
 }
 
-Infura.prototype.sendRequest = function(name, params, callback){
-	if(options_ethereum && openkey){
+Infura.prototype.sendRequest = function(name, params, callback, seed){
+	if(openkey){
 		var method = name;
 		var arParams = [params, "latest"]; // latest, pending
 		
 		switch(name){
-			case "deal":
-			case "hit":
-			case "stand":
-			case "split":
-			case "requestInsurance":
-			case "double":
+			case "roll":
 				method = "eth_getTransactionCount";
 				break;
-			case "gameTxHash":
 			case "sendRaw":
 				method = "eth_sendRawTransaction";
 				arParams = [params];
@@ -75,7 +69,7 @@ Infura.prototype.sendRequest = function(name, params, callback){
 									"id":1}),
 			success: function (d) {
 				if(method == "eth_sendRawTransaction"){
-					gThis.sendRequestServer("responseServer", d.result, callback);
+					gThis.sendRequestServer("responseServer", d.result, callback, seed);
 				}
 				callback(name, d.result);
 			},
@@ -88,10 +82,9 @@ Infura.prototype.sendRequest = function(name, params, callback){
 	}
 };
 
-Infura.prototype.sendRequestServer = function(name, txid, callback){
-	// console.log("success gameTxHash:", txid);
+Infura.prototype.sendRequestServer = function(name, txid, callback, seed){
+	console.log("success gameTxHash:", txid);
 	repeatRequest = 0;
-	var seed = this.makeID();
 	var url = "https://platform.dao.casino/api/proxy.php?a=roll&";
 	$.get(url+"txid="+txid+"&vconcat="+seed, 
 		function(d){
@@ -105,26 +98,25 @@ Infura.prototype.checkJson = function(name, seed, callback){
 		url: "https://platform.dao.casino/api/proxy.php?a=get&vconcat="+seed,
 		type: "POST",
 		async: false,
-		dataType: 'json',
 		success: function (obj) {
 			if(obj){
-				if(obj.arMyCards){
+				if(obj > 0){
 					repeatRequest = 0;
 					// console.log("checkJson:", seed);
-					// callback(name, obj);
+					callback(name, obj, seed);
 				} else {
 					setTimeout(function () {
-						if(repeatRequest < 20){
+						if(repeatRequest < 60){
 							repeatRequest++;
-							gThis.checkJson(name, seed);
+							gThis.checkJson(name, seed, callback);
 						}
 					}, 1000);
 				}
 			} else {
 				setTimeout(function () {
-					if(repeatRequest < 20){
+					if(repeatRequest < 60){
 						repeatRequest++;
-						gThis.checkJson(name, seed);
+						gThis.checkJson(name, seed, callback);
 					}
 				}, 1000);
 			}
