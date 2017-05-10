@@ -1,17 +1,36 @@
 /**
  * Created by Sergey Pomorin on 07.03.2017.
- * v 1.0.1
+ * v 1.0.2
  */
  
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+var g;
+var repeatRequest = 0;
 
 var Infura = function() {
+	g = this;
 	if(options_rpc){
 		urlInfura = "http://46.101.244.101:8545";
     } else if(options_testnet){
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 	}
 };
+
+Infura.prototype.makeID = function(){
+    var str = "0x";
+    var possible = "abcdef0123456789";
+
+    for( var i=0; i < 64; i++ ){
+		if(getTimer()%2==0){
+			str += possible.charAt(Math.floor(Math.random() * possible.length));
+		} else {
+			str += possible.charAt(Math.floor(Math.random() * (possible.length-1)));
+		}
+	}
+
+	str = numToHex(str);
+    return str;
+}
 
 Infura.prototype.sendRequest = function(name, params, callback){
 	if(options_ethereum && openkey){
@@ -56,7 +75,7 @@ Infura.prototype.sendRequest = function(name, params, callback){
 									"id":1}),
 			success: function (d) {
 				if(method == "eth_sendRawTransaction"){
-					console.log("success gameTxHash:", d.result);
+					g.sendRequestServer("responseServer", d.result, callback);
 				}
 				callback(name, d.result);
 			},
@@ -68,3 +87,47 @@ Infura.prototype.sendRequest = function(name, params, callback){
 		})
 	}
 };
+
+Infura.prototype.sendRequestServer = function(name, txid, callback){
+	// console.log("success gameTxHash:", txid);
+	repeatRequest = 0;
+	var seed = this.makeID();
+	var url = "https://platform.dao.casino/api/proxy.php?a=roll&";
+	$.get(url+"txid="+txid+"&vconcat="+seed, 
+		function(d){
+			g.checkJson(name, seed, callback);
+		}
+	);
+}
+
+Infura.prototype.checkJson = function(name, seed, callback){
+	$.ajax({
+		url: "https://platform.dao.casino/api/proxy.php?a=get&vconcat="+seed,
+		type: "POST",
+		async: false,
+		dataType: 'json',
+		success: function (obj) {
+			if(obj){
+				if(obj.arMyCards){
+					repeatRequest = 0;
+					console.log("checkJson:", seed);
+					// callback(name, obj);
+				} else {
+					setTimeout(function () {
+						if(repeat < 20){
+							repeatRequest++;
+							g.checkJson(name, seed);
+						}
+					}, 1000);
+				}
+			} else {
+				setTimeout(function () {
+					if(repeat < 20){
+						repeatRequest++;
+						g.checkJson(name, seed);
+					}
+				}, 1000);
+			}
+		}
+	})
+}
