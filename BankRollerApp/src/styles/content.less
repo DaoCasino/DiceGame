@@ -1,0 +1,14 @@
+
+#content {
+	text-align:center;
+	padding: 40px  0px  40px  0px;
+
+	&.loading * { display:none; }
+	&.loading:after {
+		content:'Loading...';
+		margin:50px;
+		display:block;
+		letter-spacing:1px;
+		text-transform:uppercase;
+	}
+}
