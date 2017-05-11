@@ -1,9 +1,10 @@
-var abi = [{"constant":true,"inputs":[{"name":"player","type":"address"}],"name":"getStateByAddress","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"addr_erc20","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"maxBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBank","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthPaid","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"games","outputs":[{"name":"player","type":"address"},{"name":"bet","type":"uint256"},{"name":"chance","type":"uint256"},{"name":"seed","type":"bytes32"},{"name":"state","type":"uint8"},{"name":"rnd","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalRollsByUser","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"ownerStoped","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"minBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"listGames","outputs":[{"name":"player","type":"address"},{"name":"bet","type":"uint256"},{"name":"chance","type":"uint256"},{"name":"seed","type":"bytes32"},{"name":"state","type":"uint8"},{"name":"rnd","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"random_id","type":"bytes32"}],"name":"getStateById","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"random_id","type":"bytes32"},{"name":"_v","type":"uint8"},{"name":"_r","type":"bytes32"},{"name":"_s","type":"bytes32"}],"name":"confirm","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"Stop","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"}],"name":"getShowRnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"usedRandom","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"countRolls","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adr","type":"address"}],"name":"setAddress","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthSended","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"PlayerBet","type":"uint256"},{"name":"PlayerNumber","type":"uint256"},{"name":"seed","type":"bytes32"}],"name":"roll","outputs":[],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"time","type":"uint256"},{"indexed":false,"name":"sender","type":"address"},{"indexed":false,"name":"bet","type":"uint256"},{"indexed":false,"name":"chance","type":"uint256"},{"indexed":false,"name":"seed","type":"uint96"},{"indexed":false,"name":"rnd","type":"uint256"}],"name":"logGame","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"Id","type":"bytes32"}],"name":"logId","type":"event"}]
+var abi = [{"constant":true,"inputs":[],"name":"addr_erc20","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"maxBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBank","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthPaid","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"random_id","type":"bytes32"}],"name":"timeout","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalRollsByUser","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"ownerStoped","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"random_id","type":"bytes32"}],"name":"getStateByAddress","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"minBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"listGames","outputs":[{"name":"player","type":"address"},{"name":"bet","type":"uint256"},{"name":"chance","type":"uint256"},{"name":"seed","type":"bytes32"},{"name":"state","type":"uint8"},{"name":"rnd","type":"uint256"},{"name":"block","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"random_id","type":"bytes32"}],"name":"getStateById","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"random_id","type":"bytes32"},{"name":"_v","type":"uint8"},{"name":"_r","type":"bytes32"},{"name":"_s","type":"bytes32"}],"name":"confirm","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"random_id","type":"bytes32"}],"name":"getShowRnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"Stop","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"usedRandom","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"countRolls","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adr","type":"address"}],"name":"setAddress","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalEthSended","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"PlayerBet","type":"uint256"},{"name":"PlayerNumber","type":"uint256"},{"name":"seed","type":"bytes32"}],"name":"roll","outputs":[],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"time","type":"uint256"},{"indexed":false,"name":"sender","type":"address"},{"indexed":false,"name":"bet","type":"uint256"},{"indexed":false,"name":"chance","type":"uint256"},{"indexed":false,"name":"seed","type":"uint96"},{"indexed":false,"name":"rnd","type":"uint256"}],"name":"logGame","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"Id","type":"bytes32"}],"name":"logId","type":"event"}]
 var ks = localStorage.getItem('keystore');
 ks = lightwallet.keystore.deserialize(ks);
 var sendingAddr;
 var rawMsg;
 var login_obj = {};
+login_obj["confirmedGames"] = {};
 
 var options_mainet = false;
 var options_testnet = true;
@@ -12,9 +13,7 @@ var options_rpc = false;
 var balance = 1;
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
-// var addressContract = "0x049b6cc848808623de8e91d01d10714b8e21efad"; //old work
-// var addressContract = "0x04010e34df5139ac91ce4147ef6e50dbb060c66d"; //old work 2
-var addressContract = "0xda05b14ab2452bacf9bdb0c842ec855d32b54736";
+var addressContract = "0x6fa22d83408cc08ee1cfd05f401948cbfddc6b75";
 
 var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
@@ -32,7 +31,7 @@ var _arUnconfirmedGames = [];
 bankroll = 1000;
 
 var RndGen;
-// 10000, 7777, "0x639a1fd07cf885e1453fda734ab8f8bcaf6dcdfe70d3231cfca784323f8aeaaa"
+// 100000, 7777, "0x639a1fd07cf885e1453fda734ab8f8bcaf6dcdfe70d3231cfca784323f8aeaaa"
 
 function toFixed(value, precision) {
     precision = Math.pow(10, precision);
@@ -80,8 +79,6 @@ function loadData() {
 		if (localStorage.getItem('daocasino_dice')){
 			var login_str = localStorage.getItem('daocasino_dice')
 			login_obj = JSON.parse(login_str);
-		} else {
-			login_obj["confirmedGames"] = {};
 		}
 		
         testnetAddress = localStorage.getItem(' testnetAddress')
@@ -102,33 +99,32 @@ function call(callname, adr) {
     var callData;
     switch (callname) {
         case "totalRollsByUser":
-            callData = "0x9288cebc";
+            callData = "9288cebc";
             break;
         case "getShowRnd":
-            callData = "0xdb571498";
+            callData = "db571498";
             break;
         case "getTotalRollMade":
-            callData = "0xdf257ba3";
+            callData = "df257ba3";
             break;
         case "getTotalEthSended":
-            callData = "0xefddba39";
+            callData = "efddba39";
             break;
         case "getTotalEthPaid":
-            callData = "0x71b207f7";
+            callData = "71b207f7";
             break;
         case "getStateByAddress":
-            callData = "0x08199931"
+            callData = "08199931"
             break;
         case "balanceOf":
-            callData = "0x70a08231";
+            callData = "70a08231";
             break;
-        case "getTotalData":
-            callData = "0x5d022512";
-            break;
-        case "endGame":
-            callData = "0x87628db8";
+        case "timeout":
+            callData = "795ea18e";
             break;
     }
+	callData = "0x" + callData;
+	
     $.ajax({
         type: "POST",
         url: urlInfura,
@@ -148,6 +144,7 @@ function call(callname, adr) {
             result = hexToNum(d.result);
         }
     });
+	
     return result;
 };
 
@@ -205,7 +202,7 @@ function setContract() {
     } else if (mainnet == "off") {
         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         //addressContract = getContract("Dice", "testnet");
-        addressContract = "0xda05b14ab2452bacf9bdb0c842ec855d32b54736";
+        addressContract = "0x6fa22d83408cc08ee1cfd05f401948cbfddc6b75";
         $('#randomnum').text("");
     }
 };
@@ -251,7 +248,6 @@ setInterval(function () {
 }, 1000*60*5);*/
 
 function initGame() {
-	g = this;
     loadData();
     setContract();
 	_callback = response;
@@ -324,7 +320,7 @@ function makeid(){
 	}
 
 	str = numToHex(str);
-	console.log("makeid:", str);
+	// console.log("makeid:", str);
     return str;
 }
 
@@ -333,7 +329,7 @@ function startGame() {
 		game = true;
 		infura.sendRequest("roll", openkey, _callback);
 	} else {
-		console.log("openkey: undefined");
+		$("#randomnum").text("Sorry, you do not have a key");
 	}
 }
 
@@ -343,11 +339,9 @@ function responseServer(value, seed) {
 	var chance = _arGames[seed];
 	if(chance){
 		if (value > chance) {
-			console.log("LOSS");
 			$("#randomnum").text("YOU LOSE");
 			gameend();
 		} else {
-			console.log("YOU WIN!");
 			$("#randomnum").text("YOU WIN!");
 			gameend();
 		}
@@ -379,7 +373,7 @@ function responseTransaction(name, value) {
 		if(buf == undefined){
 			console.log("ERROR_TRANSACTION");
 		} else {
-			console.log("The transaction was signed:", name);
+			// console.log("The transaction was signed:", name);
 			
 			if(ks){
 				ks.keyFromPassword("1234", function (err, pwDerivedKey) {
@@ -414,7 +408,7 @@ function response(command, value, seed) {
 	}
 	
 	if(command == "sendRaw"){
-		console.log("sendRaw:", value);
+		// console.log("sendRaw:", value);
 		var lastTx = value;
 		$("#Tx").html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
 		$(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
@@ -429,17 +423,17 @@ function response(command, value, seed) {
 				// console.log("getStatusGame:", result);
 				switch (result) {
 					case 1:
-						console.log("YOU WIN!");
+						// console.log("YOU WIN!");
 						$("#randomnum").text("YOU WIN!");
 						gameend();
 						break;
 					case 2:
-						console.log("LOSS");
+						// console.log("LOSS");
 						$("#randomnum").text("YOU LOSE");
 						gameend();
 						break;
 					case 3:
-						console.log("Sorry, No money in the bank");
+						// console.log("Sorry, No money in the bank");
 						$("#randomnum").text("Sorry, no money in the bank");
 						gameend();
 						break;

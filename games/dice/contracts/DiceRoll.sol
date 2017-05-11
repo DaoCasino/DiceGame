@@ -69,11 +69,11 @@ contract DiceRoll is owned {
 		uint block;
     }
 
-    mapping(address => Game) public games;
+    // mapping(address => Game) public games;
     mapping(bytes32 => Game) public listGames;
 
-    modifier gameIsNotInProgress() {
-        if (gameInProgress(games[msg.sender])) {
+    modifier gameIsNotInProgress(bytes32 random_id) {
+        if (gameInProgress(listGames[random_id])) {
             throw;
         }
         _;
@@ -118,15 +118,12 @@ contract DiceRoll is owned {
     }
     // starts a new game
     function roll(uint PlayerBet, uint PlayerNumber, bytes32 seed) public
-        //gameIsNotInProgress
+        gameIsNotInProgress(seed)
         stoped
     {
         if (!erc.transferFrom(msg.sender, this, PlayerBet)) {
             throw;
         }
-        /*if (gameInProgress(games[msg.sender])) {
-            throw;
-        }*/
         if (PlayerBet < minBet || PlayerBet > maxBet) {
             throw; // incorrect bet
         }
@@ -145,8 +142,7 @@ contract DiceRoll is owned {
         uint payout = bet * (65536 - 1310) / chance;
         bytes32 rnd = seed;
         bool isBank = true;
-        // generate uniq id (hash message)
-        //bytes32 random_id = bytes32(uint256(msg.sender) << 96 | seed);
+        
         logId(seed);
         Game memory game = Game({
             player: msg.sender,
@@ -160,11 +156,10 @@ contract DiceRoll is owned {
 
         /*if (payout > getBank()) {
             isBank = false;
-            games[msg.sender].state = GameState.NoBank;
+            listGames[seed].state = GameState.NoBank;
             throw;
         }*/
-
-        games[msg.sender] = game;
+        
         listGames[seed] = game;
         totalRollsByUser[msg.sender]++;
     }
@@ -192,11 +187,9 @@ contract DiceRoll is owned {
                 }*/
                 
                 if (rnd > game.chance) {
-                    games[game.player].state = GameState.PlayerLose;
                     listGames[random_id].state = GameState.PlayerLose;
                 } 
                 else {
-                    games[game.player].state = GameState.PlayerWon;
                     listGames[random_id].state = GameState.PlayerWon;
                     erc.transfer(game.player, payout);
                     totalEthSended += payout;
@@ -213,7 +206,7 @@ contract DiceRoll is owned {
 		uint b = block.number;
 		uint diff = b - game.block;
 		
-		if(game.state == GameState.InProgress && diff > 100){
+		if(game.state == GameState.InProgress && diff > 3){
 			erc.transfer(game.player, game.bet);
 		}
 	}
@@ -233,8 +226,8 @@ contract DiceRoll is owned {
         return totalRollsByUser[msg.sender];
     }
 
-    function getShowRnd(address player) public constant returns(uint) {
-        Game memory game = games[player];
+    function getShowRnd(bytes32 random_id) public constant returns(uint) {
+        Game memory game = listGames[random_id];
 
         if (game.player == 0) {
             // game doesn't exist
@@ -244,8 +237,8 @@ contract DiceRoll is owned {
         return game.rnd;
     }
 
-    function getStateByAddress(address player) public constant returns(GameState) {
-        Game memory game = games[player];
+    function getStateByAddress(bytes32 random_id) public constant returns(GameState) {
+        Game memory game = listGames[random_id];
 
         if (game.player == 0) {
             // game doesn't exist
