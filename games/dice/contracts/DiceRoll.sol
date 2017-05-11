@@ -68,8 +68,7 @@ contract DiceRoll is owned {
         uint rnd;
 		uint block;
     }
-
-    // mapping(address => Game) public games;
+    
     mapping(bytes32 => Game) public listGames;
 
     modifier gameIsNotInProgress(bytes32 random_id) {
@@ -84,6 +83,10 @@ contract DiceRoll is owned {
             throw;
         }
         _;
+    }
+    
+    function () payable {
+
     }
 
     function Stop() public onlyOwner {
@@ -121,9 +124,9 @@ contract DiceRoll is owned {
         gameIsNotInProgress(seed)
         stoped
     {
-        if (!erc.transferFrom(msg.sender, this, PlayerBet)) {
+        /*if (!erc.transferFrom(msg.sender, this, PlayerBet)) {
             throw;
-        }
+        }*/
         if (PlayerBet < minBet || PlayerBet > maxBet) {
             throw; // incorrect bet
         }
@@ -143,7 +146,7 @@ contract DiceRoll is owned {
         bytes32 rnd = seed;
         bool isBank = true;
         
-        logId(seed);
+        //logId(seed);
         Game memory game = Game({
             player: msg.sender,
             bet: bet,
