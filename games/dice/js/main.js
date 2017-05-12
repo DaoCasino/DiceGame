@@ -13,13 +13,24 @@ var options_rpc = false;
 var balance = 1;
 var urlBalance = ""; //balance
 // 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
-var addressContract = "0x560B674BEaAA429E66E73507A55975B8b2587B0D";
+// main
+//var addressContract = "";
+// testrpc
+//var	addressRpcContract = "0xdbdb232171a8639603e1341b8d62a5425f5d2ddd";
+// testnet
+//var	addressTestContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
+
+if(options_testnet){
+	addressContract = addressTestContract;
+} else if(options_rpc){
+	addressContract = addressRpcContract;
+}
 
 var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
 var chance = 32768;
-//var urlInfura = "http://46.101.244.101:8545";
-var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+var urlInfura = "http://46.101.244.101:8545";
+//var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids, password;
 var game = false;
 var Timer, animate;
@@ -195,7 +206,7 @@ function getContract(game, network) {
 };
 
 function setContract() {
-    if (mainnet == "on") {
+    /*if (mainnet == "on") {
         urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
         addressContract = getContract("Dice", "mainnet");
         disabled(true);
@@ -205,7 +216,7 @@ function setContract() {
         //addressContract = getContract("Dice", "testnet");
         addressContract = "0x560B674BEaAA429E66E73507A55975B8b2587B0D";
         $('#randomnum').text("");
-    }
+    }*/
 };
 
 function getContractBalance() {

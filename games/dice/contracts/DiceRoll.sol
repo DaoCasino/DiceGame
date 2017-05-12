@@ -27,7 +27,8 @@ contract ERC20 {
 
 contract DiceRoll is owned {
 
-    address public addr_erc20 = 0x95a48dca999c89e4e284930d9b9af973a7481287;
+    address public addr_erc20 = 0x95a48dca999c89e4e284930d9b9af973a7481287; // testnet
+    // address public addr_erc20 = 0xb207301c77a9e6660c9c2e5e8608eaa699a9940f; // testrpc
     ERC20 erc = ERC20(addr_erc20);
     bool public ownerStoped = false;
     uint public minBet = 100000;

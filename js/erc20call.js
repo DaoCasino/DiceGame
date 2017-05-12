@@ -169,7 +169,9 @@ var erc20abi = [{
     "name": "Transfer",
     "type": "event"
 }]
-var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+
+var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // testnet
+// var erc20address = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f"; //testrpc
 
 
 var openkey = localStorage.getItem('openkey');

@@ -169,8 +169,8 @@ var erc20abi = [{
     "name": "Transfer",
     "type": "event"
 }]
-var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
-
+//var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+// var erc20address = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f"; // testrpc
 
 var openkey = localStorage.getItem('openkey');
 function approve(approveValue) {
@@ -215,6 +215,7 @@ function approve(approveValue) {
                         options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
                         options.gasLimit = "0x927c0"; //web3.toHex('600000');
                         ks.keyFromPassword("1234", function (err, pwDerivedKey) {
+							console.log(err);
                             var args = [addressContract, approveValue];
                             var registerTx = lightwallet.txutils.functionTx(erc20abi, 'approve', args, options)
                             var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)

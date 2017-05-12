@@ -11,11 +11,15 @@ function numToHex(num) {
 
 module.exports = function(deployer, network) {
     if (network == "development") {
-        
+		// var erc20 = "0x45c7eab211aa0d2ebd07a2ec8fe73bb337792d30";
+        // var tokenContract = ERC20.at(erc20);
+		deployer.deploy(DiceRoll).then(function() {
+			
+		});
     } else if (network == "testnet") {
 		deployer.deploy(DiceRoll).then(function() {
-			console.log(" - Contract DiceRoll deployed: " + DiceRoll.address);
-		}));
+			
+		});
         
     }
 };

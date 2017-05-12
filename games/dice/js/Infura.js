@@ -3,7 +3,7 @@
  * v 1.0.2
  */
  
-var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+//var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var gThis;
 var repeatRequest = 0;
 
