@@ -124,9 +124,9 @@ contract DiceRoll is owned {
         gameIsNotInProgress(seed)
         stoped
     {
-        /*if (!erc.transferFrom(msg.sender, this, PlayerBet)) {
+        if (!erc.transferFrom(msg.sender, this, PlayerBet)) {
             throw;
-        }*/
+        }
         if (PlayerBet < minBet || PlayerBet > maxBet) {
             throw; // incorrect bet
         }
@@ -179,10 +179,12 @@ contract DiceRoll is owned {
             uint payout = game.bet * (65536 - 1310) / game.chance;
             uint rnd = uint256(sha3(_s))%65536;
             game.rnd = rnd;
+			
+			logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
+			
             if (game.state != GameState.NoBank) {
                 countRolls++;
                 uint profit = payout - game.bet;
-                //logGame(now, msg.sender, bet, chance, rnd);
                 totalEthPaid += game.bet;
                 //Ограничение выплаты 1/10BR
                 /*if ((payout - game.bet) > getBank() / 10) {
@@ -197,7 +199,6 @@ contract DiceRoll is owned {
                     erc.transfer(game.player, payout);
                     totalEthSended += payout;
                 }
-                logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
             }
         }
     }
