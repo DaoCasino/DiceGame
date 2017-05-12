@@ -32,6 +32,7 @@ bankroll = 1000;
 
 var RndGen;
 // 100000, 64000, "0x639a1fd07cf885e1453fda734ab8f8bcaf6dcdfe70d3231cfca784323f8aeaaa"
+// "0x639a1fd07cf885e1453fda734ab8f8bcaf6dcdfe70d3231cfca784323f8aeaaa", 28, "dsf", "hgf"
 
 function toFixed(value, precision) {
     precision = Math.pow(10, precision);

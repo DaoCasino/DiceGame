@@ -1,4 +1,4 @@
-pragma solidity ^ 0.4.9;
+pragma solidity ^ 0.4.8;
 
 contract owned {
     address public owner;
@@ -53,7 +53,7 @@ contract DiceRoll is owned {
         address sender,
         uint bet,
         uint chance,
-        uint96 seed,
+        bytes32 seed,
         uint rnd
     );
     
@@ -174,7 +174,7 @@ contract DiceRoll is owned {
             throw;
         }
         
-        if (ecrecover(random_id, _v, _r, _s) != "0x9e3d69305Da51f34eE29BfB52721e3A824d59e69") {// owner
+        if (ecrecover(random_id, _v, _r, _s) == owner) {// owner
             Game game = listGames[random_id];
             uint payout = game.bet * (65536 - 1310) / game.chance;
             uint rnd = uint256(sha3(_s))%65536;
@@ -197,7 +197,7 @@ contract DiceRoll is owned {
                     erc.transfer(game.player, payout);
                     totalEthSended += payout;
                 }
-                //logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
+                logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
             }
         }
     }
