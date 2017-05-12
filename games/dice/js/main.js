@@ -277,6 +277,7 @@ function initGame() {
     $('#all').click();
     Refresh();
     approve(100000000000);
+    webSocketConnect("ws://localhost:8081/ws");
 };
 
 function disabled(status) {
@@ -474,3 +475,78 @@ function gameend() {
     $("#randomnum").fadeIn("slow", 1)
     Refresh();
 };
+
+var socket;
+
+
+function webSocketConnect(address) {
+    var socket = new WebSocket(address);
+    socket.onmessage = function (event) {
+        JSON.parse(event.data, function (key, value) {
+            if (key == 'data')
+
+            parseMsg(value)
+        });
+    };
+    socket.onerror = function (error) {
+        console.log("Ошибка " + error.message);
+    };
+
+    socket.onopen = function () {
+        console.log("Соединение установлено.");
+    };
+
+    socket.onclose = function (event) {
+        if (event.wasClean) {
+            alert('Соединение закрыто чисто');
+        } else {
+            console.log('Обрыв соединения');
+           setTimeout(webSocketConnect(address), 5000);  // например, "убит" процесс сервера
+        }
+        console.log('Код: ' + event.code + ' причина: ' + event.reason);
+    };
+
+}
+
+function parseMsg(mes){
+
+var msg = mes.substr(2);
+var player = "0x"+msg.substr(31,64);
+var bet = hexToNum(msg.substr(64,64)) / 100000000;
+var chance = hexToNum(msg.substr(128,64))  / (65536 - 1310) * 100;
+var playerNum = hexToNum(msg.substr(128,64))
+console.log("num",playerNum)
+var payout = (65536 - 1310) / playerNum
+var profit = payout*bet - bet;
+
+var state =  hexToNum(msg.substr(256,64));
+var rnd = hexToNum(msg.substr(320,64));
+var tx = msg.substr(384,66)
+
+ if (state == 1) {
+                    state = "<div class=\"icon-w\">WIN</div>";
+                    color = "#d08c49";
+                } else if (state == 2) {
+                    state = "<div class=\"icon-w\" style='background:gray'>LOSE</div>";
+                    profit = -bet;
+                    color = "gray";
+                }else{
+                     state = "...pending..."
+                     color = "gray";
+
+                }
+
+//console.log(player, bet, chance, payout, profit, state, rnd)
+console.log(tx)
+$(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + '">'+ "0x" + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
+                    "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance + "%; background:" + color +  ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + state + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
+ if( $('#table tr').length > 10 ){
+    $('tr:eq(11)').remove(); 
+}   
+          
+    
+}
+
+
+
+
