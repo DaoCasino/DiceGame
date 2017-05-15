@@ -64661,11 +64661,33 @@ var Games = function () {
 	}, {
 		key: 'sendRandom2Server',
 		value: function sendRandom2Server(address, seed) {
-			_wallet2.default.getConfirmNumber(seed, address, _appConfig2.default.contracts.abi.dice, function (confirm, PwDerivedKey) {
-				_jquery2.default.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
-					vconcat: seed,
-					result: confirm
-				}, function () {});
+			console.log('>> Check pending');
+			_jquery2.default.ajax({
+				type: 'POST',
+				url: _appConfig2.default.HttpProviders.infura.url,
+				dataType: 'json',
+				async: true,
+				data: JSON.stringify({
+					'id': 0,
+					'jsonrpc': '2.0',
+					'method': 'eth_call',
+					'params': [{
+						'to': address,
+						'data': '0xa7222dcd' + seed.substr(2)
+					}, 'pending']
+				}),
+
+				success: function success(response) {
+					console.log('>> Pending response:', response);
+					if (response.result && response.result.split('0').join('').length > 4) {
+						_wallet2.default.getConfirmNumber(seed, address, _appConfig2.default.contracts.abi.dice, function (confirm, PwDerivedKey) {
+							_jquery2.default.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
+								vconcat: seed,
+								result: confirm
+							}, function () {});
+						});
+					}
+				}
 			});
 		}
 	}, {
