@@ -49,7 +49,7 @@ func makeHTTPPostReq(url string) {
 
 	for {
 		time.Sleep(1000 * time.Millisecond)
-		var jsonprep string = "{\"id\":74,\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"" + lastBlock + "\",\"toBlock\":\"latest\",\"address\":\"0x04010e34df5139ac91ce4147ef6e50dbb060c66d\"}]}"
+		var jsonprep string = "{\"id\":74,\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"" + lastBlock + "\",\"toBlock\":\"latest\",\"address\":\"0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc\"}]}"
 		var jsonStr = []byte(jsonprep)
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 		req.Header.Set("Content-Type", "application/json")
@@ -57,7 +57,7 @@ func makeHTTPPostReq(url string) {
 		if err != nil {
 			fmt.Println("Unable to reach the server.")
 		} else {
-			fmt.Println("RESP:", resp.Body)
+			//fmt.Println("RESP:", resp.Body)
 			//body, _ := ioutil.ReadAll(resp.Body)
 			v, _ := jason.NewObjectFromReader(resp.Body)
 			o, _ := v.GetObjectArray("result")
@@ -65,16 +65,15 @@ func makeHTTPPostReq(url string) {
 				lastBlock, _ = o[len(o)-1].GetString("blockNumber")
 				d, _ := strconv.ParseInt(lastBlock, 0, 64)
 				lastBlock = "0x" + strconv.FormatInt(d+1, 16)
-
 				for _, friend := range o {
 					//name, _ := friend.GetString("address")
 					data, _ := friend.GetString("data")
 					tx, _ := friend.GetString("transactionHash")
 					// block, _ := friend.GetString("blockNumber")
 					// lastBlock = block
-					//fmt.Println("Tx:", tx)
+					fmt.Println("RESULT:", data)
 					gameId := data[2:len(data)]
-					//fmt.Println("DATA:", gameId)
+					fmt.Println("DATA:", gameId)
 					idChanel <- tx + gameId
 					//go getInfoById("https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl", substring)
 
@@ -101,7 +100,7 @@ func getInfoByID(url string, idCh chan string) {
 		//var dat map[string]interface{}
 		client := http.Client{}
 
-		var jsonprep string = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0x04010e34df5139ac91ce4147ef6e50dbb060c66d\",\"data\":\"0xa7222dcd" + id + "\"},\"latest\"]}"
+		var jsonprep string = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc\",\"data\":\"0xa7222dcd" + id + "\"},\"latest\"]}"
 		//fmt.Println("string:", jsonprep)
 		var jsonStr = []byte(jsonprep)
 
@@ -119,7 +118,7 @@ func getInfoByID(url string, idCh chan string) {
 			lastTx = append(lastTx, ms)
 			//fmt.Println("array:", lastTx)
 			//c := Message{"true"}
-			//fmt.Println("RESULT:", o)
+			fmt.Println("RESULT:", o)
 			broadcast <- ms
 			//broadcast <- c
 
