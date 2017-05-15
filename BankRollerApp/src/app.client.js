@@ -37,10 +37,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 	setTimeout(()=>{
-		$('body').append('<div id="waddr">wallet address:'+Wallet.get().addr+'</div>')
+		$('body').append('<div id="waddr">Your wallet: <a href="https://ropsten.etherscan.io/address/'+Wallet.get().addr+'" target="_blank">'+Wallet.get().addr+'</a></div>')
 
-		Games.runConfirm()
 		Games.runUpdateBalance()
-	}, 4000)
+	}, 1000)
 })
 

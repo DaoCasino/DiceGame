@@ -37,7 +37,7 @@ class View {
 		for(let contract_id in games){
 			let game     = games[contract_id]
 			let bankroll = game.start_balance
-			let profit   = +game.balance - +game.start_balance
+			let profit   = (+game.balance - +game.start_balance).toFixed(4)
 
 			// TODO: delta +30-205
 			if (profit>0) {
@@ -55,7 +55,7 @@ class View {
 					</a>
 				</td>
 				<td>${bankroll}</td>
-				<td>${profit}</td>
+				<td class="profit">${profit}</td>
 				<td>
 					<a data-id="${contract_id}" href="#delete">remove</a>
 				</td>
