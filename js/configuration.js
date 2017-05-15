@@ -179,7 +179,7 @@ erc20address = "none";
 function changeNet(netname){
 	if(netname == "ropsten"){
 		 erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
- addressContract = ""
+ addressContract = "0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc"
  urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 
 
