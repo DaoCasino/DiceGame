@@ -4,11 +4,15 @@
  */
  
 var urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+var gThis;
+var repeatRequest = 0;
 
 var Infura = function() {
-    if(options_testnet){
+	gThis = this;
+	if(options_rpc){
+		urlInfura = "http://46.101.244.101:8545";
+    } else if(options_testnet){
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-		addressContract = addressTestContract;
 	}
 };
 
@@ -16,7 +20,6 @@ Infura.prototype.sendRequest = function(name, params, callback, obj){
 	if(options_ethereum && openkey){
 		var method = name;
 		var arParams = [params, "latest"];
-		var id = 1;
 		
 		switch(name){
 			case "start":
@@ -52,7 +55,7 @@ Infura.prototype.sendRequest = function(name, params, callback, obj){
 			data: JSON.stringify({"jsonrpc":'2.0',
 									"method":method,
 									"params":arParams,
-									"id":id}),
+									"id":1}),
 			success: function (d) {
 				callback(name, d.result, obj);
 			}
