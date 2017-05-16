@@ -1098,7 +1098,6 @@ ScrGame.prototype.clickObject = function(evt) {
 
 ScrGame.prototype.getResult = function(arLogs) {
 	var objOrcl = undefined;
-	
 	var len = arLogs.length;
 	var index = 0;
 	if(len > 50){
@@ -1162,13 +1161,14 @@ ScrGame.prototype.sendUrlRequest = function(url, name) {
 }
 
 ScrGame.prototype.getResponseResult = function(value) {
+	var prnt = obj_game["game"];
 	var val = Number(value);
 	if(val == 0){
-		this.clickDAO = true
-		this.timeGetResult = 0;
-		this.bSendRequest = false;
+		prnt.clickDAO = true
+		prnt.timeGetResult = 0;
+		prnt.bSendRequest = false;
 	} else {
-		this.resultGameEth(val);
+		prnt.resultGameEth(val);
 	}
 }
 
@@ -1221,11 +1221,11 @@ ScrGame.prototype.responseTransaction = function(name, value, obj) {
 }
 
 ScrGame.prototype.response = function(command, value, obj) {
-	// console.log("response:", command, value)	
 	var prnt = obj_game["game"];
 	if(value == undefined){
 		return false;
 	}
+	// console.log("response:", command, value)	
 	
 	if(command == "start"){
 		prnt.responseTransaction(command, value, obj);
@@ -1268,7 +1268,7 @@ ScrGame.prototype.response = function(command, value, obj) {
 	} else if(command == "getBalanceBank"){
 		obj_game["balanceBank"] = Number(value);
 	} else if(command == "getBlockNumber"){
-		blockNumber = Number(hexToNum(value));
+		blockNumber = value;
 	} else if(command == "getLogs"){
 		prnt.getResult(value);
 	}
@@ -1592,14 +1592,14 @@ ScrGame.prototype.update = function() {
 	} else if(this.gameTxHash){
 		if(login_obj["startGame"]){
 			this.timeGetResult += diffTime;
-			if(this.timeGetResult >= TIME_GET_RESULT &&
-			this.bSendRequest == false){
-				this.bSendRequest = true;
+			if(this.timeGetResult >= TIME_GET_RESULT){// &&
+			// this.bSendRequest == false){
+				// this.bSendRequest = true;
 				this.timeGetResult = 0;
 				if(this.gameTxHash){
 					this.clickDAO = false;
 					var params = {
-						"fromBlock": String(blockNumber),
+						"fromBlock": blockNumber,
 						"toBlock": "latest",
 						"address": addressContract,
 					}
