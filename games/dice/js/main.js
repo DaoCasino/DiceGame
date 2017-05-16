@@ -5,7 +5,7 @@ var sendingAddr;
 var rawMsg;
 var login_obj = {};
 login_obj["confirmedGames"] = {};
-
+addressContract = addressDice;
 var options_mainet = false;
 var options_testnet = true;
 var options_rpc = false;
@@ -40,6 +40,7 @@ var _callback;
 var _arGames = [];
 var _arUnconfirmedGames = [];
 bankroll = 1000;
+var nonceTx = "";
 
 var RndGen;
 // 100000, 64000, "0x639a1fd07cf885e1453fda734ab8f8bcaf6dcdfe70d3231cfca784323f8aeaaa"
@@ -100,7 +101,7 @@ function loadData() {
         privkey = localStorage.getItem('privkey')
         sendingAddr = openkey.substr(2);
     }
-    console.log("version 0.54 BET") // VERSION !
+    console.log("version 0.55 BET") // VERSION !
     console.log("mainnet:", mainnet)
     console.log("openkey:", openkey)
     console.log("privkey:", privkey)
@@ -276,11 +277,11 @@ function initGame() {
     GetLogs();
     $('#all').click();
     Refresh();
-    if (allowance() < 1000000){
+    if (getAllowance(addressContract) < 1000000){
         approve(100000000000);
     } 
     
-    webSocketConnect("ws://localhost:8081/ws");
+    webSocketConnect("ws://46.101.244.101:8081/ws");
 };
 
 function disabled(status) {
@@ -341,12 +342,18 @@ function makeid(){
 }
 
 function startGame() {
-	if(openkey){
-		game = true;
-		infura.sendRequest("roll", openkey, _callback);
-	} else {
-		$("#randomnum").text("Sorry, you do not have a key");
-	}
+    if (openkey) {
+        game = true;
+        if (nonceTx != "") {
+            nonceTx = numToHex(hexToNum(nonceTx)+1);
+            console.log("NONCE:", nonceTx)
+            responseTransaction("roll", nonceTx);
+        } else {
+            infura.sendRequest("roll", openkey, _callback);
+        }
+    } else {
+        $("#randomnum").text("Sorry, you do not have a key");
+    }
 }
 
 function responseServer(value, seed) {
@@ -428,7 +435,7 @@ function response(command, value, seed) {
 		var lastTx = value;
 		$("#Tx").html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
 		$(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
-		disabled(true);
+		//disabled(true);
 		$("#randomnum").text("Please, wait . . . ");
 		
 		Timer = setInterval(function () {
@@ -462,6 +469,7 @@ function response(command, value, seed) {
 	} else if(command == "responseServer"){
 		responseServer(value, seed);
 	} else if(command == "roll"){
+        nonceTx = value;
 		responseTransaction(command, value);
 	}
 }
@@ -503,51 +511,49 @@ function webSocketConnect(address) {
             alert('Соединение закрыто чисто');
         } else {
             console.log('Обрыв соединения');
-           setTimeout(webSocketConnect(address), 5000);  // например, "убит" процесс сервера
-        }
+           setTimeout(webSocketConnect(address), 10000); 
         console.log('Код: ' + event.code + ' причина: ' + event.reason);
     };
 
 }
 
-function parseMsg(mes){
-console.log("message:",mes)
-var msg = mes.substr(2);
-var player = "0x"+msg.substr(24,64);
-var bet = hexToNum(msg.substr(64,64)) / 100000000;
-var chance = hexToNum(msg.substr(128,64))  / (65536) * 100;
-var playerNum = hexToNum(msg.substr(128,64))
-console.log("num",playerNum)
-var payout = (65536 - 1310) / playerNum
-var profit = payout*bet - bet;
+    function parseMsg(mes) {
 
-var state =  hexToNum(msg.substr(256,64));
-var rnd = hexToNum(msg.substr(320,64));
-var tx = msg.substr(384,66)
-console.log("message:", player, bet, chance, playerNum, payout, profit)
- if (state == 1) {
-                    state = "<div class=\"icon-w\">WIN</div>";
-                    color = "#d08c49";
-                } else if (state == 2) {
-                    state = "<div class=\"icon-w\" style='background:gray'>LOSE</div>";
-                    profit = -bet;
-                    color = "gray";
-                }else{
-                     state = "...pending..."
-                     color = "gray";
+        var msg = mes.substr(2);
+        var player = "0x" + msg.substr(24, 64);
+        var bet = hexToNum(msg.substr(64, 64)) / 100000000;
+        var chance = hexToNum(msg.substr(128, 64)) / (65536) * 100;
+        var playerNum = hexToNum(msg.substr(128, 64))
 
-                }
+        var payout = (65536 - 1310) / playerNum
+        var profit = payout * bet - bet;
 
-//console.log(player, bet, chance, payout, profit, state, rnd)
-console.log(tx)
-$(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + '">'+ "0x" + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
-                    "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance + "%; background:" + color +  ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + state + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
- if( $('#table tr').length > 10 ){
-    $('tr:eq(11)').remove(); 
-}   
-          
-    
-}
+        var state = hexToNum(msg.substr(256, 64));
+        var rnd = hexToNum(msg.substr(320, 64));
+        var tx = msg.substr(384, 66)
+
+        if (state == 1) {
+            state = "<div class=\"icon-w\">WIN</div>";
+            color = "#d08c49";
+        } else if (state == 2) {
+            state = "<div class=\"icon-w\" style='background:gray'>LOSE</div>";
+            profit = -bet;
+            color = "gray";
+        } else {
+            state = "...pending..."
+            color = "gray";
+
+        }
+
+        //console.log(player, bet, chance, payout, profit, state, rnd)
+
+        $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + '">' + "0x" + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
+            "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + state + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
+        if ($('#table tr').length > 10) {
+            $('tr:eq(11)').remove();
+        }
+    }
+    }
 
 
 
