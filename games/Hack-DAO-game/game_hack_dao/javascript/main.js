@@ -1,6 +1,6 @@
 var _W = 1280;
 var _H = 720;
-var version = "v. 1.1.13"
+var version = "v. 1.1.14"
 var login_obj = {};
 var dataAnima = [];
 var dataMovie = [];
@@ -26,6 +26,7 @@ var options_unlock = false;
 var options_ethereum = true;
 var options_mainet = false;
 var options_testnet = false;
+var options_rpc = false;
 var options_music = true;
 var options_sound = true;
 var options_mobile = true;
