@@ -172,6 +172,7 @@ var erc20abi = [{
     "type": "event"
 }]
 
+netname = "ropsten";
 erc20address = "none"; 
 urlInfura = "none";
 addressDice = "none";
@@ -179,7 +180,8 @@ addressBJDeck = "none";
 addressBJStorage = "none";
 addressBJ = "none";
 
-function changeNet(netname){
+function changeNet(value){
+	netname = value;
 	console.log("net:", netname);
 	if(netname == "ropsten"){
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -203,3 +205,8 @@ function changeNet(netname){
 	}
 }
 changeNet("ropsten");
+
+
+function getNet(){
+	return netname;
+}
