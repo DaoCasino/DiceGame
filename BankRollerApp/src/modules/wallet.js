@@ -165,6 +165,23 @@ class Wallet {
 		})
 	}
 
+	signTx(options, callback){
+		this.getPwDerivedKey((PwDerivedKey)=>{
+			this.getNonce((nonce)=>{
+				options.nonce = nonce
+
+				let signedTx = ethWallet.signing.signTx(
+					this.getKs(),
+					PwDerivedKey,
+					ethWallet.txutils.createContractTx(this._wallet.openkey.substr(2), options).tx,
+					this._wallet.openkey.substr(2)
+				)
+
+				callback(signedTx)
+			})
+		})
+	}
+
 	getSignedTx(seed, address, abi, callback){
 		this.getConfirmNumber(seed, address, abi, (confirm, PwDerivedKey, v,r,s)=>{
 			this.getNonce((nonce)=>{

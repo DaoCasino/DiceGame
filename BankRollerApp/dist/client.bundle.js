@@ -83,7 +83,7 @@
 
 var base64 = __webpack_require__(173)
 var ieee754 = __webpack_require__(328)
-var isArray = __webpack_require__(143)
+var isArray = __webpack_require__(142)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -17044,7 +17044,7 @@ module.exports.extend = function(spec) {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(116);
+module.exports = __webpack_require__(115);
 
 module.exports.Interpreter = __webpack_require__(180);
 
@@ -20510,9 +20510,9 @@ module.exports.Interpreter = __webpack_require__(180);
  */
 
 var BigNumber = __webpack_require__(92);
-var utils = __webpack_require__(140);
+var utils = __webpack_require__(139);
 var c = __webpack_require__(314);
-var SolidityParam = __webpack_require__(139);
+var SolidityParam = __webpack_require__(138);
 
 
 /**
@@ -30534,7 +30534,7 @@ if (typeof Object.create === 'function') {
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
-var SolidityParam = __webpack_require__(139);
+var SolidityParam = __webpack_require__(138);
 
 /**
  * SolidityType prototype is used to encode/decode solidity params of certain type
@@ -31384,7 +31384,7 @@ var BufferReader = __webpack_require__(32);
 var BufferWriter = __webpack_require__(21);
 var BN = __webpack_require__(8);
 var Hash = __webpack_require__(10);
-var ECDSA = __webpack_require__(113);
+var ECDSA = __webpack_require__(112);
 var $ = __webpack_require__(4);
 var _ = __webpack_require__(3);
 
@@ -35307,7 +35307,7 @@ var util = __webpack_require__(55);
 util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
-var Readable = __webpack_require__(153);
+var Readable = __webpack_require__(152);
 var Writable = __webpack_require__(99);
 
 util.inherits(Duplex, Readable);
@@ -36165,7 +36165,7 @@ asn1.bignum = __webpack_require__(171);
 
 asn1.define = __webpack_require__(163).define;
 asn1.base = __webpack_require__(49);
-asn1.constants = __webpack_require__(107);
+asn1.constants = __webpack_require__(106);
 asn1.decoders = __webpack_require__(167);
 asn1.encoders = __webpack_require__(169);
 
@@ -36177,8 +36177,8 @@ asn1.encoders = __webpack_require__(169);
 var base = exports;
 
 base.Reporter = __webpack_require__(165).Reporter;
-base.DecoderBuffer = __webpack_require__(106).DecoderBuffer;
-base.EncoderBuffer = __webpack_require__(106).EncoderBuffer;
+base.DecoderBuffer = __webpack_require__(105).DecoderBuffer;
+base.EncoderBuffer = __webpack_require__(105).EncoderBuffer;
 base.Node = __webpack_require__(164);
 
 
@@ -47249,7 +47249,7 @@ global._bitcore = bitcore.version;
 // crypto
 bitcore.crypto = {};
 bitcore.crypto.BN = __webpack_require__(8);
-bitcore.crypto.ECDSA = __webpack_require__(113);
+bitcore.crypto.ECDSA = __webpack_require__(112);
 bitcore.crypto.Hash = __webpack_require__(10);
 bitcore.crypto.Random = __webpack_require__(61);
 bitcore.crypto.Point = __webpack_require__(42);
@@ -47275,10 +47275,10 @@ bitcore.errors = __webpack_require__(17);
 // main bitcoin library
 bitcore.Address = __webpack_require__(38);
 bitcore.Block = __webpack_require__(177);
-bitcore.MerkleBlock = __webpack_require__(112);
+bitcore.MerkleBlock = __webpack_require__(111);
 bitcore.BlockHeader = __webpack_require__(60);
-bitcore.HDPrivateKey = __webpack_require__(114);
-bitcore.HDPublicKey = __webpack_require__(115);
+bitcore.HDPrivateKey = __webpack_require__(113);
+bitcore.HDPublicKey = __webpack_require__(114);
 bitcore.Networks = __webpack_require__(39);
 bitcore.Opcode = __webpack_require__(82);
 bitcore.PrivateKey = __webpack_require__(63);
@@ -47291,7 +47291,7 @@ bitcore.Unit = __webpack_require__(85);
 // dependencies, subject to change
 bitcore.deps = {};
 bitcore.deps.bnjs = __webpack_require__(27);
-bitcore.deps.bs58 = __webpack_require__(118);
+bitcore.deps.bs58 = __webpack_require__(117);
 bitcore.deps.Buffer = Buffer;
 bitcore.deps.elliptic = __webpack_require__(23);
 bitcore.deps._ = __webpack_require__(3);
@@ -47678,7 +47678,7 @@ module.exports = Random;
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
 var _ = __webpack_require__(3);
-var bs58 = __webpack_require__(118);
+var bs58 = __webpack_require__(117);
 var buffer = __webpack_require__(0);
 
 var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'.split('');
@@ -48164,7 +48164,7 @@ module.exports = __webpack_require__(84);
 
 module.exports.Input = __webpack_require__(83);
 module.exports.Output = __webpack_require__(33);
-module.exports.UnspentOutput = __webpack_require__(117);
+module.exports.UnspentOutput = __webpack_require__(116);
 module.exports.Signature = __webpack_require__(52);
 module.exports.Sighash = __webpack_require__(34);
 
@@ -48780,14 +48780,14 @@ module.exports = function md5 (buf) {
 
 exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = __webpack_require__(56)
 exports.createHash = exports.Hash = __webpack_require__(36)
-exports.createHmac = exports.Hmac = __webpack_require__(130)
+exports.createHmac = exports.Hmac = __webpack_require__(129)
 
 var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(Object.keys(__webpack_require__(224)))
 exports.getHashes = function () {
   return hashes
 }
 
-var p = __webpack_require__(146)
+var p = __webpack_require__(145)
 exports.pbkdf2 = p.pbkdf2
 exports.pbkdf2Sync = p.pbkdf2Sync
 
@@ -48862,7 +48862,7 @@ var publicEncrypt = __webpack_require__(345)
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(262), __webpack_require__(260), __webpack_require__(44), __webpack_require__(46), __webpack_require__(90), __webpack_require__(131), __webpack_require__(278), __webpack_require__(133), __webpack_require__(279), __webpack_require__(132), __webpack_require__(277), __webpack_require__(89), __webpack_require__(273), __webpack_require__(45), __webpack_require__(7), __webpack_require__(263), __webpack_require__(265), __webpack_require__(264), __webpack_require__(267), __webpack_require__(266), __webpack_require__(268), __webpack_require__(269), __webpack_require__(270), __webpack_require__(272), __webpack_require__(271), __webpack_require__(261), __webpack_require__(259), __webpack_require__(280), __webpack_require__(276), __webpack_require__(275), __webpack_require__(274));
+		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(262), __webpack_require__(260), __webpack_require__(44), __webpack_require__(46), __webpack_require__(90), __webpack_require__(130), __webpack_require__(278), __webpack_require__(132), __webpack_require__(279), __webpack_require__(131), __webpack_require__(277), __webpack_require__(89), __webpack_require__(273), __webpack_require__(45), __webpack_require__(7), __webpack_require__(263), __webpack_require__(265), __webpack_require__(264), __webpack_require__(267), __webpack_require__(266), __webpack_require__(268), __webpack_require__(269), __webpack_require__(270), __webpack_require__(272), __webpack_require__(271), __webpack_require__(261), __webpack_require__(259), __webpack_require__(280), __webpack_require__(276), __webpack_require__(275), __webpack_require__(274));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -49653,7 +49653,7 @@ utils.encode = function encode(arr, enc) {
 var aesid = __webpack_require__(339)
 var fixProc = __webpack_require__(342)
 var ciphers = __webpack_require__(86)
-var compat = __webpack_require__(146)
+var compat = __webpack_require__(145)
 module.exports = parseKeys
 
 function parseKeys (buffer) {
@@ -50070,7 +50070,7 @@ var Signature = __webpack_require__(16);
 var Sighash = __webpack_require__(34);
 
 var Address = __webpack_require__(38);
-var UnspentOutput = __webpack_require__(117);
+var UnspentOutput = __webpack_require__(116);
 var Input = __webpack_require__(83);
 var PublicKeyHashInput = Input.PublicKeyHash;
 var PublicKeyInput = Input.PublicKey;
@@ -54723,7 +54723,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! bignumber.js v2.0.7 https://github.com/Mik
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {const createKeccakHash = __webpack_require__(331)
-const secp256k1 = __webpack_require__(157)
+const secp256k1 = __webpack_require__(156)
 const assert = __webpack_require__(37)
 const rlp = __webpack_require__(102)
 const BN = __webpack_require__(320)
@@ -59570,7 +59570,7 @@ var internalUtil = {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(155);
+var Stream = __webpack_require__(154);
 /*</replacement>*/
 
 var Buffer = __webpack_require__(0).Buffer;
@@ -60080,18 +60080,18 @@ function CorkedRequest(state) {
     }
   };
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31), __webpack_require__(161).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31), __webpack_require__(160).setImmediate))
 
 /***/ }),
 /* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(153);
+exports = module.exports = __webpack_require__(152);
 exports.Stream = exports;
 exports.Readable = exports;
 exports.Writable = __webpack_require__(99);
 exports.Duplex = __webpack_require__(41);
-exports.Transform = __webpack_require__(154);
+exports.Transform = __webpack_require__(153);
 exports.PassThrough = __webpack_require__(353);
 
 
@@ -60646,9 +60646,9 @@ var exports = module.exports = function SHA (algorithm) {
 exports.sha = __webpack_require__(377)
 exports.sha1 = __webpack_require__(378)
 exports.sha224 = __webpack_require__(379)
-exports.sha256 = __webpack_require__(159)
+exports.sha256 = __webpack_require__(158)
 exports.sha384 = __webpack_require__(380)
-exports.sha512 = __webpack_require__(160)
+exports.sha512 = __webpack_require__(159)
 
 
 /***/ }),
@@ -63080,257 +63080,6 @@ nacl.setPRNG = function(fn) {
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _jquery = __webpack_require__(58);
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-var _appConfig = __webpack_require__(110);
-
-var _appConfig2 = _interopRequireDefault(_appConfig);
-
-var _localforage = __webpack_require__(144);
-
-var _localforage2 = _interopRequireDefault(_localforage);
-
-var _ethLightwallet = __webpack_require__(301);
-
-var _ethLightwallet2 = _interopRequireDefault(_ethLightwallet);
-
-var _ethereumjsAbi = __webpack_require__(317);
-
-var _ethereumjsAbi2 = _interopRequireDefault(_ethereumjsAbi);
-
-var _bigInteger = __webpack_require__(174);
-
-var _bigInteger2 = _interopRequireDefault(_bigInteger);
-
-var _utils = __webpack_require__(111);
-
-var Utils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Wallet = function () {
-	function Wallet() {
-		var _this = this;
-
-		_classCallCheck(this, Wallet);
-
-		// Create wallet if not exist
-		_localforage2.default.getItem('wallet', function (err, wallet) {
-			console.info(wallet);
-			if (wallet) {
-				_this._wallet = wallet;
-			} else {
-				_this.create();
-			}
-		});
-	}
-
-	_createClass(Wallet, [{
-		key: 'get',
-		value: function get() {
-			return this._wallet;
-		}
-	}, {
-		key: 'getKs',
-		value: function getKs() {
-			if (this.keyStore) {
-				return this.keyStore;
-			}
-			this.keyStore = _ethLightwallet2.default.keystore.deserialize(this._wallet.keystorage);
-			return this.keyStore;
-		}
-	}, {
-		key: 'exportPrivateKey',
-		value: function exportPrivateKey(callback) {
-			var _this2 = this;
-
-			this.getPwDerivedKey(function (PwDerivedKey) {
-				var private_key = _this2.getKs().exportPrivateKey(_this2._wallet.addr, PwDerivedKey);
-
-				callback(private_key);
-			});
-		}
-	}, {
-		key: 'getPwDerivedKey',
-		value: function getPwDerivedKey(callback) {
-			var _this3 = this;
-
-			var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5;
-
-			if (this.pwDerivedKey) {
-				callback(this.pwDerivedKey);
-				return;
-			}
-			this.getKs().keyFromPassword(_appConfig2.default.wallet_pass, function (err, pwDerivedKey) {
-				if (err && limit > 0) {
-					_this3.getPwDerivedKey(callback, limit - 1);return;
-				}
-
-				if (pwDerivedKey) {
-					_this3.pwDerivedKey = pwDerivedKey;
-				}
-				callback(pwDerivedKey);
-			});
-		}
-	}, {
-		key: 'reset',
-		value: function reset() {
-			_localforage2.default.setItem('wallet', null);
-		}
-	}, {
-		key: 'create',
-		value: function create() {
-			var _this4 = this;
-
-			console.log('Create Wallet');
-
-			var wallet = {};
-
-			_ethLightwallet2.default.keystore.createVault({
-				seedPhrase: _ethLightwallet2.default.keystore.generateRandomSeed(),
-				password: _appConfig2.default.wallet_pass
-			}, function (err, ks) {
-				if (err) console.error('[Create Wallet] Error: ', err);
-
-				ks.keyFromPassword(_appConfig2.default.wallet_pass, function (err, pwDerivedKey) {
-					if (err) console.error('[Create Wallet] keyFromPassword Error: ', err);
-
-					ks.generateNewAddress(pwDerivedKey, 1);
-
-					wallet.addr = ks.getAddresses()[0];
-					wallet.keystorage = ks.serialize();
-					wallet.openkey = '0x' + wallet.addr;
-
-					console.info('Wallet created!', wallet);
-
-					_this4.addCoins(wallet.openkey);
-
-					_localforage2.default.setItem('wallet', wallet);
-
-					_this4._wallet = wallet;
-
-					return;
-				});
-			});
-		}
-	}, {
-		key: 'addCoins',
-		value: function addCoins(wallet_openkey) {
-			console.log('Add coins to wallet', wallet_openkey);
-			fetch(_appConfig2.default.api_url + '?a=faucet&to=' + wallet_openkey).then(function (response) {
-				return response.text();
-			}).then(function (result) {
-				console.groupCollapsed('Add coins result:');
-				console.log(result);
-				console.groupEnd();
-			});
-		}
-	}, {
-		key: 'getNonce',
-		value: function getNonce(callback) {
-			var _this5 = this;
-
-			if (this.nonce) {
-				this.nonce++;
-				callback('0x' + Utils.numToHex(this.nonce));
-				return;
-			}
-
-			_jquery2.default.ajax({
-				type: 'POST',
-				url: _appConfig2.default.HttpProviders.infura.url,
-				dataType: 'json',
-				async: true,
-
-				data: JSON.stringify({
-					'id': 0,
-					'jsonrpc': '2.0',
-					'method': 'eth_getTransactionCount',
-					'params': [this.get().openkey, 'pending']
-				}),
-				success: function success(d) {
-					_this5.nonce = Utils.hexToNum(d.result.substr(2));
-
-					console.log('nonce:', d.result);
-					callback(d.result);
-				}
-			});
-		}
-	}, {
-		key: 'getConfirmNumber',
-		value: function getConfirmNumber(seed, address, abi, callback) {
-			var _this6 = this;
-
-			this.getPwDerivedKey(function (PwDerivedKey) {
-				var VRS = _ethLightwallet2.default.signing.signMsg(_this6.getKs(), PwDerivedKey, seed, _this6._wallet.openkey.substr(2));
-
-				var signature = _ethLightwallet2.default.signing.concatSig(VRS);
-
-				var v = VRS.v;
-				var r = signature.slice(0, 66);
-				var s = '0x' + signature.slice(66, 130);
-
-				/* Equivalent of solidity hash function:
-    	function confirm(bytes32 _s) public returns(uint256){
-    		return uint256 (sha3(_s));
-    	}
-    */
-				var hash = '0x' + _ethereumjsAbi2.default.soliditySHA3(['bytes32'], [s]).toString('hex');
-				var confirm = (0, _bigInteger2.default)(hash, 16).divmod(65536).remainder.value;
-
-				callback(confirm, PwDerivedKey, v, r, s);
-			});
-		}
-	}, {
-		key: 'getSignedTx',
-		value: function getSignedTx(seed, address, abi, callback) {
-			var _this7 = this;
-
-			this.getConfirmNumber(seed, address, abi, function (confirm, PwDerivedKey, v, r, s) {
-				_this7.getNonce(function (nonce) {
-					console.log('nonce', nonce);
-					var options = {
-						to: address,
-						nonce: nonce,
-						gasPrice: '0x737be7600',
-						gasLimit: '0x927c0',
-						value: 0
-					};
-
-					var registerTx = _ethLightwallet2.default.txutils.functionTx(abi, 'confirm', [seed, v, r, s], options);
-
-					var signedTx = _ethLightwallet2.default.signing.signTx(_this7.getKs(), PwDerivedKey, registerTx, _this7._wallet.openkey.substr(2));
-
-					callback(signedTx, confirm);
-				});
-			});
-		}
-	}]);
-
-	return Wallet;
-}();
-
-exports.default = new Wallet();
-
-/***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var inherits = __webpack_require__(1);
 var Reporter = __webpack_require__(49).Reporter;
 var Buffer = __webpack_require__(0).Buffer;
@@ -63450,7 +63199,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = exports;
@@ -63475,7 +63224,7 @@ constants.der = __webpack_require__(166);
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -63805,7 +63554,7 @@ function derDecodeLen(buf, primitive, fail) {
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -64106,7 +63855,7 @@ function encodeTag(tag, primitive, cls, reporter) {
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64140,8 +63889,9 @@ var config = {
 				balanceOf: '0x70a08231'
 			},
 
-			abi: {
-				dice: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
+			dice: {
+				bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
+				abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
 			}
 		}
 	}
@@ -64150,7 +63900,7 @@ var config = {
 module.exports = config['dev'];
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64180,7 +63930,7 @@ var pad = exports.pad = function pad(num, size) {
 };
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64460,7 +64210,7 @@ module.exports = MerkleBlock;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64764,7 +64514,7 @@ module.exports = ECDSA;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65203,7 +64953,7 @@ HDPrivateKey.fromSeed = function(hexa, network) {
 
 HDPrivateKey.prototype._calcHDPublicKey = function() {
   if (!this._hdPublicKey) {
-    var HDPublicKey = __webpack_require__(115);
+    var HDPublicKey = __webpack_require__(114);
     this._hdPublicKey = new HDPublicKey(this);
   }
 };
@@ -65418,7 +65168,7 @@ module.exports = HDPrivateKey;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65431,7 +65181,7 @@ var BN = __webpack_require__(8);
 var Base58 = __webpack_require__(62);
 var Base58Check = __webpack_require__(50);
 var Hash = __webpack_require__(10);
-var HDPrivateKey = __webpack_require__(114);
+var HDPrivateKey = __webpack_require__(113);
 var Network = __webpack_require__(39);
 var Point = __webpack_require__(42);
 var PublicKey = __webpack_require__(22);
@@ -65922,7 +65672,7 @@ module.exports = HDPublicKey;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67014,7 +66764,7 @@ module.exports = Script;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67121,7 +66871,7 @@ module.exports = UnspentOutput;
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports) {
 
 // Base58 encoding/decoding
@@ -67207,14 +66957,14 @@ module.exports = {
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(207);
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(66)
@@ -67318,7 +67068,7 @@ function xorTest (a, b) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var xor = __webpack_require__(54)
@@ -67341,7 +67091,7 @@ exports.decrypt = function (self, block) {
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(54)
@@ -67379,7 +67129,7 @@ function encryptStart (self, data, decrypt) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {function encryptByte (self, byteParam, decrypt) {
@@ -67420,7 +67170,7 @@ function shiftIn (buffer, value) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {function encryptByte (self, byteParam, decrypt) {
@@ -67442,7 +67192,7 @@ exports.encrypt = function (self, chunk, decrypt) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports) {
 
 exports.encrypt = function (self, block) {
@@ -67454,7 +67204,7 @@ exports.decrypt = function (self, block) {
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(54)
@@ -67477,7 +67227,7 @@ exports.encrypt = function (self, chunk) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(66)
@@ -67509,7 +67259,7 @@ StreamCipher.prototype._final = function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -67666,7 +67416,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -67679,7 +67429,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67748,7 +67498,7 @@ module.exports = function createHmac (alg, key) {
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -67952,7 +67702,7 @@ module.exports = function createHmac (alg, key) {
 }));
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -68280,7 +68030,7 @@ module.exports = function createHmac (alg, key) {
 }));
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -68608,16 +68358,16 @@ module.exports = function createHmac (alg, key) {
 }));
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var randomBytes = __webpack_require__(56);
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
 findPrime.fermatTest = fermatTest;
-var BN = __webpack_require__(135);
+var BN = __webpack_require__(134);
 var TWENTYFOUR = new BN(24);
-var MillerRabin = __webpack_require__(145);
+var MillerRabin = __webpack_require__(144);
 var millerRabin = new MillerRabin();
 var ONE = new BN(1);
 var TWO = new BN(2);
@@ -68719,7 +68469,7 @@ function findPrime(bits, gen) {
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -72153,7 +71903,7 @@ function findPrime(bits, gen) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var util = __webpack_require__(93);
@@ -72341,7 +72091,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var CryptoJS = __webpack_require__(73);
@@ -72351,12 +72101,12 @@ var ec = new EC('secp256k1');
 var bitcore = __webpack_require__(59);
 var Random = bitcore.crypto.Random;
 var Hash = bitcore.crypto.Hash;
-var Mnemonic = __webpack_require__(119);
+var Mnemonic = __webpack_require__(118);
 var nacl = __webpack_require__(104);
-var scrypt = __webpack_require__(156);
+var scrypt = __webpack_require__(155);
 
-var encryption = __webpack_require__(136);
-var signing = __webpack_require__(138);
+var encryption = __webpack_require__(135);
+var signing = __webpack_require__(137);
 
 var defaultSalt = 'lightwalletSalt'
 var defaultHdPathString = "m/0'/0'/0'";
@@ -73018,7 +72768,7 @@ module.exports = KeyStore;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var Transaction = __webpack_require__(76)
@@ -73107,7 +72857,7 @@ module.exports.concatSig = concatSig;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -73132,7 +72882,7 @@ module.exports.concatSig = concatSig;
  * @date 2015
  */
 
-var utils = __webpack_require__(140);
+var utils = __webpack_require__(139);
 
 /**
  * SolidityParam object prototype.
@@ -73265,7 +73015,7 @@ module.exports = SolidityParam;
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -73868,7 +73618,7 @@ module.exports = {
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -77302,7 +77052,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports) {
 
 /**
@@ -77321,7 +77071,7 @@ module.exports = function isHexPrefixed(str) {
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -77332,7 +77082,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;/*!
@@ -79651,7 +79401,7 @@ module.exports = localforage_js;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var bn = __webpack_require__(338);
@@ -79770,17 +79520,17 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 exports.pbkdf2 = __webpack_require__(343)
 
-exports.pbkdf2Sync = __webpack_require__(149)
+exports.pbkdf2Sync = __webpack_require__(148)
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {var defaultEncoding
@@ -79797,7 +79547,7 @@ module.exports = defaultEncoding
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, exports) {
 
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
@@ -79821,15 +79571,15 @@ module.exports = function (iterations, keylen) {
 
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var md5 = __webpack_require__(71)
 var rmd160 = __webpack_require__(101)
 var sha = __webpack_require__(103)
 
-var checkParameters = __webpack_require__(148)
-var defaultEncoding = __webpack_require__(147)
+var checkParameters = __webpack_require__(147)
+var defaultEncoding = __webpack_require__(146)
 var Buffer = __webpack_require__(80).Buffer
 var ZEROS = Buffer.alloc(128)
 var sizes = {
@@ -79929,7 +79679,7 @@ module.exports = function (password, salt, iterations, keylen, digest) {
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(36);
@@ -79951,7 +79701,7 @@ function i2ops(c) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(98);
@@ -79967,7 +79717,7 @@ module.exports = withPublic;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports) {
 
 module.exports = function xor(a, b) {
@@ -79980,7 +79730,7 @@ module.exports = function xor(a, b) {
 };
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79993,7 +79743,7 @@ var processNextTick = __webpack_require__(97);
 /*</replacement>*/
 
 /*<replacement>*/
-var isArray = __webpack_require__(143);
+var isArray = __webpack_require__(142);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -80011,7 +79761,7 @@ var EElistenerCount = function (emitter, type) {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(155);
+var Stream = __webpack_require__(154);
 /*</replacement>*/
 
 var Buffer = __webpack_require__(0).Buffer;
@@ -80922,7 +80672,7 @@ function indexOf(xs, x) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81110,14 +80860,14 @@ function done(stream, er, data) {
 }
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(94).EventEmitter;
 
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {/*!
@@ -81660,10 +81410,10 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
 
 if (true) module.exports = scrypt;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(161).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(160).setImmediate))
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81672,7 +81422,7 @@ module.exports = __webpack_require__(361)(__webpack_require__(360))
 
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -81713,7 +81463,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -81854,7 +81604,7 @@ module.exports = Sha256
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(1)
@@ -82120,7 +81870,7 @@ module.exports = Sha512
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -82179,7 +81929,7 @@ exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82195,19 +81945,290 @@ var _jquery = __webpack_require__(58);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _appConfig = __webpack_require__(110);
+var _appConfig = __webpack_require__(109);
 
 var _appConfig2 = _interopRequireDefault(_appConfig);
 
-var _wallet = __webpack_require__(105);
-
-var _wallet2 = _interopRequireDefault(_wallet);
-
-var _localforage = __webpack_require__(144);
+var _localforage = __webpack_require__(143);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
-var _utils = __webpack_require__(111);
+var _ethLightwallet = __webpack_require__(301);
+
+var _ethLightwallet2 = _interopRequireDefault(_ethLightwallet);
+
+var _ethereumjsAbi = __webpack_require__(317);
+
+var _ethereumjsAbi2 = _interopRequireDefault(_ethereumjsAbi);
+
+var _bigInteger = __webpack_require__(174);
+
+var _bigInteger2 = _interopRequireDefault(_bigInteger);
+
+var _utils = __webpack_require__(110);
+
+var Utils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Wallet = function () {
+	function Wallet() {
+		var _this = this;
+
+		_classCallCheck(this, Wallet);
+
+		// Create wallet if not exist
+		_localforage2.default.getItem('wallet', function (err, wallet) {
+			console.info(wallet);
+			if (wallet) {
+				_this._wallet = wallet;
+			} else {
+				_this.create();
+			}
+		});
+	}
+
+	_createClass(Wallet, [{
+		key: 'get',
+		value: function get() {
+			return this._wallet;
+		}
+	}, {
+		key: 'getKs',
+		value: function getKs() {
+			if (this.keyStore) {
+				return this.keyStore;
+			}
+			this.keyStore = _ethLightwallet2.default.keystore.deserialize(this._wallet.keystorage);
+			return this.keyStore;
+		}
+	}, {
+		key: 'exportPrivateKey',
+		value: function exportPrivateKey(callback) {
+			var _this2 = this;
+
+			this.getPwDerivedKey(function (PwDerivedKey) {
+				var private_key = _this2.getKs().exportPrivateKey(_this2._wallet.addr, PwDerivedKey);
+
+				callback(private_key);
+			});
+		}
+	}, {
+		key: 'getPwDerivedKey',
+		value: function getPwDerivedKey(callback) {
+			var _this3 = this;
+
+			var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5;
+
+			if (this.pwDerivedKey) {
+				callback(this.pwDerivedKey);
+				return;
+			}
+			this.getKs().keyFromPassword(_appConfig2.default.wallet_pass, function (err, pwDerivedKey) {
+				if (err && limit > 0) {
+					_this3.getPwDerivedKey(callback, limit - 1);return;
+				}
+
+				if (pwDerivedKey) {
+					_this3.pwDerivedKey = pwDerivedKey;
+				}
+				callback(pwDerivedKey);
+			});
+		}
+	}, {
+		key: 'reset',
+		value: function reset() {
+			_localforage2.default.setItem('wallet', null);
+		}
+	}, {
+		key: 'create',
+		value: function create() {
+			var _this4 = this;
+
+			console.log('Create Wallet');
+
+			var wallet = {};
+
+			_ethLightwallet2.default.keystore.createVault({
+				seedPhrase: _ethLightwallet2.default.keystore.generateRandomSeed(),
+				password: _appConfig2.default.wallet_pass
+			}, function (err, ks) {
+				if (err) console.error('[Create Wallet] Error: ', err);
+
+				ks.keyFromPassword(_appConfig2.default.wallet_pass, function (err, pwDerivedKey) {
+					if (err) console.error('[Create Wallet] keyFromPassword Error: ', err);
+
+					ks.generateNewAddress(pwDerivedKey, 1);
+
+					wallet.addr = ks.getAddresses()[0];
+					wallet.keystorage = ks.serialize();
+					wallet.openkey = '0x' + wallet.addr;
+
+					console.info('Wallet created!', wallet);
+
+					_this4.addCoins(wallet.openkey);
+
+					_localforage2.default.setItem('wallet', wallet);
+
+					_this4._wallet = wallet;
+
+					return;
+				});
+			});
+		}
+	}, {
+		key: 'addCoins',
+		value: function addCoins(wallet_openkey) {
+			console.log('Add coins to wallet', wallet_openkey);
+			fetch(_appConfig2.default.api_url + '?a=faucet&to=' + wallet_openkey).then(function (response) {
+				return response.text();
+			}).then(function (result) {
+				console.groupCollapsed('Add coins result:');
+				console.log(result);
+				console.groupEnd();
+			});
+		}
+	}, {
+		key: 'getNonce',
+		value: function getNonce(callback) {
+			var _this5 = this;
+
+			if (this.nonce) {
+				this.nonce++;
+				callback('0x' + Utils.numToHex(this.nonce));
+				return;
+			}
+
+			_jquery2.default.ajax({
+				type: 'POST',
+				url: _appConfig2.default.HttpProviders.infura.url,
+				dataType: 'json',
+				async: true,
+
+				data: JSON.stringify({
+					'id': 0,
+					'jsonrpc': '2.0',
+					'method': 'eth_getTransactionCount',
+					'params': [this.get().openkey, 'pending']
+				}),
+				success: function success(d) {
+					_this5.nonce = Utils.hexToNum(d.result.substr(2));
+
+					console.log('nonce:', d.result);
+					callback(d.result);
+				}
+			});
+		}
+	}, {
+		key: 'getConfirmNumber',
+		value: function getConfirmNumber(seed, address, abi, callback) {
+			var _this6 = this;
+
+			this.getPwDerivedKey(function (PwDerivedKey) {
+				var VRS = _ethLightwallet2.default.signing.signMsg(_this6.getKs(), PwDerivedKey, seed, _this6._wallet.openkey.substr(2));
+
+				var signature = _ethLightwallet2.default.signing.concatSig(VRS);
+
+				var v = VRS.v;
+				var r = signature.slice(0, 66);
+				var s = '0x' + signature.slice(66, 130);
+
+				/* Equivalent of solidity hash function:
+    	function confirm(bytes32 _s) public returns(uint256){
+    		return uint256 (sha3(_s));
+    	}
+    */
+				var hash = '0x' + _ethereumjsAbi2.default.soliditySHA3(['bytes32'], [s]).toString('hex');
+				var confirm = (0, _bigInteger2.default)(hash, 16).divmod(65536).remainder.value;
+
+				callback(confirm, PwDerivedKey, v, r, s);
+			});
+		}
+	}, {
+		key: 'signTx',
+		value: function signTx(options, callback) {
+			var _this7 = this;
+
+			this.getPwDerivedKey(function (PwDerivedKey) {
+				_this7.getNonce(function (nonce) {
+					options.nonce = nonce;
+
+					var signedTx = _ethLightwallet2.default.signing.signTx(_this7.getKs(), PwDerivedKey, _ethLightwallet2.default.txutils.createContractTx(_this7._wallet.openkey.substr(2), options).tx, _this7._wallet.openkey.substr(2));
+
+					callback(signedTx);
+				});
+			});
+		}
+	}, {
+		key: 'getSignedTx',
+		value: function getSignedTx(seed, address, abi, callback) {
+			var _this8 = this;
+
+			this.getConfirmNumber(seed, address, abi, function (confirm, PwDerivedKey, v, r, s) {
+				_this8.getNonce(function (nonce) {
+					console.log('nonce', nonce);
+					var options = {
+						to: address,
+						nonce: nonce,
+						gasPrice: '0x737be7600',
+						gasLimit: '0x927c0',
+						value: 0
+					};
+
+					var registerTx = _ethLightwallet2.default.txutils.functionTx(abi, 'confirm', [seed, v, r, s], options);
+
+					var signedTx = _ethLightwallet2.default.signing.signTx(_this8.getKs(), PwDerivedKey, registerTx, _this8._wallet.openkey.substr(2));
+
+					callback(signedTx, confirm);
+				});
+			});
+		}
+	}]);
+
+	return Wallet;
+}();
+
+exports.default = new Wallet();
+
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+// import Web3       from 'web3'
+
+// let web3 = new Web3()
+// web3.setProvider(new web3.providers.HttpProvider(_config.HttpProviders.infura.url))
+
+
+var _jquery = __webpack_require__(58);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _appConfig = __webpack_require__(109);
+
+var _appConfig2 = _interopRequireDefault(_appConfig);
+
+var _wallet = __webpack_require__(161);
+
+var _wallet2 = _interopRequireDefault(_wallet);
+
+var _localforage = __webpack_require__(143);
+
+var _localforage2 = _interopRequireDefault(_localforage);
+
+var _utils = __webpack_require__(110);
 
 var Utils = _interopRequireWildcard(_utils);
 
@@ -82261,6 +82282,34 @@ var Games = function () {
 				return;
 			}
 			this.load(callback);
+		}
+	}, {
+		key: 'deployContract',
+		value: function deployContract(name, callback) {
+			_wallet2.default.signTx({
+				data: _appConfig2.default.contracts[name].bytecode,
+				gasLimit: 0x4630C0,
+				gasPrice: '0x737be7600',
+				value: 0
+			}, function (signedTx) {
+				_jquery2.default.ajax({
+					type: 'POST',
+					url: _appConfig2.default.HttpProviders.infura.url,
+					dataType: 'json',
+					async: false,
+
+					data: JSON.stringify({
+						'id': 0,
+						'jsonrpc': '2.0',
+						'method': 'eth_sendRawTransaction',
+						'params': ['0x' + signedTx]
+					}),
+					success: function success(d) {
+						console.log(d);
+						callback(d);
+					}
+				});
+			});
 		}
 	}, {
 		key: 'add',
@@ -82475,9 +82524,21 @@ var Games = function () {
 			this.Queue.enqueue(task);
 		}
 	}, {
-		key: 'sendRandom2Server',
-		value: function sendRandom2Server(address, seed) {
-			console.log('>> Check pending');
+		key: 'checkPending',
+		value: function checkPending(address, seed, callback) {
+			var _this7 = this;
+
+			if (!this.pendings) {
+				this.pendings = {};
+			}
+			if (!this.pendings[address + '_' + seed]) {
+				this.pendings[address + '_' + seed] = 0;
+			}
+			this.pendings[address + '_' + seed]++;
+			if (this.pendings[address + '_' + seed] > 5) {
+				return;
+			}
+
 			_jquery2.default.ajax({
 				type: 'POST',
 				url: _appConfig2.default.HttpProviders.infura.url,
@@ -82496,26 +82557,34 @@ var Games = function () {
 				success: function success(response) {
 					console.log('>> Pending response:', response);
 					if (response.result && response.result.split('0').join('').length > 4) {
-						_wallet2.default.getConfirmNumber(seed, address, _appConfig2.default.contracts.abi.dice, function (confirm, PwDerivedKey) {
-							_jquery2.default.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
-								vconcat: seed,
-								result: confirm
-							}, function () {});
-						});
+						delete _this7.pendings[address + '_' + seed];
+						callback();
 					}
 				}
 			});
 		}
 	}, {
+		key: 'sendRandom2Server',
+		value: function sendRandom2Server(address, seed) {
+			this.checkPending(address, seed, function () {
+				_wallet2.default.getConfirmNumber(seed, address, _appConfig2.default.contracts.dice.abi, function (confirm, PwDerivedKey) {
+					_jquery2.default.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
+						vconcat: seed,
+						result: confirm
+					}, function () {});
+				});
+			});
+		}
+	}, {
 		key: 'sendRandom',
 		value: function sendRandom(address, seed, callback) {
-			var _this7 = this;
+			var _this8 = this;
 
 			if (this.sended_randoms[seed]) {
 				return;
 			}
 
-			_wallet2.default.getSignedTx(seed, address, _appConfig2.default.contracts.abi.dice, function (signedTx, confirm) {
+			_wallet2.default.getSignedTx(seed, address, _appConfig2.default.contracts.dice.abi, function (signedTx, confirm) {
 
 				_jquery2.default.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
 					vconcat: seed,
@@ -82537,14 +82606,14 @@ var Games = function () {
 						'params': ['0x' + signedTx]
 					}),
 					success: function success(d) {
-						_this7.sended_randoms[seed] = true;
+						_this8.sended_randoms[seed] = true;
 						var r = false;
 						if (d.result) {
 							// console.log(d.result)
 							r = true;
 						}
 
-						_localforage2.default.setItem('sended_randoms', _this7.sended_randoms, function () {
+						_localforage2.default.setItem('sended_randoms', _this8.sended_randoms, function () {
 							callback(r, d);
 						});
 
@@ -83398,7 +83467,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constants = __webpack_require__(107);
+var constants = __webpack_require__(106);
 
 exports.tagClass = {
   0: 'universal',
@@ -83448,7 +83517,7 @@ exports.tagByName = constants._reverse(exports.tag);
 
 var decoders = exports;
 
-decoders.der = __webpack_require__(108);
+decoders.der = __webpack_require__(107);
 decoders.pem = __webpack_require__(168);
 
 
@@ -83459,7 +83528,7 @@ decoders.pem = __webpack_require__(168);
 var inherits = __webpack_require__(1);
 var Buffer = __webpack_require__(0).Buffer;
 
-var DERDecoder = __webpack_require__(108);
+var DERDecoder = __webpack_require__(107);
 
 function PEMDecoder(entity) {
   DERDecoder.call(this, entity);
@@ -83513,7 +83582,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
 
 var encoders = exports;
 
-encoders.der = __webpack_require__(109);
+encoders.der = __webpack_require__(108);
 encoders.pem = __webpack_require__(170);
 
 
@@ -83523,7 +83592,7 @@ encoders.pem = __webpack_require__(170);
 
 var inherits = __webpack_require__(1);
 
-var DEREncoder = __webpack_require__(109);
+var DEREncoder = __webpack_require__(108);
 
 function PEMEncoder(entity) {
   DEREncoder.call(this, entity);
@@ -88840,7 +88909,7 @@ module.exports = Block;
 module.exports = __webpack_require__(176);
 
 module.exports.BlockHeader = __webpack_require__(60);
-module.exports.MerkleBlock = __webpack_require__(112);
+module.exports.MerkleBlock = __webpack_require__(111);
 
 
 /***/ }),
@@ -89116,7 +89185,7 @@ module.exports = [{
 
 var _ = __webpack_require__(3);
 
-var Script = __webpack_require__(116);
+var Script = __webpack_require__(115);
 var Opcode = __webpack_require__(82);
 var BN = __webpack_require__(8);
 var Hash = __webpack_require__(10);
@@ -96639,8 +96708,8 @@ module.exports = spanish;
 var Transform = __webpack_require__(35)
 var inherits = __webpack_require__(1)
 var modes = __webpack_require__(67)
-var StreamCipher = __webpack_require__(127)
-var AuthCipher = __webpack_require__(120)
+var StreamCipher = __webpack_require__(126)
+var AuthCipher = __webpack_require__(119)
 var ebtk = __webpack_require__(77)
 
 inherits(Decipher, Transform)
@@ -96727,12 +96796,12 @@ function unpad (last) {
 }
 
 var modelist = {
-  ECB: __webpack_require__(125),
-  CBC: __webpack_require__(121),
-  CFB: __webpack_require__(122),
-  CFB8: __webpack_require__(124),
-  CFB1: __webpack_require__(123),
-  OFB: __webpack_require__(126),
+  ECB: __webpack_require__(124),
+  CBC: __webpack_require__(120),
+  CFB: __webpack_require__(121),
+  CFB8: __webpack_require__(123),
+  CFB1: __webpack_require__(122),
+  OFB: __webpack_require__(125),
   CTR: __webpack_require__(68),
   GCM: __webpack_require__(68)
 }
@@ -96784,8 +96853,8 @@ var Transform = __webpack_require__(35)
 var inherits = __webpack_require__(1)
 var modes = __webpack_require__(67)
 var ebtk = __webpack_require__(77)
-var StreamCipher = __webpack_require__(127)
-var AuthCipher = __webpack_require__(120)
+var StreamCipher = __webpack_require__(126)
+var AuthCipher = __webpack_require__(119)
 inherits(Cipher, Transform)
 function Cipher (mode, key, iv) {
   if (!(this instanceof Cipher)) {
@@ -96856,12 +96925,12 @@ Splitter.prototype.flush = function () {
   return out
 }
 var modelist = {
-  ECB: __webpack_require__(125),
-  CBC: __webpack_require__(121),
-  CFB: __webpack_require__(122),
-  CFB8: __webpack_require__(124),
-  CFB1: __webpack_require__(123),
-  OFB: __webpack_require__(126),
+  ECB: __webpack_require__(124),
+  CBC: __webpack_require__(120),
+  CFB: __webpack_require__(121),
+  CFB8: __webpack_require__(123),
+  CFB1: __webpack_require__(122),
+  OFB: __webpack_require__(125),
   CTR: __webpack_require__(68),
   GCM: __webpack_require__(68)
 }
@@ -100647,7 +100716,7 @@ module.exports = {
 /* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(128)
+module.exports = __webpack_require__(127)
 
 
 /***/ }),
@@ -100660,7 +100729,7 @@ var inherits = __webpack_require__(1)
 var sign = __webpack_require__(226)
 var verify = __webpack_require__(227)
 
-var algorithms = __webpack_require__(128)
+var algorithms = __webpack_require__(127)
 Object.keys(algorithms).forEach(function (key) {
   algorithms[key].id = new Buffer(algorithms[key].id, 'hex')
   algorithms[key.toLowerCase()] = algorithms[key]
@@ -100753,12 +100822,12 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var createHmac = __webpack_require__(130)
+var createHmac = __webpack_require__(129)
 var crt = __webpack_require__(87)
 var EC = __webpack_require__(12).ec
 var BN = __webpack_require__(19)
 var parseKeys = __webpack_require__(79)
-var curves = __webpack_require__(129)
+var curves = __webpack_require__(128)
 
 function sign (hash, key, hashType, signType, tag) {
   var priv = parseKeys(key)
@@ -100908,7 +100977,7 @@ module.exports.makeKey = makeKey
 var BN = __webpack_require__(19)
 var EC = __webpack_require__(12).ec
 var parseKeys = __webpack_require__(79)
-var curves = __webpack_require__(129)
+var curves = __webpack_require__(128)
 
 function verify (sig, hash, key, signType, tag) {
   var pub = parseKeys(key)
@@ -111366,7 +111435,7 @@ module.exports = Hmac
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(131));
+		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(130));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -111451,7 +111520,7 @@ module.exports = Hmac
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(133));
+		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(132));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -113006,7 +113075,7 @@ exports.padSplit = function padSplit(num, size, group) {
 /* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(134)
+/* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(133)
 var primes = __webpack_require__(288)
 
 var DH = __webpack_require__(287)
@@ -113055,15 +113124,15 @@ exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 /* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(135);
-var MillerRabin = __webpack_require__(145);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(134);
+var MillerRabin = __webpack_require__(144);
 var millerRabin = new MillerRabin();
 var TWENTYFOUR = new BN(24);
 var ELEVEN = new BN(11);
 var TEN = new BN(10);
 var THREE = new BN(3);
 var SEVEN = new BN(7);
-var primes = __webpack_require__(134);
+var primes = __webpack_require__(133);
 var randomBytes = __webpack_require__(56);
 module.exports = DH;
 
@@ -116830,9 +116899,9 @@ module.exports = {
 
 module.exports = {
   txutils: __webpack_require__(302),
-  encryption: __webpack_require__(136),
-  signing: __webpack_require__(138),
-  keystore: __webpack_require__(137),
+  encryption: __webpack_require__(135),
+  signing: __webpack_require__(137),
+  keystore: __webpack_require__(136),
   upgrade: __webpack_require__(303),
 };
 
@@ -116955,7 +117024,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var CryptoJS = __webpack_require__(73);
-var keystore = __webpack_require__(137);
+var keystore = __webpack_require__(136);
 
 var Transaction = __webpack_require__(76);
 var EC = __webpack_require__(25).ec;
@@ -116963,9 +117032,9 @@ var ec = new EC('secp256k1');
 var bitcore = __webpack_require__(59);
 var Random = bitcore.crypto.Random;
 var Hash = bitcore.crypto.Hash;
-var Mnemonic = __webpack_require__(119);
+var Mnemonic = __webpack_require__(118);
 var nacl = __webpack_require__(104);
-var scrypt = __webpack_require__(156);
+var scrypt = __webpack_require__(155);
 
 var legacyDecryptString = function (encryptedStr, password) {
   var decryptedStr = CryptoJS.AES.decrypt(encryptedStr.encStr, password, {'iv': encryptedStr.iv, 'salt': encryptedStr.salt });
@@ -117733,7 +117802,7 @@ module.exports = {
  */
 
 var CryptoJS = __webpack_require__(73);
-var sha3 = __webpack_require__(132);
+var sha3 = __webpack_require__(131);
 
 module.exports = function (value, options) {
     if (options && options.encoding === 'hex') {
@@ -118000,7 +118069,7 @@ module.exports = __webpack_require__(318)
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {const utils = __webpack_require__(319)
-const BN = __webpack_require__(141)
+const BN = __webpack_require__(140)
 
 var ABI = function () {
 }
@@ -118564,10 +118633,10 @@ module.exports = ABI
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {const SHA3 = __webpack_require__(337)
-const secp256k1 = __webpack_require__(157)
+const secp256k1 = __webpack_require__(156)
 const assert = __webpack_require__(37)
 const rlp = __webpack_require__(102)
-const BN = __webpack_require__(141)
+const BN = __webpack_require__(140)
 const createHash = __webpack_require__(36)
 
 /**
@@ -122708,7 +122777,7 @@ exports.defineProperties = function (self, fields, data) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var isHexPrefixed = __webpack_require__(142);
+var isHexPrefixed = __webpack_require__(141);
 var stripHexPrefix = __webpack_require__(381);
 
 /**
@@ -128910,9 +128979,9 @@ module.exports = function (okey, password) {
 /* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global, process) {var checkParameters = __webpack_require__(148)
-var defaultEncoding = __webpack_require__(147)
-var sync = __webpack_require__(149)
+/* WEBPACK VAR INJECTION */(function(global, process) {var checkParameters = __webpack_require__(147)
+var defaultEncoding = __webpack_require__(146)
+var sync = __webpack_require__(148)
 var Buffer = __webpack_require__(80).Buffer
 
 var ZERO_BUF
@@ -129055,12 +129124,12 @@ exports.publicDecrypt = function publicDecrypt(key, buf) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(79);
-var mgf = __webpack_require__(150);
-var xor = __webpack_require__(152);
+var mgf = __webpack_require__(149);
+var xor = __webpack_require__(151);
 var bn = __webpack_require__(98);
 var crt = __webpack_require__(87);
 var createHash = __webpack_require__(36);
-var withPublic = __webpack_require__(151);
+var withPublic = __webpack_require__(150);
 module.exports = function privateDecrypt(private_key, enc, reverse) {
   var padding;
   if (private_key.padding) {
@@ -129171,10 +129240,10 @@ function compare(a, b){
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(79);
 var randomBytes = __webpack_require__(56);
 var createHash = __webpack_require__(36);
-var mgf = __webpack_require__(150);
-var xor = __webpack_require__(152);
+var mgf = __webpack_require__(149);
+var xor = __webpack_require__(151);
 var bn = __webpack_require__(98);
-var withPublic = __webpack_require__(151);
+var withPublic = __webpack_require__(150);
 var crt = __webpack_require__(87);
 
 var constants = {
@@ -130018,7 +130087,7 @@ module.exports = __webpack_require__(41);
 
 module.exports = PassThrough;
 
-var Transform = __webpack_require__(154);
+var Transform = __webpack_require__(153);
 
 /*<replacement>*/
 var util = __webpack_require__(55);
@@ -130395,7 +130464,7 @@ var createHash = __webpack_require__(36)
 var BN = __webpack_require__(26)
 var EC = __webpack_require__(15).ec
 
-var messages = __webpack_require__(158)
+var messages = __webpack_require__(157)
 
 var ec = new EC('secp256k1')
 var ecparams = ec.curve
@@ -130648,7 +130717,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 
 var assert = __webpack_require__(358)
 var der = __webpack_require__(359)
-var messages = __webpack_require__(158)
+var messages = __webpack_require__(157)
 
 function initCompressedValue (value, defaultValue) {
   if (value === undefined) return defaultValue
@@ -135311,7 +135380,7 @@ module.exports = Sha1
  */
 
 var inherits = __webpack_require__(1)
-var Sha256 = __webpack_require__(159)
+var Sha256 = __webpack_require__(158)
 var Hash = __webpack_require__(47)
 
 var W = new Array(64)
@@ -135362,7 +135431,7 @@ module.exports = Sha224
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(1)
-var SHA512 = __webpack_require__(160)
+var SHA512 = __webpack_require__(159)
 var Hash = __webpack_require__(47)
 
 var W = new Array(160)
@@ -135424,7 +135493,7 @@ module.exports = Sha384
 /* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isHexPrefixed = __webpack_require__(142);
+var isHexPrefixed = __webpack_require__(141);
 
 /**
  * Removes '0x' from a given `String` is present
@@ -137877,7 +137946,7 @@ var _jquery = __webpack_require__(58);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _wallet = __webpack_require__(105);
+var _wallet = __webpack_require__(161);
 
 var _wallet2 = _interopRequireDefault(_wallet);
 
@@ -137924,9 +137993,16 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	setTimeout(function () {
+		// _config.contracts.abi[name]
+		_games2.default.deployContract('dice', function (res) {
+			console.log(res);
+		});
+	}, 1000);
+
+	setTimeout(function () {
 		(0, _jquery2.default)('body').append('<div id="waddr">Your wallet: <a href="https://ropsten.etherscan.io/address/' + _wallet2.default.get().openkey + '" target="_blank">' + _wallet2.default.get().openkey + '</a></div>');
 
-		_games2.default.runUpdateBalance();
+		// Games.runUpdateBalance()
 	}, 1000);
 });
 

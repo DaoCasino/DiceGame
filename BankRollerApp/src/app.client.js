@@ -36,10 +36,18 @@ document.addEventListener('DOMContentLoaded',()=>{
 	})
 
 
+	// setTimeout(()=>{
+	// 	Games.deployContract('dice', (res)=>{
+	// 		console.log(res)
+	// 	})
+	// }, 1000)
+
+
 	setTimeout(()=>{
 		$('body').append('<div id="waddr">Your wallet: <a href="https://ropsten.etherscan.io/address/'+Wallet.get().openkey+'" target="_blank">'+Wallet.get().openkey+'</a></div>')
 
 		Games.runUpdateBalance()
 	}, 1000)
+
 })
 

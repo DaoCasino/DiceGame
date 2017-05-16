@@ -2,8 +2,15 @@ import $          from 'jquery'
 import _config    from '../app.config.js'
 import Wallet     from './wallet.js'
 import localDB    from 'localforage'
+// import Web3       from 'web3'
+
+// let web3 = new Web3()
+// web3.setProvider(new web3.providers.HttpProvider(_config.HttpProviders.infura.url))
+
 
 import * as Utils from './utils.js'
+
+
 
 const {AsyncPriorityQueue, AsyncTask} = require('async-priority-queue')
 
@@ -40,6 +47,33 @@ class Games {
 			return
 		}
 		this.load(callback)
+	}
+
+	deployContract(name, callback){
+		Wallet.signTx({
+			data:     _config.contracts[name].bytecode,
+			gasLimit: 0x4630C0,
+			gasPrice: '0x737be7600',
+			value:    0
+		}, (signedTx)=>{
+			$.ajax({
+				type:     'POST',
+				url:      _config.HttpProviders.infura.url,
+				dataType: 'json',
+				async:    false,
+
+				data: JSON.stringify({
+					'id': 0,
+					'jsonrpc': '2.0',
+					'method': 'eth_sendRawTransaction',
+					'params': ['0x' + signedTx]
+				}),
+				success: function (d) {
+					console.log(d)
+					callback(d)
+				}
+			})
+		})
 	}
 
 	add(contract_id, callback){
@@ -270,7 +304,7 @@ class Games {
 
 	sendRandom2Server(address, seed){
 		this.checkPending(address, seed, ()=>{
-			Wallet.getConfirmNumber(seed, address, _config.contracts.abi.dice, (confirm, PwDerivedKey)=>{
+			Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
 				$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
 					vconcat: seed,
 					result:  confirm
@@ -284,7 +318,7 @@ class Games {
 			return
 		}
 
-		Wallet.getSignedTx(seed, address, _config.contracts.abi.dice, (signedTx, confirm)=>{
+		Wallet.getSignedTx(seed, address, _config.contracts.dice.abi, (signedTx, confirm)=>{
 
 			$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
 				vconcat: seed,
