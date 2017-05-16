@@ -231,8 +231,18 @@ class Games {
 		this.Queue.enqueue(task)
 	}
 
-	sendRandom2Server(address, seed){
-		console.log('>> Check pending')
+	checkPending(address, seed, callback){
+		if (!this.pendings) {
+			this.pendings = {}
+		}
+		if (!this.pendings[address+'_'+seed]) {
+			this.pendings[address+'_'+seed] = 0
+		}
+		this.pendings[address+'_'+seed]++
+		if (this.pendings[address+'_'+seed] > 5) {
+			return
+		}
+
 		$.ajax({
 			type:     'POST',
 			url:      _config.HttpProviders.infura.url,
@@ -251,14 +261,21 @@ class Games {
 			success: (response)=>{
 				console.log('>> Pending response:', response)
 				if (response.result && response.result.split('0').join('').length > 4) {
-					Wallet.getConfirmNumber(seed, address, _config.contracts.abi.dice, (confirm, PwDerivedKey)=>{
-						$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
-							vconcat: seed,
-							result:  confirm
-						}, ()=>{})
-					})
+					delete( this.pendings[address+'_'+seed] )
+					callback()
 				}
 			}
+		})
+	}
+
+	sendRandom2Server(address, seed){
+		this.checkPending(address, seed, ()=>{
+			Wallet.getConfirmNumber(seed, address, _config.contracts.abi.dice, (confirm, PwDerivedKey)=>{
+				$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
+					vconcat: seed,
+					result:  confirm
+				}, ()=>{})
+			})
 		})
 	}
 
