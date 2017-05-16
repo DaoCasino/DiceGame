@@ -59,6 +59,10 @@ Infura.prototype.sendRequest = function(name, params, callback){
 				method = "eth_blockNumber";
 				arParams = [];
 				break;
+			case "getLogs":
+				method = "eth_getLogs";
+				arParams = [params];
+				break;
 			default:
 				method = "eth_call";
 				break;
