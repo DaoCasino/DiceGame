@@ -207,7 +207,6 @@ function approve(addressContract, approveValue) {
 	}
 	
     console.log("approve")
-	$('#bg_popup').show();
 	$.ajax({
 		type: "POST",
 		url: urlInfura,

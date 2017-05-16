@@ -5,7 +5,7 @@ var sendingAddr;
 var rawMsg;
 var login_obj = {};
 login_obj["confirmedGames"] = {};
-addressContract = addressDice;
+
 var options_mainet = false;
 var options_testnet = true;
 var options_rpc = false;
@@ -29,7 +29,7 @@ var urlBalance = ""; //balance
 var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
 var chance = 32768;
-var urlInfura = "http://46.101.244.101:8545";
+//var urlInfura = "http://46.101.244.101:8545";
 //var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids, password;
 var game = false;
@@ -149,7 +149,7 @@ function call(callname, adr) {
             "method": "eth_call",
             "params": [{
                 "from": openkey,
-                "to": addressContract,
+                "to": addressDice,
                 "data": callData + pad(numToHex(adr.substr(2)), 64)
             }, "pending"]
         }),
@@ -221,7 +221,7 @@ function setContract() {
 };
 
 function getContractBalance() {
-    bankroll = callERC20("balanceOf", addressContract);
+    bankroll = callERC20("balanceOf", addressDice);
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
 
@@ -273,13 +273,23 @@ function initGame() {
     $("#total-paid").html(paids.toFixed(3) + ' BET');
     $("#total-send").html(sends.toFixed(3) + ' BET (' + ((paids / sends) * 100).toFixed(2) + '%)');
     getContractBalance();
-    $("#contract").html('<a target="_blank" href="https://ropsten.etherscan.io/address/' + addressContract + '">' + addressContract.slice(0, 24) + '...</a>')
+    $("#contract").html('<a target="_blank" href="https://'+getNet()+'.etherscan.io/address/' + addressDice + '">' + addressDice.slice(0, 24) + '...</a>')
     GetLogs();
     $('#all').click();
     Refresh();
-    if (getAllowance(addressContract) < 1000000){
-        approve(100000000000);
+    if (getAllowance(addressDice) < 1000000){
+        	$('#bg_popup').show();
+        approve(addressDice,100000000000);
     } 
+
+   var AllowanceProc =  setInterval(function(){
+        if(getAllowance(addressDice) != 0){
+            	$('#bg_popup').hide();
+                clearInterval(AllowanceProc)
+        }
+    },5000)
+
+    
     
     webSocketConnect("ws://46.101.244.101:8081/ws");
 };
@@ -386,7 +396,7 @@ function responseTransaction(name, value) {
 	
 	var options = {};
 	options.nonce = value;
-	options.to = addressContract;
+	options.to = addressDice;
 	options.gasPrice = gasPrice;
 	options.gasLimit = gasLimit;
 	// options.value = price;
@@ -433,8 +443,8 @@ function response(command, value, seed) {
 	if(command == "sendRaw"){
 		// console.log("sendRaw:", value);
 		var lastTx = value;
-		$("#Tx").html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
-		$(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://ropsten.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
+		$("#Tx").html('<a target="_blank" href="https://'+getNet()+'.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
+		$(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://'+getNet()+'.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
 		//disabled(true);
 		$("#randomnum").text("Please, wait . . . ");
 		
@@ -547,7 +557,7 @@ function webSocketConnect(address) {
 
         //console.log(player, bet, chance, payout, profit, state, rnd)
 
-        $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://ropsten.etherscan.io/tx/' + tx + '">' + "0x" + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
+        $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://'+getNet()+'.etherscan.io/tx/' + tx + '">' + "0x" + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
             "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + state + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
         if ($('#table tr').length > 10) {
             $('tr:eq(11)').remove();

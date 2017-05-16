@@ -9,11 +9,11 @@ var repeatRequest = 0;
 
 var Infura = function() {
 	gThis = this;
-	if(options_rpc){
-		urlInfura = "http://46.101.244.101:8545";
-    } else if(options_testnet){
-		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-	}
+	// if(options_rpc){
+	// 	urlInfura = "http://46.101.244.101:8545";
+    // } else if(options_testnet){
+	// 	urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+	// }
 };
 
 Infura.prototype.makeID = function(){

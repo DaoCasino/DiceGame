@@ -1,4 +1,4 @@
-var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+//var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var result;
 var address = "0x9f93bfe34bdac77e4ddc10971b0ab827e9289f00";
 

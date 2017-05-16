@@ -184,6 +184,8 @@ function changeNet(value){
 	netname = value;
 	console.log("net:", netname);
 	if(netname == "ropsten"){
+        netname = "ropsten";
+
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 		// dice
@@ -193,18 +195,30 @@ function changeNet(value){
 		addressBJStorage = "0x18d4bd271a6123335edca33eec83318b75ae8ae0";
 		addressBJ = "0x1903eef30317204fb5aabd9533659d9b23a7ec37";
 	} else if(netname == "testrpc"){
+
+
 		urlInfura = "http://46.101.244.101:8545";
 		erc20address = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
 		// dice
 		addressDice = "0xdbdb232171a8639603e1341b8d62a5425f5d2ddd";
 	} else if (netname == "mainnet"){
+        netname = "mainnet";
+
 		urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		erc20address = ""; 
 		// dice
 		addressDice = "";
 	}
+    else if (netname == "rinkeby"){
+        netname = "rinkeby";
+        
+		urlInfura = "https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+		erc20address = "0xBa2F1399dF21C75ce578630Ff9Ed9285b2146B8D"; 
+		// dice
+        addressDice = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27"
+	}
 }
-changeNet("ropsten");
+changeNet("rinkeby");
 
 
 function getNet(){

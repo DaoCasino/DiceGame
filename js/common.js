@@ -213,10 +213,10 @@ var openkey = localStorage.getItem('openkey')
 	if(openkey){
 	if (!totalwei) $("#balance").html("? BET");
 	setTimeout(function () {
-		var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // tesnet
+		//var erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287"; // tesnet
 		// var erc20address = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f"; // testrpc
 		callData = "0x70a08231";
-		var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";	
+		//var urlInfura = "https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl";	
 		// var urlInfura = "http://46.101.244.101:8545";
 		//if (localStorage.getItem("mainnet") == "on") u = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		$.ajax({
@@ -236,6 +236,7 @@ var openkey = localStorage.getItem('openkey')
         }),
 			success: function (d) {
 				totalwei = d.result;
+
 				$("#balance").html(d.result / 100000000 + " BET");
 				if (localStorage.getItem("mainnet") == "off" && totalwei == 0) {
 				}

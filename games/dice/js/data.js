@@ -33,7 +33,7 @@ var block;
             "params": [{
                 "fromBlock": "760000",
                 "toBlock": "latest",
-                "address": addressContract,
+                "address": addressDice,
             }]
         }),
         success: function (objData) {
