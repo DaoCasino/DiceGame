@@ -5,6 +5,7 @@ var arGame = [];
 function GetLogs() {
    arGame = []; 
 var block;
+
     $.ajax({
         type: "POST",
         url: urlInfura,
@@ -17,7 +18,8 @@ var block;
             "params": []
         }),
         success: function(d){
-            block = hexToNum(d.result) - 5000;
+            block = numToHex(hexToNum(d.result) - 5000);
+            console.log(block, hexToNum(block))
         }
     })
 
@@ -31,7 +33,7 @@ var block;
             "jsonrpc": '2.0',
             "method": 'eth_getLogs',
             "params": [{
-                "fromBlock": "760000",
+                "fromBlock":"0x"+block,
                 "toBlock": "latest",
                 "address": addressContract,
             }]
