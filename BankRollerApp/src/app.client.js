@@ -1,7 +1,8 @@
-import $      from 'jquery'
-import Wallet from './modules/wallet.js'
-import Games  from './modules/games.js'
-import View   from './modules/view.js'
+import $       from 'jquery'
+import _config from './app.config.js'
+import Wallet  from './modules/wallet.js'
+import Games   from './modules/games.js'
+import View    from './modules/view.js'
 
 document.addEventListener('DOMContentLoaded',()=>{
 	window.App = {}
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 	setTimeout(()=>{
-		$('body').append('<div id="waddr">Your wallet: <a href="https://ropsten.etherscan.io/address/'+Wallet.get().openkey+'" target="_blank">'+Wallet.get().openkey+'</a></div>')
+		$('body').append('<div id="waddr">Your wallet: <a href="https://'+_config.network+'.etherscan.io/address/'+Wallet.get().openkey+'" target="_blank">'+Wallet.get().openkey+'</a></div>')
 
 		Games.runUpdateBalance()
 	}, 1000)

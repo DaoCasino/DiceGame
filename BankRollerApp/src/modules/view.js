@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import _config from '../app.config.js'
 
 class View {
 	constructor() {
@@ -50,7 +51,7 @@ class View {
 				<td>
 					<a  target="_blank"
 						rel="noopener"
-						href="https://ropsten.etherscan.io/address/${contract_id}">
+						href="https://${_config.network}.etherscan.io/address/${contract_id}">
 							${contract_id}
 					</a>
 				</td>

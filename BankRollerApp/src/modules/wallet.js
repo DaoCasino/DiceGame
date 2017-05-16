@@ -97,8 +97,9 @@ class Wallet {
 	}
 
 	addCoins(wallet_openkey){
+
 		console.log('Add coins to wallet', wallet_openkey)
-		fetch( _config.api_url+'?a=faucet&to='+wallet_openkey ).then((response)=>{
+		fetch( _config.api_url+'?a=faucet&network='+_config.network+'&to='+wallet_openkey ).then((response)=>{
 			return response.text()
 		}).then((result)=>{
 			console.groupCollapsed('Add coins result:')

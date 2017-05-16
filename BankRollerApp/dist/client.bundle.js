@@ -20509,7 +20509,7 @@ module.exports.Interpreter = __webpack_require__(180);
  * @date 2015
  */
 
-var BigNumber = __webpack_require__(92);
+var BigNumber = __webpack_require__(93);
 var utils = __webpack_require__(139);
 var c = __webpack_require__(314);
 var SolidityParam = __webpack_require__(138);
@@ -31402,8 +31402,8 @@ var BITS_64_ON = 'ffffffffffffffff';
  * @param {Script} subscript the script that will be signed
  */
 var sighash = function sighash(transaction, sighashType, inputNumber, subscript) {
-  var Transaction = __webpack_require__(84);
-  var Input = __webpack_require__(83);
+  var Transaction = __webpack_require__(85);
+  var Input = __webpack_require__(84);
 
   var i;
   // Copy transaction
@@ -31518,7 +31518,7 @@ module.exports = {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var Transform = __webpack_require__(57).Transform
 var inherits = __webpack_require__(1)
-var StringDecoder = __webpack_require__(96).StringDecoder
+var StringDecoder = __webpack_require__(97).StringDecoder
 module.exports = CipherBase
 inherits(CipherBase, Transform)
 function CipherBase (hashMode) {
@@ -31617,8 +31617,8 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 var inherits = __webpack_require__(1)
 var md5 = __webpack_require__(71)
-var RIPEMD160 = __webpack_require__(101)
-var sha = __webpack_require__(103)
+var RIPEMD160 = __webpack_require__(102)
+var sha = __webpack_require__(104)
 
 var Base = __webpack_require__(35)
 
@@ -35299,7 +35299,7 @@ var objectKeys = Object.keys || function (obj) {
 module.exports = Duplex;
 
 /*<replacement>*/
-var processNextTick = __webpack_require__(97);
+var processNextTick = __webpack_require__(98);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -35308,7 +35308,7 @@ util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
 var Readable = __webpack_require__(152);
-var Writable = __webpack_require__(99);
+var Writable = __webpack_require__(100);
 
 util.inherits(Duplex, Readable);
 
@@ -35676,7 +35676,7 @@ hash.ripemd160 = hash.ripemd.ripemd160;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(90), __webpack_require__(89));
+		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(91), __webpack_require__(90));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -36165,7 +36165,7 @@ asn1.bignum = __webpack_require__(171);
 
 asn1.define = __webpack_require__(163).define;
 asn1.base = __webpack_require__(49);
-asn1.constants = __webpack_require__(106);
+asn1.constants = __webpack_require__(107);
 asn1.decoders = __webpack_require__(167);
 asn1.encoders = __webpack_require__(169);
 
@@ -36177,8 +36177,8 @@ asn1.encoders = __webpack_require__(169);
 var base = exports;
 
 base.Reporter = __webpack_require__(165).Reporter;
-base.DecoderBuffer = __webpack_require__(105).DecoderBuffer;
-base.EncoderBuffer = __webpack_require__(105).EncoderBuffer;
+base.DecoderBuffer = __webpack_require__(106).DecoderBuffer;
+base.EncoderBuffer = __webpack_require__(106).EncoderBuffer;
 base.Node = __webpack_require__(164);
 
 
@@ -36858,11 +36858,11 @@ function randomBytes (size, cb) {
 
 module.exports = Stream;
 
-var EE = __webpack_require__(94).EventEmitter;
+var EE = __webpack_require__(95).EventEmitter;
 var inherits = __webpack_require__(1);
 
 inherits(Stream, EE);
-Stream.Readable = __webpack_require__(100);
+Stream.Readable = __webpack_require__(101);
 Stream.Writable = __webpack_require__(357);
 Stream.Duplex = __webpack_require__(352);
 Stream.Transform = __webpack_require__(356);
@@ -47280,13 +47280,13 @@ bitcore.BlockHeader = __webpack_require__(60);
 bitcore.HDPrivateKey = __webpack_require__(113);
 bitcore.HDPublicKey = __webpack_require__(114);
 bitcore.Networks = __webpack_require__(39);
-bitcore.Opcode = __webpack_require__(82);
+bitcore.Opcode = __webpack_require__(83);
 bitcore.PrivateKey = __webpack_require__(63);
 bitcore.PublicKey = __webpack_require__(22);
 bitcore.Script = __webpack_require__(18);
 bitcore.Transaction = __webpack_require__(64);
 bitcore.URI = __webpack_require__(185);
-bitcore.Unit = __webpack_require__(85);
+bitcore.Unit = __webpack_require__(86);
 
 // dependencies, subject to change
 bitcore.deps = {};
@@ -48160,9 +48160,9 @@ module.exports = PrivateKey;
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(84);
+module.exports = __webpack_require__(85);
 
-module.exports.Input = __webpack_require__(83);
+module.exports.Input = __webpack_require__(84);
 module.exports.Output = __webpack_require__(33);
 module.exports.UnspentOutput = __webpack_require__(116);
 module.exports.Signature = __webpack_require__(52);
@@ -48862,7 +48862,7 @@ var publicEncrypt = __webpack_require__(345)
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(262), __webpack_require__(260), __webpack_require__(44), __webpack_require__(46), __webpack_require__(90), __webpack_require__(130), __webpack_require__(278), __webpack_require__(132), __webpack_require__(279), __webpack_require__(131), __webpack_require__(277), __webpack_require__(89), __webpack_require__(273), __webpack_require__(45), __webpack_require__(7), __webpack_require__(263), __webpack_require__(265), __webpack_require__(264), __webpack_require__(267), __webpack_require__(266), __webpack_require__(268), __webpack_require__(269), __webpack_require__(270), __webpack_require__(272), __webpack_require__(271), __webpack_require__(261), __webpack_require__(259), __webpack_require__(280), __webpack_require__(276), __webpack_require__(275), __webpack_require__(274));
+		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(262), __webpack_require__(260), __webpack_require__(44), __webpack_require__(46), __webpack_require__(91), __webpack_require__(130), __webpack_require__(278), __webpack_require__(132), __webpack_require__(279), __webpack_require__(131), __webpack_require__(277), __webpack_require__(90), __webpack_require__(273), __webpack_require__(45), __webpack_require__(7), __webpack_require__(263), __webpack_require__(265), __webpack_require__(264), __webpack_require__(267), __webpack_require__(266), __webpack_require__(268), __webpack_require__(269), __webpack_require__(270), __webpack_require__(272), __webpack_require__(271), __webpack_require__(261), __webpack_require__(259), __webpack_require__(280), __webpack_require__(276), __webpack_require__(275), __webpack_require__(274));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -49208,7 +49208,7 @@ curve.edwards = __webpack_require__(290);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
-const ethUtil = __webpack_require__(93)
+const ethUtil = __webpack_require__(94)
 const fees = __webpack_require__(316)
 const BN = ethUtil.BN
 
@@ -49652,7 +49652,7 @@ utils.encode = function encode(arr, enc) {
 /* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(340)
 var aesid = __webpack_require__(339)
 var fixProc = __webpack_require__(342)
-var ciphers = __webpack_require__(86)
+var ciphers = __webpack_require__(87)
 var compat = __webpack_require__(145)
 module.exports = parseKeys
 
@@ -49782,6 +49782,83 @@ curve.edwards = __webpack_require__(363);
 
 /***/ }),
 /* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*
+ * App settings
+ * for dev and production builds
+ */
+var config = {
+	'rinkeby': {
+		network: 'rinkeby',
+		api_url: 'https://platform.dao.casino/api/',
+
+		wallet_pass: '1234',
+
+		HttpProviders: {
+			infura: {
+				active: true,
+				url: 'https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl'
+			}
+		},
+
+		confirm_timeout: 7000,
+
+		contracts: {
+			// Coins contract
+			erc20: {
+				address: '0xba2f1399df21c75ce578630ff9ed9285b2146b8d',
+
+				// balanceOf method address
+				balanceOf: '0x70a08231'
+			},
+
+			dice: {
+				bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
+				abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
+			}
+		}
+	},
+
+	'ropsten': {
+		network: 'ropsten',
+		api_url: 'https://platform.dao.casino/api/',
+
+		wallet_pass: '1234',
+
+		HttpProviders: {
+			infura: {
+				active: true,
+				url: 'https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl'
+			}
+		},
+
+		confirm_timeout: 7000,
+
+		contracts: {
+			// Coins contract
+			erc20: {
+				address: '0x95a48dca999c89e4e284930d9b9af973a7481287',
+
+				// balanceOf method address
+				balanceOf: '0x70a08231'
+			},
+
+			dice: {
+				bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
+				abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
+			}
+		}
+	}
+};
+
+module.exports = config['rinkeby'];
+
+/***/ }),
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50037,7 +50114,7 @@ module.exports = Opcode;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(51);
@@ -50049,7 +50126,7 @@ module.exports.MultiSigScriptHash = __webpack_require__(182);
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50071,7 +50148,7 @@ var Sighash = __webpack_require__(34);
 
 var Address = __webpack_require__(38);
 var UnspentOutput = __webpack_require__(116);
-var Input = __webpack_require__(83);
+var Input = __webpack_require__(84);
 var PublicKeyHashInput = Input.PublicKeyHash;
 var PublicKeyInput = Input.PublicKey;
 var MultiSigScriptHashInput = Input.MultiSigScriptHash;
@@ -51287,7 +51364,7 @@ module.exports = Transaction;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51532,7 +51609,7 @@ module.exports = Unit;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ciphers = __webpack_require__(217)
@@ -51549,7 +51626,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(222);
@@ -51596,7 +51673,7 @@ function getr(priv) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51712,7 +51789,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -51860,7 +51937,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }));
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -52015,7 +52092,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }));
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52029,7 +52106,7 @@ exports.EDE = __webpack_require__(284);
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*! bignumber.js v2.0.7 https://github.com/MikeMcl/bignumber.js/LICENCE */
@@ -54719,13 +54796,13 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! bignumber.js v2.0.7 https://github.com/Mik
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {const createKeccakHash = __webpack_require__(331)
 const secp256k1 = __webpack_require__(156)
 const assert = __webpack_require__(37)
-const rlp = __webpack_require__(102)
+const rlp = __webpack_require__(103)
 const BN = __webpack_require__(320)
 const createHash = __webpack_require__(36)
 Object.assign(exports, __webpack_require__(321))
@@ -55392,7 +55469,7 @@ exports.defineProperties = function (self, fields, data) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -55700,7 +55777,7 @@ function isUndefined(arg) {
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55820,7 +55897,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -56047,7 +56124,7 @@ function base64DetectIncompleteChar(buffer) {
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56098,7 +56175,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -59532,7 +59609,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59545,7 +59622,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 module.exports = Writable;
 
 /*<replacement>*/
-var processNextTick = __webpack_require__(97);
+var processNextTick = __webpack_require__(98);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -59575,7 +59652,7 @@ var Stream = __webpack_require__(154);
 
 var Buffer = __webpack_require__(0).Buffer;
 /*<replacement>*/
-var bufferShim = __webpack_require__(88);
+var bufferShim = __webpack_require__(89);
 /*</replacement>*/
 
 util.inherits(Writable, Stream);
@@ -60083,20 +60160,20 @@ function CorkedRequest(state) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31), __webpack_require__(160).setImmediate))
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(152);
 exports.Stream = exports;
 exports.Readable = exports;
-exports.Writable = __webpack_require__(99);
+exports.Writable = __webpack_require__(100);
 exports.Duplex = __webpack_require__(41);
 exports.Transform = __webpack_require__(153);
 exports.PassThrough = __webpack_require__(353);
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60395,7 +60472,7 @@ module.exports = RIPEMD160
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {const assert = __webpack_require__(37)
@@ -60631,7 +60708,7 @@ function toBuffer (v) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var exports = module.exports = function SHA (algorithm) {
@@ -60652,7 +60729,7 @@ exports.sha512 = __webpack_require__(159)
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {(function(nacl) {
@@ -63077,7 +63154,7 @@ nacl.setPRNG = function(fn) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -63199,7 +63276,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = exports;
@@ -63224,7 +63301,7 @@ constants.der = __webpack_require__(166);
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -63554,7 +63631,7 @@ function derDecodeLen(buf, primitive, fail) {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(1);
@@ -63853,51 +63930,6 @@ function encodeTag(tag, primitive, cls, reporter) {
   return res;
 }
 
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*
- * App settings
- * for dev and production builds
- */
-var config = {
-	'dev': {
-		api_url: 'https://platform.dao.casino/api/',
-
-		wallet_pass: '1234',
-
-		HttpProviders: {
-			infura: {
-				active: true,
-				url: 'https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl'
-			}
-		},
-
-		confirm_timeout: 7000,
-
-		contracts: {
-			// Coins contract
-			erc20: {
-				address: '0x95a48dca999c89e4e284930d9b9af973a7481287',
-
-				// balanceOf method address
-				balanceOf: '0x70a08231'
-			},
-
-			dice: {
-				bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
-				abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
-			}
-		}
-	}
-};
-
-module.exports = config['dev'];
 
 /***/ }),
 /* 110 */
@@ -65682,7 +65714,7 @@ var Address = __webpack_require__(38);
 var BufferReader = __webpack_require__(32);
 var BufferWriter = __webpack_require__(21);
 var Hash = __webpack_require__(10);
-var Opcode = __webpack_require__(82);
+var Opcode = __webpack_require__(83);
 var PublicKey = __webpack_require__(22);
 var Signature = __webpack_require__(16);
 var Networks = __webpack_require__(39);
@@ -66776,7 +66808,7 @@ var JSUtil = __webpack_require__(6);
 
 var Script = __webpack_require__(18);
 var Address = __webpack_require__(38);
-var Unit = __webpack_require__(85);
+var Unit = __webpack_require__(86);
 
 /**
  * Represents an unspent output information: its script, associated amount and address,
@@ -67439,9 +67471,9 @@ var Legacy = __webpack_require__(258)
 var Base = __webpack_require__(35)
 var Buffer = __webpack_require__(80).Buffer
 var md5 = __webpack_require__(71)
-var RIPEMD160 = __webpack_require__(101)
+var RIPEMD160 = __webpack_require__(102)
 
-var sha = __webpack_require__(103)
+var sha = __webpack_require__(104)
 
 var ZEROS = Buffer.alloc(128)
 
@@ -71906,8 +71938,8 @@ function findPrime(bits, gen) {
 /* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var util = __webpack_require__(93);
-var nacl = __webpack_require__(104);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var util = __webpack_require__(94);
+var nacl = __webpack_require__(105);
 
 function nacl_encodeHex(msgUInt8Arr) {
   var msgBase64 = nacl.util.encodeBase64(msgUInt8Arr);
@@ -72102,7 +72134,7 @@ var bitcore = __webpack_require__(59);
 var Random = bitcore.crypto.Random;
 var Hash = bitcore.crypto.Hash;
 var Mnemonic = __webpack_require__(118);
-var nacl = __webpack_require__(104);
+var nacl = __webpack_require__(105);
 var scrypt = __webpack_require__(155);
 
 var encryption = __webpack_require__(135);
@@ -72772,7 +72804,7 @@ module.exports = KeyStore;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var Transaction = __webpack_require__(76)
-var util = __webpack_require__(93)
+var util = __webpack_require__(94)
 
 var signTx = function (keystore, pwDerivedKey, rawTx, signingAddress, hdPathString) {
 
@@ -73054,7 +73086,7 @@ module.exports = SolidityParam;
  */
 
 
-var BigNumber = __webpack_require__(92);
+var BigNumber = __webpack_require__(93);
 var sha3 = __webpack_require__(315);
 var utf8 = __webpack_require__(385);
 
@@ -79575,8 +79607,8 @@ module.exports = function (iterations, keylen) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var md5 = __webpack_require__(71)
-var rmd160 = __webpack_require__(101)
-var sha = __webpack_require__(103)
+var rmd160 = __webpack_require__(102)
+var sha = __webpack_require__(104)
 
 var checkParameters = __webpack_require__(147)
 var defaultEncoding = __webpack_require__(146)
@@ -79704,7 +79736,7 @@ function i2ops(c) {
 /* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(98);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(99);
 function withPublic(paddedMsg, key) {
   return new Buffer(paddedMsg
     .toRed(bn.mont(key.modulus))
@@ -79739,7 +79771,7 @@ module.exports = function xor(a, b) {
 module.exports = Readable;
 
 /*<replacement>*/
-var processNextTick = __webpack_require__(97);
+var processNextTick = __webpack_require__(98);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -79753,7 +79785,7 @@ var Duplex;
 Readable.ReadableState = ReadableState;
 
 /*<replacement>*/
-var EE = __webpack_require__(94).EventEmitter;
+var EE = __webpack_require__(95).EventEmitter;
 
 var EElistenerCount = function (emitter, type) {
   return emitter.listeners(type).length;
@@ -79766,7 +79798,7 @@ var Stream = __webpack_require__(154);
 
 var Buffer = __webpack_require__(0).Buffer;
 /*<replacement>*/
-var bufferShim = __webpack_require__(88);
+var bufferShim = __webpack_require__(89);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -79868,7 +79900,7 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = __webpack_require__(96).StringDecoder;
+    if (!StringDecoder) StringDecoder = __webpack_require__(97).StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
@@ -79978,7 +80010,7 @@ function needMoreData(state) {
 
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = __webpack_require__(96).StringDecoder;
+  if (!StringDecoder) StringDecoder = __webpack_require__(97).StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -80863,7 +80895,7 @@ function done(stream, er, data) {
 /* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(94).EventEmitter;
+module.exports = __webpack_require__(95).EventEmitter;
 
 
 /***/ }),
@@ -81945,7 +81977,7 @@ var _jquery = __webpack_require__(58);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _appConfig = __webpack_require__(109);
+var _appConfig = __webpack_require__(82);
 
 var _appConfig2 = _interopRequireDefault(_appConfig);
 
@@ -82083,8 +82115,9 @@ var Wallet = function () {
 	}, {
 		key: 'addCoins',
 		value: function addCoins(wallet_openkey) {
+
 			console.log('Add coins to wallet', wallet_openkey);
-			fetch(_appConfig2.default.api_url + '?a=faucet&to=' + wallet_openkey).then(function (response) {
+			fetch(_appConfig2.default.api_url + '?a=faucet&network=' + _appConfig2.default.network + '&to=' + wallet_openkey).then(function (response) {
 				return response.text();
 			}).then(function (result) {
 				console.groupCollapsed('Add coins result:');
@@ -82216,7 +82249,7 @@ var _jquery = __webpack_require__(58);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _appConfig = __webpack_require__(109);
+var _appConfig = __webpack_require__(82);
 
 var _appConfig2 = _interopRequireDefault(_appConfig);
 
@@ -83467,7 +83500,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constants = __webpack_require__(106);
+var constants = __webpack_require__(107);
 
 exports.tagClass = {
   0: 'universal',
@@ -83517,7 +83550,7 @@ exports.tagByName = constants._reverse(exports.tag);
 
 var decoders = exports;
 
-decoders.der = __webpack_require__(107);
+decoders.der = __webpack_require__(108);
 decoders.pem = __webpack_require__(168);
 
 
@@ -83528,7 +83561,7 @@ decoders.pem = __webpack_require__(168);
 var inherits = __webpack_require__(1);
 var Buffer = __webpack_require__(0).Buffer;
 
-var DERDecoder = __webpack_require__(107);
+var DERDecoder = __webpack_require__(108);
 
 function PEMDecoder(entity) {
   DERDecoder.call(this, entity);
@@ -83582,7 +83615,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
 
 var encoders = exports;
 
-encoders.der = __webpack_require__(108);
+encoders.der = __webpack_require__(109);
 encoders.pem = __webpack_require__(170);
 
 
@@ -83592,7 +83625,7 @@ encoders.pem = __webpack_require__(170);
 
 var inherits = __webpack_require__(1);
 
-var DEREncoder = __webpack_require__(108);
+var DEREncoder = __webpack_require__(109);
 
 function PEMEncoder(entity) {
   DEREncoder.call(this, entity);
@@ -89186,7 +89219,7 @@ module.exports = [{
 var _ = __webpack_require__(3);
 
 var Script = __webpack_require__(115);
-var Opcode = __webpack_require__(82);
+var Opcode = __webpack_require__(83);
 var BN = __webpack_require__(8);
 var Hash = __webpack_require__(10);
 var Signature = __webpack_require__(16);
@@ -90458,7 +90491,7 @@ Interpreter.prototype.step = function() {
 
 var _ = __webpack_require__(3);
 var inherits = __webpack_require__(28);
-var Transaction = __webpack_require__(84);
+var Transaction = __webpack_require__(85);
 var Input = __webpack_require__(51);
 var Output = __webpack_require__(33);
 var $ = __webpack_require__(4);
@@ -91049,7 +91082,7 @@ var _ = __webpack_require__(3);
 var URL = __webpack_require__(383);
 
 var Address = __webpack_require__(38);
-var Unit = __webpack_require__(85);
+var Unit = __webpack_require__(86);
 
 /**
  * Bitcore URI
@@ -97083,7 +97116,7 @@ function xor (a, b) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var ebtk = __webpack_require__(77)
-var aes = __webpack_require__(86)
+var aes = __webpack_require__(87)
 var DES = __webpack_require__(220)
 var desModes = __webpack_require__(221)
 var aesModes = __webpack_require__(67)
@@ -97162,7 +97195,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var CipherBase = __webpack_require__(35)
-var des = __webpack_require__(91)
+var des = __webpack_require__(92)
 var inherits = __webpack_require__(1)
 
 var modes = {
@@ -100823,7 +100856,7 @@ module.exports = {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var createHmac = __webpack_require__(129)
-var crt = __webpack_require__(87)
+var crt = __webpack_require__(88)
 var EC = __webpack_require__(12).ec
 var BN = __webpack_require__(19)
 var parseKeys = __webpack_require__(79)
@@ -103233,7 +103266,7 @@ defineCurve('secp256k1', {
 
 
 var BN = __webpack_require__(19);
-var HmacDRBG = __webpack_require__(95);
+var HmacDRBG = __webpack_require__(96);
 var elliptic = __webpack_require__(12);
 var utils = elliptic.utils;
 var assert = utils.assert;
@@ -107384,7 +107417,7 @@ defineCurve('secp256k1', {
 
 
 var BN = __webpack_require__(24);
-var HmacDRBG = __webpack_require__(95);
+var HmacDRBG = __webpack_require__(96);
 var elliptic = __webpack_require__(14);
 var utils = elliptic.utils;
 var assert = utils.assert;
@@ -110477,7 +110510,7 @@ module.exports = Hmac
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(90), __webpack_require__(89));
+		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(91), __webpack_require__(90));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -112606,7 +112639,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
 var assert = __webpack_require__(30);
 var inherits = __webpack_require__(1);
 
-var des = __webpack_require__(91);
+var des = __webpack_require__(92);
 var utils = des.utils;
 var Cipher = des.Cipher;
 
@@ -112756,7 +112789,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
 var assert = __webpack_require__(30);
 var inherits = __webpack_require__(1);
 
-var des = __webpack_require__(91);
+var des = __webpack_require__(92);
 var Cipher = des.Cipher;
 var DES = des.DES;
 
@@ -116912,7 +116945,7 @@ module.exports = {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var Transaction = __webpack_require__(76);
 var coder = __webpack_require__(307);
-var rlp = __webpack_require__(102);
+var rlp = __webpack_require__(103);
 var CryptoJS = __webpack_require__(73);
 
 function add0x (input) {
@@ -117033,7 +117066,7 @@ var bitcore = __webpack_require__(59);
 var Random = bitcore.crypto.Random;
 var Hash = bitcore.crypto.Hash;
 var Mnemonic = __webpack_require__(118);
-var nacl = __webpack_require__(104);
+var nacl = __webpack_require__(105);
 var scrypt = __webpack_require__(155);
 
 var legacyDecryptString = function (encryptedStr, password) {
@@ -117731,7 +117764,7 @@ module.exports = SolidityTypeUReal;
 
 
 /// required to define ETH_BIGNUMBER_ROUNDING_MODE
-var BigNumber = __webpack_require__(92);
+var BigNumber = __webpack_require__(93);
 
 var ETH_UNITS = [
     'wei',
@@ -118635,7 +118668,7 @@ module.exports = ABI
 /* WEBPACK VAR INJECTION */(function(Buffer) {const SHA3 = __webpack_require__(337)
 const secp256k1 = __webpack_require__(156)
 const assert = __webpack_require__(37)
-const rlp = __webpack_require__(102)
+const rlp = __webpack_require__(103)
 const BN = __webpack_require__(140)
 const createHash = __webpack_require__(36)
 
@@ -128947,7 +128980,7 @@ var findProc = /Proc-Type: 4,ENCRYPTED\n\r?DEK-Info: AES-((?:128)|(?:192)|(?:256
 var startRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n/m
 var fullRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?-----END \1-----$/m
 var evp = __webpack_require__(77)
-var ciphers = __webpack_require__(86)
+var ciphers = __webpack_require__(87)
 module.exports = function (okey, password) {
   var key = okey.toString()
   var match = key.match(findProc)
@@ -129126,8 +129159,8 @@ exports.publicDecrypt = function publicDecrypt(key, buf) {
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(79);
 var mgf = __webpack_require__(149);
 var xor = __webpack_require__(151);
-var bn = __webpack_require__(98);
-var crt = __webpack_require__(87);
+var bn = __webpack_require__(99);
+var crt = __webpack_require__(88);
 var createHash = __webpack_require__(36);
 var withPublic = __webpack_require__(150);
 module.exports = function privateDecrypt(private_key, enc, reverse) {
@@ -129242,9 +129275,9 @@ var randomBytes = __webpack_require__(56);
 var createHash = __webpack_require__(36);
 var mgf = __webpack_require__(149);
 var xor = __webpack_require__(151);
-var bn = __webpack_require__(98);
+var bn = __webpack_require__(99);
 var withPublic = __webpack_require__(150);
-var crt = __webpack_require__(87);
+var crt = __webpack_require__(88);
 
 var constants = {
   RSA_PKCS1_OAEP_PADDING: 4,
@@ -130115,7 +130148,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 
 var Buffer = __webpack_require__(0).Buffer;
 /*<replacement>*/
-var bufferShim = __webpack_require__(88);
+var bufferShim = __webpack_require__(89);
 /*</replacement>*/
 
 module.exports = BufferList;
@@ -130180,21 +130213,21 @@ BufferList.prototype.concat = function (n) {
 /* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(100).PassThrough
+module.exports = __webpack_require__(101).PassThrough
 
 
 /***/ }),
 /* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(100).Transform
+module.exports = __webpack_require__(101).Transform
 
 
 /***/ }),
 /* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(99);
+module.exports = __webpack_require__(100);
 
 
 /***/ }),
@@ -133121,7 +133154,7 @@ defineCurve('secp256k1', {
 
 
 var BN = __webpack_require__(26);
-var HmacDRBG = __webpack_require__(95);
+var HmacDRBG = __webpack_require__(96);
 var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
@@ -137855,6 +137888,10 @@ var _jquery = __webpack_require__(58);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
+var _appConfig = __webpack_require__(82);
+
+var _appConfig2 = _interopRequireDefault(_appConfig);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -137911,7 +137948,7 @@ var View = function () {
 					profit = '<span style="color:red">' + profit + ' bet</span>';
 				}
 
-				games_html += '<tr>\n\t\t\t\t<td>\n\t\t\t\t\t<a  target="_blank"\n\t\t\t\t\t\trel="noopener"\n\t\t\t\t\t\thref="https://ropsten.etherscan.io/address/' + contract_id + '">\n\t\t\t\t\t\t\t' + contract_id + '\n\t\t\t\t\t</a>\n\t\t\t\t</td>\n\t\t\t\t<td>' + bankroll + '</td>\n\t\t\t\t<td class="profit">' + profit + '</td>\n\t\t\t\t<td>\n\t\t\t\t\t<a data-id="' + contract_id + '" href="#delete">remove</a>\n\t\t\t\t</td>\n\t\t\t</tr> ';
+				games_html += '<tr>\n\t\t\t\t<td>\n\t\t\t\t\t<a  target="_blank"\n\t\t\t\t\t\trel="noopener"\n\t\t\t\t\t\thref="https://' + _appConfig2.default.network + '.etherscan.io/address/' + contract_id + '">\n\t\t\t\t\t\t\t' + contract_id + '\n\t\t\t\t\t</a>\n\t\t\t\t</td>\n\t\t\t\t<td>' + bankroll + '</td>\n\t\t\t\t<td class="profit">' + profit + '</td>\n\t\t\t\t<td>\n\t\t\t\t\t<a data-id="' + contract_id + '" href="#delete">remove</a>\n\t\t\t\t</td>\n\t\t\t</tr> ';
 				// <span>stop</span> <a href="#get_money">refund</a>
 			}
 
@@ -137945,6 +137982,10 @@ exports.default = new View();
 var _jquery = __webpack_require__(58);
 
 var _jquery2 = _interopRequireDefault(_jquery);
+
+var _appConfig = __webpack_require__(82);
+
+var _appConfig2 = _interopRequireDefault(_appConfig);
 
 var _wallet = __webpack_require__(161);
 
@@ -137992,17 +138033,17 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	});
 
-	setTimeout(function () {
-		// _config.contracts.abi[name]
-		_games2.default.deployContract('dice', function (res) {
-			console.log(res);
-		});
-	}, 1000);
+	// setTimeout(()=>{
+	// 	Games.deployContract('dice', (res)=>{
+	// 		console.log(res)
+	// 	})
+	// }, 1000)
+
 
 	setTimeout(function () {
-		(0, _jquery2.default)('body').append('<div id="waddr">Your wallet: <a href="https://ropsten.etherscan.io/address/' + _wallet2.default.get().openkey + '" target="_blank">' + _wallet2.default.get().openkey + '</a></div>');
+		(0, _jquery2.default)('body').append('<div id="waddr">Your wallet: <a href="https://' + _appConfig2.default.network + '.etherscan.io/address/' + _wallet2.default.get().openkey + '" target="_blank">' + _wallet2.default.get().openkey + '</a></div>');
 
-		// Games.runUpdateBalance()
+		_games2.default.runUpdateBalance();
 	}, 1000);
 });
 
