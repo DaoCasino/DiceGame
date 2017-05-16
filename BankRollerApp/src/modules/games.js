@@ -19,7 +19,9 @@ class Games {
 		this._games = {}
 		this.load()
 
-		this.sended_randoms = {}
+		this.seeds_list = {}
+
+		this.getCurBlock()
 
 		this.Queue = new AsyncPriorityQueue({
 			debug:               false,
@@ -49,7 +51,29 @@ class Games {
 		this.load(callback)
 	}
 
+
 	deployContract(name, callback){
+
+		let checkContractDeployed = (transaction_hash, callback)=>{
+			$.ajax({
+				type:     'POST',
+				url:      _config.HttpProviders.infura.url,
+				dataType: 'json',
+				async:    false,
+
+				data: JSON.stringify({
+					'id': 1,
+					'jsonrpc': '2.0',
+					'method': 'eth_getTransactionByHash',
+					'params': [transaction_hash]
+				}),
+				success: function (response) {
+					console.log(response)
+				}
+			})
+
+		}
+
 		Wallet.signTx({
 			data:     _config.contracts[name].bytecode,
 			gasLimit: 0x4630C0,
@@ -69,8 +93,14 @@ class Games {
 					'params': ['0x' + signedTx]
 				}),
 				success: function (d) {
-					console.log(d)
-					callback(d)
+					if (!d.result) {
+						return
+					}
+					let transaction = d.result
+					console.info('Create contract '+name+' transaction:', transaction)
+					// callback(d)
+
+
 				}
 			})
 		})
@@ -113,7 +143,7 @@ class Games {
 			type:     'POST',
 			url:      _config.HttpProviders.infura.url,
 			dataType: 'json',
-			async:    true,
+			async:    false,
 			data: JSON.stringify({
 				'id': 0,
 				'jsonrpc': '2.0',
@@ -143,9 +173,9 @@ class Games {
 	}
 
 	runConfirm(){
-		localDB.getItem('sended_randoms', (err, sended_randoms)=>{
-			if (!err && sended_randoms) {
-				this.sended_randoms = sended_randoms
+		localDB.getItem('seeds_list', (err, seeds_list)=>{
+			if (!err && seeds_list) {
+				this.seeds_list = seeds_list
 			}
 
 			this.get((games)=>{
@@ -169,20 +199,38 @@ class Games {
 		})
 	}
 
+	getCurBlock(){
+		$.ajax({
+			type:     'POST',
+			url:      _config.HttpProviders.infura.url,
+			dataType: 'json',
+			async:    false,
+
+			data: JSON.stringify({
+				'id': 74,
+				'jsonrpc': '2.0',
+				'method': 'eth_blockNumber',
+				'params': []
+			}),
+			success: (d)=>{
+				if (d && d.result) {
+					this.curBlock = d.result
+				}
+			}
+		})
+	}
 
 	getLogs(address, callback){
-		if (!this.curBlock) {
-			this.curBlock = 890686
-		}
-
-		let curBlockHex = '0x' + Utils.numToHex(this.curBlock)
-
+		console.log('curBlock:', this.curBlock)
 
 		// Our server
 		$.getJSON('https://platform.dao.casino/api/proxy.php?a=unconfirmed', {address:address},(seeds)=>{
 			console.info('unconfirmed from server:'+seeds)
 			if (seeds && seeds.length) {
 				seeds.forEach((seed)=>{
+					if (!this.seeds_list[seed]) {
+						this.seeds_list[seed] = {}
+					}
 					this.sendRandom2Server(address, seed)
 				})
 			}
@@ -194,7 +242,7 @@ class Games {
 			url:      _config.HttpProviders.infura.url,
 			type:     'POST',
 			dataType: 'json',
-			async:    true,
+			async:    false,
 
 			data:JSON.stringify({
 				'id':      74,
@@ -203,7 +251,7 @@ class Games {
 
 				'params': [{
 					'address':   address,
-					'fromBlock': curBlockHex,
+					'fromBlock': this.curBlock,
 					'toBlock':   'latest',
 				}]
 			}),
@@ -213,11 +261,14 @@ class Games {
 				for (let i = 0; i < objData.result.length; i++) {
 					let obj = objData.result[i]
 
-					this.curBlock = Utils.hexToNum( obj.blockNumber.substr(2) )
+					this.curBlock = obj.blockNumber
 
 					let seed = obj.data
 
-					if (!this.sended_randoms[seed]) {
+					if (!this.seeds_list[seed]) {
+						this.seeds_list[seed] = {}
+					}
+					if (!this.seeds_list[seed].confirm_sended_blockchain) {
 						this.addTaskSendRandom(address, seed)
 					}
 				}
@@ -266,6 +317,10 @@ class Games {
 	}
 
 	checkPending(address, seed, callback){
+		if (this.seeds_list[seed].pending) {
+			callback()
+		}
+
 		if (!this.pendings) {
 			this.pendings = {}
 		}
@@ -281,7 +336,7 @@ class Games {
 			type:     'POST',
 			url:      _config.HttpProviders.infura.url,
 			dataType: 'json',
-			async:    true,
+			async:    false,
 			data: JSON.stringify({
 				'id': 0,
 				'jsonrpc': '2.0',
@@ -295,26 +350,41 @@ class Games {
 			success: (response)=>{
 				console.log('>> Pending response:', response)
 				if (response.result && response.result.split('0').join('').length > 4) {
+					this.seeds_list[seed].pending = true
 					delete( this.pendings[address+'_'+seed] )
 					callback()
+				} else {
+					this.seeds_list[seed].pending = false
 				}
 			}
 		})
 	}
 
 	sendRandom2Server(address, seed){
-		this.checkPending(address, seed, ()=>{
-			Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
-				$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
-					vconcat: seed,
-					result:  confirm
-				}, ()=>{})
+		if (this.seeds_list[seed] && this.seeds_list[seed].confirm_sended_server) {
+			return
+		}
+
+		// this.checkPending(address, seed, ()=>{
+		Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
+			$.get(_config.api_url+'proxy.php?a=confirm', {
+				vconcat: seed,
+				result:  confirm
+			}, ()=>{
+				this.seeds_list[seed].confirm_server_time   = new Date().getTime()
+				this.seeds_list[seed].confirm               = confirm
+				this.seeds_list[seed].confirm_server        = confirm
+				this.seeds_list[seed].confirm_sended_server = true
+
+				localDB.setItem('seeds_list', this.seeds_list, ()=>{ })
+
 			})
 		})
+		// })
 	}
 
 	sendRandom(address, seed, callback){
-		if (this.sended_randoms[seed]) {
+		if (this.seeds_list[seed] && this.seeds_list[seed].confirm_sended_blockchain) {
 			return
 		}
 
@@ -331,7 +401,7 @@ class Games {
 				type:     'POST',
 				url:      _config.HttpProviders.infura.url,
 				dataType: 'json',
-				async:    true,
+				async:    false,
 
 				data: JSON.stringify({
 					'id':      0,
@@ -340,14 +410,17 @@ class Games {
 					'params':  ['0x'+signedTx]
 				}),
 				success:(d)=>{
-					this.sended_randoms[seed] = true
+					this.seeds_list[seed].confirm_blockchain_time   = new Date().getTime()
+					this.seeds_list[seed].confirm_sended_blockchain = true
+					this.seeds_list[seed].confirm                   = confirm
+					this.seeds_list[seed].confirm_blockchain        = confirm
+
 					let r = false
 					if (d.result) {
-						// console.log(d.result)
 						r = true
 					}
 
-					localDB.setItem('sended_randoms', this.sended_randoms, ()=>{
+					localDB.setItem('seeds_list', this.seeds_list, ()=>{
 						callback(r, d)
 					})
 

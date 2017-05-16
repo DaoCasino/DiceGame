@@ -120,7 +120,7 @@ class Wallet {
 			type:     'POST',
 			url:      _config.HttpProviders.infura.url,
 			dataType: 'json',
-			async:    true,
+			async:    false,
 
 			data: JSON.stringify({
 				'id': 0,
