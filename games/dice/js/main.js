@@ -221,7 +221,9 @@ function initGame() {
     GetLogs();
     $('#all').click();
     Refresh();
-    approve(100000000000);
+        if (allowance() < 1000000){
+        approve(100000000000);
+    } 
 
 };
 
