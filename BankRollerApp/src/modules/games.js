@@ -115,6 +115,13 @@ class Games {
 			}
 
 			this.get((games)=>{
+				if (!games || !Object.keys(games).length) {
+					setTimeout(()=>{
+						this.runConfirm()
+					}, 2*_config.confirm_timeout )
+					return
+				}
+
 				for(let address in games){
 					this.getLogs(address, (r)=>{
 						console.log('[UPD] Games.getLogs '+address+' res:',r)

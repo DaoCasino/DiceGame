@@ -3,7 +3,7 @@ import _config   from '../app.config.js'
 import localDB   from 'localforage'
 import ethWallet from 'eth-lightwallet'
 import ethABI    from 'ethereumjs-abi'
-import bigInt    from'big-integer'
+import bigInt    from 'big-integer'
 
 
 
@@ -25,9 +25,23 @@ class Wallet {
 	get(){
 		return this._wallet
 	}
+
 	getKs(){
-		return ethWallet.keystore.deserialize( this._wallet.keystorage  )
+		if (this.keyStore) {
+			return this.keyStore
+		}
+		this.keyStore = ethWallet.keystore.deserialize( this._wallet.keystorage  )
+		return this.keyStore
 	}
+
+	exportPrivateKey(callback){
+		this.getPwDerivedKey((PwDerivedKey)=>{
+			let private_key = this.getKs().exportPrivateKey(this._wallet.addr, PwDerivedKey)
+
+			callback(private_key)
+		})
+	}
+
 
 	getPwDerivedKey(callback, limit=5){
 		if (this.pwDerivedKey) {
@@ -65,7 +79,6 @@ class Wallet {
 				ks.generateNewAddress(pwDerivedKey, 1)
 
 				wallet.addr         = ks.getAddresses()[0]
-				wallet.private_key  = ks.exportPrivateKey(wallet.addr, pwDerivedKey)
 				wallet.keystorage   = ks.serialize()
 				wallet.openkey      = '0x' + wallet.addr
 
