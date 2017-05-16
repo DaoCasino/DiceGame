@@ -20,11 +20,11 @@ var urlBalance = ""; //balance
 // testnet
 //var	addressTestContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
 
-if(options_testnet){
-	addressContract = addressTestContract;
-} else if(options_rpc){
-	addressContract = addressRpcContract;
-}
+// if(options_testnet){
+// 	addressContract = addressTestContract;
+// } else if(options_rpc){
+// 	addressContract = addressRpcContract;
+// }
 
 var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
@@ -276,7 +276,10 @@ function initGame() {
     GetLogs();
     $('#all').click();
     Refresh();
-    approve(100000000000);
+    if (allowance() < 1000000){
+        approve(100000000000);
+    } 
+    
     webSocketConnect("ws://localhost:8081/ws");
 };
 
@@ -470,7 +473,7 @@ function gameend() {
     clearInterval(animate);
     count = new_count;
     game = false;
-    $('.active').click();
+    //$('.active').click();
     $('#amount-one').change();
     $("#randomnum").fadeIn("slow", 1)
     Refresh();
@@ -484,7 +487,6 @@ function webSocketConnect(address) {
     socket.onmessage = function (event) {
         JSON.parse(event.data, function (key, value) {
             if (key == 'data')
-
             parseMsg(value)
         });
     };
@@ -509,11 +511,11 @@ function webSocketConnect(address) {
 }
 
 function parseMsg(mes){
-
+console.log("message:",mes)
 var msg = mes.substr(2);
-var player = "0x"+msg.substr(31,64);
+var player = "0x"+msg.substr(24,64);
 var bet = hexToNum(msg.substr(64,64)) / 100000000;
-var chance = hexToNum(msg.substr(128,64))  / (65536 - 1310) * 100;
+var chance = hexToNum(msg.substr(128,64))  / (65536) * 100;
 var playerNum = hexToNum(msg.substr(128,64))
 console.log("num",playerNum)
 var payout = (65536 - 1310) / playerNum
@@ -522,7 +524,7 @@ var profit = payout*bet - bet;
 var state =  hexToNum(msg.substr(256,64));
 var rnd = hexToNum(msg.substr(320,64));
 var tx = msg.substr(384,66)
-
+console.log("message:", player, bet, chance, playerNum, payout, profit)
  if (state == 1) {
                     state = "<div class=\"icon-w\">WIN</div>";
                     color = "#d08c49";

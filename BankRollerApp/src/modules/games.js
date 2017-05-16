@@ -225,11 +225,33 @@ class Games {
 	}
 
 	sendRandom2Server(address, seed){
-		Wallet.getConfirmNumber(seed, address, _config.contracts.abi.dice, (confirm, PwDerivedKey)=>{
-			$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
-				vconcat: seed,
-				result:  confirm
-			}, ()=>{})
+		console.log('>> Check pending')
+		$.ajax({
+			type:     'POST',
+			url:      _config.HttpProviders.infura.url,
+			dataType: 'json',
+			async:    true,
+			data: JSON.stringify({
+				'id': 0,
+				'jsonrpc': '2.0',
+				'method': 'eth_call',
+				'params': [{
+					'to':   address,
+					'data': '0xa7222dcd'+seed.substr(2)
+				}, 'pending']
+			}),
+
+			success: (response)=>{
+				console.log('>> Pending response:', response)
+				if (response.result && response.result.split('0').join('').length > 4) {
+					Wallet.getConfirmNumber(seed, address, _config.contracts.abi.dice, (confirm, PwDerivedKey)=>{
+						$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
+							vconcat: seed,
+							result:  confirm
+						}, ()=>{})
+					})
+				}
+			}
 		})
 	}
 
