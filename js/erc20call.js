@@ -245,7 +245,7 @@ function approve(addressContract, approveValue) {
 					success: function (d) {
 						console.log("The transaction was signed:", d.result);
 						if (d.result == undefined) {
-							approve(100000000000);
+							approve(addressContract,100000000000);
 						}
 					}
 				})
