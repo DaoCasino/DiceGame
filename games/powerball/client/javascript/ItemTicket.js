@@ -18,6 +18,7 @@ ItemTicket.prototype.init = function(_prnt) {
 	this.countWhite = 0;
 	this.countRed = 0;
 	this.redBall = 0;
+	this.powerPlay = 0;
 	this.lock = false;
 	
 	this.initArt();
