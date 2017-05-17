@@ -199,8 +199,8 @@ ScrGame.prototype.init = function() {
 		addressContract = addressTestContract;
 		addressStorage = addressTestStorage;
 	}
-	addressContract = addressBJ;
-	addressStorage = addressBJStorage;
+	// addressContract = addressBJ;
+	// addressStorage = addressBJStorage;
 	
 	obj_game["game"] = this;
 	obj_game["balance"] = 0;
@@ -677,7 +677,8 @@ ScrGame.prototype.acceptApprove = function() {
 	var prnt = obj_game["game"];
 	if(obj_game["balancePlEth"] > 0 && _allowance < maxBet){
 		login_obj["allowance"] = true;
-		approve(addressContract, 100000000000); // 1000 tokens
+		// approve(addressContract, 100000000000); // 1000 tokens
+		approve(100000000000); // 1000 tokens
 		prnt.bClickApprove = true;
 		prnt.bWait = true;
 		prnt.showChips(false);
@@ -1086,8 +1087,8 @@ ScrGame.prototype.getAllowance = function() {
 	var spender = addressContract.substr(2);
 	var data = "0x"+C_ALLOWANCE + pad(key, 64) + pad(spender, 64);
 	var params = {"from":openkey,
-				// "to":addressCurErc,
-				"to":erc20address,
+				"to":addressCurErc,
+				// "to":erc20address,
 				"data":data};
 	infura.sendRequest("getAllowance", params, _callback);
 }
@@ -1350,8 +1351,8 @@ ScrGame.prototype.getBalanceBank = function(){
 
 ScrGame.prototype.getBalanceErc = function(){
 	var prnt = obj_game["game"];
-	// var value = callERC20("balanceOf", addressCurErc);
-	var value = callERC20("balanceOf", erc20address);
+	var value = callERC20("balanceOf", addressCurErc);
+	// var value = callERC20("balanceOf", erc20address);
 	obj_game["balanceErc"] = Number(value);
 	login_obj["balanceErc"] = obj_game["balanceErc"];
 }
