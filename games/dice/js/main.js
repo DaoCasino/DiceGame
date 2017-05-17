@@ -327,35 +327,15 @@ var abi = [{
 var ks = localStorage.getItem('keystore');
 ks = lightwallet.keystore.deserialize(ks);
 var sendingAddr;
-var rawMsg;
+
 var login_obj = {};
 login_obj["confirmedGames"] = {};
-
-var options_mainet = false;
-var options_testnet = true;
-var options_rpc = false;
-
 var balance = 1;
 var urlBalance = ""; //balance
-// 6 ETH var addressContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
-// main
-//var addressContract = "";
-// testrpc
-//var	addressRpcContract = "0xdbdb232171a8639603e1341b8d62a5425f5d2ddd";
-// testnet
-//var	addressTestContract = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27";
-
-// if(options_testnet){
-// 	addressContract = addressTestContract;
-// } else if(options_rpc){
-// 	addressContract = addressRpcContract;
-// }
 
 var betEth = 0.01; //0,2 ставка эфира
 var mainnet, openkey, privkey, mainnetAddress, testnetAddress;
 var chance = 32768;
-//var urlInfura = "http://46.101.244.101:8545";
-//var urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 var lastTx, count, new_count, sends, paids, password;
 var game = false;
 var Timer, animate;
@@ -366,8 +346,8 @@ var _arGames = [];
 var _arUnconfirmedGames = [];
 bankroll = 1000;
 var nonceTx = "";
-
 var RndGen;
+var addressDice;
 // 100000, 64000, "0x639a1fd07cf885e1453fda734ab8f8bcaf6dcdfe70d3231cfca784323f8aeaaa"
 // "0x639a1fd07cf885e1453fda734ab8f8bcaf6dcdfe70d3231cfca784323f8aeaaa", 28, "dsf", "hgf"
 
@@ -486,77 +466,61 @@ function call(callname, adr) {
     return result;
 };
 
-function getContract(game, network) {
-    var result;
-    var gameid;
-    var networkid;
-    switch (game) {
-        case "HackDAO":
-            gameid = "1";
-            break;
-        case "Dice":
-            gameid = "2";
-            break;
-        case "Blackjack":
-            gameid = "3";
-            break;
-    }
-    switch (network) {
-        case "testnet":
-            networkid = "1";
-            break;
-        case "mainnet":
-            networkid = "2";
-            break;
-    }
-    $.ajax({
-        type: "POST",
-        url: urlInfura,
-        dataType: 'json',
-        async: false,
-        data: JSON.stringify({
-            "id": 0,
-            "jsonrpc": '2.0',
-            "method": "eth_call",
-            "params": [{
-                "from": openkey,
-                "to": "0x3b5d9ed79ca06fdb9759b2c39857bf2c76112051",
-                "data": "0x3d185fc5" + pad(numToHex(gameid), 64) + pad(numToHex(networkid), 64)
-            }, "pending"]
-        }),
-        success: function (d) {
-            result = "0x" + d.result.substr(26);
+function setContract() {
+    var q_params = (function () {
+        var params = {};
+        if (window.location.href.split('?').length < 2) {
+            return params;
         }
-    });
-    return result;
+        var parts = window.location.href.split('?')[1].split('&');
+        for (var k in parts) {
+            var kv = parts[k].split('=');
+            params[kv[0]] = kv[1];
+        }
+        return params;
+    }())
+
+    if (q_params.address != undefined) {
+        addressDice = q_params.address
+        
+    } else {
+        $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
+            var _arr = JSON.parse(d)
+            if (_arr != undefined) {
+                addressDice = _arr[0]
+                $("#bankrollers").html("Bankrollers:",_arr.length)
+                console.log("BR:",_arr.length)
+                initGame();
+            } else {
+                $("#bankrollers").html("Bankrollers: 0")
+                addressDice = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27"
+                console.log(addressDice)
+                //Действие в случае отсутсвия банкролла
+            }
+        })
+    }
+    if(addressDice != undefined){
+        initGame();
+    } else{
+        addressDice = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27"
+        initGame();
+    }
+    
+           $("#contract").html('<a target="_blank" href="https://' + getNet() + '.etherscan.io/address/' + addressDice + '">' + addressDice.slice(0, 24) + '...</a>')
+ 
 };
 
-function setContract() {
-    /*if (mainnet == "on") {
-        urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-        addressContract = getContract("Dice", "mainnet");
-        disabled(true);
-        $('#randomnum').text("Coming soon")
-    } else if (mainnet == "off") {
-        urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-        //addressContract = getContract("Dice", "testnet");
-        addressContract = "0x560B674BEaAA429E66E73507A55975B8b2587B0D";
-        $('#randomnum').text("");
-    }*/
-};
+
 
 function getContractBalance() {
     bankroll = callERC20("balanceOf", addressDice);
+    console.log(addressDice)
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
 
-function timeout() {
-
-}
 
 setInterval(function () {
     if (openkey) {
-        //balance = callERC20("balanceOf", openkey)/100000000
         balance = $('#balance').html();
         balance = +balance.substr(0, balance.length - 4);
         balance = +balance.toFixed(8);
@@ -569,39 +533,25 @@ setInterval(function () {
             $("#label").text("Click Roll Dice to place your bet:");
         }
         $("#your-balance").val(balance);
-        //Refresh();
     } else {
         $("#label").text("Please, sign in");
         disabled(true);
     }
-}, 1000);
 
-/*setInterval(function () {
-    if (openkey) {
-		if(game){
-			// Confirm();
-			timeout();
-		}
-    }
-}, 1000*60*5);*/
+}, 1000);
 
 function initGame() {
     loadData();
-    setContract();
     _callback = response;
     paids = (call("getTotalEthSended", openkey)) / 100000000;
     sends = (call("getTotalEthPaid", openkey)) / 100000000;
-    setContract();
     count = call("totalRollsByUser", openkey)
-    console.log("old_count", count);
     $("#total-rolls").html(call("getTotalRollMade", openkey));
     $("#total-paid").html(paids.toFixed(3) + ' BET');
     $("#total-send").html(sends.toFixed(3) + ' BET (' + ((paids / sends) * 100).toFixed(2) + '%)');
     getContractBalance();
-    $("#contract").html('<a target="_blank" href="https://' + getNet() + '.etherscan.io/address/' + addressDice + '">' + addressDice.slice(0, 24) + '...</a>')
-    GetLogs();
-    $('#all').click();
     Refresh();
+ 
     if (getAllowance(addressDice) < 1000000) {
         $('#bg_popup').show();
         approve(addressDice, 100000000000);
@@ -614,9 +564,8 @@ function initGame() {
         }
     }, 5000)
 
-
-
     webSocketConnect("ws://46.101.244.101:8081/ws");
+    
 };
 
 function disabled(status) {
@@ -764,13 +713,13 @@ function response(command, value, seed) {
         }
         return false;
     }
-
     if (command == "sendRaw") {
         // console.log("sendRaw:", value);
         var lastTx = value;
+        console.log(seed)
+        
+        addRow(seed, lastTx, openkey, betEth, chance, 0, 0)
         $("#Tx").html('<a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
-        $(".dice-table#table").prepend('<tr><td><a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + lastTx + ' "> ' + openkey.slice(0, 12) + '...</a> <br></td><td colspan="5" style="height: 63px"> ...pending... </td></tr>');
-        //disabled(true);
         $("#randomnum").text("Please, wait . . . ");
 
         Timer = setInterval(function () {
@@ -856,8 +805,9 @@ function webSocketConnect(address) {
         var msg = mes.substr(2);
         var player = "0x" + msg.substr(24, 64);
         var bet = hexToNum(msg.substr(64, 64)) / 100000000;
-        var chance = hexToNum(msg.substr(128, 64)) / (65536) * 100;
+        
         var playerNum = hexToNum(msg.substr(128, 64))
+        var chance = playerNum / (65536) * 100;
 
         var payout = (65536 - 1310) / playerNum
         var profit = payout * bet - bet;
@@ -866,7 +816,29 @@ function webSocketConnect(address) {
         var rnd = hexToNum(msg.substr(320, 64));
         var tx = msg.substr(384, 66)
 
-        if (state == 1) {
+        // if (state == 1) {
+        //     state = "<div class=\"icon-w\">WIN</div>";
+        //     color = "#d08c49";
+        // } else if (state == 2) {
+        //     state = "<div class=\"icon-w\" style='background:gray'>LOSE</div>";
+        //     profit = -bet;
+        //     color = "gray";
+        // } else {
+        //     state = "...pending..."
+        //     color = "gray";
+        // }
+
+
+        addRow(seed, tx, player, bet, playerNum, rnd, state)
+ if ($('#table tr').length > 10) {
+            $('tr:eq(11)').remove();
+        }
+    }
+}
+
+function addRow(idGame, tx, player, bet, playerNum, rnd, state){
+    var color;
+            if (state == 1) {
             state = "<div class=\"icon-w\">WIN</div>";
             color = "#d08c49";
         } else if (state == 2) {
@@ -876,35 +848,23 @@ function webSocketConnect(address) {
         } else {
             state = "...pending..."
             color = "gray";
-
         }
 
-        //console.log(player, bet, chance, payout, profit, state, rnd)
+     var chance = playerNum / (65536) * 100;
+     var payout = (65536 - 1310) / playerNum;
+     var profit = payout * bet - bet;
 
-        $(".dice-table#table").prepend('<tr><td  aria-label="TRANSACTION"><a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + tx + '">' + "0x" + player.slice(2, 12) + '...</a> <br></td><td  aria-label="">' +
-            "<div class=\" tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content \" style=\" height:10px\" ><div class=\"ui-progressbar-value ui-corner-left ui-widget-header \" style=\"width:" + chance + "%; background:" + color + ";margin:0px;\"></div></div><div class=\"tooltip\" style=\"left:" + rnd / 65536 * 100 + "%\">" + rnd + "</div>" + ' </td><td  aria-label="RESULT">' + state + '</td><td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>');
-        if ($('#table tr').length > 10) {
-            $('tr:eq(11)').remove();
-        }
-    }
-}
-
-var q_params = (function () {
-    var params = {};
-    if (window.location.href.split('?').length < 2) {
-        return params;
-    }
-
-    var parts = window.location.href.split('?')[1].split('&');
-    for (var k in parts) {
-        var kv = parts[k].split('=');
-        params[kv[0]] = kv[1];
-    }
-    return params;
-}())
-
-if(q_params.address != undefined){
-    addressDice = q_params.address
-    c
-}
-
+            $(".dice-table#table").prepend([
+                '<tr id="' + idGame + '">',
+                    '<td  aria-label="TRANSACTION"><a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + tx + '">' + "0x" + player.slice(2, 12) + '...</a> <br></td>',
+                    
+                    '<td  aria-label="" class="progress">',
+                    '<div class="tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content" style="height:10px" >',
+                    '<div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width:' + chance + '%; background:' + color + ';margin:0px;"></div></div>',
+                    '<div class="tooltip" style="left:' + rnd / 65536 * 100 + '%">' + rnd + '</div>',
+                    '</td>',
+                    
+                    '<td class="state" aria-label="RESULT">' + state + '</td>',
+                    '<td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>'
+             ].join('') );
+};

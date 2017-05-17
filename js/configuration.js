@@ -175,7 +175,7 @@ var erc20abi = [{
 netname = "ropsten";
 erc20address = "none"; 
 urlInfura = "none";
-addressDice = "none";
+//addressDice = "none";
 addressBJDeck = "none";
 addressBJStorage = "none";
 addressBJ = "none";
@@ -215,7 +215,7 @@ function changeNet(value){
 		urlInfura = "https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 		erc20address = "0xBa2F1399dF21C75ce578630Ff9Ed9285b2146B8D"; 
 		// dice
-        addressDice = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27"
+        //addressDice = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27"
 	}
 }
 changeNet("rinkeby");
