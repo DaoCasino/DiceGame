@@ -110,7 +110,7 @@ class View {
 
 	transactionsUpdate(){
 		setInterval(()=>{
-			localDB.getItem('seeds_list', (err,seeds_list)=>{
+			localDB.getItem('seeds_list', (err, seeds_list)=>{
 				if (seeds_list) {
 					this.renderTXs(seeds_list)
 				}
@@ -120,15 +120,23 @@ class View {
 
 	renderTXs(seeds){
 		let html = ''
+		let max_cnt = 10
 		reverseForIn(seeds, (seed)=>{
-			let info = seeds[seed]
+			max_cnt--
+			if (max_cnt < 0) {
+				return
+			}
 
+			let info = seeds[seed]
 			let status = 'wait'
 			if (info.confirm_sended_server) {
 				status = 'on server'
 			}
 			if (info.confirm_sended_blockchain) {
 				status = 'on blockchain'
+			}
+			if (!info.contract) {
+				info.contract = ''
 			}
 
 			html += `<tr>
@@ -138,6 +146,14 @@ class View {
 					title="${seed}"
 					href="https://${_config.network}.etherscan.io/tx/${seed}">
 						${seed}
+				</a>
+				</td>
+				<td class="seed">
+				<a  class="address"
+					target="_blank" rel="noopener"
+					title="${info.contract}"
+					href="https://${_config.network}.etherscan.io/${info.contract}">
+						${info.contract}
 				</a>
 				</td>
 				<td class="status">
@@ -153,6 +169,7 @@ class View {
 			<thead>
 				<tr>
 					<th>TX</th>
+					<th>Contract</th>
 					<th>status</th>
 					<th>random</th>
 				</tr>

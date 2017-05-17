@@ -258,7 +258,9 @@ class Games {
 			if (seeds && seeds.length) {
 				seeds.forEach((seed)=>{
 					if (!this.seeds_list[seed]) {
-						this.seeds_list[seed] = {}
+						this.seeds_list[seed] = {
+							contract:address
+						}
 					}
 					this.sendRandom2Server(address, seed)
 				})
@@ -295,7 +297,9 @@ class Games {
 					let seed = obj.data
 
 					if (!this.seeds_list[seed]) {
-						this.seeds_list[seed] = {}
+						this.seeds_list[seed] = {
+							contract:address
+						}
 					}
 					if (!this.seeds_list[seed].confirm_sended_blockchain) {
 						this.addTaskSendRandom(address, seed)

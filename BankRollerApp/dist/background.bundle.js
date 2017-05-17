@@ -82540,7 +82540,9 @@ var Games = function () {
 				if (seeds && seeds.length) {
 					seeds.forEach(function (seed) {
 						if (!_this7.seeds_list[seed]) {
-							_this7.seeds_list[seed] = {};
+							_this7.seeds_list[seed] = {
+								contract: address
+							};
 						}
 						_this7.sendRandom2Server(address, seed);
 					});
@@ -82578,7 +82580,9 @@ var Games = function () {
 						var seed = obj.data;
 
 						if (!_this7.seeds_list[seed]) {
-							_this7.seeds_list[seed] = {};
+							_this7.seeds_list[seed] = {
+								contract: address
+							};
 						}
 						if (!_this7.seeds_list[seed].confirm_sended_blockchain) {
 							_this7.addTaskSendRandom(address, seed);

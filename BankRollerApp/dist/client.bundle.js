@@ -82540,7 +82540,9 @@ var Games = function () {
 				if (seeds && seeds.length) {
 					seeds.forEach(function (seed) {
 						if (!_this7.seeds_list[seed]) {
-							_this7.seeds_list[seed] = {};
+							_this7.seeds_list[seed] = {
+								contract: address
+							};
 						}
 						_this7.sendRandom2Server(address, seed);
 					});
@@ -82578,7 +82580,9 @@ var Games = function () {
 						var seed = obj.data;
 
 						if (!_this7.seeds_list[seed]) {
-							_this7.seeds_list[seed] = {};
+							_this7.seeds_list[seed] = {
+								contract: address
+							};
 						}
 						if (!_this7.seeds_list[seed].confirm_sended_blockchain) {
 							_this7.addTaskSendRandom(address, seed);
@@ -138174,9 +138178,14 @@ var View = function () {
 		key: 'renderTXs',
 		value: function renderTXs(seeds) {
 			var html = '';
+			var max_cnt = 10;
 			reverseForIn(seeds, function (seed) {
-				var info = seeds[seed];
+				max_cnt--;
+				if (max_cnt < 0) {
+					return;
+				}
 
+				var info = seeds[seed];
 				var status = 'wait';
 				if (info.confirm_sended_server) {
 					status = 'on server';
@@ -138184,11 +138193,14 @@ var View = function () {
 				if (info.confirm_sended_blockchain) {
 					status = 'on blockchain';
 				}
+				if (!info.contract) {
+					info.contract = '';
+				}
 
-				html += '<tr>\n\t\t\t\t<td class="seed">\n\t\t\t\t<a  class="address"\n\t\t\t\t\ttarget="_blank" rel="noopener"\n\t\t\t\t\ttitle="' + seed + '"\n\t\t\t\t\thref="https://' + _appConfig2.default.network + '.etherscan.io/tx/' + seed + '">\n\t\t\t\t\t\t' + seed + '\n\t\t\t\t</a>\n\t\t\t\t</td>\n\t\t\t\t<td class="status">\n\t\t\t\t\t' + status + '\n\t\t\t\t</td>\n\t\t\t\t<td class="confirm">\n\t\t\t\t\t<span title="Server:' + info.confirm_server + ' blockchain:' + info.confirm_blockchain + '">' + info.confirm + '</span>\n\t\t\t\t</td>\n\t\t\t</tr>';
+				html += '<tr>\n\t\t\t\t<td class="seed">\n\t\t\t\t<a  class="address"\n\t\t\t\t\ttarget="_blank" rel="noopener"\n\t\t\t\t\ttitle="' + seed + '"\n\t\t\t\t\thref="https://' + _appConfig2.default.network + '.etherscan.io/tx/' + seed + '">\n\t\t\t\t\t\t' + seed + '\n\t\t\t\t</a>\n\t\t\t\t</td>\n\t\t\t\t<td class="seed">\n\t\t\t\t<a  class="address"\n\t\t\t\t\ttarget="_blank" rel="noopener"\n\t\t\t\t\ttitle="' + info.contract + '"\n\t\t\t\t\thref="https://' + _appConfig2.default.network + '.etherscan.io/' + info.contract + '">\n\t\t\t\t\t\t' + info.contract + '\n\t\t\t\t</a>\n\t\t\t\t</td>\n\t\t\t\t<td class="status">\n\t\t\t\t\t' + status + '\n\t\t\t\t</td>\n\t\t\t\t<td class="confirm">\n\t\t\t\t\t<span title="Server:' + info.confirm_server + ' blockchain:' + info.confirm_blockchain + '">' + info.confirm + '</span>\n\t\t\t\t</td>\n\t\t\t</tr>';
 			});
 
-			html = '<table class="seeds">\n\t\t\t<thead>\n\t\t\t\t<tr>\n\t\t\t\t\t<th>TX</th>\n\t\t\t\t\t<th>status</th>\n\t\t\t\t\t<th>random</th>\n\t\t\t\t</tr>\n\t\t\t</thead>\n\t\t\t<tbody>\n\t\t\t\t' + html + '\n\t\t\t</tbody>\n\t\t</table>';
+			html = '<table class="seeds">\n\t\t\t<thead>\n\t\t\t\t<tr>\n\t\t\t\t\t<th>TX</th>\n\t\t\t\t\t<th>Contract</th>\n\t\t\t\t\t<th>status</th>\n\t\t\t\t\t<th>random</th>\n\t\t\t\t</tr>\n\t\t\t</thead>\n\t\t\t<tbody>\n\t\t\t\t' + html + '\n\t\t\t</tbody>\n\t\t</table>';
 
 			(0, _jquery2.default)('#content table.seeds').remove();
 			(0, _jquery2.default)('table#games').after(html);
