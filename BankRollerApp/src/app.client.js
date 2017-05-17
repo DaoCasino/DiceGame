@@ -1,12 +1,19 @@
 import $       from 'jquery'
 import _config from './app.config.js'
-import Wallet  from './modules/wallet.js'
-import Games   from './modules/games.js'
-import View    from './modules/view.js'
+import Wallet  from './model/wallet.js'
+import Games   from './model/games.js'
+import View    from './view/app.view.js'
 
 document.addEventListener('DOMContentLoaded',()=>{
-	window.App = {}
-	window.App.Games = Games
+	// for debug
+	if (_config.mode='dev') {
+		window.App = {
+			Games:   Games,
+			Wallet:  Wallet,
+			_config: _config,
+			View:    View
+		}
+	}
 
 	// Get games contracts
 	console.group('Get games')
@@ -20,35 +27,42 @@ document.addEventListener('DOMContentLoaded',()=>{
 		console.groupEnd()
 	})
 
-	// Add new game contract
-	View.onGameAdd((contract_id)=>{
-		console.log('Add game')
-
-		View.loading(true)
-
-		Games.add(contract_id, (info)=>{
-			console.info('Game added', info)
-			View.loading(false)
-
+	// Deploy new game contract
+	View.onGameAdd((game_name)=>{
+		View.loading(true, 'Deploying "'+game_name+'" contract')
+		Games.create('dice',(address)=>{
+			View.loading(true, 'Contract "'+address+'" deployed!')
+			setTimeout(()=>{
 			Games.get((games)=>{
+				View.loading(false)
 				View.renderGamesList(games)
 			})
+			},2000)
 		})
 	})
 
+	// Add new game contract
+	View.onContractAdd((contract_id)=>{
+		View.loading(true, 'Add game contract...')
 
-	setTimeout(()=>{
-		// Games.deployContract('dice', (res)=>{
-			// console.log(res)
-		// })
-	}, 1000)
-
-	View.transactionsUpdate()
+		Games.add(contract_id, (info)=>{
+			console.info('Game added', info)
+			View.loading(true, 'Game added!')
+			setTimeout(()=>{
+			Games.get((games)=>{
+				View.loading(false)
+				View.renderGamesList(games)
+			})
+			},2000)
+		})
+	})
 
 	setTimeout(()=>{
 		$('body').append('<div id="waddr">Your wallet: <a href="https://'+_config.network+'.etherscan.io/address/'+Wallet.get().openkey+'" target="_blank">'+Wallet.get().openkey+'</a></div>')
 
 		Games.runUpdateBalance()
+
+		View.transactionsUpdate()
 	}, 1000)
 
 })

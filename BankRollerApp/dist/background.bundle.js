@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 395);
+/******/ 	return __webpack_require__(__webpack_require__.s = 398);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,8 +81,8 @@
 
 
 
-var base64 = __webpack_require__(173)
-var ieee754 = __webpack_require__(328)
+var base64 = __webpack_require__(175)
+var ieee754 = __webpack_require__(330)
 var isArray = __webpack_require__(143)
 
 exports.Buffer = Buffer
@@ -16580,15 +16580,15 @@ module.exports = g;
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(241).version;
-elliptic.utils = __webpack_require__(240);
+elliptic.version = __webpack_require__(243).version;
+elliptic.utils = __webpack_require__(242);
 elliptic.rand = __webpack_require__(53);
 elliptic.curve = __webpack_require__(69);
-elliptic.curves = __webpack_require__(232);
+elliptic.curves = __webpack_require__(234);
 
 // Protocols
-elliptic.ec = __webpack_require__(233);
-elliptic.eddsa = __webpack_require__(236);
+elliptic.ec = __webpack_require__(235);
+elliptic.eddsa = __webpack_require__(238);
 
 
 /***/ }),
@@ -16597,11 +16597,11 @@ elliptic.eddsa = __webpack_require__(236);
 
 var hash = exports;
 
-hash.utils = __webpack_require__(327);
-hash.common = __webpack_require__(323);
-hash.sha = __webpack_require__(326);
-hash.ripemd = __webpack_require__(325);
-hash.hmac = __webpack_require__(324);
+hash.utils = __webpack_require__(329);
+hash.common = __webpack_require__(325);
+hash.sha = __webpack_require__(328);
+hash.ripemd = __webpack_require__(327);
+hash.hmac = __webpack_require__(326);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -16621,15 +16621,15 @@ hash.ripemd160 = hash.ripemd.ripemd160;
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(256).version;
-elliptic.utils = __webpack_require__(255);
+elliptic.version = __webpack_require__(258).version;
+elliptic.utils = __webpack_require__(257);
 elliptic.rand = __webpack_require__(53);
 elliptic.curve = __webpack_require__(70);
-elliptic.curves = __webpack_require__(247);
+elliptic.curves = __webpack_require__(249);
 
 // Protocols
-elliptic.ec = __webpack_require__(248);
-elliptic.eddsa = __webpack_require__(251);
+elliptic.ec = __webpack_require__(250);
+elliptic.eddsa = __webpack_require__(253);
 
 
 /***/ }),
@@ -16641,15 +16641,15 @@ elliptic.eddsa = __webpack_require__(251);
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(375).version;
-elliptic.utils = __webpack_require__(374);
+elliptic.version = __webpack_require__(377).version;
+elliptic.utils = __webpack_require__(376);
 elliptic.rand = __webpack_require__(53);
 elliptic.curve = __webpack_require__(81);
-elliptic.curves = __webpack_require__(366);
+elliptic.curves = __webpack_require__(368);
 
 // Protocols
-elliptic.ec = __webpack_require__(367);
-elliptic.eddsa = __webpack_require__(370);
+elliptic.ec = __webpack_require__(369);
+elliptic.eddsa = __webpack_require__(372);
 
 
 /***/ }),
@@ -17030,7 +17030,7 @@ bitcore.Error.prototype = Object.create(Error.prototype);
 bitcore.Error.prototype.name = 'bitcore.Error';
 
 
-var data = __webpack_require__(179);
+var data = __webpack_require__(181);
 traverseRoot(bitcore.Error, data);
 
 module.exports = bitcore.Error;
@@ -17046,7 +17046,7 @@ module.exports.extend = function(spec) {
 
 module.exports = __webpack_require__(116);
 
-module.exports.Interpreter = __webpack_require__(180);
+module.exports.Interpreter = __webpack_require__(182);
 
 
 /***/ }),
@@ -20511,7 +20511,7 @@ module.exports.Interpreter = __webpack_require__(180);
 
 var BigNumber = __webpack_require__(93);
 var utils = __webpack_require__(140);
-var c = __webpack_require__(314);
+var c = __webpack_require__(316);
 var SolidityParam = __webpack_require__(139);
 
 
@@ -21308,15 +21308,15 @@ module.exports = PublicKey;
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(204).version;
-elliptic.utils = __webpack_require__(197);
-elliptic.rand = __webpack_require__(198);
-elliptic.hmacDRBG = __webpack_require__(195);
+elliptic.version = __webpack_require__(206).version;
+elliptic.utils = __webpack_require__(199);
+elliptic.rand = __webpack_require__(200);
+elliptic.hmacDRBG = __webpack_require__(197);
 elliptic.curve = __webpack_require__(65);
-elliptic.curves = __webpack_require__(191);
+elliptic.curves = __webpack_require__(193);
 
 // Protocols
-elliptic.ec = __webpack_require__(192);
+elliptic.ec = __webpack_require__(194);
 
 
 /***/ }),
@@ -24762,15 +24762,15 @@ elliptic.ec = __webpack_require__(192);
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(300).version;
-elliptic.utils = __webpack_require__(299);
+elliptic.version = __webpack_require__(302).version;
+elliptic.utils = __webpack_require__(301);
 elliptic.rand = __webpack_require__(53);
-elliptic.hmacDRBG = __webpack_require__(297);
+elliptic.hmacDRBG = __webpack_require__(299);
 elliptic.curve = __webpack_require__(75);
-elliptic.curves = __webpack_require__(293);
+elliptic.curves = __webpack_require__(295);
 
 // Protocols
-elliptic.ec = __webpack_require__(294);
+elliptic.ec = __webpack_require__(296);
 
 
 /***/ }),
@@ -31742,7 +31742,7 @@ function isBuffer(b) {
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var util = __webpack_require__(389);
+var util = __webpack_require__(391);
 var hasOwn = Object.prototype.hasOwnProperty;
 var pSlice = Array.prototype.slice;
 var functionsHaveNames = (function () {
@@ -35514,11 +35514,11 @@ module.exports = Point;
 
 var hash = exports;
 
-hash.utils = __webpack_require__(203);
-hash.common = __webpack_require__(199);
-hash.sha = __webpack_require__(202);
-hash.ripemd = __webpack_require__(201);
-hash.hmac = __webpack_require__(200);
+hash.utils = __webpack_require__(205);
+hash.common = __webpack_require__(201);
+hash.sha = __webpack_require__(204);
+hash.ripemd = __webpack_require__(203);
+hash.hmac = __webpack_require__(202);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -36644,7 +36644,7 @@ if (typeof self === 'object') {
 } else {
   // Node.js or Web worker with no crypto support
   try {
-    var crypto = __webpack_require__(391);
+    var crypto = __webpack_require__(394);
     if (typeof crypto.randomBytes !== 'function')
       throw new Error('Not supported');
 
@@ -36863,10 +36863,10 @@ var inherits = __webpack_require__(1);
 
 inherits(Stream, EE);
 Stream.Readable = __webpack_require__(101);
-Stream.Writable = __webpack_require__(357);
-Stream.Duplex = __webpack_require__(352);
-Stream.Transform = __webpack_require__(356);
-Stream.PassThrough = __webpack_require__(355);
+Stream.Writable = __webpack_require__(359);
+Stream.Duplex = __webpack_require__(354);
+Stream.Transform = __webpack_require__(358);
+Stream.PassThrough = __webpack_require__(357);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -47234,7 +47234,7 @@ return jQuery;
 var bitcore = module.exports;
 
 // module information
-bitcore.version = 'v' + __webpack_require__(205).version;
+bitcore.version = 'v' + __webpack_require__(207).version;
 bitcore.versionGuard = function(version) {
   if (version !== undefined) {
     var message = 'More than one instance of bitcore-lib found. ' +
@@ -47261,7 +47261,7 @@ bitcore.encoding.Base58 = __webpack_require__(62);
 bitcore.encoding.Base58Check = __webpack_require__(50);
 bitcore.encoding.BufferReader = __webpack_require__(32);
 bitcore.encoding.BufferWriter = __webpack_require__(21);
-bitcore.encoding.Varint = __webpack_require__(178);
+bitcore.encoding.Varint = __webpack_require__(180);
 
 // utilities
 bitcore.util = {};
@@ -47274,7 +47274,7 @@ bitcore.errors = __webpack_require__(17);
 
 // main bitcoin library
 bitcore.Address = __webpack_require__(38);
-bitcore.Block = __webpack_require__(177);
+bitcore.Block = __webpack_require__(179);
 bitcore.MerkleBlock = __webpack_require__(112);
 bitcore.BlockHeader = __webpack_require__(60);
 bitcore.HDPrivateKey = __webpack_require__(114);
@@ -47285,7 +47285,7 @@ bitcore.PrivateKey = __webpack_require__(63);
 bitcore.PublicKey = __webpack_require__(22);
 bitcore.Script = __webpack_require__(18);
 bitcore.Transaction = __webpack_require__(64);
-bitcore.URI = __webpack_require__(185);
+bitcore.URI = __webpack_require__(187);
 bitcore.Unit = __webpack_require__(86);
 
 // dependencies, subject to change
@@ -48178,10 +48178,10 @@ module.exports.Sighash = __webpack_require__(34);
 
 var curve = exports;
 
-curve.base = __webpack_require__(187);
-curve.short = __webpack_require__(190);
-curve.mont = __webpack_require__(189);
-curve.edwards = __webpack_require__(188);
+curve.base = __webpack_require__(189);
+curve.short = __webpack_require__(192);
+curve.mont = __webpack_require__(191);
+curve.edwards = __webpack_require__(190);
 
 
 /***/ }),
@@ -48592,10 +48592,10 @@ exports.encrypt = function (self, chunk) {
 
 var curve = exports;
 
-curve.base = __webpack_require__(228);
-curve.short = __webpack_require__(231);
-curve.mont = __webpack_require__(230);
-curve.edwards = __webpack_require__(229);
+curve.base = __webpack_require__(230);
+curve.short = __webpack_require__(233);
+curve.mont = __webpack_require__(232);
+curve.edwards = __webpack_require__(231);
 
 
 /***/ }),
@@ -48607,10 +48607,10 @@ curve.edwards = __webpack_require__(229);
 
 var curve = exports;
 
-curve.base = __webpack_require__(243);
-curve.short = __webpack_require__(246);
-curve.mont = __webpack_require__(245);
-curve.edwards = __webpack_require__(244);
+curve.base = __webpack_require__(245);
+curve.short = __webpack_require__(248);
+curve.mont = __webpack_require__(247);
+curve.edwards = __webpack_require__(246);
 
 
 /***/ }),
@@ -48628,7 +48628,7 @@ curve.edwards = __webpack_require__(244);
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-var makeHash = __webpack_require__(257)
+var makeHash = __webpack_require__(259)
 
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -48782,7 +48782,7 @@ exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = _
 exports.createHash = exports.Hash = __webpack_require__(36)
 exports.createHmac = exports.Hmac = __webpack_require__(130)
 
-var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(Object.keys(__webpack_require__(224)))
+var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(Object.keys(__webpack_require__(226)))
 exports.getHashes = function () {
   return hashes
 }
@@ -48791,7 +48791,7 @@ var p = __webpack_require__(145)
 exports.pbkdf2 = p.pbkdf2
 exports.pbkdf2Sync = p.pbkdf2Sync
 
-var aes = __webpack_require__(219)
+var aes = __webpack_require__(221)
 ;[
   'Cipher',
   'createCipher',
@@ -48807,7 +48807,7 @@ var aes = __webpack_require__(219)
   exports[key] = aes[key]
 })
 
-var dh = __webpack_require__(286)
+var dh = __webpack_require__(288)
 ;[
   'DiffieHellmanGroup',
   'createDiffieHellmanGroup',
@@ -48818,7 +48818,7 @@ var dh = __webpack_require__(286)
   exports[key] = dh[key]
 })
 
-var sign = __webpack_require__(225)
+var sign = __webpack_require__(227)
 ;[
   'createSign',
   'Sign',
@@ -48828,9 +48828,9 @@ var sign = __webpack_require__(225)
   exports[key] = sign[key]
 })
 
-exports.createECDH = __webpack_require__(242)
+exports.createECDH = __webpack_require__(244)
 
-var publicEncrypt = __webpack_require__(345)
+var publicEncrypt = __webpack_require__(347)
 
 ;[
   'publicEncrypt',
@@ -48862,7 +48862,7 @@ var publicEncrypt = __webpack_require__(345)
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(262), __webpack_require__(260), __webpack_require__(44), __webpack_require__(46), __webpack_require__(91), __webpack_require__(131), __webpack_require__(278), __webpack_require__(133), __webpack_require__(279), __webpack_require__(132), __webpack_require__(277), __webpack_require__(90), __webpack_require__(273), __webpack_require__(45), __webpack_require__(7), __webpack_require__(263), __webpack_require__(265), __webpack_require__(264), __webpack_require__(267), __webpack_require__(266), __webpack_require__(268), __webpack_require__(269), __webpack_require__(270), __webpack_require__(272), __webpack_require__(271), __webpack_require__(261), __webpack_require__(259), __webpack_require__(280), __webpack_require__(276), __webpack_require__(275), __webpack_require__(274));
+		module.exports = exports = factory(__webpack_require__(2), __webpack_require__(74), __webpack_require__(264), __webpack_require__(262), __webpack_require__(44), __webpack_require__(46), __webpack_require__(91), __webpack_require__(131), __webpack_require__(280), __webpack_require__(133), __webpack_require__(281), __webpack_require__(132), __webpack_require__(279), __webpack_require__(90), __webpack_require__(275), __webpack_require__(45), __webpack_require__(7), __webpack_require__(265), __webpack_require__(267), __webpack_require__(266), __webpack_require__(269), __webpack_require__(268), __webpack_require__(270), __webpack_require__(271), __webpack_require__(272), __webpack_require__(274), __webpack_require__(273), __webpack_require__(263), __webpack_require__(261), __webpack_require__(282), __webpack_require__(278), __webpack_require__(277), __webpack_require__(276));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -49196,10 +49196,10 @@ var publicEncrypt = __webpack_require__(345)
 
 var curve = exports;
 
-curve.base = __webpack_require__(289);
-curve.short = __webpack_require__(292);
-curve.mont = __webpack_require__(291);
-curve.edwards = __webpack_require__(290);
+curve.base = __webpack_require__(291);
+curve.short = __webpack_require__(294);
+curve.mont = __webpack_require__(293);
+curve.edwards = __webpack_require__(292);
 
 
 /***/ }),
@@ -49209,7 +49209,7 @@ curve.edwards = __webpack_require__(290);
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 const ethUtil = __webpack_require__(94)
-const fees = __webpack_require__(316)
+const fees = __webpack_require__(318)
 const BN = ethUtil.BN
 
 // secp256k1n/2
@@ -49649,9 +49649,9 @@ utils.encode = function encode(arr, enc) {
 /* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(340)
-var aesid = __webpack_require__(339)
-var fixProc = __webpack_require__(342)
+/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(342)
+var aesid = __webpack_require__(341)
+var fixProc = __webpack_require__(344)
 var ciphers = __webpack_require__(87)
 var compat = __webpack_require__(145)
 module.exports = parseKeys
@@ -49774,10 +49774,10 @@ module.exports = __webpack_require__(0)
 
 var curve = exports;
 
-curve.base = __webpack_require__(362);
-curve.short = __webpack_require__(365);
-curve.mont = __webpack_require__(364);
-curve.edwards = __webpack_require__(363);
+curve.base = __webpack_require__(364);
+curve.short = __webpack_require__(367);
+curve.mont = __webpack_require__(366);
+curve.edwards = __webpack_require__(365);
 
 
 /***/ }),
@@ -49791,6 +49791,12 @@ curve.edwards = __webpack_require__(363);
  * App settings
  * for dev and production builds
  */
+
+var mode = 'dev';
+// const mode = 'production'
+
+var current_network = 'rinkeby';
+
 var config = {
 	'rinkeby': {
 		network: 'rinkeby',
@@ -49807,20 +49813,7 @@ var config = {
 
 		confirm_timeout: 7000,
 
-		contracts: {
-			// Coins contract
-			erc20: {
-				address: '0xba2f1399df21c75ce578630ff9ed9285b2146b8d',
-
-				// balanceOf method address
-				balanceOf: '0x70a08231'
-			},
-
-			dice: {
-				bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
-				abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
-			}
-		}
+		contracts: {}
 	},
 
 	'ropsten': {
@@ -49838,24 +49831,21 @@ var config = {
 
 		confirm_timeout: 7000,
 
-		contracts: {
-			// Coins contract
-			erc20: {
-				address: '0x95a48dca999c89e4e284930d9b9af973a7481287',
-
-				// balanceOf method address
-				balanceOf: '0x70a08231'
-			},
-
-			dice: {
-				bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
-				abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
-			}
-		}
+		contracts: {}
 	}
 };
 
-module.exports = config['rinkeby'];
+config[current_network].contracts = __webpack_require__(393)("./" + current_network + '.contracts.js');
+config[current_network].mode = mode;
+
+config[current_network].games = {
+	dice: {
+		name: 'dice',
+		url: 'http://dev.dao.casino/games/dice/'
+	}
+};
+
+module.exports = config[current_network];
 
 /***/ }),
 /* 83 */
@@ -50119,10 +50109,10 @@ module.exports = Opcode;
 
 module.exports = __webpack_require__(51);
 
-module.exports.PublicKey = __webpack_require__(183);
-module.exports.PublicKeyHash = __webpack_require__(184);
-module.exports.MultiSig = __webpack_require__(181);
-module.exports.MultiSigScriptHash = __webpack_require__(182);
+module.exports.PublicKey = __webpack_require__(185);
+module.exports.PublicKeyHash = __webpack_require__(186);
+module.exports.MultiSig = __webpack_require__(183);
+module.exports.MultiSigScriptHash = __webpack_require__(184);
 
 
 /***/ }),
@@ -50135,7 +50125,7 @@ module.exports.MultiSigScriptHash = __webpack_require__(182);
 var _ = __webpack_require__(3);
 var $ = __webpack_require__(4);
 var buffer = __webpack_require__(0);
-var compare = Buffer.compare || __webpack_require__(186);
+var compare = Buffer.compare || __webpack_require__(188);
 
 var errors = __webpack_require__(17);
 var BufferUtil = __webpack_require__(5);
@@ -51612,10 +51602,10 @@ module.exports = Unit;
 /* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ciphers = __webpack_require__(217)
+var ciphers = __webpack_require__(219)
 exports.createCipher = exports.Cipher = ciphers.createCipher
 exports.createCipheriv = exports.Cipheriv = ciphers.createCipheriv
-var deciphers = __webpack_require__(216)
+var deciphers = __webpack_require__(218)
 exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 var modes = __webpack_require__(67)
@@ -51629,7 +51619,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(222);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(224);
 var randomBytes = __webpack_require__(56);
 module.exports = crt;
 function blind(priv) {
@@ -52098,11 +52088,11 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 "use strict";
 
 
-exports.utils = __webpack_require__(285);
-exports.Cipher = __webpack_require__(282);
-exports.DES = __webpack_require__(283);
-exports.CBC = __webpack_require__(281);
-exports.EDE = __webpack_require__(284);
+exports.utils = __webpack_require__(287);
+exports.Cipher = __webpack_require__(284);
+exports.DES = __webpack_require__(285);
+exports.CBC = __webpack_require__(283);
+exports.EDE = __webpack_require__(286);
 
 
 /***/ }),
@@ -54799,13 +54789,13 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! bignumber.js v2.0.7 https://github.com/Mik
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const createKeccakHash = __webpack_require__(331)
+/* WEBPACK VAR INJECTION */(function(Buffer) {const createKeccakHash = __webpack_require__(333)
 const secp256k1 = __webpack_require__(156)
 const assert = __webpack_require__(37)
 const rlp = __webpack_require__(103)
-const BN = __webpack_require__(320)
+const BN = __webpack_require__(322)
 const createHash = __webpack_require__(36)
-Object.assign(exports, __webpack_require__(321))
+Object.assign(exports, __webpack_require__(323))
 
 /**
  * the max integer that this VM can handle (a ```BN```)
@@ -59642,7 +59632,7 @@ util.inherits = __webpack_require__(1);
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(386)
+  deprecate: __webpack_require__(388)
 };
 /*</replacement>*/
 
@@ -60169,7 +60159,7 @@ exports.Readable = exports;
 exports.Writable = __webpack_require__(100);
 exports.Duplex = __webpack_require__(41);
 exports.Transform = __webpack_require__(153);
-exports.PassThrough = __webpack_require__(353);
+exports.PassThrough = __webpack_require__(355);
 
 
 /***/ }),
@@ -60179,7 +60169,7 @@ exports.PassThrough = __webpack_require__(353);
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 var inherits = __webpack_require__(1)
-var HashBase = __webpack_require__(322)
+var HashBase = __webpack_require__(324)
 
 function RIPEMD160 () {
   HashBase.call(this, 64)
@@ -60720,11 +60710,11 @@ var exports = module.exports = function SHA (algorithm) {
   return new Algorithm()
 }
 
-exports.sha = __webpack_require__(377)
-exports.sha1 = __webpack_require__(378)
-exports.sha224 = __webpack_require__(379)
+exports.sha = __webpack_require__(379)
+exports.sha1 = __webpack_require__(380)
+exports.sha224 = __webpack_require__(381)
 exports.sha256 = __webpack_require__(158)
-exports.sha384 = __webpack_require__(380)
+exports.sha384 = __webpack_require__(382)
 exports.sha512 = __webpack_require__(159)
 
 
@@ -63138,7 +63128,7 @@ nacl.setPRNG = function(fn) {
     }
   } else if (true) {
     // Node.js.
-    crypto = __webpack_require__(393);
+    crypto = __webpack_require__(396);
     if (crypto) {
       nacl.setPRNG(function(x, n) {
         var i, v = crypto.randomBytes(n);
@@ -69311,7 +69301,7 @@ module.exports = {
 /* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(207);
+module.exports = __webpack_require__(209);
 
 
 /***/ }),
@@ -69321,7 +69311,7 @@ module.exports = __webpack_require__(207);
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(66)
 var Transform = __webpack_require__(35)
 var inherits = __webpack_require__(1)
-var GHASH = __webpack_require__(218)
+var GHASH = __webpack_require__(220)
 var xor = __webpack_require__(54)
 inherits(StreamCipher, Transform)
 module.exports = StreamCipher
@@ -69786,7 +69776,7 @@ module.exports = {
 "use strict";
 
 var inherits = __webpack_require__(1)
-var Legacy = __webpack_require__(258)
+var Legacy = __webpack_require__(260)
 var Base = __webpack_require__(35)
 var Buffer = __webpack_require__(80).Buffer
 var md5 = __webpack_require__(71)
@@ -75406,8 +75396,8 @@ module.exports = SolidityParam;
 
 
 var BigNumber = __webpack_require__(93);
-var sha3 = __webpack_require__(315);
-var utf8 = __webpack_require__(385);
+var sha3 = __webpack_require__(317);
+var utf8 = __webpack_require__(387);
 
 var unitMap = {
     'noether':      '0',    
@@ -79436,7 +79426,7 @@ module.exports = Array.isArray || function (arr) {
 /* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var bn = __webpack_require__(338);
+var bn = __webpack_require__(340);
 var brorand = __webpack_require__(53);
 
 function MillerRabin(rand) {
@@ -79556,7 +79546,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 /***/ (function(module, exports, __webpack_require__) {
 
 
-exports.pbkdf2 = __webpack_require__(343)
+exports.pbkdf2 = __webpack_require__(345)
 
 exports.pbkdf2Sync = __webpack_require__(148)
 
@@ -79807,7 +79797,7 @@ util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(392);
+var debugUtil = __webpack_require__(395);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -79816,7 +79806,7 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__(354);
+var BufferList = __webpack_require__(356);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -81450,7 +81440,7 @@ if (true) module.exports = scrypt;
 
 "use strict";
 
-module.exports = __webpack_require__(361)(__webpack_require__(360))
+module.exports = __webpack_require__(363)(__webpack_require__(362))
 
 
 /***/ }),
@@ -81955,7 +81945,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(376);
+__webpack_require__(378);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
@@ -81985,15 +81975,15 @@ var _localforage = __webpack_require__(106);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
-var _ethLightwallet = __webpack_require__(301);
+var _ethLightwallet = __webpack_require__(303);
 
 var _ethLightwallet2 = _interopRequireDefault(_ethLightwallet);
 
-var _ethereumjsAbi = __webpack_require__(317);
+var _ethereumjsAbi = __webpack_require__(319);
 
 var _ethereumjsAbi2 = _interopRequireDefault(_ethereumjsAbi);
 
-var _bigInteger = __webpack_require__(174);
+var _bigInteger = __webpack_require__(176);
 
 var _bigInteger2 = _interopRequireDefault(_bigInteger);
 
@@ -82115,7 +82105,6 @@ var Wallet = function () {
 	}, {
 		key: 'addCoins',
 		value: function addCoins(wallet_openkey) {
-
 			console.log('Add coins to wallet', wallet_openkey);
 			fetch(_appConfig2.default.api_url + '?a=faucet&network=' + _appConfig2.default.network + '&to=' + wallet_openkey).then(function (response) {
 				return response.text();
@@ -82319,10 +82308,31 @@ var Games = function () {
 			this.load(callback);
 		}
 	}, {
+		key: 'create',
+		value: function create(name, callback) {
+			var _this2 = this;
+
+			this.deployContract(name, function (address) {
+				_this2.add(address, callback);
+
+				// add bets to contract
+				fetch(_appConfig2.default.api_url + '?a=faucet&network=' + _appConfig2.default.network + '&to=' + address).then(function (response) {
+					return response.text();
+				}).then(function (result) {
+					console.groupCollapsed('Add bets to ' + address + ' result:');
+					console.log(result);
+					console.groupEnd();
+				});
+
+				callback(address);
+			});
+		}
+	}, {
 		key: 'deployContract',
 		value: function deployContract(name, callback) {
-
 			var checkContractDeployed = function checkContractDeployed(transaction_hash, callback) {
+				console.log('checkContractDeployed', 'https://rinkeby.etherscan.io/tx/' + transaction_hash);
+
 				_jquery2.default.ajax({
 					type: 'POST',
 					url: _appConfig2.default.HttpProviders.infura.url,
@@ -82332,11 +82342,21 @@ var Games = function () {
 					data: JSON.stringify({
 						'id': 1,
 						'jsonrpc': '2.0',
-						'method': 'eth_getTransactionByHash',
+						'method': 'eth_getTransactionReceipt',
 						'params': [transaction_hash]
 					}),
 					success: function success(response) {
-						console.log(response);
+						console.log('checkContractDeployed result', response.result);
+						if (!response || !response.result || !response.result.contractAddress) {
+							setTimeout(function () {
+								checkContractDeployed(transaction_hash, callback);
+							}, 9000);
+							return;
+						}
+
+						console.log('[OK] checkContractDeployed - address:', 'https://rinkeby.etherscan.io/address/' + response.result.contractAddress);
+
+						callback(response.result.contractAddress);
 					}
 				});
 			};
@@ -82363,10 +82383,11 @@ var Games = function () {
 						if (!d.result) {
 							return;
 						}
-						var transaction = d.result;
-						console.info('Create contract ' + name + ' transaction:', transaction);
-						// callback(d)
-
+						var transaction_hash = d.result;
+						console.info('Create contract ' + name + ' transaction:', transaction_hash);
+						setTimeout(function () {
+							checkContractDeployed(transaction_hash, callback);
+						}, 5000);
 					}
 				});
 			});
@@ -82374,7 +82395,7 @@ var Games = function () {
 	}, {
 		key: 'add',
 		value: function add(contract_id, callback) {
-			var _this2 = this;
+			var _this3 = this;
 
 			console.groupCollapsed('[Games] add ' + contract_id);
 
@@ -82387,12 +82408,12 @@ var Games = function () {
 
 				console.info('balance', balance);
 
-				_this2._games[contract_id].balance = balance;
-				if (!_this2._games[contract_id].start_balance) {
-					_this2._games[contract_id].start_balance = balance;
+				_this3._games[contract_id].balance = balance;
+				if (!_this3._games[contract_id].start_balance) {
+					_this3._games[contract_id].start_balance = balance;
 				}
 
-				_localforage2.default.setItem('Games', _this2._games);
+				_localforage2.default.setItem('Games', _this3._games);
 
 				console.groupEnd();
 
@@ -82433,13 +82454,13 @@ var Games = function () {
 	}, {
 		key: 'runUpdateBalance',
 		value: function runUpdateBalance() {
-			var _this3 = this;
+			var _this4 = this;
 
 			this.get(function (games) {
 				var _loop = function _loop(contract_id) {
-					_this3.getBalance(contract_id, function (balance) {
-						_this3._games[contract_id].balance = balance;
-						_localforage2.default.setItem('Games', _this3._games);
+					_this4.getBalance(contract_id, function (balance) {
+						_this4._games[contract_id].balance = balance;
+						_localforage2.default.setItem('Games', _this4._games);
 					});
 				};
 
@@ -82451,27 +82472,27 @@ var Games = function () {
 	}, {
 		key: 'runConfirm',
 		value: function runConfirm() {
-			var _this4 = this;
+			var _this5 = this;
 
 			_localforage2.default.getItem('seeds_list', function (err, seeds_list) {
 				if (!err && seeds_list) {
-					_this4.seeds_list = seeds_list;
+					_this5.seeds_list = seeds_list;
 				}
 
-				_this4.get(function (games) {
+				_this5.get(function (games) {
 					if (!games || !Object.keys(games).length) {
 						setTimeout(function () {
-							_this4.runConfirm();
+							_this5.runConfirm();
 						}, 2 * _appConfig2.default.confirm_timeout);
 						return;
 					}
 
 					var _loop2 = function _loop2(address) {
-						_this4.getLogs(address, function (r) {
+						_this5.getLogs(address, function (r) {
 							console.log('[UPD] Games.getLogs ' + address + ' res:', r);
 
 							setTimeout(function () {
-								_this4.runConfirm();
+								_this5.runConfirm();
 							}, _appConfig2.default.confirm_timeout);
 						});
 					};
@@ -82485,7 +82506,7 @@ var Games = function () {
 	}, {
 		key: 'getCurBlock',
 		value: function getCurBlock() {
-			var _this5 = this;
+			var _this6 = this;
 
 			_jquery2.default.ajax({
 				type: 'POST',
@@ -82501,7 +82522,7 @@ var Games = function () {
 				}),
 				success: function success(d) {
 					if (d && d.result) {
-						_this5.curBlock = d.result;
+						_this6.curBlock = d.result;
 					}
 				}
 			});
@@ -82509,7 +82530,7 @@ var Games = function () {
 	}, {
 		key: 'getLogs',
 		value: function getLogs(address, callback) {
-			var _this6 = this;
+			var _this7 = this;
 
 			console.log('curBlock:', this.curBlock);
 
@@ -82518,10 +82539,10 @@ var Games = function () {
 				console.info('unconfirmed from server:' + seeds);
 				if (seeds && seeds.length) {
 					seeds.forEach(function (seed) {
-						if (!_this6.seeds_list[seed]) {
-							_this6.seeds_list[seed] = {};
+						if (!_this7.seeds_list[seed]) {
+							_this7.seeds_list[seed] = {};
 						}
-						_this6.sendRandom2Server(address, seed);
+						_this7.sendRandom2Server(address, seed);
 					});
 				}
 			});
@@ -82552,15 +82573,15 @@ var Games = function () {
 					for (var i = 0; i < objData.result.length; i++) {
 						var obj = objData.result[i];
 
-						_this6.curBlock = obj.blockNumber;
+						_this7.curBlock = obj.blockNumber;
 
 						var seed = obj.data;
 
-						if (!_this6.seeds_list[seed]) {
-							_this6.seeds_list[seed] = {};
+						if (!_this7.seeds_list[seed]) {
+							_this7.seeds_list[seed] = {};
 						}
-						if (!_this6.seeds_list[seed].confirm_sended_blockchain) {
-							_this6.addTaskSendRandom(address, seed);
+						if (!_this7.seeds_list[seed].confirm_sended_blockchain) {
+							_this7.addTaskSendRandom(address, seed);
 						}
 					}
 
@@ -82572,7 +82593,7 @@ var Games = function () {
 	}, {
 		key: 'addTaskSendRandom',
 		value: function addTaskSendRandom(address, seed) {
-			var _this7 = this;
+			var _this8 = this;
 
 			var callback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 			var repeat_on_error = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 3;
@@ -82582,7 +82603,7 @@ var Games = function () {
 				callback: function callback() {
 					return new Promise(function (resolve, reject) {
 						try {
-							_this7.sendRandom(address, seed, function (ok, result) {
+							_this8.sendRandom(address, seed, function (ok, result) {
 								if (ok) {
 									resolve(result);
 								} else {
@@ -82603,7 +82624,7 @@ var Games = function () {
 			function (e) {
 				if (repeat_on_error > 0) {
 					repeat_on_error--;
-					_this7.addTaskSendRandom(address, seed, callback, repeat_on_error);
+					_this8.addTaskSendRandom(address, seed, callback, repeat_on_error);
 				}
 			});
 
@@ -82612,7 +82633,7 @@ var Games = function () {
 	}, {
 		key: 'checkPending',
 		value: function checkPending(address, seed, callback) {
-			var _this8 = this;
+			var _this9 = this;
 
 			if (this.seeds_list[seed].pending) {
 				callback();
@@ -82647,11 +82668,11 @@ var Games = function () {
 				success: function success(response) {
 					console.log('>> Pending response:', response);
 					if (response.result && response.result.split('0').join('').length > 4) {
-						_this8.seeds_list[seed].pending = true;
-						delete _this8.pendings[address + '_' + seed];
+						_this9.seeds_list[seed].pending = true;
+						delete _this9.pendings[address + '_' + seed];
 						callback();
 					} else {
-						_this8.seeds_list[seed].pending = false;
+						_this9.seeds_list[seed].pending = false;
 					}
 				}
 			});
@@ -82659,7 +82680,7 @@ var Games = function () {
 	}, {
 		key: 'sendRandom2Server',
 		value: function sendRandom2Server(address, seed) {
-			var _this9 = this;
+			var _this10 = this;
 
 			if (this.seeds_list[seed] && this.seeds_list[seed].confirm_sended_server) {
 				return;
@@ -82671,12 +82692,12 @@ var Games = function () {
 					vconcat: seed,
 					result: confirm
 				}, function () {
-					_this9.seeds_list[seed].confirm_server_time = new Date().getTime();
-					_this9.seeds_list[seed].confirm = confirm;
-					_this9.seeds_list[seed].confirm_server = confirm;
-					_this9.seeds_list[seed].confirm_sended_server = true;
+					_this10.seeds_list[seed].confirm_server_time = new Date().getTime();
+					_this10.seeds_list[seed].confirm = confirm;
+					_this10.seeds_list[seed].confirm_server = confirm;
+					_this10.seeds_list[seed].confirm_sended_server = true;
 
-					_localforage2.default.setItem('seeds_list', _this9.seeds_list, function () {});
+					_localforage2.default.setItem('seeds_list', _this10.seeds_list, function () {});
 				});
 			});
 			// })
@@ -82684,7 +82705,7 @@ var Games = function () {
 	}, {
 		key: 'sendRandom',
 		value: function sendRandom(address, seed, callback) {
-			var _this10 = this;
+			var _this11 = this;
 
 			if (this.seeds_list[seed] && this.seeds_list[seed].confirm_sended_blockchain) {
 				return;
@@ -82712,17 +82733,17 @@ var Games = function () {
 						'params': ['0x' + signedTx]
 					}),
 					success: function success(d) {
-						_this10.seeds_list[seed].confirm_blockchain_time = new Date().getTime();
-						_this10.seeds_list[seed].confirm_sended_blockchain = true;
-						_this10.seeds_list[seed].confirm = confirm;
-						_this10.seeds_list[seed].confirm_blockchain = confirm;
+						_this11.seeds_list[seed].confirm_blockchain_time = new Date().getTime();
+						_this11.seeds_list[seed].confirm_sended_blockchain = true;
+						_this11.seeds_list[seed].confirm = confirm;
+						_this11.seeds_list[seed].confirm_blockchain = confirm;
 
 						var r = false;
 						if (d.result) {
 							r = true;
 						}
 
-						_localforage2.default.setItem('seeds_list', _this10.seeds_list, function () {
+						_localforage2.default.setItem('seeds_list', _this11.seeds_list, function () {
 							callback(r, d);
 						});
 
@@ -82762,7 +82783,7 @@ function Entity(name, body) {
 Entity.prototype._createNamed = function createNamed(base) {
   var named;
   try {
-    named = __webpack_require__(390).runInThisContext(
+    named = __webpack_require__(392).runInThisContext(
       '(function ' + this.name + '(entity) {\n' +
       '  this._initNamed(entity);\n' +
       '})'
@@ -87165,7 +87186,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var defer = __webpack_require__(344);
+var defer = __webpack_require__(346);
 
 var AsyncPriorityQueue = function AsyncPriorityQueue() {
   var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -87243,6 +87264,50 @@ module.exports = { AsyncPriorityQueue: AsyncPriorityQueue, AsyncTask: AsyncTask 
 
 /***/ }),
 /* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+	// Coins contract
+	erc20: {
+		address: '0xba2f1399df21c75ce578630ff9ed9285b2146b8d',
+
+		// balanceOf method address
+		balanceOf: '0x70a08231'
+	},
+
+	dice: {
+		bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
+		abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
+	}
+};
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+	// Coins contract
+	erc20: {
+		address: '0x95a48dca999c89e4e284930d9b9af973a7481287',
+
+		// balanceOf method address
+		balanceOf: '0x70a08231'
+	},
+
+	dice: {
+		bytecode: '60606040527395a48dca999c89e4e284930d9b9af973a7481287600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600260146101000a81548160ff021916908315150217905550620186a0600355633b9aca006004556000600555600060065560006007555b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b6115be806101486000396000f3006060604052361561011b576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806316ff11c3146101245780632e1a7d4d146101765780632e5b21681461019657806360d704db146101bc57806371b207f7146101e25780638da5cb5b146102085780639288cebc1461025a5780639456fd90146102a457806395fcba03146102ce5780639619367d14610314578063a7222dcd1461033a578063a87d942c146103de578063b00606a514610404578063b47cf5721461044e578063bedf0f4a14610486578063dbc9a45c14610498578063df257ba3146104d4578063e30081a0146104fa578063efddba3914610530578063f2fde38b14610556578063fc82a7791461058c575b6101225b5b565b005b341561012c57fe5b6101346105c2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561017e57fe5b61019460048080359060200190919050506105e8565b005b341561019e57fe5b6101a6610684565b6040518082815260200191505060405180910390f35b34156101c457fe5b6101cc61068a565b6040518082815260200191505060405180910390f35b34156101ea57fe5b6101f261076c565b6040518082815260200191505060405180910390f35b341561021057fe5b610218610772565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561026257fe5b61028e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610798565b6040518082815260200191505060405180910390f35b34156102ac57fe5b6102b46107b0565b604051808215151515815260200191505060405180910390f35b34156102d657fe5b6102f06004808035600019169060200190919050506107c3565b6040518082600381111561030057fe5b60ff16815260200191505060405180910390f35b341561031c57fe5b6103246108ea565b6040518082815260200191505060405180910390f35b341561034257fe5b61035c6004808035600019169060200190919050506108f0565b604051808873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200187815260200186815260200185600019166000191681526020018460038111156103b857fe5b60ff16815260200183815260200182815260200197505050505050505060405180910390f35b34156103e657fe5b6103ee61095f565b6040518082815260200191505060405180910390f35b341561040c57fe5b61044c60048080356000191690602001909190803560ff1690602001909190803560001916906020019091908035600019169060200190919050506109a7565b005b341561045657fe5b610470600480803560001916906020019091905050610db7565b6040518082815260200191505060405180910390f35b341561048e57fe5b610496610ede565b005b34156104a057fe5b6104ba600480803560001916906020019091905050610f97565b604051808215151515815260200191505060405180910390f35b34156104dc57fe5b6104e4610fb7565b6040518082815260200191505060405180910390f35b341561050257fe5b61052e600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610fbd565b005b341561053857fe5b610540611066565b6040518082815260200191505060405180910390f35b341561055e57fe5b61058a600480803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061106c565b005b341561059457fe5b6105c060048080359060200190919080359060200190919080356000191690602001909190505061110f565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106455760006000fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051809050600060405180830381858888f19350505050505b5b5b50565b60045481565b6000600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231306000604051602001526040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b151561074e57fe5b6102c65a03f1151561075c57fe5b5050506040518051905090505b90565b60075481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60086020528060005260406000206000915090505481565b600260149054906101000a900460ff1681565b60006107cd61152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff16600381111561088e57fe5b600381111561089957fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff1614156108dc5760006000fd5b806080015191505b50919050565b60035481565b600a6020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020154908060030154908060040160009054906101000a900460ff16908060050154908060060154905087565b6000600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490505b90565b600060006000600160038111156109ba57fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff1660038111156109f157fe5b1480610a3e575060026003811115610a0557fe5b600a6000896000191660001916815260200190815260200160002060040160009054906101000a900460ff166003811115610a3c57fe5b145b15610a495760006000fd5b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600188888888604051806000526020016040526000604051602001526040518085600019166000191681526020018460ff1660ff16815260200183600019166000191681526020018260001916600019168152602001945050505050602060405160208103908084039060008661646e5a03f11515610afd57fe5b50506020604051035173ffffffffffffffffffffffffffffffffffffffff16141515610dad57600a600088600019166000191681526020019081526020016000209250826002015461fae2846001015402811515610b5757fe5b0491506201000084604051808260001916600019168152602001915050604051809103902060019004811515610b8957fe5b06905080836005018190555060036003811115610ba257fe5b8360040160009054906101000a900460ff166003811115610bbf57fe5b141515610dac576005600081548092919060010191905055508260010154600760008282540192505081905550600a610bf661068a565b811515610bff57fe5b04836001015483031115610c135760006000fd5b8260020154811115610c64576002600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c5a57fe5b0217905550610dab565b6001600a6000896000191660001916815260200190815260200160002060040160006101000a81548160ff02191690836003811115610c9f57fe5b0217905550600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb8460000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200192505050600060405180830381600087803b1515610d8957fe5b6102c65a03f11515610d9757fe5b505050816006600082825401925050819055505b5b5b5b50505050505050565b6000610dc161152f565b600a6000846000191660001916815260200190815260200160002060e060405190810160405290816000820160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200160018201548152602001600282015481526020016003820154600019166000191681526020016004820160009054906101000a900460ff166003811115610e8257fe5b6003811115610e8d57fe5b81526020016005820154815260200160068201548152505090506000816000015173ffffffffffffffffffffffffffffffffffffffff161415610ed05760006000fd5b8060a0015191505b50919050565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610f3b5760006000fd5b60001515600260149054906101000a900460ff1615151415610f77576001600260146101000a81548160ff021916908315150217905550610f93565b6000600260146101000a81548160ff0219169083151502179055505b5b5b565b60096020528060005260406000206000915054906101000a900460ff1681565b60055481565b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561101c5760006000fd5b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508190505b5b5050565b60065481565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156110c95760006000fd5b80600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505b5b50565b6000600060006000600060011515600260149054906101000a900460ff161515141561113b5760006000fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd33308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561123957fe5b6102c65a03f1151561124757fe5b50505060405180519050151561125d5760006000fd5b60035488108061126e575060045488115b156112795760006000fd5b60096000876000191660001916815260200190815260200160002060009054906101000a900460ff16156112ad5760006000fd5b600160096000886000191660001916815260200190815260200160002060006101000a81548160ff02191690831515021790555061fae28711806112f15750600087145b156112fc5760006000fd5b4394508793508692508261fae2850281151561131457fe5b049150600190507f188faa3ac4bd86da65d56b6eeba18e0fb156dc4a11e1d42d4a50d89de12b598d8660405180826000191660001916815260200191505060405180910390a160e0604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200185815260200184815260200187600019168152602001600060038111156113a557fe5b81526020016000815260200186815250600a6000886000191660001916815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201556060820151816003019060001916905560808201518160040160006101000a81548160ff0219169083600381111561145f57fe5b021790555060a0820151816005015560c0820151816006015590505061148361068a565b8211156114d457600090506003600a6000886000191660001916815260200190815260200160002060040160006101000a81548160ff021916908360038111156114c957fe5b021790555060006000fd5b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600081548092919060010191905055505b5b5050505050505050565b60e060405190810160405280600073ffffffffffffffffffffffffffffffffffffffff168152602001600081526020016000815260200160006000191681526020016000600381111561157e57fe5b8152602001600081526020016000815250905600a165627a7a72305820b325a8a56648e6e2319b35b3f9e16c5c56d7b7d776b7c9cb2e0cd0f873b1a0340029',
+		abi: [{ "constant": true, "inputs": [], "name": "addr_erc20", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "maxBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBank", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthPaid", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "totalRollsByUser", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "ownerStoped", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getStateByAddress", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "minBet", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "listGames", "outputs": [{ "name": "player", "type": "address" }, { "name": "bet", "type": "uint256" }, { "name": "chance", "type": "uint256" }, { "name": "seed", "type": "bytes32" }, { "name": "state", "type": "uint8" }, { "name": "rnd", "type": "uint256" }, { "name": "block", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getCount", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "random_id", "type": "bytes32" }, { "name": "_v", "type": "uint8" }, { "name": "_r", "type": "bytes32" }, { "name": "_s", "type": "bytes32" }], "name": "confirm", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "random_id", "type": "bytes32" }], "name": "getShowRnd", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "Stop", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "bytes32" }], "name": "usedRandom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "countRolls", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adr", "type": "address" }], "name": "setAddress", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "totalEthSended", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "PlayerBet", "type": "uint256" }, { "name": "PlayerNumber", "type": "uint256" }, { "name": "seed", "type": "bytes32" }], "name": "roll", "outputs": [], "payable": false, "type": "function" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "time", "type": "uint256" }, { "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "bet", "type": "uint256" }, { "indexed": false, "name": "chance", "type": "uint256" }, { "indexed": false, "name": "seed", "type": "bytes32" }, { "indexed": false, "name": "rnd", "type": "uint256" }], "name": "logGame", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "Id", "type": "bytes32" }], "name": "logId", "type": "event" }]
+	}
+};
+
+/***/ }),
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87363,7 +87428,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var bigInt = (function (undefined) {
@@ -88605,7 +88670,7 @@ if ( true ) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// Reference https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki
@@ -88723,7 +88788,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89012,17 +89077,17 @@ module.exports = Block;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(176);
+module.exports = __webpack_require__(178);
 
 module.exports.BlockHeader = __webpack_require__(60);
 module.exports.MerkleBlock = __webpack_require__(112);
 
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89102,7 +89167,7 @@ module.exports = Varint;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 179 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89286,7 +89351,7 @@ module.exports = [{
 
 
 /***/ }),
-/* 180 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90559,7 +90624,7 @@ Interpreter.prototype.step = function() {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90777,7 +90842,7 @@ module.exports = MultiSigInput;
 
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90950,7 +91015,7 @@ module.exports = MultiSigScriptHashInput;
 
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91046,7 +91111,7 @@ module.exports = PublicKeyInput;
 
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91148,14 +91213,14 @@ module.exports = PublicKeyHashInput;
 
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var _ = __webpack_require__(3);
-var URL = __webpack_require__(383);
+var URL = __webpack_require__(385);
 
 var Address = __webpack_require__(38);
 var Unit = __webpack_require__(86);
@@ -91378,7 +91443,7 @@ module.exports = URI;
 
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports) {
 
 
@@ -91400,7 +91465,7 @@ module.exports = function(cmp,to){
 
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91710,7 +91775,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92088,7 +92153,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92256,7 +92321,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93170,7 +93235,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93295,7 +93360,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(196);
+  pre = __webpack_require__(198);
 } catch (e) {
   pre = undefined;
 }
@@ -93334,7 +93399,7 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93345,8 +93410,8 @@ var elliptic = __webpack_require__(23);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(193);
-var Signature = __webpack_require__(194);
+var KeyPair = __webpack_require__(195);
+var Signature = __webpack_require__(196);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -93507,7 +93572,7 @@ EC.prototype.verify = function verify(msg, signature, key, enc) {
 
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93664,7 +93729,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93736,7 +93801,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93857,7 +93922,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -94643,7 +94708,7 @@ module.exports = {
 
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94800,7 +94865,7 @@ utils.getJSF = getJSF;
 
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var r;
@@ -94863,7 +94928,7 @@ if (typeof window === 'object') {
 
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(43);
@@ -94960,7 +95025,7 @@ BlockHash.prototype._pad = function pad() {
 
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hmac = exports;
@@ -95014,7 +95079,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 201 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(43);
@@ -95164,7 +95229,7 @@ var sh = [
 
 
 /***/ }),
-/* 202 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(43);
@@ -95734,7 +95799,7 @@ function g1_512_lo(xh, xl) {
 
 
 /***/ }),
-/* 203 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var utils = exports;
@@ -95997,7 +96062,7 @@ exports.shr64_lo = shr64_lo;
 
 
 /***/ }),
-/* 204 */
+/* 206 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -96084,7 +96149,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 205 */
+/* 207 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -96319,7 +96384,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 206 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96344,7 +96409,7 @@ module.exports = __webpack_require__(59).errors.extend(spec);
 
 
 /***/ }),
-/* 207 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96352,11 +96417,11 @@ module.exports = __webpack_require__(59).errors.extend(spec);
 
 var bitcore = __webpack_require__(59);
 var BN = bitcore.crypto.BN;
-var unorm = __webpack_require__(382);
+var unorm = __webpack_require__(384);
 var _ = bitcore.deps._;
 
-var pbkdf2 = __webpack_require__(208);
-var errors = __webpack_require__(206);
+var pbkdf2 = __webpack_require__(210);
+var errors = __webpack_require__(208);
 
 var Hash = bitcore.crypto.Hash;
 var Random = bitcore.crypto.Random;
@@ -96443,7 +96508,7 @@ var Mnemonic = function(data, wordlist) {
   });
 };
 
-Mnemonic.Words = __webpack_require__(212);
+Mnemonic.Words = __webpack_require__(214);
 
 /**
  * Will return a boolean if the mnemonic is valid
@@ -96649,7 +96714,7 @@ module.exports = Mnemonic;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 208 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96728,7 +96793,7 @@ module.exports = pbkdf2;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 209 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96739,7 +96804,7 @@ var chinese = ['的', '一', '是', '在', '不', '了', '有', '和', '人', '�
 module.exports = chinese;
 
 /***/ }),
-/* 210 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96750,7 +96815,7 @@ var english = ['abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb
 module.exports = english;
 
 /***/ }),
-/* 211 */
+/* 213 */
 /***/ (function(module, exports) {
 
 'use string';
@@ -96760,21 +96825,21 @@ var french = ['abaisser', 'abandon', 'abdiquer', 'abeille', 'abolir', 'aborder',
 module.exports = french;
 
 /***/ }),
-/* 212 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  'CHINESE': __webpack_require__(209),
-  'ENGLISH': __webpack_require__(210),
-  'FRENCH': __webpack_require__(211),
-  'ITALIAN': __webpack_require__(213),
-  'JAPANESE': __webpack_require__(214),
-  'SPANISH': __webpack_require__(215)
+  'CHINESE': __webpack_require__(211),
+  'ENGLISH': __webpack_require__(212),
+  'FRENCH': __webpack_require__(213),
+  'ITALIAN': __webpack_require__(215),
+  'JAPANESE': __webpack_require__(216),
+  'SPANISH': __webpack_require__(217)
 };
 
 
 /***/ }),
-/* 213 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96786,7 +96851,7 @@ module.exports = italian;
 
 
 /***/ }),
-/* 214 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96798,7 +96863,7 @@ module.exports = japanese;
 
 
 /***/ }),
-/* 215 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96810,7 +96875,7 @@ module.exports = spanish;
 
 
 /***/ }),
-/* 216 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(66)
@@ -96954,7 +97019,7 @@ exports.createDecipheriv = createDecipheriv
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 217 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(66)
@@ -97083,7 +97148,7 @@ exports.createCipher = createCipher
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 218 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var zeros = new Buffer(16)
@@ -97188,13 +97253,13 @@ function xor (a, b) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 219 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ebtk = __webpack_require__(77)
 var aes = __webpack_require__(87)
-var DES = __webpack_require__(220)
-var desModes = __webpack_require__(221)
+var DES = __webpack_require__(222)
+var desModes = __webpack_require__(223)
 var aesModes = __webpack_require__(67)
 function createCipher (suite, password) {
   var keyLen, ivLen
@@ -97267,7 +97332,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
 
 
 /***/ }),
-/* 220 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var CipherBase = __webpack_require__(35)
@@ -97317,7 +97382,7 @@ DES.prototype._final = function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 221 */
+/* 223 */
 /***/ (function(module, exports) {
 
 exports['des-ecb'] = {
@@ -97347,7 +97412,7 @@ exports['des-ede'] = {
 
 
 /***/ }),
-/* 222 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -100781,10 +100846,10 @@ exports['des-ede'] = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 223 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const Sha3 = __webpack_require__(330)
+/* WEBPACK VAR INJECTION */(function(Buffer) {const Sha3 = __webpack_require__(332)
 
 const hashLengths = [ 224, 256, 384, 512 ]
 
@@ -100822,21 +100887,21 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 224 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(128)
 
 
 /***/ }),
-/* 225 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(36)
 var stream = __webpack_require__(57)
 var inherits = __webpack_require__(1)
-var sign = __webpack_require__(226)
-var verify = __webpack_require__(227)
+var sign = __webpack_require__(228)
+var verify = __webpack_require__(229)
 
 var algorithms = __webpack_require__(128)
 Object.keys(algorithms).forEach(function (key) {
@@ -100927,7 +100992,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 226 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -101079,7 +101144,7 @@ module.exports.makeKey = makeKey
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 227 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -101169,7 +101234,7 @@ module.exports = verify
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -101551,7 +101616,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 229 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -101991,7 +102056,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -102178,7 +102243,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103123,7 +103188,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103296,7 +103361,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(239);
+  pre = __webpack_require__(241);
 } catch (e) {
   pre = undefined;
 }
@@ -103335,7 +103400,7 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103347,8 +103412,8 @@ var elliptic = __webpack_require__(12);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(234);
-var Signature = __webpack_require__(235);
+var KeyPair = __webpack_require__(236);
+var Signature = __webpack_require__(237);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -103582,7 +103647,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103708,7 +103773,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103850,7 +103915,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103861,8 +103926,8 @@ var elliptic = __webpack_require__(12);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(237);
-var Signature = __webpack_require__(238);
+var KeyPair = __webpack_require__(239);
+var Signature = __webpack_require__(240);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -103975,7 +104040,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -104078,7 +104143,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -104151,7 +104216,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -104937,7 +105002,7 @@ module.exports = {
 
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -105064,7 +105129,7 @@ utils.intFromLE = intFromLE;
 
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -105191,7 +105256,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 242 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(14);
@@ -105320,7 +105385,7 @@ function formatReturnValue(bn, enc, len) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 243 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -105702,7 +105767,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 244 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106142,7 +106207,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 245 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106329,7 +106394,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 246 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -107274,7 +107339,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 247 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -107447,7 +107512,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(254);
+  pre = __webpack_require__(256);
 } catch (e) {
   pre = undefined;
 }
@@ -107486,7 +107551,7 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 248 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -107498,8 +107563,8 @@ var elliptic = __webpack_require__(14);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(249);
-var Signature = __webpack_require__(250);
+var KeyPair = __webpack_require__(251);
+var Signature = __webpack_require__(252);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -107733,7 +107798,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 249 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -107859,7 +107924,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108001,7 +108066,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108012,8 +108077,8 @@ var elliptic = __webpack_require__(14);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(252);
-var Signature = __webpack_require__(253);
+var KeyPair = __webpack_require__(254);
+var Signature = __webpack_require__(255);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -108126,7 +108191,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108229,7 +108294,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108302,7 +108367,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -109088,7 +109153,7 @@ module.exports = {
 
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -109215,7 +109280,7 @@ utils.intFromLE = intFromLE;
 
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -109342,7 +109407,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -109380,7 +109445,7 @@ module.exports = function hash (buf, fn) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -109433,7 +109498,7 @@ module.exports = Hmac
 
 
 /***/ }),
-/* 259 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -109670,7 +109735,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 260 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -109824,7 +109889,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 261 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -109895,7 +109960,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 262 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -109976,7 +110041,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 263 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110059,7 +110124,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 264 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110180,7 +110245,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 265 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110243,7 +110308,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 266 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110288,7 +110353,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 267 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110347,7 +110412,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 268 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110401,7 +110466,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 269 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110450,7 +110515,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 270 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110495,7 +110560,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 271 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110530,7 +110595,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 272 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110580,7 +110645,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 273 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110730,7 +110795,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -110925,7 +110990,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -111122,7 +111187,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -111266,7 +111331,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 277 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -111538,7 +111603,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 278 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -111623,7 +111688,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 279 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -111711,7 +111776,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 280 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -112486,7 +112551,7 @@ module.exports = Hmac
 }));
 
 /***/ }),
-/* 281 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -112558,7 +112623,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
 
 
 /***/ }),
-/* 282 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -112706,7 +112771,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
 
 
 /***/ }),
-/* 283 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -112856,7 +112921,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
 
 
 /***/ }),
-/* 284 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -112918,7 +112983,7 @@ EDE.prototype._unpad = DES.prototype._unpad;
 
 
 /***/ }),
-/* 285 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113181,13 +113246,13 @@ exports.padSplit = function padSplit(num, size, group) {
 
 
 /***/ }),
-/* 286 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(134)
-var primes = __webpack_require__(288)
+var primes = __webpack_require__(290)
 
-var DH = __webpack_require__(287)
+var DH = __webpack_require__(289)
 
 function getDiffieHellman (mod) {
   var prime = new Buffer(primes[mod].prime, 'hex')
@@ -113230,7 +113295,7 @@ exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 287 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(135);
@@ -113401,7 +113466,7 @@ function formatReturnValue(bn, enc) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 288 */
+/* 290 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -113440,7 +113505,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 289 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113762,7 +113827,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 290 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -114140,7 +114205,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 291 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -114308,7 +114373,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 292 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115222,7 +115287,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 293 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115347,7 +115412,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(298);
+  pre = __webpack_require__(300);
 } catch (e) {
   pre = undefined;
 }
@@ -115386,7 +115451,7 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 294 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115397,8 +115462,8 @@ var elliptic = __webpack_require__(25);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(295);
-var Signature = __webpack_require__(296);
+var KeyPair = __webpack_require__(297);
+var Signature = __webpack_require__(298);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -115602,7 +115667,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 295 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115759,7 +115824,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 296 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115836,7 +115901,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 297 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115957,7 +116022,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 298 */
+/* 300 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -116743,7 +116808,7 @@ module.exports = {
 
 
 /***/ }),
-/* 299 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116900,7 +116965,7 @@ utils.getJSF = getJSF;
 
 
 /***/ }),
-/* 300 */
+/* 302 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -117003,24 +117068,24 @@ module.exports = {
 };
 
 /***/ }),
-/* 301 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  txutils: __webpack_require__(302),
+  txutils: __webpack_require__(304),
   encryption: __webpack_require__(136),
   signing: __webpack_require__(138),
   keystore: __webpack_require__(137),
-  upgrade: __webpack_require__(303),
+  upgrade: __webpack_require__(305),
 };
 
 
 /***/ }),
-/* 302 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var Transaction = __webpack_require__(76);
-var coder = __webpack_require__(307);
+var coder = __webpack_require__(309);
 var rlp = __webpack_require__(103);
 var CryptoJS = __webpack_require__(73);
 
@@ -117129,7 +117194,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 303 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var CryptoJS = __webpack_require__(73);
@@ -117187,7 +117252,7 @@ module.exports.upgradeOldSerialized = upgradeOldSerialized;
 
 
 /***/ }),
-/* 304 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117224,7 +117289,7 @@ module.exports = SolidityTypeAddress;
 
 
 /***/ }),
-/* 305 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117260,7 +117325,7 @@ module.exports = SolidityTypeBool;
 
 
 /***/ }),
-/* 306 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117304,7 +117369,7 @@ module.exports = SolidityTypeBytes;
 
 
 /***/ }),
-/* 307 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -117331,15 +117396,15 @@ module.exports = SolidityTypeBytes;
 
 var f = __webpack_require__(20);
 
-var SolidityTypeAddress = __webpack_require__(304);
-var SolidityTypeBool = __webpack_require__(305);
-var SolidityTypeInt = __webpack_require__(309);
-var SolidityTypeUInt = __webpack_require__(312);
-var SolidityTypeDynamicBytes = __webpack_require__(308);
-var SolidityTypeString = __webpack_require__(311);
-var SolidityTypeReal = __webpack_require__(310);
-var SolidityTypeUReal = __webpack_require__(313);
-var SolidityTypeBytes = __webpack_require__(306);
+var SolidityTypeAddress = __webpack_require__(306);
+var SolidityTypeBool = __webpack_require__(307);
+var SolidityTypeInt = __webpack_require__(311);
+var SolidityTypeUInt = __webpack_require__(314);
+var SolidityTypeDynamicBytes = __webpack_require__(310);
+var SolidityTypeString = __webpack_require__(313);
+var SolidityTypeReal = __webpack_require__(312);
+var SolidityTypeUReal = __webpack_require__(315);
+var SolidityTypeBytes = __webpack_require__(308);
 
 /**
  * SolidityCoder prototype should be used to encode/decode solidity params of any type
@@ -117570,7 +117635,7 @@ module.exports = coder;
 
 
 /***/ }),
-/* 308 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117601,7 +117666,7 @@ module.exports = SolidityTypeDynamicBytes;
 
 
 /***/ }),
-/* 309 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117643,7 +117708,7 @@ module.exports = SolidityTypeInt;
 
 
 /***/ }),
-/* 310 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117685,7 +117750,7 @@ module.exports = SolidityTypeReal;
 
 
 /***/ }),
-/* 311 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117716,7 +117781,7 @@ module.exports = SolidityTypeString;
 
 
 /***/ }),
-/* 312 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117758,7 +117823,7 @@ module.exports = SolidityTypeUInt;
 
 
 /***/ }),
-/* 313 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(20);
@@ -117800,7 +117865,7 @@ module.exports = SolidityTypeUReal;
 
 
 /***/ }),
-/* 314 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -117885,7 +117950,7 @@ module.exports = {
 
 
 /***/ }),
-/* 315 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -117929,7 +117994,7 @@ module.exports = function (value, options) {
 
 
 /***/ }),
-/* 316 */
+/* 318 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -118167,17 +118232,17 @@ module.exports = {
 };
 
 /***/ }),
-/* 317 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(318)
+module.exports = __webpack_require__(320)
 
 
 /***/ }),
-/* 318 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const utils = __webpack_require__(319)
+/* WEBPACK VAR INJECTION */(function(Buffer) {const utils = __webpack_require__(321)
 const BN = __webpack_require__(141)
 
 var ABI = function () {
@@ -118738,10 +118803,10 @@ module.exports = ABI
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 319 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const SHA3 = __webpack_require__(337)
+/* WEBPACK VAR INJECTION */(function(Buffer) {const SHA3 = __webpack_require__(339)
 const secp256k1 = __webpack_require__(156)
 const assert = __webpack_require__(37)
 const rlp = __webpack_require__(103)
@@ -119446,7 +119511,7 @@ exports.defineProperties = function (self, fields, data) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 320 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -122880,14 +122945,14 @@ exports.defineProperties = function (self, fields, data) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 321 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
 var isHexPrefixed = __webpack_require__(142);
-var stripHexPrefix = __webpack_require__(381);
+var stripHexPrefix = __webpack_require__(383);
 
 /**
  * Pads a `String` to have an even length
@@ -123107,7 +123172,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 322 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -123198,7 +123263,7 @@ module.exports = HashBase
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 323 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(13);
@@ -123295,7 +123360,7 @@ BlockHash.prototype._pad = function pad() {
 
 
 /***/ }),
-/* 324 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hmac = exports;
@@ -123349,7 +123414,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 325 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(13);
@@ -123499,7 +123564,7 @@ var sh = [
 
 
 /***/ }),
-/* 326 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = __webpack_require__(13);
@@ -124069,7 +124134,7 @@ function g1_512_lo(xh, xl) {
 
 
 /***/ }),
-/* 327 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var utils = exports;
@@ -124332,7 +124397,7 @@ exports.shr64_lo = shr64_lo;
 
 
 /***/ }),
-/* 328 */
+/* 330 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -124422,7 +124487,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 329 */
+/* 331 */
 /***/ (function(module, exports) {
 
 
@@ -124437,7 +124502,7 @@ module.exports = function(arr, obj){
 };
 
 /***/ }),
-/* 330 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*
@@ -124876,22 +124941,22 @@ module.exports = function(arr, obj){
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 331 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(332)(__webpack_require__(336))
+module.exports = __webpack_require__(334)(__webpack_require__(338))
 
 
 /***/ }),
-/* 332 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var createKeccak = __webpack_require__(333)
-var createShake = __webpack_require__(334)
+var createKeccak = __webpack_require__(335)
+var createShake = __webpack_require__(336)
 
 module.exports = function (KeccakState) {
   var Keccak = createKeccak(KeccakState)
@@ -124920,7 +124985,7 @@ module.exports = function (KeccakState) {
 
 
 /***/ }),
-/* 333 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -125011,7 +125076,7 @@ module.exports = function (KeccakState) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 334 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -125093,7 +125158,7 @@ module.exports = function (KeccakState) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 335 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -125287,12 +125352,12 @@ exports.p1600 = function (s) {
 
 
 /***/ }),
-/* 336 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
-var keccakState = __webpack_require__(335)
+var keccakState = __webpack_require__(337)
 
 function Keccak () {
   // much faster than `new Array(50)`
@@ -125364,14 +125429,14 @@ module.exports = Keccak
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 337 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(223).SHA3Hash
+module.exports = __webpack_require__(225).SHA3Hash
 
 
 /***/ }),
-/* 338 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -128805,7 +128870,7 @@ module.exports = __webpack_require__(223).SHA3Hash
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
 /***/ }),
-/* 339 */
+/* 341 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -128824,7 +128889,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 340 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128834,7 +128899,7 @@ module.exports = {
 
 var asn1 = __webpack_require__(48)
 
-exports.certificate = __webpack_require__(341)
+exports.certificate = __webpack_require__(343)
 
 var RSAPrivateKey = asn1.define('RSAPrivateKey', function () {
   this.seq().obj(
@@ -128953,7 +129018,7 @@ exports.signature = asn1.define('signature', function () {
 
 
 /***/ }),
-/* 341 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -129048,7 +129113,7 @@ module.exports = X509Certificate
 
 
 /***/ }),
-/* 342 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// adapted from https://github.com/apatil/pemstrip
@@ -129085,7 +129150,7 @@ module.exports = function (okey, password) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 343 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {var checkParameters = __webpack_require__(147)
@@ -129190,7 +129255,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(31)))
 
 /***/ }),
-/* 344 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {module.exports = Deferred
@@ -129214,11 +129279,11 @@ function defer(Promise, deferred) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 345 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.publicEncrypt = __webpack_require__(347);
-exports.privateDecrypt = __webpack_require__(346);
+exports.publicEncrypt = __webpack_require__(349);
+exports.privateDecrypt = __webpack_require__(348);
 
 exports.privateEncrypt = function privateEncrypt(key, buf) {
   return exports.publicEncrypt(key, buf, true);
@@ -129229,7 +129294,7 @@ exports.publicDecrypt = function publicDecrypt(key, buf) {
 };
 
 /***/ }),
-/* 346 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(79);
@@ -129343,7 +129408,7 @@ function compare(a, b){
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 347 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(79);
@@ -129444,7 +129509,7 @@ function nonZero(len, crypto) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 348 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.1 by @mathias */
@@ -129983,7 +130048,7 @@ function nonZero(len, crypto) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module), __webpack_require__(11)))
 
 /***/ }),
-/* 349 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130074,7 +130139,7 @@ var isArray = Array.isArray || function (xs) {
 
 
 /***/ }),
-/* 350 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130166,25 +130231,25 @@ var objectKeys = Object.keys || function (obj) {
 
 
 /***/ }),
-/* 351 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.decode = exports.parse = __webpack_require__(349);
-exports.encode = exports.stringify = __webpack_require__(350);
+exports.decode = exports.parse = __webpack_require__(351);
+exports.encode = exports.stringify = __webpack_require__(352);
 
 
 /***/ }),
-/* 352 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(41);
 
 
 /***/ }),
-/* 353 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130216,7 +130281,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 /***/ }),
-/* 354 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130286,28 +130351,28 @@ BufferList.prototype.concat = function (n) {
 };
 
 /***/ }),
-/* 355 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(101).PassThrough
 
 
 /***/ }),
-/* 356 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(101).Transform
 
 
 /***/ }),
-/* 357 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(100);
 
 
 /***/ }),
-/* 358 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130359,12 +130424,12 @@ exports.isNumberInInterval = function (number, x, y, message) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 359 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
-var bip66 = __webpack_require__(175)
+var bip66 = __webpack_require__(177)
 
 var EC_PRIVKEY_EXPORT_DER_COMPRESSED = new Buffer([
   // begin
@@ -130564,7 +130629,7 @@ exports.signatureImportLax = function (sig) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 360 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130819,13 +130884,13 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 361 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var assert = __webpack_require__(358)
-var der = __webpack_require__(359)
+var assert = __webpack_require__(360)
+var der = __webpack_require__(361)
 var messages = __webpack_require__(157)
 
 function initCompressedValue (value, defaultValue) {
@@ -131057,7 +131122,7 @@ module.exports = function (secp256k1) {
 
 
 /***/ }),
-/* 362 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -131439,7 +131504,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 363 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -131879,7 +131944,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 364 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -132066,7 +132131,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 365 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133011,7 +133076,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 366 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133184,7 +133249,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(373);
+  pre = __webpack_require__(375);
 } catch (e) {
   pre = undefined;
 }
@@ -133223,7 +133288,7 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 367 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133235,8 +133300,8 @@ var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(368);
-var Signature = __webpack_require__(369);
+var KeyPair = __webpack_require__(370);
+var Signature = __webpack_require__(371);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -133470,7 +133535,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 368 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133596,7 +133661,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 369 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133738,7 +133803,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 370 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133749,8 +133814,8 @@ var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(371);
-var Signature = __webpack_require__(372);
+var KeyPair = __webpack_require__(373);
+var Signature = __webpack_require__(374);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -133863,7 +133928,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 371 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133966,7 +134031,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 372 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -134039,7 +134104,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 373 */
+/* 375 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -134825,7 +134890,7 @@ module.exports = {
 
 
 /***/ }),
-/* 374 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -134952,7 +135017,7 @@ utils.intFromLE = intFromLE;
 
 
 /***/ }),
-/* 375 */
+/* 377 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -135079,7 +135144,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 376 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -135272,7 +135337,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(31)))
 
 /***/ }),
-/* 377 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -135372,7 +135437,7 @@ module.exports = Sha
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 378 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -135477,7 +135542,7 @@ module.exports = Sha1
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 379 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -135536,7 +135601,7 @@ module.exports = Sha224
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 380 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(1)
@@ -135599,7 +135664,7 @@ module.exports = Sha384
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
 
 /***/ }),
-/* 381 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isHexPrefixed = __webpack_require__(142);
@@ -135619,7 +135684,7 @@ module.exports = function stripHexPrefix(str) {
 
 
 /***/ }),
-/* 382 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (root) {
@@ -136067,7 +136132,7 @@ UChar.udata={
 
 
 /***/ }),
-/* 383 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136094,8 +136159,8 @@ UChar.udata={
 
 
 
-var punycode = __webpack_require__(348);
-var util = __webpack_require__(384);
+var punycode = __webpack_require__(350);
+var util = __webpack_require__(386);
 
 exports.parse = urlParse;
 exports.resolve = urlResolve;
@@ -136170,7 +136235,7 @@ var protocolPattern = /^([a-z0-9.+-]+:)/i,
       'gopher:': true,
       'file:': true
     },
-    querystring = __webpack_require__(351);
+    querystring = __webpack_require__(353);
 
 function urlParse(url, parseQueryString, slashesDenoteHost) {
   if (url && util.isObject(url) && url instanceof Url) return url;
@@ -136806,7 +136871,7 @@ Url.prototype.parseHost = function() {
 
 
 /***/ }),
-/* 384 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136829,7 +136894,7 @@ module.exports = {
 
 
 /***/ }),
-/* 385 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/utf8js v2.1.2 by @mathias */
@@ -137079,7 +137144,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module), __webpack_require__(11)))
 
 /***/ }),
-/* 386 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -137153,7 +137218,7 @@ function config (name) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 387 */
+/* 389 */
 /***/ (function(module, exports) {
 
 if (typeof Object.create === 'function') {
@@ -137182,7 +137247,7 @@ if (typeof Object.create === 'function') {
 
 
 /***/ }),
-/* 388 */
+/* 390 */
 /***/ (function(module, exports) {
 
 module.exports = function isBuffer(arg) {
@@ -137193,7 +137258,7 @@ module.exports = function isBuffer(arg) {
 }
 
 /***/ }),
-/* 389 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -137721,7 +137786,7 @@ function isPrimitive(arg) {
 }
 exports.isPrimitive = isPrimitive;
 
-exports.isBuffer = __webpack_require__(388);
+exports.isBuffer = __webpack_require__(390);
 
 function objectToString(o) {
   return Object.prototype.toString.call(o);
@@ -137765,7 +137830,7 @@ exports.log = function() {
  *     prototype.
  * @param {function} superCtor Constructor function to inherit prototype from.
  */
-exports.inherits = __webpack_require__(387);
+exports.inherits = __webpack_require__(389);
 
 exports._extend = function(origin, add) {
   // Don't do anything if add isn't an object
@@ -137786,10 +137851,10 @@ function hasOwnProperty(obj, prop) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(31)))
 
 /***/ }),
-/* 390 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var indexOf = __webpack_require__(329);
+var indexOf = __webpack_require__(331);
 
 var Object_keys = function (obj) {
     if (Object.keys) return Object.keys(obj)
@@ -137930,26 +137995,50 @@ exports.createContext = Script.createContext = function (context) {
 
 
 /***/ }),
-/* 391 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-/* 392 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
 /* 393 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./rinkeby.contracts.js": 173,
+	"./ropsten.contracts.js": 174
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 393;
+
+/***/ }),
+/* 394 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 394 */,
 /* 395 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 396 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 397 */,
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

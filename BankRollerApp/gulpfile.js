@@ -46,7 +46,7 @@ const _config = {
 		assets:{
 			'./src/manifest.json':   './dist/',
 			'./src/_locales/**/*.*': './dist/_locales/',
-			'./src/assets/**/*.*':   './dist/assets/',
+			'./src/view/assets/**/*.*':   './dist/assets/',
 		}
 	}
 }
