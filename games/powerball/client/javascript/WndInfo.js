@@ -63,7 +63,7 @@ WndInfo.prototype.show = function(str, callback, addStr) {
 	this.tfBtn.setText(addStr);
 }
 
-WndInfo.prototype.showError = function(value, callback) {
+ScrGame.prototype.showError = function(value, callback) {
 	var str = "ERR"
 	switch(value){
 		case ERROR_KEYTHEREUM:
