@@ -10,3 +10,4 @@ games/test_client_contract/javascript/jquery.min.js
 games/test_client_contract/javascript/main.js
 games/test_client_contract/javascript/pixi.js
 games/test_client_contract/javascript/ResizeManager.js
+games/dice/contracts/DiceRoll_2.sol

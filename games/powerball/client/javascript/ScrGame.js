@@ -7,9 +7,10 @@ function ScrGame() {
 ScrGame.prototype = Object.create(PIXI.Container.prototype);
 ScrGame.prototype.constructor = ScrGame;
 
-var TIME_GET_STATE = 10000;
+var TIME_GET_STATE = 1000;
 var TIME_WAIT = 500;
-var C_BUY_TICKET = "7a65ea5f";
+var C_BUY_TICKET = "e6d0ccda";
+var C_GET_TICKET = "c002c4d6";
 
 var urlResult = "http://api.dao.casino/daohack/api.php?a=getreuslt&id";
 var urlEtherscan = "https://api.etherscan.io/";
@@ -33,6 +34,7 @@ ScrGame.prototype.init = function() {
 	
 	this.startTime = getTimer();
 	this.gameTime = getTimer();
+	this.timeGetState = 0;
 	this._arButtons = [];
 	
 	this.addChild(this.back_mc);
@@ -104,6 +106,8 @@ ScrGame.prototype.initGUI = function(){
 	this._arButtons.push(btnFrame);
 	var btnBuy = this.createButton("btnBuy", _W/2, 900, "Buy", 1, 36);
 	this.btnBuy = btnBuy;
+	var btnTest = this.createButton("btnTest", _W/2+350, 900, "Test", 1, 36);
+	var btnGet = this.createButton("btnGet", _W/2+350, 700, "Get", 1, 36);
 	
 	this.icoKey = icoKey;
 	this.icoEthereum = icoEthereum;
@@ -217,13 +221,20 @@ ScrGame.prototype.buyTicket = function(){
 		obj_game["game"].showError(ERROR_KEY, showHome);
 		return false;
 	}
-	if(_curTicket){
+	if(_curTicket == undefined){
 		return false;
 	}
 	
 	_curTicket.lock = true;
+	this.checkBuy(0,0);
 	
 	// [1,2,3,4,5],5,0
+	infura.sendRequest("buyTicket", openkey, _callback);
+}
+
+ScrGame.prototype.buyTest = function(){
+	_curTicket.lock = true;
+	this.checkBuy(0,0);
 	infura.sendRequest("buyTicket", openkey, _callback);
 }
 
@@ -236,18 +247,22 @@ ScrGame.prototype.responseTransaction = function(name, value) {
 	var gasPrice="0x9502F9000";//web3.toHex('40000000000');
 	var gasLimit=0x927c0; //web3.toHex('600000');
 	if(name == "buyTicket"){
+		var arWhite = [17,2,23,4,5];
+		// var arWhite = createHexString(_curTicket._arWhiteBalls);
+		_curTicket.redBall = 23;
+		// data = "0x"+C_BUY_TICKET + arWhite + pad(numToHex(_curTicket.redBall), 64) +
+				// pad(numToHex(_curTicket.powerPlay), 64);
+		// console.log("data:", data);
 		data = "0x"+C_BUY_TICKET +
-				// pad(numToHex(_curTicket.redBall), 64) + 
-				pad(numToHex(_curTicket.redBall), 64);
-		price = priceTicket;
-		nameRequest = "gameTxHash";
-		
-	
-		// var key = openkey.substr(2);
-		// var data = "0x"+C_GET_BET + pad(numToHex(isMain), 64) + pad(key, 64);
-		// var params = {"from":openkey,
-					// "to":addressStorage,
-					// "data":data};
+				pad(numToHex(arWhite[0]), 64) + 
+				pad(numToHex(arWhite[1]), 64) + 
+				pad(numToHex(arWhite[2]), 64) + 
+				pad(numToHex(arWhite[3]), 64) + 
+				pad(numToHex(arWhite[4]), 64) + 
+				pad(numToHex(_curTicket.redBall), 64) +
+				pad(numToHex(_curTicket.powerPlay), 64);
+		// price = priceTicket;
+		// nameRequest = "gameTxHash";
 	}
 	
 	infura.sendRequest("getBalance", openkey, _callback);
@@ -290,7 +305,22 @@ ScrGame.prototype.response = function(command, value) {
 	} else if(command == "getBalance"){
 		obj_game["balance"] = toFixed((Number(hexToNum(value))/1000000000000000000), 4);
 		prnt.tfBalance.setText(obj_game["balance"]);
+	} else if(command == "buyTicket"){
+		prnt.responseTransaction(command, value);
+	} else if(command == "getTicket"){
+		value = value.substr(2);
+		console.log("getTicket:", value);
+		console.log("parseHexString:", parseHexString(value));
+		// console.log("hexToNum:", hexToNum(value));
 	}
+}
+
+ScrGame.prototype.getTicket = function() {
+	var data = "0x" + C_GET_TICKET// + pad(numToHex(0));
+	var params = {"from":openkey,
+				"to":addressContract,
+				"data":data};
+	infura.sendRequest("getTicket", params, _callback);
 }
 
 ScrGame.prototype.resetTimer  = function(){
@@ -300,11 +330,24 @@ ScrGame.prototype.resetTimer  = function(){
 ScrGame.prototype.update = function(){
 	var diffTime = getTimer() - this.startTime;
 	
-	//TODO
+	// this.timeGetState += diffTime;
+	// if(this.timeGetState >= TIME_GET_STATE){
+		// this.timeGetState = 0;
+		// this.getTicket();
+	// }
+	
+	if(this.timeCloseWnd > 0 && this.curWindow){
+		this.timeCloseWnd -= diffTime;
+		if(this.timeCloseWnd < 100){
+			this.timeCloseWnd = 0;
+			this.curWindow.visible = false;
+			this.curWindow = undefined;
+			this.bWindow = false;
+		}
+	}
 	
 	this.startTime = getTimer();
 }
-
 
 ScrGame.prototype.clickCell = function(item_mc) {
 	var name = item_mc.name;
@@ -321,6 +364,10 @@ ScrGame.prototype.clickCell = function(item_mc) {
 	
 	if(item_mc.name == "btnBuy"){
 		this.buyTicket();
+	} else if(item_mc.name == "btnTest"){
+		this.buyTest();
+	} else if(item_mc.name == "btnGet"){
+		this.getTicket();
 	} else if(item_mc.name == "btnKey" || item_mc.name == "icoKey"){
 		copyToClipboard(openkey);
 	}
