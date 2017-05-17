@@ -21,7 +21,7 @@ var rndBg = String(Math.ceil(Math.random()*2));
 // main
 var addressContract = "";
 // testrpc
-var	addressRpcContract = "0x0b436265647325145bdee8a1104ddf7f040c22c1";
+var	addressRpcContract = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
 // testnet
 var	addressTestContract = "";
 
@@ -122,7 +122,6 @@ function loadManifest(){
 	
 	preloader.add("btnDefault", "images/buttons/btnDefault.png");
 	preloader.add("btnDefaultLock", "images/buttons/btnDefaultLock.png");
-	preloader.add("btnClose", "images/buttons/btnClose.png");
 	preloader.add("btnFrame", "images/buttons/btnFrame.png");
 	preloader.add("btnFrameOver", "images/buttons/btnFrameOver.png");
 	preloader.add("btnNW_0001", "images/buttons/btnNW_0001.png");
@@ -322,31 +321,6 @@ function numToHex(num) {
 }
 function hexToNum(str) {
 	return parseInt(str, 16);
-}
-function parseHexString(str) { 
-    var result = [];
-    while (str.length >= 64) { 
-        result.push(parseInt(str.substring(0, 64), 16));
-
-        str = str.substring(64, str.length);
-    }
-
-    return result;
-}
-function createHexString(arr) {
-    var result = "";
-    var z;
-
-    for (var i = 0; i < arr.length; i++) {
-        var str = arr[i].toString(16);
-
-        z = 64 - str.length + 1;
-        str = Array(z).join("0") + str;
-
-        result += str;
-    }
-
-    return result;
 }
 function pad(num, size) {
     var s = num+"";
