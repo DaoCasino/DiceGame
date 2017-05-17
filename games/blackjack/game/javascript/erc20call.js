@@ -196,6 +196,7 @@ function approve(approveValue) {
             options.gasLimit = "0x927c0"; //web3.toHex('600000');
             ks.keyFromPassword(passwordUser, function (err, pwDerivedKey) {
 				if (err) {
+					console.log("pwDerivedKey:", pwDerivedKey);
 					console.log("err:", err);
 					return false;
 				}
