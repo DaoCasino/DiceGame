@@ -1,12 +1,8 @@
 import $          from 'jquery'
 import _config    from '../app.config.js'
 import Wallet     from './wallet.js'
+import ETH        from './ethRPC.js'
 import localDB    from 'localforage'
-// import Web3       from 'web3'
-
-// let web3 = new Web3()
-// web3.setProvider(new web3.providers.HttpProvider(_config.HttpProviders.infura.url))
-
 
 import * as Utils from './utils.js'
 
@@ -166,26 +162,16 @@ class Games {
 	}
 
 	getBalance(address, callback){
-		let data = _config.contracts.erc20.balanceOf + Utils.pad(Utils.numToHex(address.substr(2)), 64)
-
-		$.ajax({
-			type:     'POST',
-			url:      _config.HttpProviders.infura.url,
-			dataType: 'json',
-			async:    false,
-			data: JSON.stringify({
-				'id': 0,
-				'jsonrpc': '2.0',
-				'method': 'eth_call',
-				'params': [{
-					'from': Wallet.get().openkey,
-					'to':   _config.contracts.erc20.address,
-					'data': data
-				}, 'latest']
-			}),
-			success: (d)=>{
-				callback( Utils.hexToNum(d.result) / 100000000 )
-			}
+		ETH.request('call', [{
+			'from': Wallet.get().openkey,
+			'to':   _config.contracts.erc20.address,
+			'data': _config.contracts.erc20.balanceOf + Utils.pad(Utils.numToHex(address.substr(2)), 64)
+		}, 'latest']
+		).then((response)=>{
+			console.log('response',response)
+			callback( Utils.hexToNum(response.result) / 100000000 )
+		}).catch((err)=>{
+			console.error(err)
 		})
 	}
 
@@ -229,31 +215,19 @@ class Games {
 	}
 
 	getCurBlock(){
-		$.ajax({
-			type:     'POST',
-			url:      _config.HttpProviders.infura.url,
-			dataType: 'json',
-			async:    false,
-
-			data: JSON.stringify({
-				'id': 74,
-				'jsonrpc': '2.0',
-				'method': 'eth_blockNumber',
-				'params': []
-			}),
-			success: (d)=>{
-				if (d && d.result) {
-					this.curBlock = d.result
-				}
+		ETH.request('blockNumber').then((response)=>{
+			if (response && response.result) {
+				this.curBlock = response.result
 			}
+		}).catch((err)=>{
+			console.error('getCurBlock error:', err)
 		})
 	}
 
 	getLogs(address, callback){
 		console.log('curBlock:', this.curBlock)
 
-		// Our server
-		$.getJSON('https://platform.dao.casino/api/proxy.php?a=unconfirmed', {address:address},(seeds)=>{
+		fetch(_config.api_url+'proxy.php?a=unconfirmed&address='+address).then((r)=>{ return r.json() }).then((seeds)=>{
 			console.info('unconfirmed from server:'+seeds)
 			if (seeds && seeds.length) {
 				seeds.forEach((seed)=>{
@@ -269,46 +243,32 @@ class Games {
 
 
 		// Blockchain
-		$.ajax({
-			url:      _config.HttpProviders.infura.url,
-			type:     'POST',
-			dataType: 'json',
-			async:    false,
+		ETH.request('getLogs',[{
+			'address':   address,
+			'fromBlock': this.curBlock,
+			'toBlock':   'latest',
+		}]).then((response)=>{
+			if(!response.result){ callback(null); return }
 
-			data:JSON.stringify({
-				'id':      74,
-				'jsonrpc': '2.0',
-				'method':  'eth_getLogs',
+			for (let i = 0; i < response.result.length; i++) {
+				let obj = response.result[i]
 
-				'params': [{
-					'address':   address,
-					'fromBlock': this.curBlock,
-					'toBlock':   'latest',
-				}]
-			}),
-			success: (objData)=>{
-				if(!objData.result){ callback(null); return }
+				this.curBlock = obj.blockNumber
 
-				for (let i = 0; i < objData.result.length; i++) {
-					let obj = objData.result[i]
+				let seed = obj.data
 
-					this.curBlock = obj.blockNumber
-
-					let seed = obj.data
-
-					if (!this.seeds_list[seed]) {
-						this.seeds_list[seed] = {
-							contract:address
-						}
-					}
-					if (!this.seeds_list[seed].confirm_sended_blockchain) {
-						this.addTaskSendRandom(address, seed)
+				if (!this.seeds_list[seed]) {
+					this.seeds_list[seed] = {
+						contract:address
 					}
 				}
-
-				callback(objData.result)
-				return
+				if (!this.seeds_list[seed].confirm_sended_blockchain) {
+					this.addTaskSendRandom(address, seed)
+				}
 			}
+
+			callback(response.result)
+			return
 		})
 	}
 
