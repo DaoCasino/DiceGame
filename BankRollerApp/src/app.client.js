@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded',()=>{
 		View.loading(true, 'Add task to deploy  "'+game_name+'" contract')
 
 		Games.create('dice',(address)=>{
-			View.loading(false)
 			clearInterval(gamelist_upd_interval)
 			gamelist_upd_interval = setInterval(()=>{
 				Games.get((games)=>{
+					View.loading(false)
 					View.renderGamesList(games)
 				})
 			}, 2000)
@@ -62,8 +62,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 	setTimeout(()=>{
 		$('body').append('<div id="waddr">Your wallet: <a href="https://'+_config.network+'.etherscan.io/address/'+Wallet.get().openkey+'" target="_blank">'+Wallet.get().openkey+'</a></div>')
-
-		Games.checkBalances()
 
 		Games.runUpdateBalance()
 

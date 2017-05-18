@@ -69,10 +69,10 @@ class Games {
 	}
 
 	get(callback){
-		if (_games && Object.keys(_games).length ) {
-			callback(_games)
-			return
-		}
+		// if (_games && Object.keys(_games).length ) {
+		// 	callback(_games)
+		// 	return
+		// }
 		this.load(callback)
 	}
 
@@ -186,7 +186,7 @@ class Games {
 	checkBalances(){
 		console.log('checkBalances')
 		Eth.getEthBalance(Eth.Wallet.get().openkey, (balance)=>{
-			if (balance < 3) {
+			if (balance < 1) {
 				Api.addBets(Eth.Wallet.get().openkey)
 			}
 		})
@@ -205,24 +205,19 @@ class Games {
 			}
 
 			this.get(games => {
-				if (!games || !Object.keys(games).length) {
-					setTimeout(()=>{
-						this.runConfirm()
-					}, 2*_config.confirm_timeout )
-					return
-				}
-
 				for(let address in games){
-					if (games[address].deploying) { continue }
+					if (games[address].deploying) {
+						continue
+					}
 
 					this.getLogs(address, (r)=>{
 						console.log('[UPD] Games.getLogs '+address+' res:',r)
-
-						setTimeout(()=>{
-							this.runConfirm()
-						}, _config.confirm_timeout )
 					})
 				}
+
+				setTimeout(()=>{
+					this.runConfirm()
+				}, _config.confirm_timeout )
 			})
 		})
 	}
@@ -323,9 +318,10 @@ class Games {
 			return
 		}
 
+
 		Eth.RPC.request('call', [{
 			'to':   address,
-			'data': '0xa7222dcd'+seed.substr(2)
+			'data': '0x' + Eth.hashName('listGames','bytes32') + seed.substr(2)
 		}, 'pending'],0).then( response => {
 
 			console.log('>> Pending response:', response)
@@ -346,19 +342,19 @@ class Games {
 			return
 		}
 
-		this.checkPending(address, seed, ()=>{
-			Eth.Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
+		// this.checkPending(address, seed, ()=>{
+		Eth.Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
 
-				Api.sendConfirm(seed, confirm).then(()=>{
-					_seeds_list[seed].confirm_server_time   = new Date().getTime()
-					_seeds_list[seed].confirm               = confirm
-					_seeds_list[seed].confirm_server        = confirm
-					_seeds_list[seed].confirm_sended_server = true
+			Api.sendConfirm(seed, confirm).then(()=>{
+				_seeds_list[seed].confirm_server_time   = new Date().getTime()
+				_seeds_list[seed].confirm               = confirm
+				_seeds_list[seed].confirm_server        = confirm
+				_seeds_list[seed].confirm_sended_server = true
 
-					localDB.setItem('seeds_list', _seeds_list)
-				})
+				localDB.setItem('seeds_list', _seeds_list)
 			})
 		})
+		// })
 	}
 
 	sendRandom(address, seed, callback){

@@ -54,7 +54,6 @@ class Eth {
 			gasPrice: '0x737be7600',
 			value:    0
 		}, signedTx => {
-			// id 0
 			this.RPC.request('sendRawTransaction', ['0x' + signedTx], 0).then( response => {
 				if (!response.result) { return }
 				checkContractDeployed(response.result, callback)
@@ -64,10 +63,10 @@ class Eth {
 
 	// Get contract function hash name
 	// https://github.com/ethereum/homestead-guide/blob/master/source/contracts-and-transactions/accessing-contracts-and-transactions.rst#interacting-with-smart-contracts
-	// function hasname is first 4 bytes of sha3 of string with function name with params types
+	// function hashname is first 4 bytes of sha3 of string with function name with params types
 	//  web3.sha3('balanceOf(address)').substring(0, 8)
-	hasName(function_name, param_type){
-		return web3_sha3(`${function_name}(${param_type})`).substr(0,8)
+	hashName(name){
+		return web3_sha3(name).substr(0,8)
 	}
 
 	getEthBalance(address, callback){
@@ -79,7 +78,7 @@ class Eth {
 	}
 
 	getBetsBalance(address, callback){
-		let data = '0x' + this.hasName('balanceOf', 'address')
+		let data = '0x' + this.hashName('balanceOf(address)')
 				  		+ Utils.pad(Utils.numToHex(address.substr(2)), 64)
 
 		this.RPC.request('call', [{

@@ -9,7 +9,6 @@
  *
  **/
 
-import $ from 'jquery'
 
 export default class ethRPC {
 	constructor(provider_url){
@@ -40,21 +39,25 @@ export default class ethRPC {
 			return false
 		}
 
-		$.ajax({
-			type:     'POST',
-			url:      this.provider_url,
-			dataType: 'json',
-			async:    false,
-
-			data: JSON.stringify({
-				'id': 1,
+		fetch(this.provider_url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: JSON.stringify({
+				'id':      id,
 				'jsonrpc': '2.0',
-				'method': 'eth_'+method_name,
-				'params': params
-			}),
-			success: callback,
-			error:   callback,
+				'method':  'eth_'+method_name,
+				'params':  params
+			})
+		}).then( response => {
+			return response.json()
+		}).then( obj => {
+			callback( obj )
+		}).catch( err => {
+			callback( err )
 		})
 	}
+
 }
 
