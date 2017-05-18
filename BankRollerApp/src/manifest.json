@@ -1,7 +1,7 @@
 {
 	"name": "__MSG_appName__",
-	"version": "0.0.2",
-	"manifest_version": 2,
+	"version": "0.0.7",
+	"manifest_version": 3,
 	"description": "__MSG_appDescription__",
 	"icons": {
 		"16": "assets/icons/icon-16.png",
@@ -14,14 +14,10 @@
 		]
 	},
 	"permissions": [
-		"tabs",
 		"http://*/*",
 		"https://*/*",
 		"background",
-		"clipboardRead",
-		"clipboardWrite",
 		"idle",
-		"notifications",
 		"storage",
 		"webRequest",
 		"*://*.google.com/"
