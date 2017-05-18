@@ -11,8 +11,10 @@ var Infura = function() {
 	gThis = this;
 	if(options_rpc){
 		urlInfura = "http://46.101.244.101:8545";
-    } else if(options_testnet){
+    } else if(options_ropsten){
 		urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+    } else if(options_rinkeby){
+		urlInfura = "https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 	}
 };
 
