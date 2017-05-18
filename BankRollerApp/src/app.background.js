@@ -1,5 +1,5 @@
 import $      from 'jquery'
-import Games  from './model/games.js'
+import Games  from 'games'
 
 
 setTimeout(()=>{

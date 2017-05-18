@@ -1,8 +1,8 @@
 import $       from 'jquery'
-import _config from './app.config.js'
-import Wallet  from './model/wallet.js'
-import Games   from './model/games.js'
-import View    from './view/app.view.js'
+import _config from 'app.config'
+import Wallet  from 'Eth/wallet'
+import Games   from 'games'
+import View    from 'view/app.view'
 
 document.addEventListener('DOMContentLoaded',()=>{
 	// for debug
@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded',()=>{
 			console.info('Game added', info)
 			View.loading(true, 'Game added!')
 			setTimeout(()=>{
-			Games.get((games)=>{
-				View.loading(false)
-				View.renderGamesList(games)
-			})
+				Games.get((games)=>{
+					View.loading(false)
+					View.renderGamesList(games)
+				})
 			},2000)
 		})
 	})

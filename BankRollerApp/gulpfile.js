@@ -74,6 +74,10 @@ _config.webpack = {
 		filename: '[name].bundle.js',
 	},
 
+	resolve: {
+		modules: [path.resolve(__dirname, './src/'), path.resolve(__dirname, './src/model'), 'node_modules']
+	},
+
 	module: {
 		rules: [{
 			test: /\.js$/,

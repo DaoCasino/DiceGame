@@ -1,5 +1,10 @@
+/*
+ * Wrapper for JSON-RPC Ethereum API
+ * https://github.com/ethereum/wiki/wiki/JSON-RPC
+ **/
+
 import $ from 'jquery'
-import _config from '../app.config.js'
+import _config from 'app.config.js'
 
 class ethRPC {
 	constructor(provider_url){

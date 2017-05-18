@@ -1,13 +1,12 @@
 import $         from 'jquery'
-import _config   from '../app.config.js'
+import _config   from 'app.config'
 import localDB   from 'localforage'
 import ethWallet from 'eth-lightwallet'
 import ethABI    from 'ethereumjs-abi'
 import bigInt    from 'big-integer'
 
+import * as Utils from 'utils'
 
-
-import * as Utils from './utils.js'
 
 class Wallet {
 	constructor() {

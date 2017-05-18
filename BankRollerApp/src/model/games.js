@@ -1,10 +1,10 @@
 import $          from 'jquery'
-import _config    from '../app.config.js'
-import Wallet     from './wallet.js'
-import ETH        from './ethRPC.js'
+import _config    from 'app.config'
+import Wallet     from 'Eth/wallet'
+import ETH        from 'Eth/rpc'
 import localDB    from 'localforage'
 
-import * as Utils from './utils.js'
+import * as Utils from 'utils'
 
 
 
