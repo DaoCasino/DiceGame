@@ -7,14 +7,15 @@ import bigInt    from 'big-integer'
 
 import * as Utils from 'utils'
 
+let _wallet = {}
 
-class Wallet {
+export default class Wallet {
 	constructor() {
 		// Create wallet if not exist
 		localDB.getItem('wallet', (err, wallet)=>{
 			console.info(wallet)
 			if (wallet) {
-				this._wallet = wallet
+				_wallet = wallet
 			} else {
 				this.create()
 			}
@@ -22,20 +23,20 @@ class Wallet {
 	}
 
 	get(){
-		return this._wallet
+		return _wallet
 	}
 
 	getKs(){
 		if (this.keyStore) {
 			return this.keyStore
 		}
-		this.keyStore = ethWallet.keystore.deserialize( this._wallet.keystorage  )
+		this.keyStore = ethWallet.keystore.deserialize( _wallet.keystorage  )
 		return this.keyStore
 	}
 
 	exportPrivateKey(callback){
-		this.getPwDerivedKey((PwDerivedKey)=>{
-			let private_key = this.getKs().exportPrivateKey(this._wallet.addr, PwDerivedKey)
+		this.getPwDerivedKey( PwDerivedKey => {
+			let private_key = this.getKs().exportPrivateKey(_wallet.addr, PwDerivedKey)
 
 			callback(private_key)
 		})
@@ -88,7 +89,7 @@ class Wallet {
 
 				localDB.setItem('wallet', wallet)
 
-				this._wallet = wallet
+				_wallet = wallet
 
 				return
 			})
@@ -97,9 +98,9 @@ class Wallet {
 
 	addCoins(wallet_openkey){
 		console.log('Add coins to wallet', wallet_openkey)
-		fetch( _config.api_url+'?a=faucet&network='+_config.network+'&to='+wallet_openkey ).then((response)=>{
+		fetch( _config.api_url+'?a=faucet&network='+_config.network+'&to='+wallet_openkey ).then( response => {
 			return response.text()
-		}).then((result)=>{
+		}).then( result => {
 			console.groupCollapsed('Add coins result:')
 			console.log(result)
 			console.groupEnd()
@@ -126,7 +127,7 @@ class Wallet {
 				'method': 'eth_getTransactionCount',
 				'params': [ this.get().openkey, 'pending']
 			}),
-			success: (d)=>{
+			success: d => {
 				this.nonce = Utils.hexToNum(d.result.substr(2))
 
 				console.log('nonce:', d.result)
@@ -137,12 +138,12 @@ class Wallet {
 
 
 	getConfirmNumber(seed, address, abi, callback){
-		this.getPwDerivedKey((PwDerivedKey)=>{
+		this.getPwDerivedKey( PwDerivedKey => {
 			let VRS = ethWallet.signing.signMsg(
 				this.getKs(),
 				PwDerivedKey,
 				seed,
-				this._wallet.openkey.substr(2)
+				_wallet.openkey.substr(2)
 			)
 
 			let signature = ethWallet.signing.concatSig(VRS)
@@ -165,15 +166,15 @@ class Wallet {
 	}
 
 	signTx(options, callback){
-		this.getPwDerivedKey((PwDerivedKey)=>{
-			this.getNonce((nonce)=>{
+		this.getPwDerivedKey( PwDerivedKey => {
+			this.getNonce( nonce => {
 				options.nonce = nonce
 
 				let signedTx = ethWallet.signing.signTx(
 					this.getKs(),
 					PwDerivedKey,
-					ethWallet.txutils.createContractTx(this._wallet.openkey.substr(2), options).tx,
-					this._wallet.openkey.substr(2)
+					ethWallet.txutils.createContractTx(_wallet.openkey.substr(2), options).tx,
+					_wallet.openkey.substr(2)
 				)
 
 				callback(signedTx)
@@ -183,7 +184,7 @@ class Wallet {
 
 	getSignedTx(seed, address, abi, callback){
 		this.getConfirmNumber(seed, address, abi, (confirm, PwDerivedKey, v,r,s)=>{
-			this.getNonce((nonce)=>{
+			this.getNonce( nonce => {
 				console.log('nonce', nonce)
 				let options = {
 					to:       address,
@@ -204,7 +205,7 @@ class Wallet {
 									this.getKs(),
 									PwDerivedKey,
 									registerTx,
-									this._wallet.openkey.substr(2)
+									_wallet.openkey.substr(2)
 								)
 
 				callback(signedTx, confirm)
@@ -214,4 +215,4 @@ class Wallet {
 }
 
 
-export default new Wallet()
+

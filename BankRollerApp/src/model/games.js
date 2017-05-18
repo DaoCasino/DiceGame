@@ -1,14 +1,12 @@
 import $          from 'jquery'
 import _config    from 'app.config'
-import Wallet     from 'Eth/wallet'
-import ETH        from 'Eth/rpc'
+import Eth        from 'Eth/Eth'
 import localDB    from 'localforage'
 
 import * as Utils from 'utils'
 
 
-
-const {AsyncPriorityQueue, AsyncTask} = require('async-priority-queue')
+import {AsyncPriorityQueue, AsyncTask} from 'async-priority-queue'
 
 class Games {
 	constructor(){
@@ -49,13 +47,13 @@ class Games {
 
 
 	create(name, callback){
-		this.deployContract(name, (address)=>{
+		Eth.deployContract(_config.contracts[name].bytecode, (address)=>{
 			this.add(address, callback)
 
 			// add bets to contract
-			fetch( _config.api_url+'?a=faucet&network='+_config.network+'&to='+address ).then((response)=>{
+			fetch( _config.api_url+'?a=faucet&network='+_config.network+'&to='+address ).then( response => {
 				return response.text()
-			}).then((result)=>{
+			}).then( result => {
 				console.groupCollapsed('Add bets to '+address+' result:')
 				console.log(result)
 				console.groupEnd()
@@ -63,70 +61,6 @@ class Games {
 			})
 
 			callback(address)
-		})
-	}
-
-	deployContract(name, callback){
-		let checkContractDeployed = (transaction_hash, callback)=>{
-			console.log('checkContractDeployed', 'https://rinkeby.etherscan.io/tx/'+transaction_hash)
-
-			$.ajax({
-				type:     'POST',
-				url:      _config.HttpProviders.infura.url,
-				dataType: 'json',
-				async:    false,
-
-				data: JSON.stringify({
-					'id': 1,
-					'jsonrpc': '2.0',
-					'method': 'eth_getTransactionReceipt',
-					'params': [transaction_hash]
-				}),
-				success: function (response) {
-					console.log('checkContractDeployed result', response.result)
-					if (!response || !response.result || !response.result.contractAddress) {
-						setTimeout(()=>{
-							checkContractDeployed(transaction_hash, callback)
-						}, 9000)
-						return
-					}
-
-					console.log('[OK] checkContractDeployed - address:', 'https://rinkeby.etherscan.io/address/'+response.result.contractAddress)
-
-					callback(response.result.contractAddress)
-				}
-			})
-		}
-
-		Wallet.signTx({
-			data:     _config.contracts[name].bytecode,
-			gasLimit: 0x4630C0,
-			gasPrice: '0x737be7600',
-			value:    0
-		}, (signedTx)=>{
-			$.ajax({
-				type:     'POST',
-				url:      _config.HttpProviders.infura.url,
-				dataType: 'json',
-				async:    false,
-
-				data: JSON.stringify({
-					'id': 0,
-					'jsonrpc': '2.0',
-					'method': 'eth_sendRawTransaction',
-					'params': ['0x' + signedTx]
-				}),
-				success: (d)=>{
-					if (!d.result) {
-						return
-					}
-					let transaction_hash = d.result
-					console.info('Create contract '+name+' transaction:', transaction_hash)
-					setTimeout(()=>{
-						checkContractDeployed(transaction_hash, callback)
-					}, 5000)
-				}
-			})
 		})
 	}
 
@@ -139,7 +73,7 @@ class Games {
 		localDB.setItem('Games', this._games)
 
 		console.log('Get game balance')
-		this.getBalance(contract_id, (balance)=>{
+		Eth.getBetsBalance(contract_id, (balance)=>{
 
 			console.info('balance', balance)
 
@@ -161,25 +95,10 @@ class Games {
 		localDB.setItem('Games', this._games)
 	}
 
-	getBalance(address, callback){
-		ETH.request('call', [{
-			'from': Wallet.get().openkey,
-			'to':   _config.contracts.erc20.address,
-			'data': _config.contracts.erc20.balanceOf + Utils.pad(Utils.numToHex(address.substr(2)), 64)
-		}, 'latest']
-		).then((response)=>{
-			console.log('response',response)
-			callback( Utils.hexToNum(response.result) / 100000000 )
-		}).catch((err)=>{
-			console.error(err)
-		})
-	}
-
-
 	runUpdateBalance(){
-		this.get((games)=>{
+		this.get(games => {
 			for(let contract_id in games){
-				this.getBalance(contract_id, (balance)=>{
+				Eth.getBetsBalance(contract_id, (balance)=>{
 					this._games[contract_id].balance = balance
 					localDB.setItem('Games', this._games)
 				})
@@ -193,7 +112,7 @@ class Games {
 				this.seeds_list = seeds_list
 			}
 
-			this.get((games)=>{
+			this.get(games => {
 				if (!games || !Object.keys(games).length) {
 					setTimeout(()=>{
 						this.runConfirm()
@@ -215,11 +134,10 @@ class Games {
 	}
 
 	getCurBlock(){
-		ETH.request('blockNumber').then((response)=>{
-			if (response && response.result) {
-				this.curBlock = response.result
-			}
-		}).catch((err)=>{
+		Eth.RPC.request('blockNumber').then( response => {
+			if (!response || !response.result) { return }
+			this.curBlock = response.result
+		}).catch( err => {
 			console.error('getCurBlock error:', err)
 		})
 	}
@@ -227,10 +145,10 @@ class Games {
 	getLogs(address, callback){
 		console.log('curBlock:', this.curBlock)
 
-		fetch(_config.api_url+'proxy.php?a=unconfirmed&address='+address).then((r)=>{ return r.json() }).then((seeds)=>{
+		fetch(_config.api_url+'proxy.php?a=unconfirmed&address='+address).then(r=>{ return r.json() }).then(seeds=>{
 			console.info('unconfirmed from server:'+seeds)
 			if (seeds && seeds.length) {
-				seeds.forEach((seed)=>{
+				seeds.forEach( seed => {
 					if (!this.seeds_list[seed]) {
 						this.seeds_list[seed] = {
 							contract:address
@@ -243,11 +161,11 @@ class Games {
 
 
 		// Blockchain
-		ETH.request('getLogs',[{
+		Eth.RPC.request('getLogs',[{
 			'address':   address,
 			'fromBlock': this.curBlock,
 			'toBlock':   'latest',
-		}]).then((response)=>{
+		}]).then( response => {
 			if(!response.result){ callback(null); return }
 
 			for (let i = 0; i < response.result.length; i++) {
@@ -294,11 +212,11 @@ class Games {
 		})
 
 		task.promise.then(
-			(result)=>{
+			result => {
 				if (callback) callback(result)
 			},
 			// Ошибка
-			(e)=>{
+			e => {
 				if (repeat_on_error>0) {
 					repeat_on_error--
 					this.addTaskSendRandom(address, seed, callback, repeat_on_error)
@@ -325,31 +243,22 @@ class Games {
 			return
 		}
 
-		$.ajax({
-			type:     'POST',
-			url:      _config.HttpProviders.infura.url,
-			dataType: 'json',
-			async:    false,
-			data: JSON.stringify({
-				'id': 0,
-				'jsonrpc': '2.0',
-				'method': 'eth_call',
-				'params': [{
-					'to':   address,
-					'data': '0xa7222dcd'+seed.substr(2)
-				}, 'pending']
-			}),
+		// id 0
+		Eth.RPC.request('call', [{
+			'to':   address,
+			'data': '0xa7222dcd'+seed.substr(2)
+		}, 'pending']).then( response => {
 
-			success: (response)=>{
-				console.log('>> Pending response:', response)
-				if (response.result && response.result.split('0').join('').length > 4) {
-					this.seeds_list[seed].pending = true
-					delete( this.pendings[address+'_'+seed] )
-					callback()
-				} else {
-					this.seeds_list[seed].pending = false
-				}
+			console.log('>> Pending response:', response)
+
+			if (!response.result || response.result.split('0').join('').length < 5) {
+				this.seeds_list[seed].pending = false
+				return
 			}
+
+			this.seeds_list[seed].pending = true
+			delete( this.pendings[address+'_'+seed] )
+			callback()
 		})
 	}
 
@@ -359,7 +268,7 @@ class Games {
 		}
 
 		// this.checkPending(address, seed, ()=>{
-		Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
+		Eth.Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
 			$.get(_config.api_url+'proxy.php?a=confirm', {
 				vconcat: seed,
 				result:  confirm
@@ -369,8 +278,7 @@ class Games {
 				this.seeds_list[seed].confirm_server        = confirm
 				this.seeds_list[seed].confirm_sended_server = true
 
-				localDB.setItem('seeds_list', this.seeds_list, ()=>{ })
-
+				localDB.setItem('seeds_list', this.seeds_list)
 			})
 		})
 		// })
@@ -381,45 +289,29 @@ class Games {
 			return
 		}
 
-		Wallet.getSignedTx(seed, address, _config.contracts.dice.abi, (signedTx, confirm)=>{
+		Eth.Wallet.getSignedTx(seed, address, _config.contracts.dice.abi, (signedTx, confirm)=>{
 
 			$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
 				vconcat: seed,
 				result:  confirm
-			}, ()=>{})
+			})
 
 			console.log('getSignedTx result:', seed, confirm)
 
-			$.ajax({
-				type:     'POST',
-				url:      _config.HttpProviders.infura.url,
-				dataType: 'json',
-				async:    false,
+			// id 0
+			Eth.RPC.request('sendRawTransaction', ['0x'+signedTx]).then( response => {
+				this.seeds_list[seed].confirm_blockchain_time   = new Date().getTime()
+				this.seeds_list[seed].confirm_sended_blockchain = true
+				this.seeds_list[seed].confirm                   = confirm
+				this.seeds_list[seed].confirm_blockchain        = confirm
 
-				data: JSON.stringify({
-					'id':      0,
-					'jsonrpc': '2.0',
-					'method':  'eth_sendRawTransaction',
-					'params':  ['0x'+signedTx]
-				}),
-				success:(d)=>{
-					this.seeds_list[seed].confirm_blockchain_time   = new Date().getTime()
-					this.seeds_list[seed].confirm_sended_blockchain = true
-					this.seeds_list[seed].confirm                   = confirm
-					this.seeds_list[seed].confirm_blockchain        = confirm
-
-					let r = false
-					if (d.result) {
-						r = true
-					}
-
-					localDB.setItem('seeds_list', this.seeds_list, ()=>{
-						callback(r, d)
-					})
-
-					return
-				}
+				localDB.setItem('seeds_list', this.seeds_list, ()=>{
+					callback(!!response.result, response)
+				})
+			}).catch( err => {
+				console.error('sendRawTransaction error:', err)
 			})
+
 		})
 	}
 

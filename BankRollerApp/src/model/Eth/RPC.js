@@ -1,12 +1,17 @@
 /*
  * Wrapper for JSON-RPC Ethereum API
  * https://github.com/ethereum/wiki/wiki/JSON-RPC
+ *
+ * Example usage:
+ *    ETH.request('sendRawTransaction', [params]).then( response => {
+ *	     ...
+ *    }).catch(err => { consle.error(err) })
+ *
  **/
 
 import $ from 'jquery'
-import _config from 'app.config.js'
 
-class ethRPC {
+export default class ethRPC {
 	constructor(provider_url){
 		this.provider_url = provider_url
 	}
@@ -44,7 +49,7 @@ class ethRPC {
 			data: JSON.stringify({
 				'id': 1,
 				'jsonrpc': '2.0',
-				'method': 'eth__'+method_name,
+				'method': 'eth_'+method_name,
 				'params': params
 			}),
 			success: callback,
@@ -53,4 +58,3 @@ class ethRPC {
 	}
 }
 
-export default new ethRPC(_config.HttpProviders.infura.url)
