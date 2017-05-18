@@ -1,8 +1,9 @@
-import $       from 'jquery'
-import _config from './app.config.js'
-import Wallet  from './model/wallet.js'
-import Games   from './model/games.js'
-import View    from './view/app.view.js'
+import $        from 'jquery'
+import _config  from 'app.config'
+import {Wallet} from 'Eth/Eth'
+import Games    from 'games'
+import View     from 'view/app.view'
+
 
 document.addEventListener('DOMContentLoaded',()=>{
 	// for debug
@@ -28,16 +29,18 @@ document.addEventListener('DOMContentLoaded',()=>{
 	})
 
 	// Deploy new game contract
+	let gamelist_upd_interval = false
 	View.onGameAdd((game_name)=>{
-		View.loading(true, 'Deploying "'+game_name+'" contract')
+		View.loading(true, 'Add task to deploy  "'+game_name+'" contract')
+
 		Games.create('dice',(address)=>{
-			View.loading(true, 'Contract "'+address+'" deployed!')
-			setTimeout(()=>{
-			Games.get((games)=>{
-				View.loading(false)
-				View.renderGamesList(games)
-			})
-			},2000)
+			clearInterval(gamelist_upd_interval)
+			gamelist_upd_interval = setInterval(()=>{
+				Games.get((games)=>{
+					View.loading(false)
+					View.renderGamesList(games)
+				})
+			}, 2000)
 		})
 	})
 
@@ -49,10 +52,10 @@ document.addEventListener('DOMContentLoaded',()=>{
 			console.info('Game added', info)
 			View.loading(true, 'Game added!')
 			setTimeout(()=>{
-			Games.get((games)=>{
-				View.loading(false)
-				View.renderGamesList(games)
-			})
+				Games.get((games)=>{
+					View.loading(false)
+					View.renderGamesList(games)
+				})
 			},2000)
 		})
 	})

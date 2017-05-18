@@ -2,9 +2,6 @@ module.exports = {
 	// Coins contract
 	erc20:{
 		address:'0xba2f1399df21c75ce578630ff9ed9285b2146b8d',
-
-		// balanceOf method address
-		balanceOf:'0x70a08231',
 	},
 
 	dice:{
