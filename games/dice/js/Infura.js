@@ -16,6 +16,10 @@ var Infura = function() {
 	// }
 };
 
+function hexToNum(str) {
+    return parseInt(str, 16);
+}
+
 Infura.prototype.sendRequest = function(name, params, callback, seed){
 	if(openkey){
 		var method = name;
@@ -66,7 +70,76 @@ Infura.prototype.sendRequest = function(name, params, callback, seed){
 	}
 };
 
+Infura.prototype.ethCall = function(name, adr, type){
+	if(type){} else {type = "latest"};
+	
+	var result;
+	
+	if(openkey){
+		var method = "eth_call";
+		var data = "";
+		
+		switch (name) {
+			case "totalRollsByUser":
+				data = "9288cebc";
+				break;
+			case "getShowRnd":
+				data = "b47cf572";
+				break;
+			case "getTotalRollMade":
+				data = "df257ba3";
+				break;
+			case "getTotalEthSended":
+				data = "efddba39";
+				break;
+			case "getTotalEthPaid":
+				data = "71b207f7";
+				break;
+			case "getStateByAddress":
+				data = "08199931"
+				break;
+			case "balanceOf":
+				data = "70a08231";
+				break;
+			case "timeout":
+				data = "795ea18e";
+				break;
+		}
+		
+		data = "0x" + data + pad(numToHex(adr.substr(2)), 64);
+		var params = {"from":openkey,
+				"to":addressDice,
+				"data":data};
+		var arParams = [params, type]; // latest, pending
+		
+		$.ajax({
+			url: urlInfura,
+			type: "POST",
+			async: false,
+			dataType: 'json',
+			data: JSON.stringify({"jsonrpc":'2.0',
+									"method":method,
+									"params":arParams,
+									"id":1}),
+			success: function (d) {
+				result = hexToNum(d.result);
+				return result;
+			},
+			error: function(jQXHR, textStatus, errorThrown)
+			{
+				alert("An error occurred whilst trying to contact the server: " + 
+						jQXHR.status + " " + textStatus + " " + errorThrown);
+			}
+		})
+	}
+	
+	return result;
+}
+
 Infura.prototype.sendRequestServer = function(name, txid, callback, seed){
+	if(txid == undefined){
+		return false;
+	}
 	repeatRequest = 0;
 	var url = "https://platform.dao.casino/api/proxy.php?a=roll&";
 	$.get(url+"txid="+txid+"&vconcat="+seed, 

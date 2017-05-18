@@ -23,7 +23,6 @@ $(document).ready(function () {
         $('.active').removeClass('active')
         $(this).addClass('active');
     });
-   // initGame();
    setContract();
 
     $("#roll-dice").click(function () {
@@ -36,7 +35,7 @@ $(document).ready(function () {
 
     $(".toggle-bg").click(function () {
         setContract();
-        GetLogs();
+        getAllLogs();
         getContractBalance();
     });
     $('#your-balance').click(function () {
