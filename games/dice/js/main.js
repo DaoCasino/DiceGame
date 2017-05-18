@@ -893,3 +893,16 @@ function updateRow(seed, rnd){
                     )
 
 }
+
+function getMyLogs() {
+	$("#table tbody tr").each(function(){
+		var t = $(this).find('td[aria-label="TRANSACTION"] a').text()
+		if(t != openkey.substr(0,10)){
+			$(this).hide();
+		}
+	})
+}
+
+function getAllLogs() {
+	$("tr").show();
+}
