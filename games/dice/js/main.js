@@ -645,11 +645,16 @@ function responseServer(value, seed) {
 
     var chance = _arGames[seed];
     if (chance) {
+		updateRow(seed, value);
+		console.log("update:", seed, value);
+		
         if (value > chance) {
             $("#randomnum").text("YOU LOSE");
+
             gameend();
         } else {
             $("#randomnum").text("YOU WIN!");
+
             gameend();
         }
     } else {
@@ -716,9 +721,8 @@ function response(command, value, seed) {
     if (command == "sendRaw") {
         // console.log("sendRaw:", value);
         var lastTx = value;
-        console.log(seed)
         
-        addRow(seed, lastTx, openkey, betEth, chance, 0, 0)
+        addRow(seed.substr(0,10), lastTx, openkey, betEth, chance, 0, 0)
         $("#Tx").html('<a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>')
         $("#randomnum").text("Please, wait . . . ");
 
@@ -868,3 +872,24 @@ function addRow(idGame, tx, player, bet, playerNum, rnd, state){
                     '<td  aria-label="BET">' + bet.toFixed(3) + ' BET</td><td  aria-label="PAYOUT">x' + payout.toFixed(3) + '</td><td  aria-label="PROFIT">' + profit.toFixed(3) + ' BET</td></tr>'
              ].join('') );
 };
+
+function updateRow(seed, rnd){
+	var chance = _arGames[seed]
+    var color;
+	var state;
+	if (chance > rnd) {
+		state = "<div class=\"icon-w\">WIN</div>";
+		color = "#d08c49";
+	} else{
+		state = "<div class=\"icon-w\" style='background:gray'>LOSE</div>";
+		color = "gray";
+	}
+
+	$('tr#'+seed.substr(0,10) + ' td.state').html(state)
+	$('tr#'+seed.substr(0,10) + ' td.progress').html(
+                    ['<div class="tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content" style="height:10px" >',
+                    '<div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width:' + chance/65536*100 + '%; background:' + color + ';margin:0px;"></div></div>',
+                    '<div class="tooltip" style="left:' + rnd / 65536 * 100 + '%">' + rnd + '</div>'].join('')
+                    )
+
+}
