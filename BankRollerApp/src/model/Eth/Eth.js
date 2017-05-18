@@ -7,19 +7,22 @@
 import _config from 'app.config'
 import RPC     from './RPC'
 import Wallet  from './Wallet'
-
-import Web3 from 'web3'
-const web3 = new Web3()
+import ABI     from 'ethereumjs-abi'
 
 import * as Utils from 'utils'
 
-const rpc    = new RPC(_config.HttpProviders.infura.url)
+const web3_sha3 = require('web3/lib/utils/sha3.js')
+
+const rpc    = new RPC( _config.HttpProviders.infura.url )
 const wallet = new Wallet()
 
 class Eth {
-	constructor(provider_url){
-		this.RPC    = rpc
-		this.Wallet = wallet
+	constructor(){
+		this.ABI     = ABI
+		this.RPC     = rpc
+		this.Wallet  = wallet
+
+		this.getCurBlock()
 	}
 
 	deployContract(contract_bytecode, callback){
@@ -59,14 +62,25 @@ class Eth {
 		})
 	}
 
+	// Get contract function hash name
+	// https://github.com/ethereum/homestead-guide/blob/master/source/contracts-and-transactions/accessing-contracts-and-transactions.rst#interacting-with-smart-contracts
+	// function hasname is first 4 bytes of sha3 of string with function name with params types
+	//  web3.sha3('balanceOf(address)').substring(0, 8)
+	hasName(function_name, param_type){
+		return web3_sha3(`${function_name}(${param_type})`).substr(0,8)
+	}
 
+	getEthBalance(address, callback){
+		this.RPC.request('getBalance', [address, 'latest']).then( response => {
+			callback( Utils.hexToNum(response.result) / 1000000000000000000 )
+		}).catch( err => {
+			console.error(err)
+		})
+	}
 
 	getBetsBalance(address, callback){
-		// Call contract function balanceOf
-		// https://github.com/ethereum/homestead-guide/blob/master/source/contracts-and-transactions/accessing-contracts-and-transactions.rst#interacting-with-smart-contracts
-		// function hasnae is first 4 bytes of sha3 of string with function name with params types
-		let data  = web3.sha3('balanceOf(address)').substr(0,10)
-				  + Utils.pad(Utils.numToHex(address.substr(2)), 64)
+		let data = '0x' + this.hasName('balanceOf', 'address')
+				  		+ Utils.pad(Utils.numToHex(address.substr(2)), 64)
 
 		this.RPC.request('call', [{
 			'from': this.Wallet.get().openkey,
@@ -74,14 +88,33 @@ class Eth {
 			'data': data
 		}, 'latest']
 		).then( response => {
-			console.log('response',response)
 			callback( Utils.hexToNum(response.result) / 100000000 )
 		}).catch( err => {
 			console.error(err)
 		})
 	}
 
+
+	getCurBlock(){
+		if (this.cur_block_upd < new Date().getTime()) {
+			this.RPC.request('blockNumber').then( response => {
+				if (!response || !response.result) { return }
+
+				this.setCurBlock(response.result)
+
+			}).catch( err => {
+				console.error('getCurBlock error:', err)
+			})
+		}
+
+		return this.cur_block
+	}
+
+	setCurBlock(block){
+		this.curBlock      = block
+		this.cur_block_upd = new Date().getTime() + 60
+	}
 }
 
 export default new Eth()
-export {rpc as RPC, wallet as Wallet}
+export {rpc as RPC, wallet as Wallet, ABI as ABI}

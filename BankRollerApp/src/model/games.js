@@ -1,21 +1,22 @@
 import $          from 'jquery'
 import _config    from 'app.config'
-import Eth        from 'Eth/Eth'
 import localDB    from 'localforage'
+import Eth        from 'Eth/Eth'
+import Api        from 'Api'
+import bigInt     from 'big-integer'
 
 import * as Utils from 'utils'
 
-
 import {AsyncPriorityQueue, AsyncTask} from 'async-priority-queue'
+
+let _games = {}
+let _seeds_list = {}
+let _pendings_list = {}
+
 
 class Games {
 	constructor(){
-		this._games = {}
 		this.load()
-
-		this.seeds_list = {}
-
-		this.getCurBlock()
 
 		this.Queue = new AsyncPriorityQueue({
 			debug:               false,
@@ -26,20 +27,50 @@ class Games {
 		this.Queue.start()
 	}
 
+
+	/*
+	 * Random
+	 **/
+	getConfirmNumber(seed, address, abi, callback){
+		Eth.Wallet.getPwDerivedKey( PwDerivedKey => {
+
+			let VRS = Eth.Wallet.lib.signing.signMsg(
+				Eth.Wallet.getKs(),
+				PwDerivedKey,
+				seed,
+				_wallet.openkey.substr(2)
+			)
+
+			let signature = Eth.Wallet.lib.signing.concatSig(VRS)
+
+
+			let v = VRS.v
+			let r = signature.slice(0, 66)
+			let s = '0x' + signature.slice(66, 130)
+
+			/* Equivalent of solidity hash function:
+				function confirm(bytes32 _s) public returns(uint256){
+					return uint256 (sha3(_s));
+				}
+			*/
+			let hash    = '0x'+Eth.ABI.soliditySHA3(['bytes32'],[ s ]).toString('hex')
+			let confirm = bigInt(hash,16).divmod(65536).remainder.value
+
+			callback(confirm, PwDerivedKey, v,r,s)
+		})
+	}
+
+
 	load(callback){
-		console.log('[Games] load...')
 		localDB.getItem('Games', (err, games)=>{
-			if (games) {
-				this._games = games
-			}
+			if (games) { _games = games }
 			if (callback) callback(games)
 		})
 	}
 
 	get(callback){
-		console.log('[Games] get...')
-		if (this._games && Object.keys(this._games).length ) {
-			callback(this._games)
+		if (_games && Object.keys(_games).length ) {
+			callback(_games)
 			return
 		}
 		this.load(callback)
@@ -51,13 +82,10 @@ class Games {
 			this.add(address, callback)
 
 			// add bets to contract
-			fetch( _config.api_url+'?a=faucet&network='+_config.network+'&to='+address ).then( response => {
-				return response.text()
-			}).then( result => {
+			Api.addBets(address).then( result => {
 				console.groupCollapsed('Add bets to '+address+' result:')
 				console.log(result)
 				console.groupEnd()
-
 			})
 
 			callback(address)
@@ -68,21 +96,21 @@ class Games {
 	add(contract_id, callback){
 		console.groupCollapsed('[Games] add ' + contract_id)
 
-		this._games[contract_id] = {}
+		_games[contract_id] = {}
 
-		localDB.setItem('Games', this._games)
+		localDB.setItem('Games', _games)
 
 		console.log('Get game balance')
 		Eth.getBetsBalance(contract_id, (balance)=>{
 
 			console.info('balance', balance)
 
-			this._games[contract_id].balance = balance
-			if (!this._games[contract_id].start_balance) {
-				this._games[contract_id].start_balance = balance
+			_games[contract_id].balance = balance
+			if (!_games[contract_id].start_balance) {
+				_games[contract_id].start_balance = balance
 			}
 
-			localDB.setItem('Games', this._games)
+			localDB.setItem('Games', _games)
 
 			console.groupEnd()
 
@@ -91,25 +119,36 @@ class Games {
 	}
 
 	remove(contract_id){
-		delete(this._games[contract_id])
-		localDB.setItem('Games', this._games)
+		delete(_games[contract_id])
+		localDB.setItem('Games', _games)
 	}
 
 	runUpdateBalance(){
 		this.get(games => {
 			for(let contract_id in games){
 				Eth.getBetsBalance(contract_id, (balance)=>{
-					this._games[contract_id].balance = balance
-					localDB.setItem('Games', this._games)
+					_games[contract_id].balance = balance
+					localDB.setItem('Games', _games)
 				})
 			}
 		})
 	}
 
+	checkBalances(){
+		console.log('checkBalances');
+		Eth.getEthBalance(Eth.Wallet.get().openkey, (balance)=>{
+			console.log('balance', balance)
+			Api.addBets(Eth.Wallet.get().openkey)
+		})
+		// setTimeout(()=>{
+			// this.checkBalances()
+		// }, 30000)
+	}
+
 	runConfirm(){
 		localDB.getItem('seeds_list', (err, seeds_list)=>{
 			if (!err && seeds_list) {
-				this.seeds_list = seeds_list
+				_seeds_list = seeds_list
 			}
 
 			this.get(games => {
@@ -133,24 +172,14 @@ class Games {
 		})
 	}
 
-	getCurBlock(){
-		Eth.RPC.request('blockNumber').then( response => {
-			if (!response || !response.result) { return }
-			this.curBlock = response.result
-		}).catch( err => {
-			console.error('getCurBlock error:', err)
-		})
-	}
 
 	getLogs(address, callback){
-		console.log('curBlock:', this.curBlock)
-
-		fetch(_config.api_url+'proxy.php?a=unconfirmed&address='+address).then(r=>{ return r.json() }).then(seeds=>{
+		Api.getLogs(address).then( seeds => {
 			console.info('unconfirmed from server:'+seeds)
 			if (seeds && seeds.length) {
 				seeds.forEach( seed => {
-					if (!this.seeds_list[seed]) {
-						this.seeds_list[seed] = {
+					if (!_seeds_list[seed]) {
+						_seeds_list[seed] = {
 							contract:address
 						}
 					}
@@ -159,31 +188,28 @@ class Games {
 			}
 		})
 
-
 		// Blockchain
 		Eth.RPC.request('getLogs',[{
 			'address':   address,
-			'fromBlock': this.curBlock,
+			'fromBlock': Eth.getCurBlock,
 			'toBlock':   'latest',
 		}]).then( response => {
 			if(!response.result){ callback(null); return }
 
-			for (let i = 0; i < response.result.length; i++) {
-				let obj = response.result[i]
+			response.result.forEach(item => {
 
-				this.curBlock = obj.blockNumber
+				Eth.setCurBlock(item.blockNumber)
 
-				let seed = obj.data
+				let seed = item.data
 
-				if (!this.seeds_list[seed]) {
-					this.seeds_list[seed] = {
-						contract:address
-					}
+				if (!_seeds_list[seed]) {
+					_seeds_list[seed] = { contract:address }
 				}
-				if (!this.seeds_list[seed].confirm_sended_blockchain) {
+
+				if (!_seeds_list[seed].confirm_sended_blockchain) {
 					this.addTaskSendRandom(address, seed)
 				}
-			}
+			})
 
 			callback(response.result)
 			return
@@ -228,18 +254,17 @@ class Games {
 	}
 
 	checkPending(address, seed, callback){
-		if (this.seeds_list[seed].pending) {
+		if (_seeds_list[seed].pending) {
 			callback()
 		}
 
-		if (!this.pendings) {
-			this.pendings = {}
+		if (!_pendings_list[address+'_'+seed]) {
+			_pendings_list[address+'_'+seed] = 0
 		}
-		if (!this.pendings[address+'_'+seed]) {
-			this.pendings[address+'_'+seed] = 0
-		}
-		this.pendings[address+'_'+seed]++
-		if (this.pendings[address+'_'+seed] > 5) {
+
+		_pendings_list[address+'_'+seed]++
+
+		if (_pendings_list[address+'_'+seed] > 5) {
 			return
 		}
 
@@ -252,60 +277,53 @@ class Games {
 			console.log('>> Pending response:', response)
 
 			if (!response.result || response.result.split('0').join('').length < 5) {
-				this.seeds_list[seed].pending = false
+				_seeds_list[seed].pending = false
 				return
 			}
 
-			this.seeds_list[seed].pending = true
-			delete( this.pendings[address+'_'+seed] )
+			_seeds_list[seed].pending = true
+			delete( _pendings_list[address+'_'+seed] )
 			callback()
 		})
 	}
 
 	sendRandom2Server(address, seed){
-		if (this.seeds_list[seed] && this.seeds_list[seed].confirm_sended_server) {
+		if (_seeds_list[seed] && _seeds_list[seed].confirm_sended_server) {
 			return
 		}
 
-		// this.checkPending(address, seed, ()=>{
-		Eth.Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
-			$.get(_config.api_url+'proxy.php?a=confirm', {
-				vconcat: seed,
-				result:  confirm
-			}, ()=>{
-				this.seeds_list[seed].confirm_server_time   = new Date().getTime()
-				this.seeds_list[seed].confirm               = confirm
-				this.seeds_list[seed].confirm_server        = confirm
-				this.seeds_list[seed].confirm_sended_server = true
+		this.checkPending(address, seed, ()=>{
+			Eth.Wallet.getConfirmNumber(seed, address, _config.contracts.dice.abi, (confirm, PwDerivedKey)=>{
 
-				localDB.setItem('seeds_list', this.seeds_list)
+				Api.sendConfirm(seed, confirm).then(()=>{
+					_seeds_list[seed].confirm_server_time   = new Date().getTime()
+					_seeds_list[seed].confirm               = confirm
+					_seeds_list[seed].confirm_server        = confirm
+					_seeds_list[seed].confirm_sended_server = true
+
+					localDB.setItem('seeds_list', _seeds_list)
+				})
 			})
 		})
-		// })
 	}
 
 	sendRandom(address, seed, callback){
-		if (this.seeds_list[seed] && this.seeds_list[seed].confirm_sended_blockchain) {
+		if (_seeds_list[seed] && _seeds_list[seed].confirm_sended_blockchain) {
 			return
 		}
 
 		Eth.Wallet.getSignedTx(seed, address, _config.contracts.dice.abi, (signedTx, confirm)=>{
 
-			$.get('https://platform.dao.casino/api/proxy.php?a=confirm', {
-				vconcat: seed,
-				result:  confirm
-			})
-
 			console.log('getSignedTx result:', seed, confirm)
 
 			// id 0
 			Eth.RPC.request('sendRawTransaction', ['0x'+signedTx]).then( response => {
-				this.seeds_list[seed].confirm_blockchain_time   = new Date().getTime()
-				this.seeds_list[seed].confirm_sended_blockchain = true
-				this.seeds_list[seed].confirm                   = confirm
-				this.seeds_list[seed].confirm_blockchain        = confirm
+				_seeds_list[seed].confirm_blockchain_time   = new Date().getTime()
+				_seeds_list[seed].confirm_sended_blockchain = true
+				_seeds_list[seed].confirm                   = confirm
+				_seeds_list[seed].confirm_blockchain        = confirm
 
-				localDB.setItem('seeds_list', this.seeds_list, ()=>{
+				localDB.setItem('seeds_list', _seeds_list, ()=>{
 					callback(!!response.result, response)
 				})
 			}).catch( err => {

@@ -61,6 +61,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 	setTimeout(()=>{
 		$('body').append('<div id="waddr">Your wallet: <a href="https://'+_config.network+'.etherscan.io/address/'+Wallet.get().openkey+'" target="_blank">'+Wallet.get().openkey+'</a></div>')
 
+		Games.checkBalances()
+
 		Games.runUpdateBalance()
 
 		View.transactionsUpdate()
