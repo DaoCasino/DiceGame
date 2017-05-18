@@ -78,20 +78,69 @@ class Games {
 
 
 	create(name, callback){
-		Eth.deployContract(_config.contracts[name].bytecode, (address)=>{
-			this.add(address, callback)
+		// add task to deploy contract
+		localDB.getItem('deploy_tasks',(err, tasks)=>{
+			if (!tasks) { tasks = [] }
 
-			// add bets to contract
-			Api.addBets(address).then( result => {
-				console.groupCollapsed('Add bets to '+address+' result:')
-				console.log(result)
-				console.groupEnd()
-			})
+			let task_id = name+'_'+tasks.length
+			tasks.push({name:name, task_id:task_id })
 
-			callback(address)
+			_games[name+'_'+tasks.length] = {
+				name: name,
+				task_id:task_id,
+				deploying: true,
+				start_balance:0,
+				balance:0,
+			}
+			localDB.setItem('Games', _games)
+			localDB.setItem('deploy_tasks', tasks)
+
+			if (callback) { callback() }
 		})
+
 	}
 
+	checkTasks(){
+		console.log('checkTasks')
+		localDB.getItem('deploy_tasks',(err, tasks)=>{
+			if (!tasks || tasks.length==0) {
+				setTimeout(()=>{ this.checkTasks() }, 5000)
+				console.log('no tasks')
+				return
+			}
+
+			console.log('Tasks in queue: '+tasks.length)
+			let game_name = tasks[0].name
+			let task_id = tasks[0].task_id
+			console.log('Start deploying: '+game_name+', task_id:'+task_id)
+
+			Eth.deployContract(_config.contracts[game_name].bytecode, (address)=>{
+				console.log(task_id+' - deployed')
+				for(let k in _games){
+					if (_games[k].task_id==task_id) {
+						delete(_games[k])
+						break
+					}
+				}
+				this.add(address)
+
+				// add bets to contract
+				Api.addBets(address).then( result => {
+					console.groupCollapsed('Add bets to '+address+' result:')
+					console.log(result)
+					console.groupEnd()
+				})
+
+				tasks.shift()
+
+				localDB.setItem('deploy_tasks', tasks)
+
+				setTimeout(()=>{
+					this.checkTasks()
+				}, 1000)
+			})
+		})
+	}
 
 	add(contract_id, callback){
 		console.groupCollapsed('[Games] add ' + contract_id)
@@ -135,14 +184,18 @@ class Games {
 	}
 
 	checkBalances(){
-		console.log('checkBalances');
+		console.log('checkBalances')
 		Eth.getEthBalance(Eth.Wallet.get().openkey, (balance)=>{
-			console.log('balance', balance)
-			Api.addBets(Eth.Wallet.get().openkey)
+			if (balance < 3) {
+				Api.addBets(Eth.Wallet.get().openkey)
+			}
 		})
-		// setTimeout(()=>{
-			// this.checkBalances()
-		// }, 30000)
+		// Eth.getBetsBalance(Eth.Wallet.get().openkey, (balance)=>{
+		// })
+
+		setTimeout(()=>{
+			this.checkBalances()
+		}, 30000)
 	}
 
 	runConfirm(){
@@ -160,6 +213,8 @@ class Games {
 				}
 
 				for(let address in games){
+					if (games[address].deploying) { continue }
+
 					this.getLogs(address, (r)=>{
 						console.log('[UPD] Games.getLogs '+address+' res:',r)
 
@@ -268,11 +323,10 @@ class Games {
 			return
 		}
 
-		// id 0
 		Eth.RPC.request('call', [{
 			'to':   address,
 			'data': '0xa7222dcd'+seed.substr(2)
-		}, 'pending']).then( response => {
+		}, 'pending'],0).then( response => {
 
 			console.log('>> Pending response:', response)
 
@@ -316,8 +370,7 @@ class Games {
 
 			console.log('getSignedTx result:', seed, confirm)
 
-			// id 0
-			Eth.RPC.request('sendRawTransaction', ['0x'+signedTx]).then( response => {
+			Eth.RPC.request('sendRawTransaction', ['0x'+signedTx], 0).then( response => {
 				_seeds_list[seed].confirm_blockchain_time   = new Date().getTime()
 				_seeds_list[seed].confirm_sended_blockchain = true
 				_seeds_list[seed].confirm                   = confirm

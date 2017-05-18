@@ -55,7 +55,7 @@ class Eth {
 			value:    0
 		}, signedTx => {
 			// id 0
-			this.RPC.request('sendRawTransaction', ['0x' + signedTx]).then( response => {
+			this.RPC.request('sendRawTransaction', ['0x' + signedTx], 0).then( response => {
 				if (!response.result) { return }
 				checkContractDeployed(response.result, callback)
 			})

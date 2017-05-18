@@ -4,6 +4,9 @@ import ethWallet from 'eth-lightwallet'
 
 import * as Utils from 'utils'
 
+import RPC     from './RPC'
+const rpc    = new RPC( _config.HttpProviders.infura.url )
+
 let _wallet = {}
 
 export default class Wallet {
@@ -103,24 +106,11 @@ export default class Wallet {
 			return
 		}
 
-		$.ajax({
-			type:     'POST',
-			url:      _config.HttpProviders.infura.url,
-			dataType: 'json',
-			async:    false,
+		rpc.request('getTransactionCount', [ this.get().openkey, 'pending']).then( response => {
+			this.nonce = Utils.hexToNum(response.result.substr(2))
 
-			data: JSON.stringify({
-				'id': 0,
-				'jsonrpc': '2.0',
-				'method': 'eth_getTransactionCount',
-				'params': [ this.get().openkey, 'pending']
-			}),
-			success: d => {
-				this.nonce = Utils.hexToNum(d.result.substr(2))
-
-				console.log('nonce:', d.result)
-				callback( d.result )
-			}
+			console.log('nonce:', response.result)
+			callback( response.result )
 		})
 	}
 

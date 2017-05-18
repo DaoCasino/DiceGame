@@ -29,16 +29,18 @@ document.addEventListener('DOMContentLoaded',()=>{
 	})
 
 	// Deploy new game contract
+	let gamelist_upd_interval = false
 	View.onGameAdd((game_name)=>{
-		View.loading(true, 'Deploying "'+game_name+'" contract')
+		View.loading(true, 'Add task to deploy  "'+game_name+'" contract')
+
 		Games.create('dice',(address)=>{
-			View.loading(true, 'Contract "'+address+'" deployed!')
-			setTimeout(()=>{
-			Games.get((games)=>{
-				View.loading(false)
-				View.renderGamesList(games)
-			})
-			},2000)
+			View.loading(false)
+			clearInterval(gamelist_upd_interval)
+			gamelist_upd_interval = setInterval(()=>{
+				Games.get((games)=>{
+					View.renderGamesList(games)
+				})
+			}, 2000)
 		})
 	})
 

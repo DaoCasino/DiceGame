@@ -68,7 +68,14 @@ class View {
 				profit = '<span style="color:red">'+profit+' bet</span>'
 			}
 
+
 			let game_url = _config.games.dice.url+'?address='+contract_id
+
+			if (game.deploying) {
+				game_url = '#'
+				contract_id = '#deploying...'
+			}
+
 			games_html += `<tr>
 				<td>
 					<a  class="address"
