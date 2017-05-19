@@ -172,7 +172,7 @@ var erc20abi = [{
     "type": "event"
 }]
 
-netname = "rinkeby"; // "ropsten", "rinkeby"
+netname = "ropsten"; // "ropsten", "rinkeby"
 erc20address = "none"; 
 urlInfura = "none";
 //addressDice = "none";
@@ -189,7 +189,7 @@ function changeNet(value){
 			urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 			erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
 			// dice
-			// addressDice = "0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc";
+			addressDice = "0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc";
 			// blackjack
 			addressBJDeck = "0x75dacdec23342b26ff598e3304d3ff632b42077a";
 			addressBJStorage = "0x18d4bd271a6123335edca33eec83318b75ae8ae0";
@@ -199,7 +199,7 @@ function changeNet(value){
 			urlInfura = "https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl";
 			erc20address = "0xBa2F1399dF21C75ce578630Ff9Ed9285b2146B8D"; 
 			// dice
-			// addressDice = "";
+			addressDice = "0x2543e6c0c72c3c484412f748d70afde2db926c71";
 			// blackjack
 			addressBJDeck = "";
 			addressBJStorage = "";

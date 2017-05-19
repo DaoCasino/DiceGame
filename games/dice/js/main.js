@@ -26,9 +26,6 @@ var _callback;
 
 var infura = new Infura();
 
-
-
-
 function loadData() {
     if (isLocalStorageAvailable()) {
         if (localStorage.getItem('daocasino_dice')) {
@@ -49,14 +46,11 @@ function loadData() {
     console.log("privkey:", privkey);
 };
 
-
-
 function getContractBalance() {
     bankroll = callERC20("balanceOf", addressDice);
     console.log(addressDice);
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
-
 
 function setContract() {
     var q_params = (function () {
@@ -71,7 +65,7 @@ function setContract() {
         }
         return params;
     }());
-
+	
     // Set requested contract
     if (q_params.address) {
         addressDice = q_params.address;
@@ -201,7 +195,7 @@ function Refresh() {
 };
 
 function makeid() {
-    var str = "0x";
+    var str = "";
     var possible = "abcdef0123456789";
 
     for (var i = 0; i < 64; i++) {
@@ -213,6 +207,7 @@ function makeid() {
     }
 
     str = numToHex(str);
+	
     return str;
 }
 
@@ -243,7 +238,6 @@ function gameend() {
     $("#randomnum").fadeIn("slow", 1);
     Refresh();
 };
-
 
 function addRow(idGame, tx, player, bet, playerNum, rnd, state){
     var color;
@@ -318,24 +312,24 @@ function showResult(value, rnd, seed) {
     }
 	
     switch (value) {
-    case 1:
-			// console.log("YOU WIN!");
-        $("#randomnum").text("YOU WIN!");
-        gameend();
-        break;
-    case 2:
-			// console.log("LOSS");
-        $("#randomnum").text("YOU LOSE");
-        gameend();
-        break;
-    case 3:
-			// console.log("Sorry, No money in the bank");
-        $("#randomnum").text("Sorry, no money in the bank");
-        gameend();
-        break;
-    default:
-			// console.log("run game");
-        break;
+		case 1:
+				// console.log("YOU WIN!");
+			$("#randomnum").text("YOU WIN!");
+			gameend();
+			break;
+		case 2:
+				// console.log("LOSS");
+			$("#randomnum").text("YOU LOSE");
+			gameend();
+			break;
+		case 3:
+				// console.log("Sorry, No money in the bank");
+			$("#randomnum").text("Sorry, no money in the bank");
+			gameend();
+			break;
+		default:
+				// console.log("run game");
+			break;
     }
 	
     updateRow(seed, rnd);
@@ -353,7 +347,7 @@ function responseServer(rnd, seed) {
         } else {
             result = 1;
         }
-        console.log("showResult: client", rnd);
+        console.log("showResult: client", result, rnd);
         showResult(result, rnd, seed);
     } else {
         console.log("Game " + seed + " undefined");
@@ -414,6 +408,7 @@ function response(command, value, seed) {
     if (command == "sendRaw") {
         // console.log("sendRaw:", value);
         var lastTx = value;
+		console.log("addRow:", count);
         addRow(seed.substr(0,10), lastTx, openkey, betEth, chance, 0, 0);
         $("#Tx").html('<a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>');
         $("#randomnum").text("Please, wait . . . ");
@@ -424,9 +419,12 @@ function response(command, value, seed) {
             if (new_count != count) {
                 var result = infura.ethCall("getStateByAddress", seed, "pending");
                 var rnd = infura.ethCall("getShowRnd", seed, "pending");
-                console.log("showResult: contract", rnd);
-                showResult(result, rnd, seed);
-                _arEndGames[seed] = true;
+				console.log("showResult: contract", result, rnd, seed);
+				if(result > 0){
+					console.log("!!!");
+					showResult(result, rnd, seed);
+					_arEndGames[seed] = true;
+				}
             }
         }, 3000);
     } else if (command == "responseServer") {

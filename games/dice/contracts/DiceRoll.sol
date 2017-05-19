@@ -46,16 +46,7 @@ contract DiceRoll is owned {
         PlayerLose,
         NoBank
     }
-
-    event logGame(
-        uint time,
-        address sender,
-        uint bet,
-        uint chance,
-        bytes32 seed,
-        uint rnd
-    );
-    
+	
     event logId(bytes32 Id);
 
     struct Game {
@@ -156,8 +147,6 @@ contract DiceRoll is owned {
             uint payout = game.bet * (65536 - 1310) / game.chance;
             uint rnd = uint256(sha3(_s))%65536;
             game.rnd = rnd;
-			
-			// logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
 			
             if (game.state != GameState.NoBank) {
                 countRolls++;
