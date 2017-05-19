@@ -300,7 +300,7 @@ function updateRow(seed, rnd){
 function getMyLogs() {
     $("#table tbody tr").each(function(){
         var t = $(this).find('td[aria-label="TRANSACTION"] a').text();
-        if(t != openkey.substr(0,10)){
+        if(t.substr(0,10) != openkey.substr(0,10)){
             $(this).hide();
         }
     });
