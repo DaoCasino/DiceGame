@@ -172,7 +172,7 @@ var erc20abi = [{
     "type": "event"
 }]
 
-netname = "ropsten";
+netname = "ropsten"; // "ropsten", "rinkeby"
 erc20address = "none"; 
 urlInfura = "none";
 //addressDice = "none";
@@ -195,8 +195,6 @@ function changeNet(value){
 		addressBJStorage = "0x18d4bd271a6123335edca33eec83318b75ae8ae0";
 		addressBJ = "0x1903eef30317204fb5aabd9533659d9b23a7ec37";
 	} else if(netname == "testrpc"){
-
-
 		urlInfura = "http://46.101.244.101:8545";
 		erc20address = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
 		// dice
@@ -208,8 +206,7 @@ function changeNet(value){
 		erc20address = ""; 
 		// dice
 		addressDice = "";
-	}
-    else if (netname == "rinkeby"){
+	} else if (netname == "rinkeby"){
         netname = "rinkeby";
         
 		urlInfura = "https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl";
@@ -218,7 +215,7 @@ function changeNet(value){
         //addressDice = "0x1c864f1851698ec6b292c936acfa5ac5288a9d27"
 	}
 }
-changeNet("rinkeby");
+changeNet(netname);
 
 
 function getNet(){
