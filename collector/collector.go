@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -13,11 +15,11 @@ import (
 )
 
 var idGame = make(chan string)
-var lastBlock = "0xD9490"
+var lastBlock = "0xE5FB4"
 var clients = make(map[*websocket.Conn]bool) // connected clients
 var broadcast = make(chan Message)
-var idChanel = make(chan string)
-
+var stop = make(chan bool)
+var url = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl"
 var lastTx []Message
 
 type logsParams struct {
@@ -33,6 +35,7 @@ var upgrader = websocket.Upgrader{
 }
 
 type Message struct {
+	Tx   string `json:"transaction"`
 	Data string `json:"data"`
 }
 
@@ -43,92 +46,71 @@ type request struct {
 	params  logsParams
 }
 
-func makeHTTPPostReq(url string) {
-	//var dat map[string]interface{}
+func getInfo(address string, stop chan bool) {
+
 	client := http.Client{}
-
 	for {
-		time.Sleep(1000 * time.Millisecond)
-		var jsonprep string = "{\"id\":74,\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"" + lastBlock + "\",\"toBlock\":\"latest\",\"address\":\"0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc\"}]}"
-		var jsonStr = []byte(jsonprep)
-		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
-		req.Header.Set("Content-Type", "application/json")
-		resp, err := client.Do(req)
-		if err != nil {
-			fmt.Println("Unable to reach the server.")
-		} else {
-			//fmt.Println("RESP:", resp.Body)
-			//body, _ := ioutil.ReadAll(resp.Body)
-			v, _ := jason.NewObjectFromReader(resp.Body)
-			o, _ := v.GetObjectArray("result")
-			if len(o) != 0 {
-				lastBlock, _ = o[len(o)-1].GetString("blockNumber")
-				d, _ := strconv.ParseInt(lastBlock, 0, 64)
-				lastBlock = "0x" + strconv.FormatInt(d+1, 16)
-				for _, friend := range o {
-					//name, _ := friend.GetString("address")
-					data, _ := friend.GetString("data")
-					tx, _ := friend.GetString("transactionHash")
-					// block, _ := friend.GetString("blockNumber")
-					// lastBlock = block
-					fmt.Println("RESULT:", data)
-					gameId := data[2:len(data)]
-					fmt.Println("DATA:", gameId)
-					idChanel <- tx + gameId
-					//go getInfoById("https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl", substring)
 
+		select {
+		case <-stop:
+			fmt.Println("________STOP_____________")
+			return
+		default:
+			time.Sleep(1000 * time.Millisecond)
+			var jsonprep string = "{\"id\":74,\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"" + lastBlock + "\",\"toBlock\":\"latest\",\"address\":\"" + address + "\"}]}"
+			var jsonStr = []byte(jsonprep)
+			req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+			req.Header.Set("Content-Type", "application/json")
+			resp, err := client.Do(req)
+			if err != nil {
+				fmt.Println("Unable to reach the server.")
+			} else {
+				v, _ := jason.NewObjectFromReader(resp.Body)
+				o, _ := v.GetObjectArray("result")
+
+				if len(o) == 0 {
+					// fmt.Println("NULL")
+				} else {
+					lastBlock, _ = o[len(o)-1].GetString("blockNumber")
+					d, _ := strconv.ParseInt(lastBlock, 0, 64)
+					lastBlock = "0x" + strconv.FormatInt(d+1, 16)
+
+					for _, friend := range o {
+						data, _ := friend.GetString("data")
+						tx, _ := friend.GetString("transactionHash")
+						gameID := data[2:len(data)]
+						info := getInfoByID(address, gameID)
+						mes := Message{tx, info}
+						lastTx = append(lastTx, mes)
+						broadcast <- mes
+						fmt.Println("MESSAGE:", tx)
+					}
 				}
 
-				//fmt.Println("body:", string(body))
-				//er := json.Unmarshal(body, &dat)
-				//fmt.Println("no", dat["result"][1])
-				//fmt.Printf("re", er)
 			}
-		}
 
+		}
 	}
 
 }
 
-func getInfoByID(url string, idCh chan string) {
-
+func getInfoByID(address string, id string) string {
 	for {
-		info := <-idCh
-		tx := info[0:66]
-		id := info[66:len(info)]
-		//fmt.Println("CHANEL:", id, tx)
-		//var dat map[string]interface{}
 		client := http.Client{}
-
-		var jsonprep string = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc\",\"data\":\"0xa7222dcd" + id + "\"},\"latest\"]}"
-		//fmt.Println("string:", jsonprep)
+		var jsonprep string = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"" + address + "\",\"data\":\"0xa7222dcd" + id + "\"},\"latest\"]}"
 		var jsonStr = []byte(jsonprep)
-
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 		req.Header.Set("Content-Type", "application/json")
-
 		resp, err := client.Do(req)
 		if err != nil {
 			fmt.Println("Unable to reach the server.")
 		} else {
-			//body, _ := ioutil.ReadAll(resp.Body)
 			v, _ := jason.NewObjectFromReader(resp.Body)
 			o, _ := v.GetString("result")
-			ms := Message{o + tx}
-			lastTx = append(lastTx, ms)
-			//fmt.Println("array:", lastTx)
-			//c := Message{"true"}
-			fmt.Println("RESULT:", o)
-			broadcast <- ms
-			//broadcast <- c
-
-			//fmt.Println("body:", string(body))
-			//er := json.Unmarshal(body, &dat)
-			//fmt.Println("no", dat["result"][1])
-			//fmt.Printf("re", er)
+			return o
 		}
-
 	}
+
 }
 
 func handleConnections(w http.ResponseWriter, r *http.Request) {
@@ -154,20 +136,25 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		}
 		// Send the newly received message to the broadcast channel
 		broadcast <- msg
-		fmt.Println("msg", msg)
+		//fmt.Println("msg", msg)
 
 	}
 }
 
 func sendLastGame(w *websocket.Conn) {
-	for mes := range lastTx {
-		fmt.Println("mes:", lastTx[mes])
-		err := w.WriteJSON(lastTx[mes])
-		if err != nil {
-			log.Printf("error: %v", err)
+	fmt.Println("________LAST___MESSAGE____________:", len(lastTx))
+	if len(lastTx) == 0 {
+		// fmt.Println("NULL")
+	} else {
+		fmt.Println("________!!____________:", len(lastTx))
+		for i := (len(lastTx) - 10); i < len(lastTx); i++ {
+			fmt.Println("mes:", lastTx[i], i)
+			err := w.WriteJSON(lastTx[i])
+			if err != nil {
+				log.Printf("error: %v", err)
+			}
 		}
 	}
-
 }
 
 func handleMessages() {
@@ -188,45 +175,35 @@ func handleMessages() {
 	}
 }
 
+func getBankrollers() {
+	for {
+		arr := []string{}
+		resp, _ := http.Get("https://platform.dao.casino/api/proxy.php?a=bankrolls")
+		b, _ := ioutil.ReadAll(resp.Body)
+		_ = json.Unmarshal(b, &arr)
+		if len(arr) != 0 {
+			for i, element := range arr {
+				go getInfo(element, stop)
+				fmt.Println("address:", element, i)
+			}
+		} else {
+			fmt.Println("_________DEFAULT CONTRACT__________________")
+			go getInfo("0x6a8F29E3D9E25bc683A852765F24eCb4Be5903FC", stop)
+		}
+		time.Sleep(100 * time.Second)
+		//lastTx = []Message{}
+		stop <- true
+	}
+}
+
 func main() {
-	go makeHTTPPostReq("https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl")
-	go getInfoByID("https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl", idChanel)
-	// Configure websocket route
+	go handleMessages()
+	go getBankrollers()
 	http.HandleFunc("/ws", handleConnections)
 
-	// Start listening for incoming chat messages
-	go handleMessages()
-	//go ropstenStatus()
-	// Start the server on localhost port 8000 and log any errors
 	log.Println("http server started on :8081")
 	err := http.ListenAndServe(":8081", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
-
-	//getInfoById("https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl", idGame)
-
 }
-
-// func ropstenStatus() {
-// 	var status string
-// 	go func() {
-// 		for {
-// 			doc, err := goquery.NewDocument("http://status.infura.io/2252199")
-
-// 			if err != nil {
-// 				log.Fatal(err)
-// 			}
-// 			doc.Find("#statusIcon").Each(func(index int, item *goquery.Selection) {
-// 				title, _ := item.Attr("class")
-// 				if title == "up" {
-// 					status = "true"
-// 				} else {
-// 					status = "false"
-// 				}
-// 			})
-// 			c := Message{status, "11"}
-// 			broadcast <- c
-// 		}
-// 	}()
-// }

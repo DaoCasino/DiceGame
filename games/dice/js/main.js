@@ -77,7 +77,7 @@ function setContract() {
         var _arr = JSON.parse(d);
         if (!_arr) {
             // Действие в случае отсутсвия банкролла
-            $('#bg_popup').show().find('h1').html('No online bankroller. Come back later or <a href="https://github.com/DaoCasino/BankRollerApp">become a bankroller</a> !<br>');      
+            $('#bg_popup').show().find('h1').html('No online bankroller. Come back later or <a href="https://github.com/DaoCasino/BankRollerApp/tree/master/builds">become a bankroller</a> !<br>');      
             return;
         }
         
@@ -146,9 +146,13 @@ function initGame() {
 
         var state = hexToNum(msg.substr(256, 64));
         var rnd   = hexToNum(msg.substr(320, 64));
-        var tx    = msg.substr(384, 66);
+        var tx    = JSON.parse(event.data).transaction
+        if(rnd != 0){
+            addRow(seed, tx, player, bet, playerNum, rnd, state);
+        }
+            
         
-        addRow(seed, tx, player, bet, playerNum, rnd, state);
+        
         
         if ($('#table tr').length > 10) {
             $('tr:eq(11)').remove();
