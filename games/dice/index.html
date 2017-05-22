@@ -29,16 +29,16 @@
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
 	<link rel="stylesheet" href="libs/magnific-popup/magnific-popup.css" />
 	<link rel="stylesheet" href="css/jquery-ui.css" />
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-92023514-2', 'auto');
-  ga('send', 'pageview');
-
-</script>
+	  ga('create', 'UA-92023514-2', 'auto');
+	  ga('send', 'pageview');
+	</script>
 </head>
 
 <body>
@@ -130,10 +130,12 @@
 
 									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
 										? BET
-									</a>-
+									</a>
+						
 									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
 										exit
 									</a>
+									
 								</div>
 							</div>
 
@@ -145,6 +147,9 @@
 		</header>
 		<!-- HEADER AND -->
 		<!-- MAIN -->
+		<div class="container" style="color:#c7c2c2; text-align: end; letter-spacing: 1px; text-transform: uppercase; font-size: 11px;">
+			<div id="bankrollers" style="display: none">...</div>
+		</div>
 		<main clsaa="main">
 			<div class="wrapper-content">
 				<div class="game-status">
@@ -258,34 +263,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<!--<tr>
-										<td>
-											<span class="tbl-span">less than a minute ago</span>
-											<a href="#">Alpha05358</a>
-										</td>
-										<td>
-											<span class="tbl-span">less than 31,684 (48.35%)</span>
-											
-										</td>
-										<td>
-											<div class="icon-w"></div>
-										</td>
-										<td>
-											<a href="#">
-												0.00000500 BTC
-											</a>
-										</td>
-										<td>
-											<a href="#">
-												x2.029
-											</a>
-										</td>
-										<td>
-											<a href="#">
-												-0.00000500 BTC
-											</a>
-										</td>
-									</tr>-->
 									</tbody>
 								</table>
 							</div>
@@ -322,17 +299,10 @@
 		<!-- FOOTER -->
 		<footer>
 			<div class="container">
-				<!--<div class="footer-open-menu">
-					<a class="open-menu">
-						<span></span>
-						<span></span>
-						<span></span>
-					</a>
-				</div>-->
 				<nav class="footer-menu">
 					<ul>
-						<li><a href="../blackjack">blackjack</a></li>
-						<li><a href="../HackDAO">HackDAO</a></li>
+						<!-- <li><a href="../blackjack">blackjack</a></li> -->
+						<!-- <li><a href="../HackDAO">HackDAO</a></li> -->
 						<!--<li><a href="https://twitter.com/daocasino">Twitter</a></li>
 						<li><a href="https://github.com/DaoCasino">GitHub</a></li>-->
 					</ul>
@@ -378,37 +348,46 @@
 
 		</div>
 
-		<!--[if lt IE 9]>
+
+	<!-- Popup -->
+	<div id="bg_popup" >
+		<div id="popup"><h1>Loading...<br></h1></div>
+	</div>
+
+
+	<!--[if lt IE 9]>
 	<script src="libs/html5shiv/es5-shim.min.js"></script>
 	<script src="libs/html5shiv/html5shiv.min.js"></script>
 	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
 	<script src="libs/respond/respond.min.js"></script>
 	<![endif]-->
+	<script src="../../js/configuration.js"></script>
 	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
-		<script src="../../js/clipboard.min.js"></script>
-		<script src="js/data.js" async></script>
-		<script src="libs/jquery/jquery-1.11.2.min.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		<script src="libs/modernizr/modernizr.js"></script>
-		<script src="libs/selectivizr/selectivizr-min.js"></script>
-		<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
-		<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
-		<script src="js/eth_api.js"></script>
-		<script src="js/main.js"></script>
-		<script src="js/erc20call.js"></script>
+	<script src="../../js/clipboard.min.js"></script>
+	<script src="libs/jquery/jquery-1.11.2.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	<script src="libs/modernizr/modernizr.js"></script>
+	<script src="libs/selectivizr/selectivizr-min.js"></script>
+	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+	
+	<script src="js/utils.js" async></script>
+	
+	<script src="js/eth_api.js"></script>
+	<script src="js/Infura.js"></script>
 
-		<script src="js/gamecommon.js" async></script>
-		
-		<script src="../../js/common.js"></script>
-		<script src="js/scrGame.js"></script>
-		<script src="js/testnet.js"></script>
+	<script src="js/contract_erc20_abi.js"></script>
+	<script src="js/contract_dice_abi.js"></script>
 
-<!-- Popup -->
-		<div id="bg_popup" >
-	<div id="popup">
-		<h1>please wait <br></h1>
-	</div>
-</div>
+	<script src="js/web_socket.js"></script>
+
+	<script src="js/main.js"></script>
+	<script src="../../js/erc20call.js"></script>
+
+	<script src="js/gamecommon.js" async></script>
+	
+	<script src="../../js/common.js"></script>
 </body>
 
 </html>

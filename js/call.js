@@ -86,15 +86,15 @@ function getContract(game, network) {
     });
     return result;
 };
-function setContract() {
-    if (mainnet == "on") {
-        urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-        addressContract = getContract("Dice", "mainnet");
-    } else if (mainnet == "off") {
-        urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
-        addressContract = getContract("Dice", "testnet");
-    }
-};
+// function setContract() {
+//     if (mainnet == "on") {
+//         urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+//         addressContract = getContract("Dice", "mainnet");
+//     } else if (mainnet == "off") {
+//         urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+//         addressContract = getContract("Dice", "testnet");
+//     }
+// };
 function getContractBalance() {
     $.ajax({
         type: "POST",

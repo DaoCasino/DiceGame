@@ -1,3 +1,5 @@
+var abi = []; 
+
 var erc20abi = [{
     "constant": true,
     "inputs": [],
@@ -170,120 +172,64 @@ var erc20abi = [{
     "type": "event"
 }]
 
-var openkey = localStorage.getItem('openkey');
+netname = "ropsten"; // "ropsten", "rinkeby"
+erc20address = "none"; 
+urlInfura = "none";
+//addressDice = "none";
+addressBJDeck = "none";
+addressBJStorage = "none";
+addressBJ = "none";
 
-function getAllowance(addressContract) {
-	if(openkey == undefined){
-		return false;
-	}
+function changeNet(value){
+	netname = value;
+	console.log("net:", netname);
 	
-    var _allowance;
-    $.ajax({
-        type: "POST",
-        url: urlInfura,
-        dataType: 'json',
-        async: false,
-        data: JSON.stringify({
-            "id": 0,
-            "jsonrpc": '2.0',
-            "method": "eth_call",
-            "params": [{
-                "from": openkey,
-                "to": erc20address,
-                "data": "0xdd62ed3e" + pad(openkey.substr(2), 64) + pad(addressContract.substr(2), 64)
-            }, "latest"]
-        }),
-        success: function (d) {
-            _allowance = hexToNum(d.result);
-            console.log("allowance:", _allowance);
-        }
-    })
-    return _allowance
+	switch(value){
+		case "ropsten":
+			urlInfura = "https://ropsten.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+			erc20address = "0x95a48dca999c89e4e284930d9b9af973a7481287";
+			// dice
+			addressDice = "0x6a8f29e3d9e25bc683a852765f24ecb4be5903fc";
+			// blackjack
+			addressBJDeck = "0x75dacdec23342b26ff598e3304d3ff632b42077a";
+			addressBJStorage = "0x18d4bd271a6123335edca33eec83318b75ae8ae0";
+			addressBJ = "0x1903eef30317204fb5aabd9533659d9b23a7ec37";
+			break;
+		case "rinkeby":
+			urlInfura = "https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+			erc20address = "0xBa2F1399dF21C75ce578630Ff9Ed9285b2146B8D"; 
+			// dice
+			addressDice = "0x2543e6c0c72c3c484412f748d70afde2db926c71";
+			// blackjack
+			addressBJDeck = "";
+			addressBJStorage = "";
+			addressBJ = "";
+			break;
+		case "testrpc":
+			urlInfura = "http://46.101.244.101:8545";
+			erc20address = "0xb207301c77a9e6660c9c2e5e8608eaa699a9940f";
+			// dice
+			// addressDice = "";
+			// blackjack
+			addressBJDeck = "";
+			addressBJStorage = "";
+			addressBJ = "";
+			break;
+		case "mainnet":
+			urlInfura = "https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl";
+			erc20address = ""; 
+			// dice
+			// addressDice = "";
+			// blackjack
+			addressBJDeck = "";
+			addressBJStorage = "";
+			addressBJ = "";
+			break;
+	}
 }
+changeNet(netname);
 
-function approve(addressContract, approveValue) {
-	if(openkey == undefined){
-		return false;
-	}
-	
-    console.log("approve")
-	$.ajax({
-		type: "POST",
-		url: urlInfura,
-		dataType: 'json',
-		async: false,
-		data: JSON.stringify({
-			"id": 0,
-			"jsonrpc": '2.0',
-			"method": "eth_getTransactionCount",
-			"params": [openkey, "latest"]
-		}),
-		success: function (d) {
-			console.log("get nonce action " + d.result);
-			var options = {};
-			options.nonce = d.result;
-			options.to = erc20address;
-			options.gasPrice = "0x737be7600"; //web3.toHex('31000000000');
-			options.gasLimit = "0x927c0"; //web3.toHex('600000');
-			ks.keyFromPassword("1234", function (err, pwDerivedKey) {
-				console.log(err);
-				var args = [addressContract, approveValue];
-				var registerTx = lightwallet.txutils.functionTx(erc20abi, 'approve', args, options)
-				var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr)
-				console.log("lightWallet sign:", signedTx)
-				$.ajax({
-					type: "POST",
-					url: urlInfura,
-					dataType: 'json',
-					async: false,
-					data: JSON.stringify({
-						"id": 0,
-						"jsonrpc": '2.0',
-						"method": "eth_sendRawTransaction",
-						"params": ["0x" + signedTx]
-					}),
-					success: function (d) {
-						console.log("The transaction was signed:", d.result);
-						if (d.result == undefined) {
-							approve(addressContract,100000000000);
-						}
-					}
-				})
-			})
-		}
-	})
+
+function getNet(){
+	return netname;
 }
-
-function callERC20(callname, adr) {
-	if(openkey == undefined){
-		return false;
-	}
-	
-    var result;
-    var callData;
-    switch (callname) {
-        case "balanceOf":
-            callData = "0x70a08231";
-            break;
-    }
-    $.ajax({
-        type: "POST",
-        url: urlInfura,
-        dataType: 'json',
-        async: false,
-        data: JSON.stringify({
-            "id": 0,
-            "jsonrpc": '2.0',
-            "method": "eth_call",
-            "params": [{
-                "from": openkey,
-                "to": erc20address,
-                "data": callData + pad(numToHex(adr.substr(2)), 64)
-            }, "latest"]
-        }),
-        success: function (d) {
-            result = hexToNum(d.result);
-        }
-    });
-    return result;
-};

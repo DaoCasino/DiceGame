@@ -12,7 +12,7 @@ module.exports = function(deployer, network) {
             web3.eth.sendTransaction({
                 from: "0xaec3ae5d2be00bfc91597d7a1b2c43818d84396a",
                 to: PowerBall.address,
-                value: web3.toWei(15, "ether"),
+                value: web3.toWei(1, "ether"),
                 gas: 400000,
             });
         });
