@@ -1,7 +1,0 @@
-tite: Hack the dao
-tags: card,blackjack
-category: Arcade games
-autor: J0xFlash
-description: Hack the dao
-img: https://platform.dao.casino/img/baner-top-min.jpg
-liecence:
