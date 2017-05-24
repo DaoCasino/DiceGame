@@ -1,0 +1,428 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+	<script>
+	/*if (location.protocol == 'http:' && localStorage.getItem("nossl") != 1)
+	{
+	 location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+	}*/
+	</script>
+	<title>DAO.CASINO</title>
+	<meta content="" name="description" />
+
+	<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="img/favicon/apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="img/favicon/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="img/favicon/apple-touch-icon-76x76.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="img/favicon/apple-touch-icon-114x114.png" />
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/main.min.css" />
+	<link rel="stylesheet" href="css/fonts.css" />
+	<link rel="stylesheet" href="css/media.min.css" />
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
+	<link rel="stylesheet" href="libs/magnific-popup/magnific-popup.css" />
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92023514-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+	
+</head>
+<body>
+	<!-- WRAPPER -->
+	<div class="wrapper_main">
+
+		<div class="mobile-menu-overlay"></div>
+
+		<div class="mobile-menu mCustomScrollbar" data-mcs-theme="minimal-dark">
+			<a class="closed-mnu">x</a>
+			<div class="registration">
+				<form action="">
+					<div class="clearfix">
+						<input type="text" placeholder="USERNAME">
+						<input type="text" class="mobile-input" placeholder="PASSWORD">
+					</div>
+					<div class="button-block clearfix">
+						<button class="log-in-mobile">login</button>
+						<button class="registr-now">join now</button>
+					</div>
+				</form>
+			</div>
+
+			<nav class="main-top-menu">
+				<ul class="clearfix">
+					<li><a href="#">ROULETTE</a></li>
+					<li><a href="#">DICE</a></li>
+					<li><a href="#">BLACKJACK</a></li>
+					<li><a href="#">ROULETTE</a></li>
+					<li><a href="#">POKER GAMES</a></li>
+					<li><a href="#">PROMOTIONS</a></li>
+					<li><a href="#">EXCHANGE</a></li>
+				</ul>
+			</nav>
+
+			<div class="search-games">
+				<form action="">
+					<input type="text" placeholder="search  games">
+					<button class="search-games__button"></button>
+				</form>
+			</div>
+
+			<nav class="footer-menu">
+				<h3>Footer menu</h3>
+				<ul>
+					<li><a href="#">About Us</a></li>
+					<li><a href="#">Provably Fair</a></li>
+					<li><a href="#">Terms and Conditions</a></li>
+					<li><a href="#">Responsible</a></li>
+					<li><a href="#">Gambling Rules</a></li>
+					<li><a href="#">Complaints</a></li>
+					<li><a href="#">Contact Us</a></li>
+				</ul>
+			</nav>
+
+		</div>
+		<!-- HEADER -->
+		<header>
+			<div class="wrapper-block__logo">
+				<div class="wrapper-lofo clearfix">
+					<div class="row">
+						<div class="col-md-4 col-sm-6 col-xs-6 top-logo">
+							<div class="logo">
+								<a href="#">
+									<img src="img/logo.png" alt="Logo images">
+								</a>
+							</div>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6 top-check">
+							<div class="switch-block clearfix">
+								<form action="">
+									<span class="real-money switch-span">TESTNET</span>
+								   <span class="toggle-bg">
+										<input type="radio" id="checked-off" name="toggle" value="off">
+										<input type="radio" id="checked-on" disabled name="toggle" value="on"> 
+										<span class="switch"></span>
+									</span>
+									<span class="free-money switch-span">MAINNET</span> 
+								</form>
+							</div>
+						</div>
+						<div class="col-md-5 col-sm-6 col-xs-6 top-sign-in">
+							<div class="registration">
+								<a style='visibility:hidden' class="popup-with-move-anim disclaimer-btn registr-now" id='regbut' href="#small-dialog">
+									Sign in
+								</a>
+								
+								<div id='isreg' style='display:none'>
+									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
+										? BET
+									</a>
+									<a onclick='$.removeCookie("popup");localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
+										exit
+									</a>
+								</div>
+								<div id="alarm" style="color:red"></div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</header>
+		<!-- HEADER AND -->
+		<!-- MAIN -->
+		<main clsaa="main">
+			<div class="wrapper-content">
+				<div  style='visibility:hidden' class="container">
+					<nav class="main-top-menu">
+						<ul class="clearfix">
+							<li><a href="/">games</a></li>
+							<li><a href="#" onclick='$.get("aref.html",function(d){$("#main").html(d);}); return false'>Affiliate program</a></li>
+							<li><a href="#" onclick='$.get("hist.html",function(d){$("#main").html(d);}); return false'>history</a></li>
+							<li><a href="#" onclick='$.get("dev.html",function(d){$("#main").html(d);}); return false'>for developers</a></li>
+							
+						</ul>
+					</nav>
+				</div>
+				<div class="container" id='main'>
+					<div class="row">
+						<div class="col-md-9">
+							<img src="img/baner-top-min.jpg" class="baner-top-img" width="100%" alt="">
+							<div class="top-baner">
+								<div class="top-baner__text clearfix">
+									<div class="top-baner__text-cont">
+										<!-- <h2>
+											HACKDAO
+										</h2>
+										<span>
+											Welcome to trust casino
+										</span> -->
+									</div>
+									<button class="style-botton" onclick='if(localStorage.getItem("isreg")==1){window.location="/games/dice"}else{$("#regbut").click();}'>START DICE GAME</button> 
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="jackpot">
+								<h3>Statistic</h3>
+								<div class="jackpot-txt">
+									<span class="jackpot-txt__name">
+										Total bankroll
+									</span>
+									<span class="jackpot-txt__namber" id="bankroll">
+										<span>..</span> BET
+									</span>
+								</div>
+								<!--<div class="jackpot-txt">
+									<span class="jackpot-txt__name" >
+										24h games
+									</span>
+									<span class="jackpot-txt__namber" id="24hours">
+										<span>..</span>
+									</span>
+								</div>-->
+								<div class="jackpot-txt">
+									<span class="jackpot-txt__name">
+										Total games
+									</span>
+									<span class="jackpot-txt__namber" id="total">
+										<span>..</span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<a class="cat-menu">Category</a>
+					<nav style='visibility:hidden' class="category-menu">
+						<ul class="clearfix">
+							<li><a href="#">popular</a></li>
+							<li><a href="#">tournaments</a></li>
+							<li><a href="#">featured</a></li>
+							<li><a href="#">ROULETTE</a></li>
+							<li><a href="#">POKER GAMES</a></li>
+							<li><a href="#">PROMOTIONS</a></li>
+						</ul>
+						<div class="search-games">
+							<form action="">
+								<button class="search-games__button"></button>
+								<input type="text" placeholder="search  games">
+							</form>
+						</div>
+					</nav>
+					<div class="row category-block">
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#" onclick='if(localStorage.getItem("isreg")==1){window.location="/games/Hack-DAO-game/game_hack_dao/"}else{$("#regbut").click();}' class="item-games popup-with-move-anim">
+								<img src="img/img-game1.jpg" alt="">
+								<span>Hack dao (special for EDCON)</span>
+							</a>
+						</div>
+						
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a onclick='' href='#' class="item-games">
+								<img src="img/img-game3.jpg" alt="">
+								<span>Coming soon</span>
+							</a>
+						</div>
+						
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
+								<img src="img/img-game4.jpg" alt="">
+								<span>Coming soon</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
+								<img src="img/img-game5.jpg" alt="">
+								<span>Coming soon</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
+								<img src="img/img-game6.jpg" alt="">
+								<span>Coming soon</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
+								<img src="img/img-game7.jpg" alt="">
+								<span>Coming soon</span>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a href="#popup-games" class="item-games popup-with-move-anim">
+								<img src="img/img-game8.jpg" alt="">
+								<span>Coming soon</span>
+							</a>
+						</div>
+						
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<a onclick='#popup-games' href='#' class="item-games">
+								<img src="img/img-game2.jpg" alt="">
+								<span>Coming soon</span>
+							</a>
+						</div> 
+					</div>
+				</div>
+				<div style='display:none' class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="table-result">
+								<h3>Big winners</h3>
+								<table>
+									<tr>
+										<td>PRETTYDIAMOND</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>FATASSDAB</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>OBI</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+									<tr>
+										<td>FATASSDAB</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="table-result">
+								<h3>Recent winners</h3>
+								<table id='resentwinners'>
+									<tr style='display:none'>
+										<td>FATASSDAB</td>
+										<td>Dice</td>
+										<td>BTC</td>
+										<td>0.00001901</td>
+									</tr>
+								</table>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</main>
+		<!-- MAIN AND -->
+		<!-- FOOTER -->
+
+		<!-- FOOTER AND -->
+
+	</div>
+
+	<div class="hidden">
+
+		<div id="popup-games" class="popup-style zoom-anim-dialog">
+			<p>COMING SOON</p>
+		</div>
+
+		<div id="small-dialog" class="zoom-anim-dialog">
+
+			<div class="window-seed">
+				<h1>
+					Your seed from Mainnet and Testnet is:
+				</h1>
+				<textarea class="popup-textarea" id='seed'></textarea>
+			</div>
+
+			<p id="popup-open-text-after">
+				Please write down your seed phrase. It is impossible to access your fund without your seed.
+			</p>
+
+			<p id="popup-open-text-before">
+				Let’s verify your seed phrase
+			</p>
+
+			<div class="window-open-registr dialog-window-two">
+				<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
+				<button id='btnContinue' class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());'>CONTINUE</button>
+				<span class="dialog-window-cancel">cancel</span>
+			</div>
+
+
+
+			<div class="popup-button clearfix">
+				<button class="disclaimer-btn registr-now open-register fl-left">Register</button>
+				<button class="disclaimer-btn registr-now open-dialog-window fl-right">Restore Wallet from Backup</button>
+			</div>
+
+		</div>
+		
+	</div>
+
+	<!--[if lt IE 9]>
+	<script src="libs/html5shiv/es5-shim.min.js"></script>
+	<script src="libs/html5shiv/html5shiv.min.js"></script>
+	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
+	<script src="libs/respond/respond.min.js"></script>
+	<![endif]-->
+		<script src="js/configuration.js"></script>
+	<script src="libs/jquery/jquery-1.11.2.min.js"></script>
+	<script src="libs/modernizr/modernizr.js"></script>
+	<script src="libs/selectivizr/selectivizr-min.js"></script>
+	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+	<script src="libs/jquery.cookie.js"></script>
+	
+	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script> <!-- DEV VERSION !! -->
+	<script src="js/common.js"></script>
+	<script src="js/erc20call.js"></script>
+	<script src="stat.js"></script>
+	<Script>
+	
+
+	function addGame(gamer,game,cur,pay) {
+	$('#resentwinners tr:first').before('<tr><td>'+gamer+'</td><td>'+game+'</td><td>'+cur+'</td><td>'+pay+'</td></tr>');
+	}
+		/*
+	$.get("//api.dao.casino/daohack/lastgames.php",function(d){
+		console.log(d);
+		var h = 0;
+		$.each(d,function(i,x){
+			
+			if (x.pay > 0.01) { 
+				if (h++<4) addGame(x.addr,'HackDAO',"ETH",x.pay);
+			}
+		});
+		
+		//if (d.addr == '')
+		
+	},"json");
+		*/
+								</script>
+	
+	<link rel="prefetch" href="css/preload.css">
+	<link rel="stylesheet" href="css/preload.css" lazyload>
+</body>
+</html>

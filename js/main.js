@@ -77,7 +77,7 @@ function setContract() {
         var _arr = JSON.parse(d);
         if (!_arr) {
             // Действие в случае отсутсвия банкролла
-            $('#bg_popup').show().find('h1').html('No online bankroller. Come back later or <a href="https://github.com/DaoCasino/BankRollerApp/tree/master/builds">become a bankroller</a> !<br>');      
+            $('#bg_popup').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');      
             return;
         }
         
