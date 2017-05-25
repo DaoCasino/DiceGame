@@ -411,6 +411,7 @@ function responseTransaction(name, value) {
 				//'tax': '0',
 				'currency': 'BET'  // local currency code.
 			});
+			ga('ecommerce:send');
 			ga('send', 'event', "click", "rolldice");
 		}
 		
