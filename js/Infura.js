@@ -96,7 +96,7 @@ Infura.prototype.ethCall = function(name, adr, type){
 				data = "71b207f7";
 				break;
 			case "getStateByAddress":
-				data = "08199931"
+				data = "95fcba03"
 				break;
 			case "balanceOf":
 				data = "70a08231";
