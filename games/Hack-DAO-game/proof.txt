@@ -1,6 +1,0 @@
-This game is a proof of concept. It is based on experimental software. 
-Please, play responsibly, do not use any ether that you cannot afford to lose. Do not play if you are under 18. 
-
-This game is a proof of concept and intended for test purposes. It is based on experimental software
-In no respect shall the authors of this game and the project team incur any liability for the loss of ether.
-Players who access this game from other jurisdictions do so at their own volition and are responsible for compliance with local law.
