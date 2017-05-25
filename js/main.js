@@ -97,6 +97,10 @@ function initGame() {
 
     loadData();
 
+    if(!openkey){
+        $('#bg_popup').show().find('h1').html('Please, sign in <br> <a class="popup-with-move-anim disclaimer-btn registr-now" id="regbut" href="#small-dialog"> Sign in</a> ');
+}
+
     _callback = response;
     
     $("#contract").html(
