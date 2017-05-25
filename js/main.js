@@ -381,7 +381,7 @@ function responseTransaction(name, value) {
     // options.value = price;
     // options.data  = data;
 
-    if (!privkey || !buf || !ks) {
+    if (!privkey || !ks) {
         console.log("ERROR_TRANSACTION");
         console.error(privkey,buf,ks);
         return;
@@ -400,6 +400,20 @@ function responseTransaction(name, value) {
         infura.sendRequest(nameRequest, params, _callback, seed);
         // create list games
         _arGames[seed] = chance;
+		
+		if (typeof ga == "function") {
+			
+			ga('ecommerce:addTransaction', {
+				'id': seed,
+				'affiliation': 'Roll Dice',
+				'revenue': price/100000000,
+				//'shipping': '0',
+				//'tax': '0',
+				'currency': 'BET'  // local currency code.
+			});
+			ga('send', 'event', "click", "rolldice");
+		}
+		
         // var objGame = {time=getTimer(), seed=seed, endGame=false};
         // _arUnconfirmedGames.push(objGame);
     });
