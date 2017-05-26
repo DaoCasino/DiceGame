@@ -76,16 +76,18 @@ function setContract() {
         initGame();
     }
 
-    $("#bankrollers").hide();
+
     $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
+        console.log("____!____")
+        setTimeout(setContract, 3000);
         var _arr = JSON.parse(d);
         if (!_arr) {
             // Действие в случае отсутсвия банкролла
-            $('#bg_popup').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');      
+            $('#bg_popup').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
             return;
         }
-        
-        $("#bankrollers").show().html("Bankrollers: " + _arr.length);
+        $('#bg_popup').hide()
+        $("#bankrollers").html("Bankrollers: " + _arr.length);
         
         if (_arr.length && !bInitGame) {
             addressDice = _arr[0];

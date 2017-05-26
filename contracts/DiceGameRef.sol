@@ -1,4 +1,4 @@
-pragma solidity ^ 0.4.9;
+pragma solidity ^0.4.8;
 
 contract owned {
     address public owner;
@@ -17,6 +17,11 @@ contract owned {
     }
 }
 
+contract OwnedStore {
+    function getAdviser(address _player) returns(address);
+    function getOperator(address _player) returns(address);
+}
+
 contract ERC20 {
     function balanceOf(address _addr) returns(uint);
 
@@ -26,6 +31,16 @@ contract ERC20 {
 }
 
 contract DiceRoll is owned {
+    
+    uint   public meta_version = 2;
+    string public meta_code    = 'dice_v2';
+    string public meta_name    = 'DiceGame';
+    string public meta_link    = 'https://github.com/DaoCasino/DiceGame';
+    
+    address public addr_store = 0xff508e2C3AAcEAf709241dDa256c9cC72f8fA330;
+    OwnedStore store = OwnedStore(addr_store);
+    address public gameDeveloper = 0x6506e2D72910050554D0C47500087c485DAA9689;
+    uint  public houseEdge = 2;
 
     address public addr_erc20 = 0x95a48dca999c89e4e284930d9b9af973a7481287;
     ERC20 erc = ERC20(addr_erc20);
@@ -40,7 +55,6 @@ contract DiceRoll is owned {
     /**
      * @dev List of used random numbers 
      */
-    mapping( bytes32 => bool) public usedRandom;
     enum GameState {
         InProgress,
         PlayerWon,
@@ -53,7 +67,7 @@ contract DiceRoll is owned {
         address sender,
         uint bet,
         uint chance,
-        uint96 seed,
+        bytes32 seed,
         uint rnd
     );
     
@@ -68,22 +82,19 @@ contract DiceRoll is owned {
         uint rnd;
 		uint block;
     }
-
-    mapping(address => Game) public games;
+    
+    mapping(bytes32 => bool) public usedRandom;
     mapping(bytes32 => Game) public listGames;
-
-    modifier gameIsNotInProgress() {
-        if (gameInProgress(games[msg.sender])) {
-            throw;
-        }
-        _;
-    }
 	
     modifier stoped() {
         if (ownerStoped == true) {
             throw;
         }
         _;
+    }
+    
+    function () payable {
+
     }
 
     function Stop() public onlyOwner {
@@ -99,73 +110,52 @@ contract DiceRoll is owned {
         ERC20 erc = ERC20(adr);
     }
 
-    function gameInProgress(Game game)
-    constant
-    private
-    returns(bool) {
-        if (game.player == 0) {
-            return false;
-        }
-        if (game.state == GameState.InProgress) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     function getBank() public constant returns(uint) {
         return erc.balanceOf(this);
     }
     // starts a new game
-    function roll(uint PlayerBet, uint PlayerNumber, bytes32 seed) public
-        //gameIsNotInProgress
+    function roll(uint PlayerBet, uint PlayerNumber, bytes32 seeds) public
         stoped
     {
         if (!erc.transferFrom(msg.sender, this, PlayerBet)) {
             throw;
         }
-        /*if (gameInProgress(games[msg.sender])) {
-            throw;
-        }*/
         if (PlayerBet < minBet || PlayerBet > maxBet) {
             throw; // incorrect bet
         }
         
-        if (usedRandom[seed]) {
+        if (usedRandom[seeds]) {
             throw;
         }
-        
-        usedRandom[seed] = true;
-        if(PlayerNumber > 65536 - 1310){
+       
+        usedRandom[seeds] = true;
+        if(PlayerNumber > 65536 - 1310 || PlayerNumber == 0){
             throw;
-        }
+        } 
 		uint b = block.number;
         uint bet = PlayerBet;
         uint chance = PlayerNumber;
         uint payout = bet * (65536 - 1310) / chance;
-        bytes32 rnd = seed;
         bool isBank = true;
-        // generate uniq id (hash message)
-        //bytes32 random_id = bytes32(uint256(msg.sender) << 96 | seed);
-        logId(seed);
-        Game memory game = Game({
+        
+        logId(seeds);
+        
+        listGames[seeds] = Game({
             player: msg.sender,
             bet: bet,
             chance: chance,
-            seed: seed,
+            seed: seeds,
             state: GameState.InProgress,
             rnd: 0,
 			block: b
         });
-
-        /*if (payout > getBank()) {
+        
+        if (payout > getBank()) {
             isBank = false;
-            games[msg.sender].state = GameState.NoBank;
+            listGames[seeds].state = GameState.NoBank;
             throw;
-        }*/
-
-        games[msg.sender] = game;
-        listGames[seed] = game;
+        }
+        
         totalRollsByUser[msg.sender]++;
     }
 
@@ -176,65 +166,66 @@ contract DiceRoll is owned {
             throw;
         }
         
-        if (ecrecover(random_id, _v, _r, _s) != "0x9e3d69305Da51f34eE29BfB52721e3A824d59e69") {// owner
+        if (ecrecover(random_id, _v, _r, _s) != owner) {// owner
             Game game = listGames[random_id];
             uint payout = game.bet * (65536 - 1310) / game.chance;
             uint rnd = uint256(sha3(_s))%65536;
             game.rnd = rnd;
+			
+			// logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
+			
             if (game.state != GameState.NoBank) {
                 countRolls++;
-                uint profit = payout - game.bet;
-                //logGame(now, msg.sender, bet, chance, rnd);
+               // uint profit = payout - game.bet;
                 totalEthPaid += game.bet;
-                //Ограничение выплаты 1/10BR
-                /*if ((payout - game.bet) > getBank() / 10) {
+                //Limitation of payment 1/10BR
+                if ((payout - game.bet) > getBank() / 10) {
                     throw;
-                }*/
+                }
                 
                 if (rnd > game.chance) {
-                    games[game.player].state = GameState.PlayerLose;
                     listGames[random_id].state = GameState.PlayerLose;
                 } 
                 else {
-                    games[game.player].state = GameState.PlayerWon;
                     listGames[random_id].state = GameState.PlayerWon;
                     erc.transfer(game.player, payout);
                     totalEthSended += payout;
                 }
-                //logGame(now, game.player, game.bet, game.chance, game.seed, game.rnd);
             }
         }
+        serviceReward(game.player, game.bet);
     }
     
-	function timeout(bytes32 random_id) public
+        function serviceReward(address _player, uint256 _value) internal {
+        var profit   = _value * houseEdge / 100;
+        var reward   = profit * 25 / 100;
+
+        var operator = store.getOperator(_player);
+        var adviser  = store.getAdviser(_player);
+
+        erc.transfer(gameDeveloper, reward);
+        erc.transfer(operator, reward);
+        erc.transfer(adviser, reward);
+    }
+    
+	/*function timeout(bytes32 random_id) public
 		stoped
 	{
 		Game game = listGames[random_id];
 		uint b = block.number;
 		uint diff = b - game.block;
 		
-		if(game.state == GameState.InProgress && diff > 100){
+		if(game.state == GameState.InProgress && diff > 3){
 			erc.transfer(game.player, game.bet);
 		}
-	}
-	
-    function getStateById(bytes32 random_id) public constant returns(GameState) {
-        Game memory game = listGames[random_id];
-
-        if (game.player == 0) {
-            // game doesn't exist
-            throw;
-        }
-
-        return game.state;
-    }
+	}*/
 
     function getCount() public constant returns(uint) {
         return totalRollsByUser[msg.sender];
     }
-
-    function getShowRnd(address player) public constant returns(uint) {
-        Game memory game = games[player];
+    
+    function getShowRnd(bytes32 random_id) public constant returns(uint) {
+        Game memory game = listGames[random_id];
 
         if (game.player == 0) {
             // game doesn't exist
@@ -244,8 +235,8 @@ contract DiceRoll is owned {
         return game.rnd;
     }
 
-    function getStateByAddress(address player) public constant returns(GameState) {
-        Game memory game = games[player];
+    function getStateByAddress(bytes32 random_id) public constant returns(GameState) {
+        Game memory game = listGames[random_id];
 
         if (game.player == 0) {
             // game doesn't exist
