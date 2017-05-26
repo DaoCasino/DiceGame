@@ -26,7 +26,11 @@ contract ERC20 {
 }
 
 contract DiceRoll is owned {
-
+    uint   public meta_version = 2;
+    string public meta_code    = 'dice_v2';
+    string public meta_name    = 'DiceGame';
+    string public meta_link    = 'https://github.com/DaoCasino/DiceGame';
+    
     address public addr_erc20 = 0x95a48dca999c89e4e284930d9b9af973a7481287;
     ERC20 erc = ERC20(addr_erc20);
     bool public ownerStoped = false;
