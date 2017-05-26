@@ -40,6 +40,10 @@ function loadData() {
         privkey = localStorage.getItem('privkey');
         sendingAddr = openkey.substr(2);
     }
+    
+        if(!openkey){
+        $('#bg_popup').show().find('h1').html('Please, sign in on the <a href="'+window.location.origin+window.location.search+'">Platform</a>');
+}
     console.log("version 0.55 BET"); // VERSION !
     console.log("mainnet:", mainnet);
     console.log("openkey:", openkey);
@@ -203,7 +207,7 @@ function Refresh() {
 };
 
 function makeid() {
-    var str = "";
+    var str = "0x";
     var possible = "abcdef0123456789";
 
     for (var i = 0; i < 64; i++) {
@@ -213,9 +217,7 @@ function makeid() {
             str += possible.charAt(Math.floor(Math.random() * (possible.length - 1)));
         }
     }
-
     str = numToHex(str);
-	
     return str;
 }
 
@@ -381,7 +383,7 @@ function responseTransaction(name, value) {
     // options.value = price;
     // options.data  = data;
 
-    if (!privkey || !buf || !ks) {
+    if (!privkey || !ks) {
         console.log("ERROR_TRANSACTION");
         console.error(privkey,buf,ks);
         return;
@@ -393,6 +395,7 @@ function responseTransaction(name, value) {
             return false;
         }
         var seed = makeid();
+        console.log("SEED:",seed)
         var args = [price, chance, seed];
         var registerTx = lightwallet.txutils.functionTx(contract_dice_abi, name, args, options);
         var params = "0x" + lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, sendingAddr);
@@ -400,6 +403,21 @@ function responseTransaction(name, value) {
         infura.sendRequest(nameRequest, params, _callback, seed);
         // create list games
         _arGames[seed] = chance;
+		
+		if (typeof ga == "function") {
+			
+			ga('ecommerce:addTransaction', {
+				'id': seed,
+				'affiliation': 'Roll Dice',
+				'revenue': price/100000000,
+				//'shipping': '0',
+				//'tax': '0',
+				'currency': 'BET'  // local currency code.
+			});
+			ga('ecommerce:send');
+			ga('send', 'event', "click", "rolldice");
+		}
+		
         // var objGame = {time=getTimer(), seed=seed, endGame=false};
         // _arUnconfirmedGames.push(objGame);
     });
