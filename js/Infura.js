@@ -151,7 +151,7 @@ Infura.prototype.sendRequestServer = function(name, txid, callback, seed){
 
 Infura.prototype.checkJson = function(name, seed, callback){
 	$.ajax({
-		url: "https://platform.dao.casino/api/proxy.php?a=get&vconcat="+seed,
+		url: "https://platform.dao.casino/api/proxy.php?a=get&vconcat="+seed+"&address="+addressDice,
 		type: "POST",
 		async: false,
 		success: function (obj) {
