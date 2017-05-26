@@ -142,7 +142,7 @@ Infura.prototype.sendRequestServer = function(name, txid, callback, seed){
 	}
 	repeatRequest = 0;
 	var url = "https://platform.dao.casino/api/proxy.php?a=roll&";
-	$.get(url+"txid="+txid+"&vconcat="+seed, 
+	$.get(url+"txid="+txid+"&vconcat="+seed+"&address="+addressDice, 
 		function(d){
 			gThis.checkJson(name, seed, callback);
 		}
