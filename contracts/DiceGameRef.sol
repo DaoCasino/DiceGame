@@ -166,7 +166,7 @@ contract DiceRoll is owned {
             throw;
         }
         
-        if (ecrecover(random_id, _v, _r, _s) != owner) {// owner
+        if (ecrecover(random_id, _v, _r, _s) == owner) {// owner
             Game game = listGames[random_id];
             uint payout = game.bet * (65536 - 1310) / game.chance;
             uint rnd = uint256(sha3(_s))%65536;
