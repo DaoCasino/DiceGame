@@ -78,7 +78,6 @@ function setContract() {
 
 
     $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
-        console.log("____!____")
         setTimeout(setContract, 3000);
         var _arr = JSON.parse(d);
         if (!_arr) {
@@ -141,7 +140,7 @@ function initGame() {
         }
     }, 5000);
 
-    webSocket("ws://46.101.244.101:8081/ws").onmessage = function(event) {
+webSocket("wss://ws.dao.casino/ws").onmessage = function(event) {
         if (!event || !event.data) { return; }
      
         var msg    = JSON.parse(event.data).data.substr(2);
