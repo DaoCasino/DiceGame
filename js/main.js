@@ -140,7 +140,7 @@ function initGame() {
         }
     }, 5000);
 
-    webSocket("wss://ws.dao.casino/ws").onmessage = function(event) {
+webSocket("wss://ws.dao.casino/ws").onmessage = function(event) {
         if (!event || !event.data) { return; }
      
         var msg    = JSON.parse(event.data).data.substr(2);
@@ -409,11 +409,11 @@ function responseTransaction(name, value) {
 			
 			ga('ecommerce:addTransaction', {
 				'id': seed,
-				'affiliation': 'Roll Dice',
+				'affiliation': 'RollDice',
 				'revenue': price/100000000,
 				//'shipping': '0',
 				//'tax': '0',
-				'currency': 'BET'  // local currency code.
+				'currency': 'USD'  // local currency code.
 			});
 			ga('ecommerce:send');
 			ga('send', 'event', "click", "rolldice");
