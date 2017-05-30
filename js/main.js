@@ -409,11 +409,11 @@ function responseTransaction(name, value) {
 			
 			ga('ecommerce:addTransaction', {
 				'id': seed,
-				'affiliation': 'Roll Dice',
+				'affiliation': 'RollDice',
 				'revenue': price/100000000,
 				//'shipping': '0',
 				//'tax': '0',
-				'currency': 'BET'  // local currency code.
+				'currency': 'USD'  // local currency code.
 			});
 			ga('ecommerce:send');
 			ga('send', 'event', "click", "rolldice");
