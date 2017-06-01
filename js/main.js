@@ -1,5 +1,10 @@
 
 // Vault keystore
+
+if(!localStorage.getItem('keystore')){
+        $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="'+window.location.origin+window.location.search+'">Platform</a>');
+}
+
 var ks = lightwallet.keystore.deserialize(localStorage.getItem('keystore'));
 
 var sendingAddr, mainnet, openkey, privkey, 
@@ -41,9 +46,6 @@ function loadData() {
         sendingAddr = openkey.substr(2);
     }
     
-        if(!openkey){
-        $('#bg_popup').show().find('h1').html('Please, sign in on the <a href="'+window.location.origin+window.location.search+'">Platform</a>');
-}
     console.log("version 0.55 BET"); // VERSION !
     console.log("mainnet:", mainnet);
     console.log("openkey:", openkey);
@@ -82,10 +84,10 @@ function setContract() {
         var _arr = JSON.parse(d);
         if (!_arr) {
             // Действие в случае отсутсвия банкролла
-            $('#bg_popup').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+            $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
             return;
         }
-        $('#bg_popup').hide()
+        $('#bg_popup.bankroll').hide()
         $("#bankrollers").html("Bankrollers: " + _arr.length);
         
         if (_arr.length && !bInitGame) {
@@ -101,10 +103,6 @@ function initGame() {
     if(bInitGame){ return false; } bInitGame = true;
 
     loadData();
-
-    if(!openkey){
-        $('#bg_popup').show().find('h1').html('Please, sign in <br> <a class="popup-with-move-anim disclaimer-btn registr-now" id="regbut" href="#small-dialog"> Sign in</a> ');
-}
 
     _callback = response;
     
@@ -129,13 +127,13 @@ function initGame() {
     Refresh();
  
     if (getAllowance(addressDice) < 1000000) {
-        $('#bg_popup').show().find('h1').html('Please, wait one minute <br>');
+        $('#bg_popup.allowance').show().find('h1').html('Please, wait one minute <br>');
         approve(addressDice, 100000000000);
     }
 
     var AllowanceProc = setInterval(function () {
-        if (getAllowance(addressDice) != 0) {
-            $('#bg_popup').hide();
+        if (getAllowance(addressDice) > 1000000) {
+            $('#bg_popup.allowance').hide();
             clearInterval(AllowanceProc);
         }
     }, 5000);

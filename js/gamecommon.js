@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     var clipboard = new Clipboard('#openkey');
     
     $("#slider-dice-one").slider({

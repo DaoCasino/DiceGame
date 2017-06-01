@@ -337,7 +337,7 @@
 
 				<div class="window-open-registr dialog-window-two">
 					<input type="text" id='openseed' placeholder="Wallet Seed Phrase" require>
-					<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("whait..")'>CONTINUE</button>
+					<button class="disclaimer-btn registr-now" onclick='wallet_open($("#openseed").val());$(this).html("wait..")'>CONTINUE</button>
 					<span class="dialog-window-cancel">назад</span>
 				</div>
 
@@ -354,7 +354,15 @@
 
 
 	<!-- Popup -->
-	<div id="bg_popup" >
+	<div id="bg_popup" class="reg" >
+		<div id="popup"><h1>Loading...<br></h1></div>
+	</div>
+
+	<div id="bg_popup" class="allowance" >
+		<div id="popup"><h1>Loading...<br></h1></div>
+	</div>
+
+	<div id="bg_popup" class="bankroll" >
 		<div id="popup"><h1>Loading...<br></h1></div>
 	</div>
 
