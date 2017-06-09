@@ -29,18 +29,25 @@
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
 	<link rel="stylesheet" href="libs/magnific-popup/magnific-popup.css" />
 	<link rel="stylesheet" href="css/jquery-ui.css" />
-	
+
 	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-		
-	  ga('create', 'UA-92023514-2', 'auto');
-	  
-	  ga('require', 'ecommerce');
-	  
-	  ga('send', 'pageview');
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-92023514-2', 'auto');
+
+		ga('require', 'ecommerce');
+
+		ga('send', 'pageview');
 	</script>
 </head>
 
@@ -134,11 +141,11 @@
 									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
 										? BET
 									</a>
-						
+
 									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
 										exit
 									</a>
-									
+
 								</div>
 							</div>
 
@@ -206,7 +213,7 @@
 										Click Roll Dice to place your bet:
 									</label>
 									<button id="roll-dice" onclick="" class="disclaimer-btn registr-now">Roll Dice</button>
-									
+
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -234,12 +241,12 @@
 						</div>
 						<div class="row block-dice-status">
 							<div class="col-md-4 col-md-offset-2">
-									<h3 class="status-numbers" style="text-align: center;">TRANSACTION</h3>
-									<h3 class="status-numbers" style="text-align: center;" id="Tx">..:.::.</h3>
+								<h3 class="status-numbers" style="text-align: center;">TRANSACTION</h3>
+								<h3 class="status-numbers" style="text-align: center;" id="Tx">..:.::.</h3>
 							</div>
 							<div class="col-md-4">
-									<h3 class="status-numbers" style="text-align: center;" id="contractBalance">CONTRACT </h3>
-									<h3 class="status-numbers" style="text-align: center;" id="contract">..:.::.</h3>
+								<h3 class="status-numbers" style="text-align: center;" id="contractBalance">CONTRACT </h3>
+								<h3 class="status-numbers" style="text-align: center;" id="contract">..:.::.</h3>
 							</div>
 
 
@@ -255,7 +262,7 @@
 
 							<div class="wrapper-dice_table">
 								<table class="dice-table" id="table">
-									
+
 									<thead>
 										<tr>
 											<th>TRANSACTION / PLAYER</th>
@@ -270,8 +277,8 @@
 									</tbody>
 								</table>
 							</div>
-							<br>	
-							<div class="container">
+							<br>
+							<!--<div class="container">
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-4">
@@ -294,7 +301,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>-->
 
 						</div>
 					</div>
@@ -353,52 +360,60 @@
 		</div>
 
 
-	<!-- Popup -->
-	<div id="bg_popup" class="reg" >
-		<div id="popup"><h1>Loading...<br></h1></div>
-	</div>
+		<!-- Popup -->
+		<div id="bg_popup" class="reg">
+			<div id="popup">
+				<h1>Loading...<br></h1>
+			</div>
+		</div>
 
-	<div id="bg_popup" class="allowance" >
-		<div id="popup"><h1>Loading...<br></h1></div>
-	</div>
+		<div id="bg_popup" class="allowance">
+			<div id="popup">
+				<h1>Loading...<br>
+					<div id="timer"></div>
+				</h1>
+			</div>
+		</div>
 
-	<div id="bg_popup" class="bankroll" >
-		<div id="popup"><h1>Loading...<br></h1></div>
-	</div>
+		<div id="bg_popup" class="bankroll">
+			<div id="popup">
+				<h1>Loading...<br></h1>
+			</div>
+		</div>
 
 
-	<!--[if lt IE 9]>
+		<!--[if lt IE 9]>
 	<script src="libs/html5shiv/es5-shim.min.js"></script>
 	<script src="libs/html5shiv/html5shiv.min.js"></script>
 	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
 	<script src="libs/respond/respond.min.js"></script>
 	<![endif]-->
-	<script src="common_js/configuration.js"></script>
-	<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
-	<script src="common_js/clipboard.min.js"></script>
-	<script src="libs/jquery/jquery-1.11.2.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	
-	<script src="libs/modernizr/modernizr.js"></script>
-	<script src="libs/selectivizr/selectivizr-min.js"></script>
-	<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
-	
-	<script src="js/utils.js" async></script>
-	
-	<script src="js/Infura.js"></script>
+		<script src="common_js/configuration.js"></script>
+		<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
+		<script src="common_js/clipboard.min.js"></script>
+		<script src="libs/jquery/jquery-1.11.2.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-	<script src="js/contract_erc20_abi.js"></script>
-	<script src="js/contract_dice_abi.js"></script>
+		<script src="libs/modernizr/modernizr.js"></script>
+		<script src="libs/selectivizr/selectivizr-min.js"></script>
+		<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 
-	<script src="js/web_socket.js"></script>
+		<script src="js/utils.js" async></script>
 
-	<script src="js/main.js"></script>
-	<script src="common_js/erc20call.js"></script>
+		<script src="js/Infura.js"></script>
 
-	<script src="js/gamecommon.js" async></script>
-	
-	<script src="common_js/common.js"></script>
+		<script src="js/contract_erc20_abi.js"></script>
+		<script src="js/contract_dice_abi.js"></script>
+
+		<script src="js/web_socket.js"></script>
+
+		<script src="js/main.js"></script>
+		<script src="common_js/erc20call.js"></script>
+
+		<script src="js/gamecommon.js" async></script>
+
+		<script src="common_js/common.js"></script>
 </body>
 
 </html>
