@@ -93,15 +93,22 @@ function setContract() {
         $("#bankrollers").html("Bankrollers: " + _arr.length);
 
         if (_arr.length && !bInitGame) {
+            console.log(_arr);
             for (var j = 0; j < _arr.length; j++) {
+                console.log()
                 if (validGames(_arr[j])) {
                     valid.push(_arr[j])
                 }
             }
+            if (valid.length){
+                console.log("valid",valid)
             addressDice = valid[0];
             initGame();
             return;
-
+            } else {
+                            $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+            return;
+            }
         }
     });
 }
