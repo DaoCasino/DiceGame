@@ -90,8 +90,7 @@ function setContract() {
             return;
         }
         $('#bg_popup.bankroll').hide()
-        $("#bankrollers").html("Bankrollers: " + _arr.length);
-
+       
         if (_arr.length && !bInitGame) {
 
             for (var j = 0; j < _arr.length; j++) {
@@ -101,7 +100,7 @@ function setContract() {
                 }
             }
             if (valid.length) {
-                console.log("valid", valid)
+                $("#bankrollers").html("Bankrollers: " + valid.length);
                 addressDice = valid[0];
                 initGame();
                 return;
