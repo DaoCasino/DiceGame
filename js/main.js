@@ -73,13 +73,6 @@ function setContract() {
         return params;
     }());
 
-    // Set requested contract
-    if (q_params.address) {
-        addressDice = q_params.address;
-        initGame();
-    }
-
-
     $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
         setTimeout(setContract, 3000);
         var _arr = JSON.parse(d);
@@ -90,9 +83,7 @@ function setContract() {
             return;
         }
         $('#bg_popup.bankroll').hide()
-       
         if (_arr.length && !bInitGame) {
-
             for (var j = 0; j < _arr.length; j++) {
                 console.log()
                 if (validGames(_arr[j])) {
@@ -102,6 +93,9 @@ function setContract() {
             if (valid.length) {
                 $("#bankrollers").html("Bankrollers: " + valid.length);
                 addressDice = valid[0];
+                if (q_params.address) {
+                    addressDice = q_params.address;
+                }
                 initGame();
                 return;
             } else {
@@ -126,7 +120,7 @@ function validGames(contract) {
             "params": [{
                 "from": openkey,
                 "to": "0x4d899f0a46e091fb25cc4fa4717ed836665c3399",
-                "data": "0xfb97a77e" + pad(contract.substr(2),64)
+                "data": "0xfb97a77e" + pad(contract.substr(2), 64)
             }, "latest"]
         }),
         success: function (d) {
@@ -136,7 +130,7 @@ function validGames(contract) {
         }
     })
     return res;
-    
+
 };
 
 function initGame() {
