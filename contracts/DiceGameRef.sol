@@ -250,6 +250,7 @@ contract DiceRoll is owned {
     }
 
     function withdraw(uint amount) public onlyOwner {
-        if (msg.sender.send(amount)) {}
+        //if (msg.sender.send(amount)) {}
+		token.transfer(msg.sender, amountInWei);
     }
 }
