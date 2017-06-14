@@ -119,7 +119,7 @@ function validGames(contract) {
             "method": "eth_call",
             "params": [{
                 "from": openkey,
-                "to": "0x4d899f0a46e091fb25cc4fa4717ed836665c3399",
+                "to": "0x19572862df29e0658ec4823ba44c76b754f32713",
                 "data": "0xfb97a77e" + pad(contract.substr(2), 64)
             }, "latest"]
         }),

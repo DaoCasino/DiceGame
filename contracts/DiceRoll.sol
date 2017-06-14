@@ -18,9 +18,9 @@ contract owned {
 }
 
 contract Referral {
-    function getAdviser(address _player) returns(address);
+    function getAdviser(address _player) constant returns(address);
 
-    function getOperator(address _player) returns(address);
+    function getOperator(address _player) constant returns(address);
 
     function upProfit(address _adviser, uint _profitAdviser, address _operator, uint _profitOperator);
 }
@@ -49,7 +49,7 @@ contract DiceRoll is owned {
     address public gameDeveloper = 0x6506e2D72910050554D0C47500087c485DAA9689;
     uint public houseEdge = 2;
 
-    address public addr_ref = 0x94cfd3646f89166afe094940159742a3f6ba9a0c;
+    address public addr_ref = 0xe195eed0e77b48146aa246dadf987d2504ac88cb;
     Referral ref = Referral(addr_ref);
     
     address public addr_erc20 = 0x95a48dca999c89e4e284930d9b9af973a7481287;
@@ -107,8 +107,8 @@ contract DiceRoll is owned {
 
     }
 
-    function payout(uint _bet) public onlyOwner {
-        erc.transfer(owner, _bet);
+    function withdraw(uint _bet) public onlyOwner {
+        erc.transfer(msg.sender, _bet);
     }
 
     function Stop() public onlyOwner {
@@ -177,7 +177,7 @@ contract DiceRoll is owned {
             throw;
         }
 
-        if (ecrecover(random_id, _v, _r, _s) == owner) { // owner
+        if (ecrecover(random_id, _v, _r, _s) != owner) { // owner
             Game game = listGames[random_id];
             uint payout = game.bet * (65536 - 1310) / game.chance;
             uint rnd = uint256(sha3(_s)) % 65536;
@@ -196,8 +196,9 @@ contract DiceRoll is owned {
                     totalEthSended += payout;
                 }
             }
+            serviceReward(game.player, game.bet);
         }
-        serviceReward(game.player, game.bet);
+        
     }
 
     function serviceReward(address _player, uint256 _value) internal {
