@@ -151,8 +151,6 @@ contract DiceRoll is owned {
             throw;
         }
 
-        logId(seeds);
-
         listGames[seeds] = Game({
             player: msg.sender,
             bet: bet,
@@ -169,6 +167,7 @@ contract DiceRoll is owned {
         }
 
         totalRollsByUser[msg.sender]++;
+        logId(seeds);
     }
 
     function confirm(bytes32 random_id, uint8 _v, bytes32 _r,bytes32 _s) public onlyOwner {
