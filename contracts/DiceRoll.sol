@@ -171,13 +171,13 @@ contract DiceRoll is owned {
         totalRollsByUser[msg.sender]++;
     }
 
-    function confirm(bytes32 random_id, uint8 _v, bytes32 _r, bytes32 _s) public onlyOwner {
+    function confirm(bytes32 random_id, uint8 _v, bytes32 _r,bytes32 _s) public onlyOwner {
         if (listGames[random_id].state == GameState.PlayerWon ||
             listGames[random_id].state == GameState.PlayerLose) {
             throw;
         }
 
-        if (ecrecover(random_id, _v, _r, _s) != owner) { // owner
+        if (ecrecover(random_id, _v, _r, _s) == owner) { // owner
             Game game = listGames[random_id];
             uint payout = game.bet * (65536 - 1310) / game.chance;
             uint rnd = uint256(sha3(_s)) % 65536;
@@ -185,9 +185,7 @@ contract DiceRoll is owned {
 
             if (game.state != GameState.NoBank) {
                 countRolls++;
-                // uint profit = payout - game.bet;
                 totalEthPaid += game.bet;
-
                 if (rnd > game.chance) {
                     listGames[random_id].state = GameState.PlayerLose;
                 } else {

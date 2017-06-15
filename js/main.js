@@ -119,7 +119,7 @@ function validGames(contract) {
             "method": "eth_call",
             "params": [{
                 "from": openkey,
-                "to": "0x19572862df29e0658ec4823ba44c76b754f32713",
+                "to": "0x1dd99846d322e30dc299cbd953b026dc590cdf11",
                 "data": "0xfb97a77e" + pad(contract.substr(2), 64)
             }, "latest"]
         }),
@@ -262,7 +262,7 @@ function makeid() {
         }
     }
     str = numToHex(str);
-    return str;
+    return "0x"+web3_sha3(str);
 }
 
 function startGame() {
