@@ -32,3 +32,12 @@ function isLocalStorageAvailable() {
         return false;
     }
 };
+
+
+function buf2hex(buffer) {
+  return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+}
+function buf2bytes32(buffer) {
+    return '0x'+buf2hex(buffer)
+}
+
