@@ -164,7 +164,7 @@ function initGame() {
     Refresh();
 
     if (getAllowance(addressDice) < 1000000) {
-        $('#bg_popup.allowance').show().find('h1').html('Bankroll connect... Please, wait one minute... <br>');
+        $('#bg_popup.allowance').show().html('<h1>Bankroll connect... Please, wait one minute...</h1><br><p> The "approve" function allows the contract to take a small number of tokens from the players purse. This is done in order not to cause the function to "approve" each time. </p>');
         animateTimer(60);
         approve(addressDice, 100000000000);
         window.approveT = setTimeout(function () {
