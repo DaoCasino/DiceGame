@@ -8,7 +8,7 @@ body input:required:valid,
 body textarea:required:valid{}
 html{height:100%;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;}
 body{font-family:"ProximaNova-Regular", Arial;font-size:16px;min-width:320px;height:100%;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-.wrapper_main{padding:0 0 0 0;min-width:320px;position:relative;overflow:hidden;min-height:100%;background:#2d2031 url(../img/main_bg-min.jpg);background-repeat:no-repeat;background-position:center 0;-webkit-background-size:cover;background-size:cover;}
+.wrapper_main{padding:0 0 0 0;min-width:320px;position:relative;overflow:hidden;min-height:100%;background:#2d2031 url(../img/main_bg-min.jpg);background-repeat:no-repeat;background-position:center 0;-webkit-background-size:cover;background-size:cover;background-attachment: fixed;}
 .hidden{display:none;}
 button{cursor:pointer;}
 h1, h2, h3, h4, h5, h6{padding:0;margin:0;}

@@ -167,12 +167,16 @@ function initGame() {
         $('#bg_popup.allowance').show().find('h1').html('Bankroll connect... Please, wait one minute... <br>');
         animateTimer(60);
         approve(addressDice, 100000000000);
+        window.approveT = setTimeout(function () {
+            window.location.reload();
+        }, 42000);
     }
 
     var AllowanceProc = setInterval(function () {
         if (getAllowance(addressDice) > 1000000) {
             $('#bg_popup.allowance').hide();
             clearInterval(AllowanceProc);
+            clearTimeout(window.approveT);
         }
     }, 5000);
 
@@ -182,7 +186,7 @@ function initGame() {
         }
 
         var msg = JSON.parse(event.data).data.substr(2);
-        console.log(event.data)
+
         var player = "0x" + msg.substr(24, 64);
         var bet = hexToNum(msg.substr(64, 64)) / 100000000;
 
@@ -234,13 +238,13 @@ function Refresh() {
         betEth = 0;
     }
     if (balance != 0) {
-        var _bet = (30) / ((65536 - 1310) / chance);
+        var _bet = ((bankroll / 100000000) / 10) / ((65536 - 1310) / chance);
         maxBetEth = Math.min(_bet, balance, 10);
         if (betEth > maxBetEth) {
             betEth = +maxBetEth.toFixed(4);
         }
-        if (betEth < 0.0001) {
-            betEth = 0.0001;
+        if (betEth < 0.001) {
+            betEth = 0.001;
         }
         $("#profit-on-win").val(((betEth * (65536 - 1310) / chance) - betEth).toFixed(6));
         $("#payout").val("x" + ((65536 - 1310) / chance).toFixed(5));
@@ -262,7 +266,7 @@ function makeid() {
         }
     }
     str = numToHex(str);
-    return "0x"+web3_sha3(str);
+    return "0x" + web3_sha3(str);
 }
 
 function startGame() {
@@ -539,5 +543,6 @@ function animateTimer(second) {
         if (time < 0) {
             clearInterval(t);
         }
+
     }, 1000)
 }
