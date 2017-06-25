@@ -110,7 +110,7 @@ function setContract() {
         if (_arr.length && !bInitGame) {
             for (var j = 0; j < _arr.length; j++) {
                 console.log()
-                if (validGames(_arr[j])) {
+                if (validGames(_arr[j]) || validConfirm(_arr[j])) {
                     valid.push(_arr[j])
                 }
             }
@@ -294,7 +294,7 @@ function makeid() {
 }
 
 function startGame() {
-    if (!checkBalance){
+    if (!checkBalance) {
         $('#bg_popup.balance').show();
         return
     }
@@ -310,6 +310,31 @@ function startGame() {
     } else {
         $("#randomnum").text("Sorry, you do not have a key");
     }
+}
+
+function validConfirm(address) {
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_blockNumber",
+            "params": []
+        }),
+        success: function (d) {
+            $.get("http://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + hexToNum(d.result) - 1000 + "&endblock=latest&", function (d) {
+                for (var n = 0; n < d.result.length; n++) {
+                    if(d.result[n].input.substr(0, 10) =='0xb00606a5'){
+                        return true;
+                    }
+                }
+                return false;
+            })
+        }
+    })
 }
 
 function gameend() {
