@@ -325,7 +325,7 @@ function validConfirm(address) {
             "params": []
         }),
         success: function (d) {
-            $.get("http://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + hexToNum(d.result) - 1000 + "&endblock=latest&", function (d) {
+            $.get("http://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(d.result) - 2000) + "&endblock=latest&", function (d) {
                 for (var n = 0; n < d.result.length; n++) {
                     if(d.result[n].input.substr(0, 10) =='0xb00606a5'){
                         return true;
