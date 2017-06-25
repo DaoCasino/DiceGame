@@ -71,7 +71,7 @@ Infura.prototype.sendRequest = function(name, params, callback, seed){
 };
 
 Infura.prototype.ethCall = function(name, adr, type){
-	if(type){} else {type = "latest"};
+	if(type){} else {type = "pending"};
 	
 	var result;
 	
