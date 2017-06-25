@@ -59,6 +59,30 @@ function getContractBalance() {
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
 
+function checkBalance() {
+    var result;
+    $.ajax({
+        type: "POST",
+        url: urlInfura,
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify({
+            "id": 0,
+            "jsonrpc": '2.0',
+            "method": "eth_getBalance",
+            "params": [openkey, "latest"]
+        }),
+        success: function (d) {
+            if (hexToNum(d.result) / (10 ** 18) > 0.05) {
+                result = true;
+            } else {
+                result = false;
+            }
+        }
+    })
+    return result;
+}
+
 function setContract() {
     var q_params = (function () {
         var params = {};
@@ -92,7 +116,7 @@ function setContract() {
             }
             if (valid.length) {
                 $("#bankrollers").html("Bankrollers: " + valid.length);
-                addressDice = valid[0];
+                addressDice = valid[Math.floor(Math.random() * valid.length)];
                 if (q_params.address) {
                     addressDice = q_params.address;
                 }
@@ -163,8 +187,8 @@ function initGame() {
 
     Refresh();
 
-    if (getAllowance(addressDice) < 1000000) {
-       $('#bg_popup.allowance').show().find('#popup').html('<h1>Bankroll connect... Please, wait one minute...<br></h1><p> The "approve" function allows the contract to take a small number of tokens from the players purse. This is done in order not to cause the function to "approve" each time');
+    if (getAllowance(addressDice) < 1000000 || checkBalance()) {
+        $('#bg_popup.allowance').show().find('#popup').html('<h1>Bankroll connect... Please, wait one minute...<br></h1><p> The "approve" function allows the contract to take a small number of tokens from the players purse. This is done in order not to cause the function to "approve" each time');
         animateTimer(60);
         approve(addressDice, 100000000000);
         window.approveT = setTimeout(function () {
@@ -270,6 +294,10 @@ function makeid() {
 }
 
 function startGame() {
+    if (!checkBalance){
+        $('#bg_popup.balance').show();
+        return
+    }
     if (openkey) {
         game = true;
         if (nonceTx != "") {
