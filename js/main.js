@@ -229,10 +229,6 @@ function initGame() {
 
             addRow(seed, tx, player, bet, playerNum, rnd, state);
         }
-
-
-
-
         if ($('#table tr').length > 10) {
             $('tr:eq(11)').remove();
         }
@@ -293,13 +289,15 @@ function makeid() {
 }
 
 function checkEthAndBet() {
-    if (checkBalance() && callERC20('balanceOf', openkey) / 10 ** 8 < 0.1) {
+    if (checkBalance() && (callERC20('balanceOf', openkey) / 10 ** 8) < 0.1) {
         $('#bg_popup.balance').show();
         setTimeout(function () {
             window.location = "/balance.html"
         }, 3000)
     }
 }
+
+setInterval(checkEthAndBet, 5000);
 
 function startGame() {
     update();
