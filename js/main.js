@@ -295,6 +295,7 @@ function makeid() {
 function startGame() {
     if (!checkBalance) {
         $('#bg_popup.balance').show();
+
         return
     }
     if (openkey) {
@@ -576,8 +577,7 @@ function update() {
     if (balance < 0.02 && !game || !balance) {
         disabled(true);
         $("#label").html(" You don't have money, please visit <a href='" + window.location.origin + "/balance.html'>balance page</a>");
-
-        //$('#randomnum').text("Please, up balance")
+        setTimeout(function(){ window.location = "/balance.html" },3000)
     } else if (balance > 0.01 && !game) {
         disabled(false);
         $("#label").text("Click Roll Dice to place your bet:");
