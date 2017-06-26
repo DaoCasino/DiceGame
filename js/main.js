@@ -292,15 +292,17 @@ function makeid() {
     return "0x" + web3_sha3(str);
 }
 
-function startGame() {
-    update();
-    if (checkBalance < 0.1) {
+function checkEthAndBet() {
+    if (checkBalance() && callERC20('balanceOf', openkey) / 10 ** 8 < 0.1) {
         $('#bg_popup.balance').show();
         setTimeout(function () {
             window.location = "/balance.html"
         }, 3000)
-        return
     }
+}
+
+function startGame() {
+    update();
     if (openkey) {
         game = true;
         if (nonceTx != "") {
@@ -579,13 +581,17 @@ function update() {
     if (balance < 0.02 && !game || !balance) {
         disabled(true);
         $("#label").html(" You don't have money, please visit <a href='" + window.location.origin + "/balance.html'>balance page</a>");
-        setTimeout(function(){ window.location = "/balance.html" },3000)
+        setTimeout(function () {
+            window.location = "/balance.html"
+        }, 3000)
     } else if (balance > 0.01 && !game) {
         disabled(false);
         $("#label").text("Click Roll Dice to place your bet:");
     }
     $("#your-balance").val(balance);
 }
+
+
 
 
 function animateTimer(second) {
