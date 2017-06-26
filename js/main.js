@@ -185,7 +185,8 @@ function initGame() {
     getContractBalance();
 
     Refresh();
-
+    checkEthAndBet();
+setInterval(checkEthAndBet, 5000);
     if (getAllowance(addressDice) < 1000000 && checkBalance()) {
         $('#bg_popup.allowance').show().find('#popup').html('<h1>Bankroll connect... Please, wait one minute...<br></h1><p> The "approve" function allows the contract to take a small number of tokens from the players purse. This is done in order not to cause the function to "approve" each time');
         animateTimer(60);
@@ -296,8 +297,6 @@ function checkEthAndBet() {
         }, 3000)
     }
 }
-
-setInterval(checkEthAndBet, 5000);
 
 function startGame() {
     update();
