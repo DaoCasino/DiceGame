@@ -83,79 +83,78 @@ function checkBalance() {
     return result;
 }
 
-function setContract() {
-    var q_params = (function () {
-        var params = {};
-        if (window.location.href.split('?').length < 2) {
-            return params;
-        }
-        var parts = window.location.href.split('?')[1].split('&');
-        for (var k in parts) {
-            var kv = parts[k].split('=');
-            params[kv[0]] = kv[1];
-        }
-        return params;
-    }());
+// function setContract() {
+//     var q_params = (function () {
+//         var params = {};
+//         if (window.location.href.split('?').length < 2) {
+//             return params;
+//         }
+//         var parts = window.location.href.split('?')[1].split('&');
+//         for (var k in parts) {
+//             var kv = parts[k].split('=');
+//             params[kv[0]] = kv[1];
+//         }
+//         return params;
+//     }());
+//     $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
+//         setTimeout(setContract, 3000);
+//         var _arr = JSON.parse(d);
+//         var valid = new Array();
+//         if (!_arr) {
+//             // Действие в случае отсутсвия банкролла
+//             $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+//             return;
+//         }
+//         $('#bg_popup.bankroll').hide()
+//         if (_arr.length && !bInitGame) {
+//             for (var j = 0; j < _arr.length; j++) {
+//                 if (validGames(_arr[j]) || validConfirm(_arr[j], function(){return true})) {
+//                     console.log("valid:", _arr[j])
+//                     valid.push(_arr[j])
+//                 }
+//             }
+//             if (valid.length) {
+//                 $("#bankrollers").html("Bankrollers: " + valid.length);
+//                 addressDice = valid[Math.floor(Math.random() * valid.length)];
+//                 if (q_params.address) {
+//                     addressDice = q_params.address;
+//                 }
+//                 initGame();
+//                 return;
+//             } else {
+//                 $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+//                 return;
+//             }
+//         }
+//     });
+// }
 
-    $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
-        setTimeout(setContract, 3000);
-        var _arr = JSON.parse(d);
-        var valid = new Array();
-        if (!_arr) {
-            // Действие в случае отсутсвия банкролла
-            $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-            return;
-        }
-        $('#bg_popup.bankroll').hide()
-        if (_arr.length && !bInitGame) {
-            for (var j = 0; j < _arr.length; j++) {
-                console.log()
-                if (validGames(_arr[j]) || validConfirm(_arr[j])) {
-                    valid.push(_arr[j])
-                }
-            }
-            if (valid.length) {
-                $("#bankrollers").html("Bankrollers: " + valid.length);
-                addressDice = valid[Math.floor(Math.random() * valid.length)];
-                if (q_params.address) {
-                    addressDice = q_params.address;
-                }
-                initGame();
-                return;
-            } else {
-                $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-                return;
-            }
-        }
-    });
-}
+// function validGames(contract) {
+//     var res = false;
+//     $.ajax({
+//         type: "POST",
+//         url: urlInfura,
+//         dataType: 'json',
+//         async: false,
+//         data: JSON.stringify({
+//             "id": 0,
+//             "jsonrpc": '2.0',
+//             "method": "eth_call",
+//             "params": [{
+//                 "from": openkey,
+//                 "to": "0x1dd99846d322e30dc299cbd953b026dc590cdf11",
+//                 "data": "0xfb97a77e" + pad(contract.substr(2), 64)
+//             }, "latest"]
+//         }),
+//         success: function (d) {
+//             if (d.result.substr(-1) == "1") {
+//                 res = true;
+//             }
+//         }
+//     })
+//     return res;
 
-function validGames(contract) {
-    var res = false;
-    $.ajax({
-        type: "POST",
-        url: urlInfura,
-        dataType: 'json',
-        async: false,
-        data: JSON.stringify({
-            "id": 0,
-            "jsonrpc": '2.0',
-            "method": "eth_call",
-            "params": [{
-                "from": openkey,
-                "to": "0x1dd99846d322e30dc299cbd953b026dc590cdf11",
-                "data": "0xfb97a77e" + pad(contract.substr(2), 64)
-            }, "latest"]
-        }),
-        success: function (d) {
-            if (d.result.substr(-1) == "1") {
-                res = true;
-            }
-        }
-    })
-    return res;
-
-};
+// };
 
 function initGame() {
     if (bInitGame) {
@@ -312,7 +311,7 @@ function startGame() {
     }
 }
 
-function validConfirm(address) {
+function validConfirm(address, callback) {
     $.ajax({
         type: "POST",
         url: urlInfura,
@@ -328,10 +327,10 @@ function validConfirm(address) {
             $.get("http://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(d.result) - 2000) + "&endblock=latest&", function (d) {
                 for (var n = 0; n < d.result.length; n++) {
                     if(d.result[n].input.substr(0, 10) =='0xb00606a5'){
-                        return true;
+                        console.log("__!__",address);
+                       callback();
                     }
                 }
-                return false;
             })
         }
     })
@@ -598,4 +597,145 @@ function animateTimer(second) {
         }
 
     }, 1000)
+}
+
+
+
+
+
+
+
+
+
+
+function start(){
+	setBankroller(function(){
+		initGame();
+	})
+	setTimeout(function(){
+		if (!window.bankroller_set) {
+			window.location.reload()
+		};
+	}, 15000)
+}
+
+
+function setBankroller(callback){
+    var q_params = (function () {
+        var params = {};
+        if (window.location.href.split('?').length < 2) {
+            return params;
+        }
+        var parts = window.location.href.split('?')[1].split('&');
+        for (var k in parts) {
+            var kv = parts[k].split('=');
+            params[kv[0]] = kv[1];
+        }
+        return params;
+    }());
+
+	getBankrollers(function(bankrollers){
+		$("#bankrollers").html("Bankrollers: " + bankrollers.length);		
+
+		addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];
+		
+		if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
+			addressDice = q_params.address;
+		}
+
+		validBankroller(addressDice, function(ok){
+
+			if (!ok) {
+				q_params.address = false
+				setBankroller(callback)
+				return
+			};
+			window.bankroller_set = true
+			callback()	
+		})
+
+	})
+}
+
+
+
+function validBankroller(address, callback){
+	function getBlock(callback){
+		$.ajax({
+			type: "POST",
+			url: urlInfura,
+			dataType: 'json',
+			data: JSON.stringify({
+				"id": 0,
+				"jsonrpc": '2.0',
+				"method": "eth_blockNumber",
+				"params": []
+			}),
+			success: function (d) {
+				callback(d.result)
+			}
+		});
+	}
+
+	getBlock(function(block){
+		validGame(address, function(res){
+			if (!res) {
+				callback(false);
+				return;
+			}
+
+			$.get("http://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(block) - 2000) + "&endblock=latest&", function (d) {
+				for (var n = 0; n < d.result.length; n++) {
+					if(d.result[n].input.substr(0, 10) =='0xb00606a5'){
+					   callback(true)
+					   return
+					}
+				}
+				callback(false)
+			})
+
+		})
+	})
+}
+
+function validGame(contract, callback) {
+	var res = false;
+	$.ajax({
+		type: "POST",
+		url: urlInfura,
+		dataType: 'json',
+	
+		data: JSON.stringify({
+			"id": 0,
+			"jsonrpc": '2.0',
+			"method": "eth_call",
+			"params": [{
+				"from": openkey,
+				"to": "0x1dd99846d322e30dc299cbd953b026dc590cdf11",
+				"data": "0xfb97a77e" + pad(contract.substr(2), 64)
+			}, "latest"]
+		}),
+		success: function (d) {
+			callback((d.result.substr(-1) == "1"))
+		}
+	})
+};
+
+
+function getBankrollers(callback){
+	if (window.requested_bankrollers) { callback(window.requested_bankrollers); return; };
+ $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
+	var _arr = JSON.parse(d);
+	var valid = new Array();
+	if (!_arr) {
+		// Действие в случае отсутсвия банкролла
+		$('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+		return;
+	}
+	$('#bg_popup.bankroll').hide()
+	if (_arr.length && !bInitGame) {
+		window.requested_bankrollers = _arr
+		callback(_arr)
+	}
+});
 }

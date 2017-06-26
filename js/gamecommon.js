@@ -29,7 +29,7 @@ $(document).ready(function () {
         $(this).addClass('active');
     });
 
-    setContract();
+    start();
 
     $("#roll-dice").click(function () {
         startGame();
@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
 
     $(".toggle-bg").click(function () {
-        setContract();
+        start();
         getAllLogs();
         getContractBalance();
     });
