@@ -83,94 +83,22 @@ function checkBalance() {
     return result;
 }
 
-// function setContract() {
-//     var q_params = (function () {
-//         var params = {};
-//         if (window.location.href.split('?').length < 2) {
-//             return params;
-//         }
-//         var parts = window.location.href.split('?')[1].split('&');
-//         for (var k in parts) {
-//             var kv = parts[k].split('=');
-//             params[kv[0]] = kv[1];
-//         }
-//         return params;
-//     }());
-//     $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
-//         setTimeout(setContract, 3000);
-//         var _arr = JSON.parse(d);
-//         var valid = new Array();
-//         if (!_arr) {
-//             // Действие в случае отсутсвия банкролла
-//             $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-//             return;
-//         }
-//         $('#bg_popup.bankroll').hide()
-//         if (_arr.length && !bInitGame) {
-//             for (var j = 0; j < _arr.length; j++) {
-//                 if (validGames(_arr[j]) || validConfirm(_arr[j], function(){return true})) {
-//                     console.log("valid:", _arr[j])
-//                     valid.push(_arr[j])
-//                 }
-//             }
-//             if (valid.length) {
-//                 $("#bankrollers").html("Bankrollers: " + valid.length);
-//                 addressDice = valid[Math.floor(Math.random() * valid.length)];
-//                 if (q_params.address) {
-//                     addressDice = q_params.address;
-//                 }
-//                 initGame();
-//                 return;
-//             } else {
-//                 $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="http://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-//                 return;
-//             }
-//         }
-//     });
-// }
-
-// function validGames(contract) {
-//     var res = false;
-//     $.ajax({
-//         type: "POST",
-//         url: urlInfura,
-//         dataType: 'json',
-//         async: false,
-//         data: JSON.stringify({
-//             "id": 0,
-//             "jsonrpc": '2.0',
-//             "method": "eth_call",
-//             "params": [{
-//                 "from": openkey,
-//                 "to": "0x1dd99846d322e30dc299cbd953b026dc590cdf11",
-//                 "data": "0xfb97a77e" + pad(contract.substr(2), 64)
-//             }, "latest"]
-//         }),
-//         success: function (d) {
-//             if (d.result.substr(-1) == "1") {
-//                 res = true;
-//             }
-//         }
-//     })
-//     return res;
-
-// };
-
 function initGame() {
     if (bInitGame) {
         return false;
     }
     bInitGame = true;
 
+     $("#contract").html(
+            '<a target="_blank" href="https://' + getNet() +
+            '.etherscan.io/address/' + addressDice + '">' +
+            addressDice.slice(0, 24) + '...</a>'
+        );
+
     loadData();
 
     _callback = response;
 
-    $("#contract").html(
-        '<a target="_blank" href="https://' + getNet() +
-        '.etherscan.io/address/' + addressDice + '">' +
-        addressDice.slice(0, 24) + '...</a>'
-    );
 
     paids = infura.ethCall("getTotalEthSended", openkey, "pending") / 100000000;
     sends = infura.ethCall("getTotalEthPaid", openkey, "pending") / 100000000;
@@ -182,7 +110,6 @@ function initGame() {
     $("#total-paid").html(paids.toFixed(3) + ' BET');
     $("#total-send").html(sends.toFixed(3) + ' BET (' + ((paids / sends) * 100).toFixed(2) + '%)');
 
-    getContractBalance();
 
     Refresh();
     checkEthAndBet();
@@ -219,8 +146,6 @@ function initGame() {
 
         var payout = (65536 - 1310) / playerNum;
         var profit = payout * bet - bet;
-
-
 
         var state = hexToNum(msg.substr(256, 64));
         var rnd = hexToNum(msg.substr(320, 64));
@@ -290,16 +215,18 @@ function makeid() {
 }
 
 function checkEthAndBet() {
-    if (checkBalance() && (callERC20('balanceOf', openkey) / 10 ** 8) < 0.1) {
+
+    if (!checkBalance() && (callERC20('balanceOf', openkey) / 10 ** 8) < 0.1) {
         $('#bg_popup.balance').show();
         setTimeout(function () {
             window.location = "/balance.html"
         }, 3000)
     }
+    $('#your-balance').val(callERC20('balanceOf', openkey) / 10 ** 8);
 }
 
 function startGame() {
-    update();
+
     if (openkey) {
         game = true;
         if (nonceTx != "") {
@@ -334,8 +261,10 @@ function validConfirm(address, callback) {
                         callback();
                     }
                 }
-				
-				if (d.result.length == 0) callback(); //first game?
+
+
+                if (d.result.length == 0) callback(); //first game?
+
             })
         }
     })
@@ -567,29 +496,6 @@ function response(command, value, seed) {
     }
 }
 
-// UPDATE
-function update() {
-    if (!openkey) {
-        $("#label").text("Please, sign in");
-        disabled(true);
-        return;
-    }
-    balance = $('#balance').html();
-    balance = +balance.substr(0, balance.length - 4);
-    balance = +balance.toFixed(8);
-    if (balance < 0.02 && !game || !balance) {
-        disabled(true);
-        $("#label").html(" You don't have money, please visit <a href='" + window.location.origin + "/balance.html'>balance page</a>");
-        setTimeout(function () {
-            window.location = "/balance.html"
-        }, 3000)
-    } else if (balance > 0.01 && !game) {
-        disabled(false);
-        $("#label").text("Click Roll Dice to place your bet:");
-    }
-    $("#your-balance").val(balance);
-}
-
 
 
 
@@ -618,13 +524,12 @@ function start() {
     setBankroller(function () {
         initGame();
     })
-    setTimeout(function () {
-        if (!window.bankroller_set) {
-            window.location.reload()
-        };
-    }, 15000)
-}
-
+    // setTimeout(function () {
+    //     if (!window.bankroller_set) {
+    //         window.location.reload()
+    //     };
+    // }, 15000)
+};
 
 function setBankroller(callback) {
     var q_params = (function () {
@@ -641,9 +546,17 @@ function setBankroller(callback) {
     }());
 
     getBankrollers(function (bankrollers) {
+
         $("#bankrollers").html("Bankrollers: " + bankrollers.length);
 
         addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];
+        console.log(addressDice, "BR", bankrollers);
+        getContractBalance();
+        $("#contract").html(
+            '<a target="_blank" href="https://' + getNet() +
+            '.etherscan.io/address/' + addressDice + '">' +
+            addressDice.slice(0, 24) + '...</a>'
+        );
 
         if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
             addressDice = q_params.address;
@@ -661,9 +574,7 @@ function setBankroller(callback) {
         })
 
     })
-}
-
-
+};
 
 function validBankroller(address, callback) {
     function getBlock(callback) {
@@ -697,13 +608,14 @@ function validBankroller(address, callback) {
                         return
                     }
                 }
-				if (d.result.length <= 5) callback(true); //first games? or give new chance
+
+                if (d.result.length <= 5) { callback(true); return; } //first games? or give new chance
                 callback(false)
             })
 
         })
     })
-}
+};
 
 function validGame(contract, callback) {
     var res = false;
@@ -728,24 +640,31 @@ function validGame(contract, callback) {
     })
 };
 
-
 function getBankrollers(callback) {
     if (window.requested_bankrollers) {
         callback(window.requested_bankrollers);
         return;
     };
-    $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
-        var _arr = JSON.parse(d);
-        var valid = new Array();
-        if (!_arr) {
-            // Действие в случае отсутсвия банкролла
-            $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-            return;
-        }
-        $('#bg_popup.bankroll').hide()
-        if (_arr.length && !bInitGame) {
-            window.requested_bankrollers = _arr
-            callback(_arr)
-        }
+    $.ajax({
+        url: "https://platform.dao.casino/api/proxy.php?a=bankrolls",
+        error: function () {
+            console.log('default address')
+            addressDice = "0xce101919f58368f00597d17e1601929ba8803f94",
+                initGame();
+        },
+        success: function () {
+            var _arr = JSON.parse(d);
+            var valid = new Array();
+            if (!_arr) {
+                // Действие в случае отсутсвия банкролла
+                $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+                return;
+            }
+            $('#bg_popup.bankroll').hide()
+            if (_arr.length && !bInitGame) {
+                window.requested_bankrollers = _arr
+                callback(_arr)
+            }
+        },
+        timeout: 3000 // sets timeout to 3 seconds
     });
-}
