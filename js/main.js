@@ -642,11 +642,10 @@ function getBankrollers(callback) {
         callback(window.requested_bankrollers);
         return;
     };
-
     $.ajax({
         url: "https://platform.dao.casino/api/proxy.php?a=bankrolls",
         error: function () {
-            console.log('error')
+            console.log('default address')
             addressDice = "0xce101919f58368f00597d17e1601929ba8803f94",
                 initGame();
         },
