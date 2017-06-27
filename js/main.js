@@ -89,11 +89,11 @@ function initGame() {
     }
     bInitGame = true;
 
-     $("#contract").html(
-            '<a target="_blank" href="https://' + getNet() +
-            '.etherscan.io/address/' + addressDice + '">' +
-            addressDice.slice(0, 24) + '...</a>'
-        );
+    $("#contract").html(
+        '<a target="_blank" href="https://' + getNet() +
+        '.etherscan.io/address/' + addressDice + '">' +
+        addressDice.slice(0, 24) + '...</a>'
+    );
 
     loadData();
 
@@ -228,13 +228,18 @@ function checkEthAndBet() {
 function startGame() {
 
     if (openkey) {
+        var seed = makeid();
+        Casino.getFastRandom('dice_v2', addressDice, seed, function (number) {
+            //updateRow(seed, number);
+        })
+
         game = true;
         if (nonceTx != "") {
             nonceTx = numToHex(hexToNum(nonceTx) + 1);
             console.log("NONCE:", nonceTx);
-            responseTransaction("roll", nonceTx);
+            responseTransaction("roll", nonceTx, seed);
         } else {
-            infura.sendRequest("roll", openkey, _callback);
+            infura.sendRequest("roll", openkey ,_callback, seed);
         }
     } else {
         $("#randomnum").text("Sorry, you do not have a key");
@@ -397,7 +402,7 @@ function responseServer(rnd, seed) {
     }
 }
 
-function responseTransaction(name, value) {
+function responseTransaction(name, value, seed) {
     var data = "";
     var price = 0;
     var nameRequest = "sendRaw";
@@ -427,7 +432,7 @@ function responseTransaction(name, value) {
             console.log("ERROR_TRANSACTION:", err);
             return false;
         }
-        var seed = makeid();
+
         console.log("SEED:", seed)
         var args = [price, chance, seed];
         var registerTx = lightwallet.txutils.functionTx(contract_dice_abi, name, args, options);
@@ -490,7 +495,7 @@ function response(command, value, seed) {
         responseServer(value, seed);
     } else if (command == "roll") {
         nonceTx = value;
-        responseTransaction(command, value);
+        responseTransaction(command, value, seed);
     }
 }
 
@@ -638,32 +643,15 @@ function validGame(contract, callback) {
 };
 
 function getBankrollers(callback) {
-    if (window.requested_bankrollers) {
+    if (window.requested_bankrollers && window.requested_bankrollers.length) {
         callback(window.requested_bankrollers);
         return;
     };
-    $.ajax({
-        url: "https://platform.dao.casino/api/proxy.php?a=bankrolls",
-        error: function () {
-            console.log('default address')
-            addressDice = "0xce101919f58368f00597d17e1601929ba8803f94",
-                initGame();
-        },
-        success: function () {
-            var _arr = JSON.parse(d);
-            var valid = new Array();
-            if (!_arr) {
-                // Действие в случае отсутсвия банкролла
-                $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-                return;
-            }
-            $('#bg_popup.bankroll').hide()
-            if (_arr.length && !bInitGame) {
-                window.requested_bankrollers = _arr
-                callback(_arr)
-            }
-        },
-        timeout: 3000 // sets timeout to 3 seconds
- 
-   });
+
+    setTimeout(function() {
+        if(!window.requested_bankrollers){  window.requested_bankrollers = []; }
+        window.requested_bankrollers.push["0xce101919f58368f00597d17e1601929ba8803f94"]
+        callback(window.requested_bankrollers)
+    }, 5000);
+
 }

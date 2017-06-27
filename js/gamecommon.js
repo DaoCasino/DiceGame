@@ -29,7 +29,7 @@ $(document).ready(function () {
         $(this).addClass('active');
     });
 
-    start();
+
 
     $("#roll-dice").click(function () {
         startGame();

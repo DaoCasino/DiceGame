@@ -394,8 +394,7 @@
 	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
 	<script src="libs/respond/respond.min.js"></script>
 	<![endif]-->
-		<script src="common_js/configuration.js"></script>
-		<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>
+
 		<script src="common_js/clipboard.min.js"></script>
 		<script src="libs/jquery/jquery-1.11.2.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -405,9 +404,49 @@
 		<script src="libs/jquery.mCustomScrollbar.concat.min.js"></script>
 		<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 
+
+		<script src="https://platform.dao.casino/api/lib/DC.js"></script>
+		<script src="common_js/configuration.js"></script>
+		<!--<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>-->
+		<script>
+			window.Casino = new CasinoJS();
+			window.lightwallet = window.Casino.Account.lightWallet;
+			
+			$(function(){
+				Casino.subscribe('Bankrollers', bankrollers=>{
+					var cnt = Object.keys(bankrollers).length || 0
+					if(cnt==0){
+						window.noonlineB =setTimeout(function(){
+							$('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+						}, 5000);
+					} else {
+						clearInterval(window.noonlineB)
+
+						$('#bg_popup.bankroll').hide();
+						
+						if(!window.game_started){
+							window.game_started = true;
+							start();
+						}
+
+						window.requested_bankrollers = [];
+						for(let k in bankrollers){
+							if(bankrollers[k].game_code && bankrollers[k].game_code!='dice_v2'){
+								delete(bankrollers[k]);
+								continue;
+							}
+							window.requested_bankrollers.push(k)
+						}
+						
+					}
+				})
+			})
+		</script>
+
 		<script src="js/utils.js" async></script>
 
 		<script src="js/Infura.js"></script>
+	
 
 		<script src="js/contract_erc20_abi.js"></script>
 		<script src="js/contract_dice_abi.js"></script>
