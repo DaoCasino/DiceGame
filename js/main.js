@@ -652,7 +652,7 @@ function getBankrollers(callback) {
             addressDice = "0xce101919f58368f00597d17e1601929ba8803f94",
                 initGame();
         },
-        success: function () {
+        success: function (d) {
             var _arr = JSON.parse(d);
             var valid = new Array();
             if (!_arr) {
