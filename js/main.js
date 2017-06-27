@@ -262,7 +262,9 @@ function validConfirm(address, callback) {
                     }
                 }
 
+
                 if (d.result.length == 0) callback(); //first game?
+
             })
         }
     })
@@ -606,7 +608,8 @@ function validBankroller(address, callback) {
                         return
                     }
                 }
-                if (d.result.length <= 5) callback(true); //first games? or give new chance
+
+                if (d.result.length <= 5) { callback(true); return; } //first games? or give new chance
                 callback(false)
             })
 
@@ -665,5 +668,3 @@ function getBankrollers(callback) {
         },
         timeout: 3000 // sets timeout to 3 seconds
     });
-
-}
