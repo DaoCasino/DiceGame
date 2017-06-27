@@ -667,4 +667,5 @@ function getBankrollers(callback) {
             }
         },
         timeout: 3000 // sets timeout to 3 seconds
-    });
+    })
+}
