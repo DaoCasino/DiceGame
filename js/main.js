@@ -335,7 +335,7 @@ function validConfirm(address, callback) {
                     }
                 }
 				
-				if (d.result.length < 2) callback(); //first game?
+				if (d.result.length == 0) callback(); //first game?
             })
         }
     })
@@ -697,6 +697,7 @@ function validBankroller(address, callback) {
                         return
                     }
                 }
+				if (d.result.length < 2) callback(true);
                 callback(false)
             })
 
