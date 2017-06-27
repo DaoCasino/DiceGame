@@ -35,14 +35,10 @@ $(document).ready(function () {
         startGame();
     });
 
-    $("#confirm").click(function () {
-        Confirm();
-    });
 
     $(".toggle-bg").click(function () {
         start();
         getAllLogs();
-        getContractBalance();
     });
 
     $('#your-balance').click(function () {
