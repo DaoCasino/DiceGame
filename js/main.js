@@ -89,8 +89,14 @@ function initGame() {
     }
     bInitGame = true;
 
+     $("#contract").html(
+            '<a target="_blank" href="https://' + getNet() +
+            '.etherscan.io/address/' + addressDice + '">' +
+            addressDice.slice(0, 24) + '...</a>'
+        );
+
     loadData();
-    
+
     _callback = response;
 
 
@@ -255,8 +261,8 @@ function validConfirm(address, callback) {
                         callback();
                     }
                 }
-				
-				if (d.result.length == 0) callback(); //first game?
+
+                if (d.result.length == 0) callback(); //first game?
             })
         }
     })
@@ -516,11 +522,11 @@ function start() {
     setBankroller(function () {
         initGame();
     })
-    setTimeout(function () {
-        if (!window.bankroller_set) {
-            window.location.reload()
-        };
-    }, 15000)
+    // setTimeout(function () {
+    //     if (!window.bankroller_set) {
+    //         window.location.reload()
+    //     };
+    // }, 15000)
 };
 
 function setBankroller(callback) {
@@ -538,18 +544,18 @@ function setBankroller(callback) {
     }());
 
     getBankrollers(function (bankrollers) {
-        
+
         $("#bankrollers").html("Bankrollers: " + bankrollers.length);
 
         addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];
         console.log(addressDice, "BR", bankrollers);
-            getContractBalance();
-       $("#contract").html(
-        '<a target="_blank" href="https://' + getNet() +
-        '.etherscan.io/address/' + addressDice + '">' +
-        addressDice.slice(0, 24) + '...</a>'
-    );
-   
+        getContractBalance();
+        $("#contract").html(
+            '<a target="_blank" href="https://' + getNet() +
+            '.etherscan.io/address/' + addressDice + '">' +
+            addressDice.slice(0, 24) + '...</a>'
+        );
+
         if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
             addressDice = q_params.address;
         }
@@ -600,7 +606,7 @@ function validBankroller(address, callback) {
                         return
                     }
                 }
-				if (d.result.length <= 5) callback(true); //first games? or give new chance
+                if (d.result.length <= 5) callback(true); //first games? or give new chance
                 callback(false)
             })
 
@@ -636,18 +642,29 @@ function getBankrollers(callback) {
         callback(window.requested_bankrollers);
         return;
     };
-    $.ajax("https://platform.dao.casino/api/proxy.php?a=bankrolls").done(function (d) {
-        var _arr = JSON.parse(d);
-        var valid = new Array();
-        if (!_arr) {
-            // Действие в случае отсутсвия банкролла
-            $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-            return;
-        }
-        $('#bg_popup.bankroll').hide()
-        if (_arr.length && !bInitGame) {
-            window.requested_bankrollers = _arr
-            callback(_arr)
-        }
+
+    $.ajax({
+        url: "https://platform.dao.casino/api/proxy.php?a=bankrolls",
+        error: function () {
+            console.log('error')
+            addressDice = "0xce101919f58368f00597d17e1601929ba8803f94",
+                initGame();
+        },
+        success: function () {
+            var _arr = JSON.parse(d);
+            var valid = new Array();
+            if (!_arr) {
+                // Действие в случае отсутсвия банкролла
+                $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+                return;
+            }
+            $('#bg_popup.bankroll').hide()
+            if (_arr.length && !bInitGame) {
+                window.requested_bankrollers = _arr
+                callback(_arr)
+            }
+        },
+        timeout: 3000 // sets timeout to 3 seconds
     });
+
 }
