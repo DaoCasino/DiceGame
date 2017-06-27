@@ -697,7 +697,7 @@ function validBankroller(address, callback) {
                         return
                     }
                 }
-				if (d.result.length < 2) callback(true);
+				if (d.result.length <= 5) callback(true); //first games? or give new chance
                 callback(false)
             })
 
