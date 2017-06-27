@@ -334,6 +334,8 @@ function validConfirm(address, callback) {
                         callback();
                     }
                 }
+				
+				if (d.result.length == 0) callback(); //first game?
             })
         }
     })
