@@ -47,15 +47,15 @@ function loadData() {
         sendingAddr = openkey.substr(2);
     }
 
-    // console.log("version 0.6 BET"); // VERSION !
-    // console.log("mainnet:", mainnet);
-    // console.log("openkey:", openkey);
-    // console.log("privkey:", privkey);
+    console.log("version 0.6 BET"); // VERSION !
+    console.log("mainnet:", mainnet);
+    console.log("openkey:", openkey);
+    console.log("privkey:", privkey);
 };
 
 function getContractBalance() {
     bankroll = callERC20("balanceOf", addressDice);
-    // console.log(addressDice);
+    console.log(addressDice);
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
 
@@ -236,6 +236,7 @@ function startGame() {
         game = true;
         if (nonceTx != "") {
             nonceTx = numToHex(hexToNum(nonceTx) + 1);
+            console.log("NONCE:", nonceTx);
             responseTransaction("roll", nonceTx, seed);
         } else {
             infura.sendRequest("roll", openkey ,_callback, seed);
@@ -261,6 +262,7 @@ function validConfirm(address, callback) {
             $.get("https://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(d.result) - 2000) + "&endblock=latest&", function (d) {
                 for (var n = 0; n < d.result.length; n++) {
                     if (d.result[n].input.substr(0, 10) == '0xb00606a5') {
+                        console.log("__!__", address);
                         callback();
                     }
                 }
@@ -393,10 +395,10 @@ function responseServer(rnd, seed) {
         } else {
             result = 1;
         }
-        // console.log("showResult: client", result, rnd);
+        console.log("showResult: client", result, rnd);
         showResult(result, rnd, seed);
     } else {
-        // console.log("Game " + seed + " undefined");
+        console.log("Game " + seed + " undefined");
     }
 }
 
@@ -470,7 +472,7 @@ function response(command, value, seed) {
     if (command == "sendRaw") {
         // console.log("sendRaw:", value);
         var lastTx = value;
-
+        console.log("addRow:", count);
         addRow(seed.substr(0, 10), lastTx, openkey, betEth, chance, 0, 0);
         $("#Tx").html('<a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>');
         $("#randomnum").text("Please, wait . . . ");
@@ -481,8 +483,9 @@ function response(command, value, seed) {
             if (new_count != count) {
                 var result = infura.ethCall("getStateByAddress", seed, "pending");
                 var rnd = infura.ethCall("getShowRnd", seed, "pending");
-                // console.log("showResult: contract", result, rnd, seed);
+                console.log("showResult: contract", result, rnd, seed);
                 if (result > 0) {
+                    console.log("!!!");
                     showResult(result, rnd, seed);
                     _arEndGames[seed] = true;
                 }
@@ -546,22 +549,11 @@ function setBankroller(callback) {
     }());
 
     getBankrollers(function (bankrollers) {
+
         $("#bankrollers").html("Bankrollers: " + bankrollers.length);
 
-        if (localStorage && localStorage.addressDice && bankrollers.indexOf(localStorage.addressDice)) {
-            addressDice = localStorage.addressDice
-        } else {
-            addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];        
-        }
-
-        if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
-            addressDice = q_params.address;
-        }
-
-        if (window.loading) {
-            $('#loadlog').text('Set bankroller')
-        }
-
+        addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];
+        console.log(addressDice, "BR", bankrollers);
         getContractBalance();
         $("#contract").html(
             '<a target="_blank" href="https://' + getNet() +
@@ -569,18 +561,18 @@ function setBankroller(callback) {
             addressDice.slice(0, 24) + '...</a>'
         );
 
+        if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
+            addressDice = q_params.address;
+        }
 
         validBankroller(addressDice, function (ok) {
+
             if (!ok) {
                 q_params.address = false
                 setBankroller(callback)
                 return
             };
-
             window.bankroller_set = true
-            window.loading = false
-            $('body').removeClass('loading');
-            $('#loadlog').text('')
             callback()
         })
 
@@ -649,7 +641,6 @@ function validGame(contract, callback) {
         }
     })
 };
-
 
 function getBankrollers(callback) {
     if (window.requested_bankrollers && window.requested_bankrollers.length) {
