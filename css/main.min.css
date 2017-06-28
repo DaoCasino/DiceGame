@@ -632,51 +632,12 @@ table.dice-table a:hover {
 }
 }
 
+/* END TABLE DICE */
+
+/* END DICE CONTENT */
+
+/* PROGRES BAR */
 
 
-body.loading * {
-	pointer-events: none;
-}
-body.loading:before {
-	content:'Loading...';
-	display:block; min-width:100%; min-height:100%;
-	position:fixed; z-index:998;
-	background:rgba(0,0,0,0.7);
-	color:rgba(255,255,255,1);
 
-	text-align:center; text-transform:uppercase; letter-spacing:2px;
-	padding-top:150px;
-
-	animation: blink-animation 0.7s infinite;
-	-webkit-animation: blink-animation 0.7s infinite;	
-}
-
-body.loading #loadlog {
-	display:block !important;
-	position:fixed; z-index:999; top:180px; width:100%; text-align:center;
-	color:#ccc;
-	padding-right:12px;
-}
-
-@keyframes blink-animation {
-  0% {
-	color:rgba(255,255,255,1);
-  }
-  50% {
-	color:rgba(255,255,255,0.3);
-  }
-  100% {
-	color:rgba(255,255,255,1);
-  }
-}
-@-webkit-keyframes blink-animation {
-  0% {
-	color:rgba(255,255,255,1);
-  }
-  50% {
-	color:rgba(255,255,255,0.3);
-  }
-  100% {
-	color:rgba(255,255,255,1);
-  }
-}
+ /* END PROGRES BAR */
