@@ -23,7 +23,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 	<link rel="stylesheet" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" href="css/main.min.css" />
+	<link rel="stylesheet" href="css/main.min.css?v=1" />
 	<link rel="stylesheet" href="css/fonts.css" />
 	<link rel="stylesheet" href="css/media.min.css" />
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css" />
@@ -51,9 +51,7 @@
 	</script>
 </head>
 
-<body class="loading">
-	<div id="loadlog" style="display: none">Connect to blockchain</div>
-
+<body>
 	<!-- WRAPPER -->
 	<div class="wrapper_main">
 
@@ -411,33 +409,21 @@
 		<script src="common_js/configuration.js?v=1"></script>
 		<!--<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>-->
 		<script>
-			window.loading = true;
 			window.Casino = new CasinoJS();
 			window.lightwallet = window.Casino.Account.lightWallet;
 			
 			$(function(){
-
 				Casino.subscribe('Bankrollers', bankrollers=>{
 					var cnt = Object.keys(bankrollers).length || 0
-					
-					if (window.loading) {
-						$('#loadlog').text('Find bankrollers')
-					}
-
 					if(cnt==0){
-						window.no_online_b = setTimeout(function(){
-							$('body').removeClass('loading');
+						window.noonlineB =setTimeout(function(){
 							$('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
 						}, 5000);
 					} else {
-						if (window.loading) {
-							$('#loadlog').text('Verify '+cnt+' bankrollers')
-						}
-
-						clearInterval(window.no_online_b)
+						clearInterval(window.noonlineB)
 
 						$('#bg_popup.bankroll').hide();
-
+						
 						if(!window.game_started){
 							window.game_started = true;
 							start();
