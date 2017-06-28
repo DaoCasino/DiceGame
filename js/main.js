@@ -656,11 +656,10 @@ function getBankrollers(callback) {
         callback(window.requested_bankrollers);
         return;
     };
-
+  
     setTimeout(function() {
         if(!window.requested_bankrollers){  window.requested_bankrollers = []; }
         window.requested_bankrollers.push["0xce101919f58368f00597d17e1601929ba8803f94"]
         callback(window.requested_bankrollers)
     }, 5000);
-
 }
