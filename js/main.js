@@ -47,15 +47,15 @@ function loadData() {
         sendingAddr = openkey.substr(2);
     }
 
-    console.log("version 0.6 BET"); // VERSION !
-    console.log("mainnet:", mainnet);
-    console.log("openkey:", openkey);
-    console.log("privkey:", privkey);
+    // console.log("version 0.6 BET"); // VERSION !
+    // console.log("mainnet:", mainnet);
+    // console.log("openkey:", openkey);
+    // console.log("privkey:", privkey);
 };
 
 function getContractBalance() {
     bankroll = callERC20("balanceOf", addressDice);
-    console.log(addressDice);
+    // console.log(addressDice);
     $('#contractBalance').html("CONTRACT ( " + bankroll / 100000000 + " BET )");
 };
 
@@ -89,11 +89,11 @@ function initGame() {
     }
     bInitGame = true;
 
-     $("#contract").html(
-            '<a target="_blank" href="https://' + getNet() +
-            '.etherscan.io/address/' + addressDice + '">' +
-            addressDice.slice(0, 24) + '...</a>'
-        );
+    $("#contract").html(
+        '<a target="_blank" href="https://' + getNet() +
+        '.etherscan.io/address/' + addressDice + '">' +
+        addressDice.slice(0, 24) + '...</a>'
+    );
 
     loadData();
 
@@ -228,13 +228,17 @@ function checkEthAndBet() {
 function startGame() {
 
     if (openkey) {
+        var seed = makeid();
+        Casino.getFastRandom('dice_v2', addressDice, seed, function (number) {
+            //updateRow(seed, number);
+        })
+
         game = true;
         if (nonceTx != "") {
             nonceTx = numToHex(hexToNum(nonceTx) + 1);
-            console.log("NONCE:", nonceTx);
-            responseTransaction("roll", nonceTx);
+            responseTransaction("roll", nonceTx, seed);
         } else {
-            infura.sendRequest("roll", openkey, _callback);
+            infura.sendRequest("roll", openkey ,_callback, seed);
         }
     } else {
         $("#randomnum").text("Sorry, you do not have a key");
@@ -257,14 +261,11 @@ function validConfirm(address, callback) {
             $.get("https://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(d.result) - 2000) + "&endblock=latest&", function (d) {
                 for (var n = 0; n < d.result.length; n++) {
                     if (d.result[n].input.substr(0, 10) == '0xb00606a5') {
-                        console.log("__!__", address);
                         callback();
                     }
                 }
 
-
                 if (d.result.length == 0) callback(); //first game?
-
             })
         }
     })
@@ -392,14 +393,14 @@ function responseServer(rnd, seed) {
         } else {
             result = 1;
         }
-        console.log("showResult: client", result, rnd);
+        // console.log("showResult: client", result, rnd);
         showResult(result, rnd, seed);
     } else {
-        console.log("Game " + seed + " undefined");
+        // console.log("Game " + seed + " undefined");
     }
 }
 
-function responseTransaction(name, value) {
+function responseTransaction(name, value, seed) {
     var data = "";
     var price = 0;
     var nameRequest = "sendRaw";
@@ -429,7 +430,7 @@ function responseTransaction(name, value) {
             console.log("ERROR_TRANSACTION:", err);
             return false;
         }
-        var seed = makeid();
+
         console.log("SEED:", seed)
         var args = [price, chance, seed];
         var registerTx = lightwallet.txutils.functionTx(contract_dice_abi, name, args, options);
@@ -469,7 +470,7 @@ function response(command, value, seed) {
     if (command == "sendRaw") {
         // console.log("sendRaw:", value);
         var lastTx = value;
-        console.log("addRow:", count);
+
         addRow(seed.substr(0, 10), lastTx, openkey, betEth, chance, 0, 0);
         $("#Tx").html('<a target="_blank" href="https://' + getNet() + '.etherscan.io/tx/' + lastTx + '">' + lastTx.slice(0, 24) + '...</a>');
         $("#randomnum").text("Please, wait . . . ");
@@ -480,9 +481,8 @@ function response(command, value, seed) {
             if (new_count != count) {
                 var result = infura.ethCall("getStateByAddress", seed, "pending");
                 var rnd = infura.ethCall("getShowRnd", seed, "pending");
-                console.log("showResult: contract", result, rnd, seed);
+                // console.log("showResult: contract", result, rnd, seed);
                 if (result > 0) {
-                    console.log("!!!");
                     showResult(result, rnd, seed);
                     _arEndGames[seed] = true;
                 }
@@ -492,7 +492,7 @@ function response(command, value, seed) {
         responseServer(value, seed);
     } else if (command == "roll") {
         nonceTx = value;
-        responseTransaction(command, value);
+        responseTransaction(command, value, seed);
     }
 }
 
@@ -546,11 +546,22 @@ function setBankroller(callback) {
     }());
 
     getBankrollers(function (bankrollers) {
-
         $("#bankrollers").html("Bankrollers: " + bankrollers.length);
 
-        addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];
-        console.log(addressDice, "BR", bankrollers);
+        if (localStorage && localStorage.addressDice && bankrollers.indexOf(localStorage.addressDice)) {
+            addressDice = localStorage.addressDice
+        } else {
+            addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];        
+        }
+
+        if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
+            addressDice = q_params.address;
+        }
+
+        if (window.loading) {
+            $('#loadlog').text('Set bankroller')
+        }
+
         getContractBalance();
         $("#contract").html(
             '<a target="_blank" href="https://' + getNet() +
@@ -558,18 +569,18 @@ function setBankroller(callback) {
             addressDice.slice(0, 24) + '...</a>'
         );
 
-        if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
-            addressDice = q_params.address;
-        }
 
         validBankroller(addressDice, function (ok) {
-
             if (!ok) {
                 q_params.address = false
                 setBankroller(callback)
                 return
             };
+
             window.bankroller_set = true
+            window.loading = false
+            $('body').removeClass('loading');
+            $('#loadlog').text('')
             callback()
         })
 
@@ -608,8 +619,7 @@ function validBankroller(address, callback) {
                         return
                     }
                 }
-
-                if (d.result.length <= 5) { callback(true); return; } //first games? or give new chance
+                if (d.result.length <= 5) callback(true); //first games? or give new chance
                 callback(false)
             })
 
@@ -640,32 +650,16 @@ function validGame(contract, callback) {
     })
 };
 
+
 function getBankrollers(callback) {
-    if (window.requested_bankrollers) {
+    if (window.requested_bankrollers && window.requested_bankrollers.length) {
         callback(window.requested_bankrollers);
         return;
     };
-    $.ajax({
-        url: "https://platform.dao.casino/api/proxy.php?a=bankrolls",
-        error: function () {
-            console.log('default address')
-            addressDice = "0xce101919f58368f00597d17e1601929ba8803f94",
-                initGame();
-        },
-        success: function (d) {
-            var _arr = JSON.parse(d);
-            var valid = new Array();
-            if (!_arr) {
-                // Действие в случае отсутсвия банкролла
-                $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
-                return;
-            }
-            $('#bg_popup.bankroll').hide()
-            if (_arr.length && !bInitGame) {
-                window.requested_bankrollers = _arr
-                callback(_arr)
-            }
-        },
-        timeout: 3000 // sets timeout to 3 seconds
-    })
+  
+    setTimeout(function() {
+        if(!window.requested_bankrollers){  window.requested_bankrollers = []; }
+        window.requested_bankrollers.push["0xce101919f58368f00597d17e1601929ba8803f94"]
+        callback(window.requested_bankrollers)
+    }, 5000);
 }
