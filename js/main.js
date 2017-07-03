@@ -1,7 +1,7 @@
 // Vault keystore
 
 if (!localStorage.getItem('keystore')) {
-    $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="' + window.location.origin + window.location.search + '">Platform</a>');
+    $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="https://platform.dao.casino">Platform</a>');
 }
 
 var ks = lightwallet.keystore.deserialize(localStorage.getItem('keystore'));
@@ -136,25 +136,35 @@ function initGame() {
             return;
         }
 
-        var msg = JSON.parse(event.data).data.substr(2);
+        var enc = function(str){
+            return str.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+                return '&#'+i.charCodeAt(0)+';';
+            })
+        };
+
+        var data = JSON.parse(event.data);
+        var msg  = enc(data.data.substr(2));
 
         var player = "0x" + msg.substr(24, 64);
-        var bet = hexToNum(msg.substr(64, 64)) / 100000000;
+        var bet    = hexToNum(msg.substr(64, 64)) / 100000000;
 
         var playerNum = hexToNum(msg.substr(128, 64));
-        var chance = playerNum / (65536) * 100;
+        var chance    = playerNum / (65536) * 100;
 
         var payout = (65536 - 1310) / playerNum;
         var profit = payout * bet - bet;
 
         var state = hexToNum(msg.substr(256, 64));
-        var rnd = hexToNum(msg.substr(320, 64));
-        var tx = JSON.parse(event.data).transaction
+        var rnd   = hexToNum(msg.substr(320, 64));
+        
+        if (!data.transaction) { return; }
+
+        var tx = enc(data.transaction).substr(0,64)
 
         if (rnd != 0) {
-
             addRow(seed, tx, player, bet, playerNum, rnd, state);
         }
+        
         if ($('#table tr').length > 10) {
             $('tr:eq(11)').remove();
         }
