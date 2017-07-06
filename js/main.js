@@ -1,7 +1,17 @@
 // Vault keystore
 
 if (!localStorage.getItem('keystore')) {
-    $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="https://platform.dao.casino">Platform</a>');
+    var link = 'https://platform.dao.casino';
+
+    if (window.location.search.length > 0 && window.location.search.indexOf('ref=')) {
+        var ref = getParameterByName('ref', window.location.search);
+        if (ref) {
+            link += '?ref='+enc(ref);
+            localStorage.ref = ref;
+        }
+    }
+
+    $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="'+link+'">Platform</a>');
 }
 
 var ks = lightwallet.keystore.deserialize(localStorage.getItem('keystore'));
@@ -83,6 +93,8 @@ function checkBalance() {
     return result;
 }
 
+_callback = response;
+
 function initGame() {
     if (bInitGame) {
         return false;
@@ -97,7 +109,6 @@ function initGame() {
 
     loadData();
 
-    _callback = response;
 
 
     paids = infura.ethCall("getTotalEthSended", openkey, "pending") / 100000000;
@@ -135,12 +146,6 @@ function initGame() {
         if (!event || !event.data) {
             return;
         }
-
-        var enc = function(str){
-            return str.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-                return '&#'+i.charCodeAt(0)+';';
-            })
-        };
 
         var data = JSON.parse(event.data);
         var msg  = enc(data.data.substr(2));
@@ -431,7 +436,7 @@ function responseTransaction(name, value, seed) {
 
     if (!privkey || !ks) {
         console.log("ERROR_TRANSACTION");
-        console.error(privkey, buf, ks);
+        // console.error(privkey, buf, ks);
         return;
     }
 
