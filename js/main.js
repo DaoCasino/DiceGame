@@ -638,23 +638,16 @@ function validBankroller(address, callback) {
             $.get("https://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(block) - 2000) + "&endblock=latest&", function (d) {
 
                 if (d.result.length == 0) {
-                    console.log("3")
                     callback(true);
                     return
                 }
 
                 for (var n = d.result.length - 5; n < d.result.length; n++) {
                     if (d.result[n].input.substr(0, 10) == '0xb00606a5') {
-                        console.log("1")
                         callback(true)
                         return
                     }
 
-                }
-                if (d.result[d.result.length].blockNumber < block) {
-                    console.log("2")
-                    callback(true);
-                    return;
                 }
                 //first games? or give new chance
                 callback(false)
