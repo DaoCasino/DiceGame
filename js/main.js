@@ -642,7 +642,7 @@ function validBankroller(address, callback) {
                     return
                 }
 
-                for (var n = d.result.length - 5; n < d.result.length; n++) {
+                for (var n = Math.max(d.result.length - 5, 0); n < d.result.length; n++) {
                     if (d.result[n].input.substr(0, 10) == '0xb00606a5') {
                         callback(true)
                         return
