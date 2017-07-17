@@ -558,6 +558,7 @@ function setBankroller(callback) {
         }
         return params;
     }());
+    window.q_params = q_params.address;
 
     getBankrollers(function (bankrollers) {
         $("#bankrollers").html("Bankrollers: " + bankrollers.length);
@@ -572,6 +573,7 @@ function setBankroller(callback) {
             addressDice = q_params.address;
         }
 
+
         if (window.loading) {
             $('#loadlog').text('Set bankroller')
         }
@@ -583,9 +585,15 @@ function setBankroller(callback) {
             addressDice.slice(0, 24) + '...</a>'
         );
 
+        if (q_params.address && bankrollers.indexOf(q_params.address) == -1) {
+            console.log("OFFLINE");
+            $('body').removeClass('loading');
+            $('#bg_popup.bankroll').show().find('h1').html('No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>');
+            
+        }
         
         validBankroller(addressDice, function (ok) {
-           
+
             if (!ok) {
                 q_params.address = false
                 setBankroller(callback)
@@ -630,15 +638,21 @@ function validBankroller(address, callback) {
             $.get("https://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(block) - 2000) + "&endblock=latest&", function (d) {
                 for (var n = 0; n < d.result.length; n++) {
                     if (d.result[n].input.substr(0, 10) == '0xb00606a5') {
-                        
+
                         callback(true)
                         return
                     }
-                    
+
                 }
-                if (d.result[d.result.length - 1].blockNumber < block ) callback (true);
-                if (d.result.length <= 5) callback(true);
-                 //first games? or give new chance
+                if (d.result[d.result.length - 1].blockNumber < block) {
+                    callback(true);
+                    return;
+                }
+                if (d.result.length <= 5) {
+                    callback(true);
+                    return
+                }
+                //first games? or give new chance
                 callback(false)
             })
 
