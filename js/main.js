@@ -558,6 +558,7 @@ function setBankroller(callback) {
         }
         return params;
     }());
+    window.q_params = q_params.address;
 
     getBankrollers(function (bankrollers) {
         $("#bankrollers").html("Bankrollers: " + bankrollers.length);
@@ -572,6 +573,7 @@ function setBankroller(callback) {
             addressDice = q_params.address;
         }
 
+
         if (window.loading) {
             $('#loadlog').text('Set bankroller')
         }
@@ -583,14 +585,13 @@ function setBankroller(callback) {
             addressDice.slice(0, 24) + '...</a>'
         );
 
-        
         validBankroller(addressDice, function (ok) {
-           
-            // if (!ok) {
-            //     q_params.address = false
-            //     setBankroller(callback)
-            //     return
-            // };
+
+            if (!ok) {
+                q_params.address = false
+                setBankroller(callback)
+                return
+            };
 
             window.bankroller_set = true
             window.loading = false
@@ -619,7 +620,6 @@ function validBankroller(address, callback) {
             }
         });
     }
-
     getBlock(function (block) {
         validGame(address, function (res) {
             if (!res) {
@@ -628,13 +628,19 @@ function validBankroller(address, callback) {
             }
 
             $.get("https://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(block) - 2000) + "&endblock=latest&", function (d) {
-                for (var n = 0; n < d.result.length; n++) {
+
+                if (d.result.length == 0) {
+                    callback(true);
+                    return
+                }
+
+                for (var n = Math.max(d.result.length - 5, 0); n < d.result.length; n++) {
                     if (d.result[n].input.substr(0, 10) == '0xb00606a5') {
                         callback(true)
                         return
                     }
                 }
-                if (d.result.length <= 5) callback(true); //first games? or give new chance
+                //first games? or give new chance
                 callback(false)
             })
 
