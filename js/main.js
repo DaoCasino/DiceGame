@@ -586,11 +586,11 @@ function setBankroller(callback) {
         
         validBankroller(addressDice, function (ok) {
            
-            // if (!ok) {
-            //     q_params.address = false
-            //     setBankroller(callback)
-            //     return
-            // };
+            if (!ok) {
+                q_params.address = false
+                setBankroller(callback)
+                return
+            };
 
             window.bankroller_set = true
             window.loading = false
@@ -630,11 +630,15 @@ function validBankroller(address, callback) {
             $.get("https://ropsten.etherscan.io/api?module=account&action=txlist&address=" + address + "&startblock=" + (hexToNum(block) - 2000) + "&endblock=latest&", function (d) {
                 for (var n = 0; n < d.result.length; n++) {
                     if (d.result[n].input.substr(0, 10) == '0xb00606a5') {
+                        
                         callback(true)
                         return
                     }
+                    
                 }
-                if (d.result.length <= 5) callback(true); //first games? or give new chance
+                if (d.result[d.result.length - 1].blockNumber < block ) callback (true);
+                if (d.result.length <= 5) callback(true);
+                 //first games? or give new chance
                 callback(false)
             })
 
