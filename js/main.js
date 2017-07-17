@@ -6,12 +6,12 @@ if (!localStorage.getItem('keystore')) {
     if (window.location.search.length > 0 && window.location.search.indexOf('ref=')) {
         var ref = getParameterByName('ref', window.location.search);
         if (ref) {
-            link += '?ref='+enc(ref);
+            link += '?ref=' + enc(ref);
             localStorage.ref = ref;
         }
     }
 
-    $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="'+link+'">Platform</a>');
+    $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="' + link + '">Platform</a>');
 }
 
 var ks = lightwallet.keystore.deserialize(localStorage.getItem('keystore'));
@@ -148,28 +148,30 @@ function initGame() {
         }
 
         var data = JSON.parse(event.data);
-        var msg  = enc(data.data.substr(2));
+        var msg = enc(data.data.substr(2));
 
         var player = "0x" + msg.substr(24, 64);
-        var bet    = hexToNum(msg.substr(64, 64)) / 100000000;
+        var bet = hexToNum(msg.substr(64, 64)) / 100000000;
 
         var playerNum = hexToNum(msg.substr(128, 64));
-        var chance    = playerNum / (65536) * 100;
+        var chance = playerNum / (65536) * 100;
 
         var payout = (65536 - 1310) / playerNum;
         var profit = payout * bet - bet;
 
         var state = hexToNum(msg.substr(256, 64));
-        var rnd   = hexToNum(msg.substr(320, 64));
-        
-        if (!data.transaction) { return; }
+        var rnd = hexToNum(msg.substr(320, 64));
 
-        var tx = enc(data.transaction).substr(0,64)
+        if (!data.transaction) {
+            return;
+        }
+
+        var tx = enc(data.transaction).substr(0, 64)
 
         if (rnd != 0) {
             addRow(seed, tx, player, bet, playerNum, rnd, state);
         }
-        
+
         if ($('#table tr').length > 10) {
             $('tr:eq(11)').remove();
         }
@@ -253,7 +255,7 @@ function startGame() {
             nonceTx = numToHex(hexToNum(nonceTx) + 1);
             responseTransaction("roll", nonceTx, seed);
         } else {
-            infura.sendRequest("roll", openkey ,_callback, seed);
+            infura.sendRequest("roll", openkey, _callback, seed);
         }
     } else {
         $("#randomnum").text("Sorry, you do not have a key");
@@ -511,9 +513,6 @@ function response(command, value, seed) {
     }
 }
 
-
-
-
 function animateTimer(second) {
     var time = second;
     var t = setInterval(function () {
@@ -566,7 +565,7 @@ function setBankroller(callback) {
         if (localStorage && localStorage.addressDice && bankrollers.indexOf(localStorage.addressDice)) {
             addressDice = localStorage.addressDice
         } else {
-            addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];        
+            addressDice = bankrollers[Math.floor(Math.random() * bankrollers.length)];
         }
 
         if (q_params.address && bankrollers.indexOf(q_params.address) > -1) {
@@ -584,13 +583,14 @@ function setBankroller(callback) {
             addressDice.slice(0, 24) + '...</a>'
         );
 
-
+        
         validBankroller(addressDice, function (ok) {
-            if (!ok) {
-                q_params.address = false
-                setBankroller(callback)
-                return
-            };
+           
+            // if (!ok) {
+            //     q_params.address = false
+            //     setBankroller(callback)
+            //     return
+            // };
 
             window.bankroller_set = true
             window.loading = false
@@ -665,15 +665,16 @@ function validGame(contract, callback) {
     })
 };
 
-
 function getBankrollers(callback) {
     if (window.requested_bankrollers && window.requested_bankrollers.length) {
         callback(window.requested_bankrollers);
         return;
     };
-  
-    setTimeout(function() {
-        if(!window.requested_bankrollers){  window.requested_bankrollers = []; }
+
+    setTimeout(function () {
+        if (!window.requested_bankrollers) {
+            window.requested_bankrollers = [];
+        }
         window.requested_bankrollers.push["0xce101919f58368f00597d17e1601929ba8803f94"]
         callback(window.requested_bankrollers)
     }, 5000);
