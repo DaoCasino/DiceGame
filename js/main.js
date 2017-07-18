@@ -166,7 +166,7 @@ function initGame() {
             return;
         }
 
-        var tx = enc(data.transaction).substr(0, 64)
+        var tx = enc(data.transaction)
 
         if (rnd != 0) {
             addRow(seed, tx, player, bet, playerNum, rnd, state);
