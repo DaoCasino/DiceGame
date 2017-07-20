@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+    var url = (function () {
+        var params = {};
+        if (window.location.href.split('?').length < 2) {
+            return params;
+        }
+        var parts = window.location.href.split('?')[1].split('&');
+        for (var k in parts) {
+            var kv = parts[k].split('=');
+            params[kv[0]] = kv[1];
+        }
+        return params;
+    }());
+
+    localStorage.setItem('referrer' , url.ref);
+
     var clipboard = new Clipboard('#openkey');
     
     $("#slider-dice-one").slider({

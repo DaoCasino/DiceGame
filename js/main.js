@@ -2,15 +2,7 @@
 
 if (!localStorage.getItem('keystore')) {
     var link = 'https://platform.dao.casino';
-
-    if (window.location.search.length > 0 && window.location.search.indexOf('ref=')) {
-        var ref = getParameterByName('ref', window.location.search);
-        if (ref) {
-            link += '?ref=' + enc(ref);
-            localStorage.ref = ref;
-        }
-    }
-
+    console.log("!!!!")
     $('#bg_popup.reg').show().find('h1').html('Please, sign in on the <a href="' + link + '">Platform</a>');
 }
 
@@ -558,7 +550,7 @@ function setBankroller(callback) {
         }
         return params;
     }());
-    window.q_params = q_params.address;
+    // window.q_params = q_params.address;
 
     getBankrollers(function (bankrollers) {
         $("#bankrollers").html("Bankrollers: " + bankrollers.length);
