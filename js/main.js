@@ -428,7 +428,7 @@ function responseTransaction(name, value, seed) {
     // options.value = price;
     // options.data  = data;
 
-    if (!privkey || !ks) {
+    if (!ks) {
         console.log("ERROR_TRANSACTION");
         // console.error(privkey, buf, ks);
         return;
