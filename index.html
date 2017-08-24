@@ -51,7 +51,7 @@
 	</script>
 </head>
 
-<body class="loading">
+<bo tody class="loading">
 	<div id="loadlog" style="display: none">Connect to blockchain</div>
 
 	<!-- WRAPPER -->
@@ -189,7 +189,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-4"> 
 								<div class="wrapper-slider">
 									<div class="clearfix">
 										<div class="wrapper-slider__item">
@@ -369,6 +369,23 @@
 			</div>
 		</div>
 
+		<div id="bg_popup" class="approve">
+			<div id="popup">
+				<h1>Please, wait, approve<br></h1>
+			</div>
+		</div>
+
+		<div id="bg_popup" class="deposit">
+			<div id="popup">
+				<h1>Please, select deposit<br></h1>
+					<div id="your-deposit" > 0 </div>
+				<div class="clearfix"></div>
+				<div id="slider-deposit"></div>
+				<br>
+				<button id="deposit-btn" onclick="" class="disclaimer-btn registr-now">Roll Dice</button>
+			</div>
+		</div>
+
 		<div id="bg_popup" class="balance">
 			<div id="popup">
 				<h1>You dont have ether. <br> Please visit <a href="./balance.html">balance page</a><br></h1>
@@ -411,67 +428,8 @@
 		<script src="https://platform.dao.casino/api/lib/DC.js?v=2"></script>
 		<script src="common_js/configuration.js?v=1"></script>
 		<!--<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>-->
-		<script>
-			window.loading = true;
-			window.Casino = new CasinoJS();
-			window.lightwallet = window.Casino.Account.lightWallet;
-
-			$(function () {
-
-				Casino.subscribe('Bankrollers', bankrollers => {
-					var cnt = Object.keys(bankrollers).length || 0
-
-					if (window.loading) {
-						$('#loadlog').text('Find bankrollers')
-					}
-
-					if (cnt == 0) {
-						window.no_online_b = setTimeout(function () {
-							$('body').removeClass('loading');
-							$('#bg_popup.bankroll').show().find('h1').html(
-								'No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>'
-							);
-						}, 5000);
-					} else {
-						if (window.loading) {
-							$('#loadlog').text('Verify bankrollers')
-						}
-
-						clearInterval(window.no_online_b)
-
-						if (window.q_params && Object.keys(bankrollers).indexOf(q_params.address) == -1) {
-							console.log("OFFLINE");
-							$('body').removeClass('loading');
-							$('#bg_popup.bankroll').show().find('h1').html(
-								'No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>'
-							);
-							return;
-						}
-
-						$('#bg_popup.bankroll').hide();
-
-						if (!window.game_started) {
-							window.game_started = true;
-							start();
-						}
-
-						window.requested_bankrollers = [];
-						for (let k in bankrollers) {
-							if (bankrollers[k].game_code && bankrollers[k].game_code != 'dice_v2') {
-								delete(bankrollers[k]);
-								continue;
-							}
-							window.requested_bankrollers.push(k)
-						}
-
-					}
-				})
-			})
-		</script>
 
 		<script src="js/utils.js?v=1" async></script>
-
-		<script src="js/Infura.js?v=1"></script>
 
 
 		<script src="js/contract_erc20_abi.js?v=1"></script>
@@ -486,7 +444,6 @@
 		<script src="js/gamecommon.js?v=1" async></script>
 
 		<script src="common_js/common.js?v=1"></script>
-		<script src="js/web3.sha3.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+function readyUI() {
 
     var url = (function () {
         var params = {};
@@ -29,6 +29,24 @@ $(document).ready(function () {
             Refresh();
         }
     });
+
+    $("#slider-deposit").slider({
+        range: "min",
+        step: 0.1,
+        value: 1,
+        min: 0.1,
+        max: window.balance,
+        slide: function (event, ui) {
+            window.deposit = +ui.value;
+            $("#your-deposit").html(ui.value);
+        }
+    });
+
+
+    $('#deposit-btn').click(function(){
+        openChannel();
+        console.log('selected deposit:', deposit);
+    })
     
     $("input#checked-on").prop('disabled', true);
     
@@ -162,4 +180,4 @@ $(document).ready(function () {
     
     Refresh();
 
-});
+};
