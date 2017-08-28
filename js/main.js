@@ -115,12 +115,23 @@ function openChannel() {
             console.log('openGamechannel res:', result)
             $('#openingTx').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/'+result+'">Opening tx</a>')
             $('body').removeClass( "loading");
-            Refresh();  
+             
         },
         function (log) {
             $('#loadlog').html(log)
         }
     )
+
+    var t = setInterval(function () {
+        Casino.getAllowance(channelContract, function (bets) {
+            if (bets > 10 ** 8) {
+                console.log("approve complete:", bets)
+                $('#bg_popup.approve').hide();
+                clearInterval(t);
+            }
+        })
+    }, 1000)
+    
 }
 
 function closeChannel(){
@@ -131,10 +142,14 @@ function closeChannel(){
     })
 }
 
-var t = setInterval(function () {
+var b = setInterval(function () {
     Casino.Account.getBetsBalance(function (d) {
         betsBalance = d;
         $('#balance').html(d + ' BET');
+        if(betsBalance == 0){
+            closeChannel();
+            $('#loadlog').html('Sorry, you dont have BET!');
+        }
     })
 }, 3000)
 
@@ -266,30 +281,11 @@ $(document).ready(function () {
 
     window.lightwallet = Casino.Account.lightWallet;
 
-    Casino.getAllowance(channelContract, function (bets) {
-        if (bets > 10 ** 8) {
-            $('#bg_popup.deposit').show();
-            return;
-        }
-        $('#bg_popup.approve').show();
-        Casino.approveContract(channelContract, 10000 * 10 ** 8, function () {
-            var t = setInterval(function () {
-                Casino.getAllowance(channelContract, function (bets) {
-                    if (bets > 10 ** 8) {
-                        console.log("approve complete:", bets)
-                        $('#bg_popup.approve').hide();
-                        clearInterval(t);
-                        $('#bg_popup.deposit').show();
-                    }
-                })
-            })
-        })
-    })
-
     Casino.Account.getBetsBalance(function (d) {
         window.betsBalance = d;
         readyUI();
     })
     $('#loading').hide();
     console.log("version 0.61 GC"); // VERSION !
+    $('#bg_popup.deposit').show();
 })

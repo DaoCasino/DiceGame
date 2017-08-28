@@ -173,6 +173,6 @@ function readyUI() {
     $("#amount-two").val(($("#slider-dice-two").slider("value") / 65536 * 100).toFixed(2) + "%");
     $("#amount-one").val($("#slider-dice-one").slider("value") / 1000);
     
-    Refresh();
+
 
 };
