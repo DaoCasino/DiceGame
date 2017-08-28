@@ -143,11 +143,9 @@
 									<a class="disclaimer-btn registr-now" id='balance' href="/balance.html">
 										? BET
 									</a>
-
-									<a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
+									<!-- <a onclick='localStorage.clear();window.location.reload()' class="disclaimer-btn registr-now" href="#">
 										exit
-									</a>
-
+									</a> -->
 								</div>
 							</div>
 
@@ -177,8 +175,8 @@
 									</div>
 									<div class="col-md-4">
 										<div class="player-stats">
-											<h3 id="random"></h3>
-											<h2 class="status-numbers" id="randomnum"></h2>
+											<p class="label-numbers">Your channel balance</p>
+											<h2 class="status-numbers" id="inChannel">.:.:.::.</h2>
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -241,38 +239,39 @@
 								</div>
 							</div>
 						</div>
-						<div class="row block-dice-status">
-							<div class="col-md-4 col-md-offset-2">
-								<h3 class="status-numbers" style="text-align: center;">TRANSACTION</h3>
-								<h3 class="status-numbers" style="text-align: center;" id="Tx">..:.::.</h3>
+						<div class="row block-dice-status"  style="text-align: center; color:white">
+							<h2>channel info (in blockchain)</h2>
+							<div class="col-md-4">
+								<h3 class="status-numbers" style="text-align: center;" id="playerBal">Player: 10 BET</h3>
+								<h3 class="status-numbers" style="text-align: center;" id="bankrollBal">Bankroll: 10 BET</h3>
+								<h3 class="status-numbers" style="text-align: center;" id="nonceCh">Nonce: 0</h3>
+							
 							</div>
 							<div class="col-md-4">
-								<h3 class="status-numbers" style="text-align: center;" id="contractBalance">CONTRACT </h3>
-								<h3 class="status-numbers" style="text-align: center;" id="contract">..:.::.</h3>
+								<h3 class="status-numbers" style="text-align: center;" id="openingTx"><a> Opening Tx </a></h3>
+								<h3 class="status-numbers" style="text-align: center;" id="contractAdr"><a> Contract </a></h3>
+								<h3 class="status-numbers" style="text-align: center;" id="disputeStatus">Dispute: None </h3>
 							</div>
-
-
+							<div>
+									<h3 class="status-numbers" style="text-align: center;">action:</h3>
+									<button class="disclaimer-btn registr-now active" id="closeChannel">CLOSE CHANNEL</button>
+									<!-- <button class="disclaimer-btn registr-now active" id="updateChannel">UPDATE</button>	 -->
+							</div>
 						</div>
 
 						<div class="container">
-
-							<div class="col-md-12 wrapper-slider" style="margin-bottom:10px">
-								<button class="disclaimer-btn registr-now active" id="all">ALL BETS</button>
-								<button class="disclaimer-btn registr-now" id="your">YOUR BETS</button>
-							</div>
-
-
+							
 							<div class="wrapper-dice_table">
 								<table class="dice-table" id="table">
 
 									<thead>
 										<tr>
-											<th>TRANSACTION / PLAYER</th>
+											<th>TIMESTAMP</th>
 											<th>WIN CHANCE</th>
 											<th>OUTCOME</th>
 											<th class="del">BET AMOUNT</th>
-											<th class="del">PAYOUT</th>
 											<th class="del">PROFIT</th>
+											<th class="del">ACTION</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -369,6 +368,23 @@
 			</div>
 		</div>
 
+		<div id="bg_popup" class="approve">
+			<div id="popup">
+				<h1>Please, wait, approve<br></h1>
+			</div>
+		</div>
+
+		<div id="bg_popup" class="deposit">
+			<div id="popup">
+				<h1>Please, select deposit<br></h1>
+				<div id="your-deposit"> 0.1 </div>
+				<div class="clearfix"></div>
+				<div id="slider-deposit"></div>
+				<br>
+				<button id="deposit-btn" onclick="" class="disclaimer-btn registr-now">open channel</button>
+			</div>
+		</div>
+
 		<div id="bg_popup" class="balance">
 			<div id="popup">
 				<h1>You dont have ether. <br> Please visit <a href="./balance.html">balance page</a><br></h1>
@@ -408,85 +424,22 @@
 		<script src="libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 
 
-		<script src="https://platform.dao.casino/api/lib/DC.js?v=2"></script>
-		<script src="common_js/configuration.js?v=1"></script>
+		<!-- <script src="https://platform.dao.casino/api/lib/DC.js?v=2"></script> -->
+		<!-- <script src="common_js/configuration.js?v=1"></script> -->
 		<!--<script src='https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.min.js'></script>-->
-		<script>
-			window.loading = true;
-			window.Casino = new CasinoJS();
-			window.lightwallet = window.Casino.Account.lightWallet;
 
-			$(function () {
-
-				Casino.subscribe('Bankrollers', bankrollers => {
-					var cnt = Object.keys(bankrollers).length || 0
-
-					if (window.loading) {
-						$('#loadlog').text('Find bankrollers')
-					}
-
-					if (cnt == 0) {
-						window.no_online_b = setTimeout(function () {
-							$('body').removeClass('loading');
-							$('#bg_popup.bankroll').show().find('h1').html(
-								'No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>'
-							);
-						}, 5000);
-					} else {
-						if (window.loading) {
-							$('#loadlog').text('Verify bankrollers')
-						}
-
-						clearInterval(window.no_online_b)
-
-						if (window.q_params && Object.keys(bankrollers).indexOf(q_params.address) == -1) {
-							console.log("OFFLINE");
-							$('body').removeClass('loading');
-							$('#bg_popup.bankroll').show().find('h1').html(
-								'No online bankroller. Come back later or <a href="https://casino.us1.list-manage1.com/subscribe?u=a3e08ccb6588d9d43141f24a3&id=c5825597c2">become a bankroller</a> !<br>'
-							);
-							return;
-						}
-
-						$('#bg_popup.bankroll').hide();
-
-						if (!window.game_started) {
-							window.game_started = true;
-							start();
-						}
-
-						window.requested_bankrollers = [];
-						for (let k in bankrollers) {
-							if (bankrollers[k].game_code && bankrollers[k].game_code != 'dice_v2') {
-								delete(bankrollers[k]);
-								continue;
-							}
-							window.requested_bankrollers.push(k)
-						}
-
-					}
-				})
-			})
-		</script>
-
-		<script src="js/utils.js?v=1" async></script>
-
-		<script src="js/Infura.js?v=1"></script>
-
+		<!-- <script src="js/utils.js?v=1" async></script> -->
+		<script src="js/DC.js"></script>
 
 		<script src="js/contract_erc20_abi.js?v=1"></script>
 		<script src="js/contract_dice_abi.js?v=1"></script>
-
-		<script src="js/web_socket.js?v=1"></script>
-		<script src="js/web3.sha3.js?v=1"></script>
 
 		<script src="js/main.js?v=1"></script>
 		<script src="common_js/erc20call.js?v=1"></script>
 
 		<script src="js/gamecommon.js?v=1" async></script>
 
-		<script src="common_js/common.js?v=1"></script>
-		<script src="js/web3.sha3.js"></script>
-</body>
+		<!-- <script src="common_js/common.js?v=1"></script> -->
+		</body>
 
 </html>

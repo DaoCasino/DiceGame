@@ -134,8 +134,8 @@ contract DiceRoll is owned {
         }
 
         if (usedRandom[seeds]) {
-            throw; // used random
-        }
+                    throw; // used random
+                }
 
         usedRandom[seeds] = true;
         if (PlayerNumber > 65536 - 1310 || PlayerNumber == 0) {
