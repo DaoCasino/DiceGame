@@ -80,6 +80,8 @@ function disabled(status) {
 };
 
 function startGame() {
+    var old = window.Game.balance()
+    console.log(old)
     Casino.callChannelGameFunc(
         'roll', [user_bet * 10 ** 8, chance, Casino.getChannelGameRandom()],
         function (res) {
@@ -88,6 +90,11 @@ function startGame() {
             $('#inChannel').html(b + " BET")
             $('#your-balance').val(b)
             addRow(res)
+            if (old > window.Game.balance()){
+                $('#inChannel').css('color','red')
+            } else{
+                $('#inChannel').css('color','green')
+            }
         },
         function (log) {
             console.log('log:', log)
