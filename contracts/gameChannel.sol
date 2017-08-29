@@ -1,4 +1,4 @@
-pragma solidity ^0.4.13;
+pragma solidity ^ 0.4.13;
 
 contract ERC20 {
     function transfer(address _to, uint256 _value);
@@ -41,7 +41,7 @@ contract gameChannel {
     mapping(bytes32 => Dispute) public disputes;
 
 
-    modifier active(Channel c){
+    modifier active(Channel c) {
         /*
             only player or bankroller can call contract function.
 
@@ -56,12 +56,12 @@ contract gameChannel {
         /*
             for opening channel player send data on the opening and signed data.
             bankroller send tx with data to contract for opening channel
-        */ 
+        */
         assert(channels[id].endBlock == 0);
         assert(recoverSigner(sha3(id, player, playerDeposit, bankrollDeposit, nonce, time), sig) == player);
         assert(token.transferFrom(player, this, playerDeposit));
         assert(token.transferFrom(msg.sender, this, bankrollDeposit));
-        channels[id] = Channel(player, msg.sender, playerDeposit, playerDeposit,bankrollDeposit, nonce, block.number + time);
+        channels[id] = Channel(player, msg.sender, playerDeposit, playerDeposit, bankrollDeposit, nonce, block.number + time);
         totalChannels++;
         totalMoneySend += playerDeposit;
     }
@@ -75,7 +75,7 @@ contract gameChannel {
         assert(playerBalance + bankrollBalance <= channels[id].playerBalance + channels[id].bankrollBalance);
         assert(nonce > channels[id].nonce);
         assert(partner != msg.sender && partner == channels[id].player || partner == channels[id].bankroller);
-        
+
         if (block.number < channels[id].endBlock - 10) {
             channels[id].endBlock += 10;
         }
@@ -85,27 +85,30 @@ contract gameChannel {
         ifZero(id);
     }
 
-    function openDispute(bytes32 id, bytes32 seed, uint nonce, uint bet, uint chance) active(channels[id])  {
+    function openDispute(bytes32 id, bytes32 seed, uint nonce, uint bet, uint chance) active(channels[id]) {
         /*
             Only player can open the dispute.
             Player must update channel to actual state.
         */
         Channel memory c = channels[id];
-        assert(nonce == c.nonce + 1 );
+        assert(nonce == c.nonce + 1);
         assert(bet <= c.playerBalance);
         if (c.endBlock - block.number < 10) {
             channels[id].endBlock += 10;
         }
-        disputes[id] = Dispute(seed,bet,chance);
+        disputes[id] = Dispute(seed, bet, chance);
     }
 
     function ifZero(bytes32 id) internal {
-        if(channels[id].playerBalance == 0 || channels[id].bankrollBalance == 0){
+        /* 
+        Closing the channel when balance of player or bankroll = 0.
+        */
+        if (channels[id].playerBalance == 0 || channels[id].bankrollBalance == 0) {
             closeChannel(id);
         }
     }
 
-    function updateGameState(bytes32 id, bytes32 seed, uint nonce, uint bet, uint chance, bytes sig, bytes sigseed) active(channels[id])  {
+    function updateGameState(bytes32 id, bytes32 seed, uint nonce, uint bet, uint chance, bytes sig, bytes sigseed) active(channels[id]) {
         /*
             bankroller can update game state if player don't sign new channel state/
         */
@@ -180,14 +183,14 @@ contract gameChannel {
         Channel memory c = channels[id];
         token.transfer(c.player, c.playerBalance);
         token.transfer(c.bankroller, c.bankrollBalance);
-        if(c.playerDeposit > channels[id].playerBalance){
-            var p = c.playerBalance - c.playerDeposit;
-            serviceReward(c.player, p);
+        if (c.playerDeposit > channels[id].playerBalance) {
+            var profit = c.playerBalance - c.playerDeposit;
+            serviceReward(c.player, profit);
         }
         totalMoneySend += c.playerBalance;
         channels[id].playerBalance = 0;
         channels[id].bankrollBalance = 0;
-        
+
     }
 
     function closeByConsent(bytes32 id, uint playerBalance, uint bankrollBalance, uint nonce, bytes sig) active(channels[id]) {
@@ -213,7 +216,7 @@ contract gameChannel {
         assert(c.endBlock < block.number);
         if (d.seed != 0) {
             uint profit = (d.bet * (65536 - 1310) / d.chance) - d.bet;
-            if(profit > c.bankrollBalance) {
+            if (profit > c.bankrollBalance) {
                 profit = c.bankrollBalance;
             }
             channels[id].playerBalance += profit;
@@ -221,8 +224,9 @@ contract gameChannel {
         }
         closeChannel(id);
     }
-    
+
     function serviceReward(address _player, uint256 _value) internal {
+        
         var profit = _value * 2 / 100;
         var reward = profit * 25 / 100;
 
