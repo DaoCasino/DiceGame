@@ -142,10 +142,16 @@ function openChannel() {
 }
 
 function closeChannel(){
+    $('body').addClass("loading");
     Casino.closeGameChannel(Game.balance(), function (result) {
         console.log('result', result);
-        $('body').addClass("loading");
-        $('#loadlog').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">closing tx</a>');
+        $('#loadlog').html('Channel closed <a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">view tx</a>');
+        setTimeout(function(){
+            $('body').removeClass("loading");
+            setTimeout(function(){
+                window.location.reload()
+            }, 500)
+        }, 1000)
     })
 }
 
