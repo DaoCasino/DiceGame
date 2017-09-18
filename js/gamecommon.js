@@ -160,7 +160,7 @@ function readyUI() {
     $("#slider-dice-two").slider({
         range: "min",
         value: 32768,
-        min:   1,
+        min:   1000,
         max:   64224,
         slide: function (event, ui) {
             chance = ui.value;

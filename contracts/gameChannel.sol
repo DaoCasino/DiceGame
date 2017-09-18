@@ -17,6 +17,7 @@ contract gameChannel {
     ERC20 token = ERC20(0x95a48dca999c89e4e284930d9b9af973a7481287);
     OwnedStore store = OwnedStore(0xe195eed0e77b48146aa246dadf987d2504ac88cb);
     address public gameDeveloper = 0x6506e2D72910050554D0C47500087c485DAA9689;
+    
     uint public totalChannels = 0;
     uint public totalMoneySend = 0;
     uint public totalMoneyPaids = 0;
@@ -40,11 +41,9 @@ contract gameChannel {
     mapping(bytes32 => Channel) public channels;
     mapping(bytes32 => Dispute) public disputes;
 
-
     modifier active(Channel c) {
         /*
             only player or bankroller can call contract function.
-
         */
         require(msg.sender == c.player || msg.sender == c.bankroller);
         require(c.endBlock > block.number);
@@ -87,7 +86,7 @@ contract gameChannel {
 
     function openDispute(bytes32 id, bytes32 seed, uint nonce, uint bet, uint chance) active(channels[id]) {
         /*
-            Only player can open the dispute.
+            Player can open the dispute.
             Player must update channel to actual state.
         */
         Channel memory c = channels[id];
@@ -226,7 +225,9 @@ contract gameChannel {
     }
 
     function serviceReward(address _player, uint256 _value) internal {
-        
+        /*
+            function for distribution of profits.
+        */
         var profit = _value * 2 / 100;
         var reward = profit * 25 / 100;
 

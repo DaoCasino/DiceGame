@@ -95,12 +95,12 @@ function startGame() {
             } else{
                 $('#inChannel').css('color','green')
             }
+            Refresh();
         },
         function (log) {
             console.log('log:', log)
         }
     )
-    Refresh();
 }
 
 function openChannel() {
@@ -261,6 +261,7 @@ function showResult(value, rnd, seed) {
     }
 
     updateRow(seed, rnd);
+    
 }
 
 function animateTimer(second) {
