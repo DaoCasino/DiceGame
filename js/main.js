@@ -82,8 +82,9 @@ function disabled(status) {
 function startGame() {
     var old = window.Game.balance()
     console.log(old)
+    var send_bet = Math.floor(user_bet * 10 ** 8);
     Casino.callChannelGameFunc(
-        'roll', [user_bet * 10 ** 8, chance, Casino.getChannelGameRandom()],
+        'roll', [send_bet, chance, Casino.getChannelGameRandom()],
         function (res) {
             window.Game.roll(user_bet * 10 ** 8, chance, res.random_hash)
             var b = Casino.Utils.toFixed(window.Game.balance() / 10 ** 8,8)
