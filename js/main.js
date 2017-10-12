@@ -80,6 +80,10 @@ function disabled(status) {
 };
 
 function startGame() {
+    if($("#roll-dice").prop('disabled')){
+        return;
+    }
+    $("#roll-dice").prop('disabled', true);
     var old = window.Game.balance()
     console.log(old)
     var send_bet = Math.floor(user_bet * 10 ** 8);
@@ -87,43 +91,46 @@ function startGame() {
         'roll', [send_bet, chance, Casino.getChannelGameRandom()],
         function (res) {
             window.Game.roll(user_bet * 10 ** 8, chance, res.random_hash)
-            var b = Casino.Utils.toFixed(window.Game.balance() / 10 ** 8,8)
+            var b = Casino.Utils.toFixed(window.Game.balance() / 10 ** 8, 8)
             $('#inChannel').html(b + " BET")
             $('#your-balance').val(b)
             addRow(res)
-            if (old > window.Game.balance()){
-                $('#inChannel').css('color','red')
-            } else{
-                $('#inChannel').css('color','green')
+            if (old > window.Game.balance()) {
+                $('#inChannel').css('color', 'red')
+            } else {
+                $('#inChannel').css('color', 'green')
             }
+            if(window.Game.balance() == 0){
+                closeChannel(); }
             Refresh();
         },
         function (log) {
             console.log('log:', log)
         }
     )
+    setTimeout(function(){ $("#roll-dice").prop('disabled', false)},500)
 }
 
 function openChannel() {
-    $('#contractAdr').html('<a target="_blank" href="https://ropsten.etherscan.io/address/'+channelContract+'">Contract</a>')  
+    $('#contractAdr').html('<a target="_blank" href="https://ropsten.etherscan.io/address/' + channelContract + '">Contract</a>')
     $('#bg_popup.deposit').hide();
     $('#isreg').show();
     $('#balance').html(betsBalance + ' BET')
-    $('#playerBal').html('Player: '+ deposit + ' BET')
-    $('#bankrollBal').html('Bankroll: '+ deposit * 2 + ' BET') 
+    $('#playerBal').html('Player: ' + deposit + ' BET')
+    $('#bankrollBal').html('Bankroll: ' + deposit * 2 + ' BET')
     $('#inChannel').html(deposit + " BET")
     $('#your-balance').val(deposit)
-    
+
 
     Casino.startChannelGame(
         GAME_CODE, deposit * 10 ** 8,
         function (result) {
             window.Game = new GameLogic(deposit * 10 ** 8)
-            
+
             console.log('openGamechannel res:', result)
-            $('#openingTx').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/'+result+'">Opening tx</a>')
-            $('body').removeClass( "loading");
-             
+            $('#openingTx').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">Opening tx</a>')
+            $('body').removeClass("loading");
+
         },
         function (log) {
             $('#loadlog').html(log)
@@ -139,14 +146,15 @@ function openChannel() {
             }
         })
     }, 1000)
-    
+
 }
 
-function closeChannel(){
+function closeChannel() {
     Casino.closeGameChannel(Game.balance(), function (result) {
         console.log('result', result);
         $('body').addClass("loading");
-        $('#loadlog').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">closing tx</a>');
+        $('#loadlog').html('The channel was a closed. You get: '+window.Game.balance()+'BET <a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">transaction.</a>');
+        setTimeout(function(){location.reload()},30000)
     })
 }
 
@@ -154,7 +162,7 @@ var b = setInterval(function () {
     Casino.Account.getBetsBalance(function (d) {
         betsBalance = d;
         $('#balance').html(d + ' BET');
-        if(betsBalance == 0){
+        if (betsBalance == 0) {
             closeChannel();
             $('#loadlog').html('Sorry, you dont have BET!');
         }
@@ -176,8 +184,8 @@ function Refresh() {
         if (user_bet < 0.001) {
             user_bet = 0.001;
         }
-        $("#profit-on-win").val( Casino.Utils.toFixed( user_bet * (65536 - 1310) / chance - user_bet,3) );
-        $("#payout").val("x" +  Casino.Utils.toFixed( (65536 - 1310) / chance, 5) );
+        $("#profit-on-win").val(user_bet * (65536 - 1310) / chance - user_bet);
+        $("#payout").val("x" + Casino.Utils.toFixed((65536 - 1310) / chance, 5));
         $("#slider-dice-one").slider("option", "max", maxuser_bet * 1000);
         $("#amount-one").val(user_bet);
         $("#slider-dice-one").slider("value", user_bet * 1000);
@@ -207,12 +215,12 @@ function addRow(res) {
         '<td  aria-label="TIME">' + res.timestamp + '</td>',
         '<td  aria-label="" class="progress">',
         '<div class="tablebar ui-progressbar ui-corner-all ui-widget ui-widget-content" style="height:10px" >',
-        '<div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width:' +  chance + '%; background:' + color + ';margin:0px;"></div></div>',
-        '<div class="tooltip" style="left:' + res.random_num / 65536 * 100 + '%">' +  res.random_num + '</div>',
+        '<div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width:' + chance + '%; background:' + color + ';margin:0px;"></div></div>',
+        '<div class="tooltip" style="left:' + res.random_num / 65536 * 100 + '%">' + res.random_num + '</div>',
         '</td>',
         '<td class="state" aria-label="RESULT">' + state + '</td>',
-        '<td  aria-label="BET">' + Casino.Utils.toFixed(res.user_bet,  3) + ' BET</td>',
-        '<td  aria-label="PROFIT">' + Casino.Utils.toFixed(res.profit/10**8,3) + ' BET</td>',
+        '<td  aria-label="BET">' + Casino.Utils.toFixed(res.user_bet, 3) + ' BET</td>',
+        '<td  aria-label="PROFIT">' + Casino.Utils.toFixed(res.profit / 10 ** 8, 3) + ' BET</td>',
         '<td  aria-label="ACTION"> UPDATE </td></tr>',
     ].join(''));
 };
@@ -262,7 +270,7 @@ function showResult(value, rnd, seed) {
     }
 
     updateRow(seed, rnd);
-    
+
 }
 
 function animateTimer(second) {
