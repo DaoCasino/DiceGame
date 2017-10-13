@@ -108,7 +108,7 @@ function startGame() {
             console.log('log:', log)
         }
     )
-    setTimeout(function(){ $("#roll-dice").prop('disabled', false)},500)
+    setTimeout(function(){ $("#roll-dice").prop('disabled', false)},1000)
 }
 
 function openChannel() {
@@ -153,7 +153,7 @@ function closeChannel() {
     Casino.closeGameChannel(Game.balance(), function (result) {
         console.log('result', result);
         $('body').addClass("loading");
-        $('#loadlog').html('The channel was a closed. You get: '+window.Game.balance()+'BET <a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">transaction.</a>');
+        $('#loadlog').html('The channel was a closed. <a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">transaction.</a>');
         setTimeout(function(){location.reload()},30000)
     })
 }
@@ -184,7 +184,7 @@ function Refresh() {
         if (user_bet < 0.001) {
             user_bet = 0.001;
         }
-        $("#profit-on-win").val(user_bet * (65536 - 1310) / chance - user_bet);
+        $("#profit-on-win").val(Casino.Utils.toFixed(user_bet * (65536 - 1310) / chance - user_bet));
         $("#payout").val("x" + Casino.Utils.toFixed((65536 - 1310) / chance, 5));
         $("#slider-dice-one").slider("option", "max", maxuser_bet * 1000);
         $("#amount-one").val(user_bet);
