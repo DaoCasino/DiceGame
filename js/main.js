@@ -108,6 +108,7 @@ function startGame() {
         }
     )
     totalGames++;
+    paids += user_bet;
     $("#total-rolls").html(totalGames);
     $("#total-paid").html(paids + ' BET');
 
@@ -187,7 +188,7 @@ function Refresh() {
         if (user_bet < 0.001) {
             user_bet = 0.001;
         }
-        $("#profit-on-win").val(Casino.Utils.toFixed(user_bet * (65536 - 1310) / chance - user_bet));
+        $("#profit-on-win").val(Casino.Utils.toFixed(user_bet * (65536 - 1310) / chance - user_bet,8));
         $("#payout").val("x" + Casino.Utils.toFixed((65536 - 1310) / chance, 5));
         $("#slider-dice-one").slider("option", "max", maxuser_bet * 1000);
         $("#amount-one").val(user_bet);
