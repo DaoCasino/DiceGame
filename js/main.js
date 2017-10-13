@@ -10,9 +10,8 @@ var chance = 32768;
 var bankroll = 1000;
 
 
-paids = 5;
-sends = 6;
-totalGames = 10;
+paids = 0;
+totalGames = 0;
 
 const GameLogic = function (deposit) {
     var balance = deposit * 1
@@ -61,7 +60,7 @@ const GameLogic = function (deposit) {
 
 $("#total-rolls").html(totalGames);
 $("#total-paid").html(paids + ' BET');
-$("#total-send").html(sends + ' BET (' + ((paids / sends) * 100) + '%)');
+
 
 function disabled(status) {
     $("#slider-dice-one").slider({
@@ -108,6 +107,10 @@ function startGame() {
             console.log('log:', log)
         }
     )
+    totalGames++;
+    $("#total-rolls").html(totalGames);
+    $("#total-paid").html(paids + ' BET');
+
     setTimeout(function(){ $("#roll-dice").prop('disabled', false)},1000)
 }
 
@@ -115,7 +118,7 @@ function openChannel() {
     $('#contractAdr').html('<a target="_blank" href="https://ropsten.etherscan.io/address/' + channelContract + '">Contract</a>')
     $('#bg_popup.deposit').hide();
     $('#isreg').show();
-    $('#balance').html(betsBalance + ' BET')
+    $('#balance').html('? BET')
     $('#playerBal').html('Player: ' + deposit + ' BET')
     $('#bankrollBal').html('Bankroll: ' + deposit * 2 + ' BET')
     $('#inChannel').html(deposit + " BET")
@@ -167,7 +170,7 @@ var b = setInterval(function () {
             $('#loadlog').html('Sorry, you dont have BET!');
         }
     })
-}, 3000)
+}, 30000)
 
 function Refresh() {
     var bal = window.Game.balance() / 10 ** 8;
@@ -191,8 +194,6 @@ function Refresh() {
         $("#slider-dice-one").slider("value", user_bet * 1000);
     }
 };
-
-
 
 function addRow(res) {
     var color;
