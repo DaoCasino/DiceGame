@@ -3,8 +3,8 @@ var GAME_CODE = 'dice_gamechannel'
 var deposit, lastTx, count, new_count,
     sends, paids, totalGames, password,
     Timer, animate, RndGen, addressDice, socket;
-deposit = 0.1;
 var maxuser_bet = 0.0001;
+var deposit  = 0.1;
 var user_bet = 0.01;
 var chance = 32768;
 var bankroll;
@@ -76,6 +76,11 @@ function disabled(status) {
 };
 
 function startGame() {
+
+    if(window.Game.balance() < 0.001 * Math.pow(10,8) ){
+        closeChannel(); 
+    }
+
     if($("#roll-dice").prop('disabled')){
         return;
     }
@@ -88,13 +93,13 @@ function startGame() {
     $("#roll-dice").prop('disabled', true);
     var old = window.Game.balance()
     console.log(old)
-    var send_bet = Math.floor(user_bet * 10 ** 8);
+    var send_bet = Math.floor(user_bet * Math.pow(10,8));
     Casino.callChannelGameFunc(
         'roll', [send_bet, chance, Casino.getChannelGameRandom()],
         function (res) {
             
-            window.Game.roll(user_bet * 10 ** 8, chance, res.random_hash)
-            var b = Casino.Utils.toFixed(window.Game.balance() / 10 ** 8, 8)
+            window.Game.roll(user_bet * Math.pow(10,8), chance, res.random_hash)
+            var b = Casino.Utils.toFixed(window.Game.balance() / Math.pow(10,8), 8)
             $('#inChannel').html(b + " BET")
             $('#your-balance').val(b)
             addRow(res)
@@ -103,10 +108,7 @@ function startGame() {
             } else {
                 $('#inChannel').css('color', 'green')
             }
-            if(window.Game.balance() < 0.001 * 10 ** 8 ){
-                closeChannel(); 
-            }
-            if(window.Game.balance() == bankroll){
+            if(window.Game.balance() == bankroll || window.Game.balance() == 0 ){
                 closeChannel(); 
             }
             Refresh();
@@ -136,9 +138,9 @@ function openChannel() {
 
 
     Casino.startChannelGame(
-        GAME_CODE, deposit * 10 ** 8,
+        GAME_CODE, deposit * Math.pow(10,8),
         function (result) {
-            window.Game = new GameLogic(deposit * 10 ** 8)
+            window.Game = new GameLogic(deposit * Math.pow(10,8))
 
             console.log('openGamechannel res:', result)
             $('#openingTx').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">Opening tx</a>')
@@ -149,10 +151,10 @@ function openChannel() {
             $('#loadlog').html(log)
         }
     )
-    bankroll = deposit * 10 ** 8 * 3;
+    bankroll = deposit * Math.pow(10,8) * 3;
     var t = setInterval(function () {
         Casino.getAllowance(channelContract, function (bets) {
-            if (bets > 10 ** 8) {
+            if (bets > Math.pow(10,8)) {
                 console.log("approve complete:", bets)
                 $('#bg_popup.approve').hide();
                 clearInterval(t);
@@ -183,16 +185,19 @@ var b = setInterval(function () {
 }, 30000)
 
 function Refresh() {
-    var bal = window.Game.balance() / 10 ** 8;
+    var bal = window.Game.balance() / Math.pow(10,8);
     var p = bal - deposit;
     if (user_bet == NaN) {
         user_bet = 0;
     }
-    if (bal != 0) {
+    if (bal == 0) {
+        return;
+    }
         var _bet = ((deposit * 3 + p)) / ((65536 - 1310) / chance);
-        maxuser_bet = Math.min(_bet, bal, 10);
+        var _b = ((bankroll - bal) * chance)/(65536 - 1310);
+        maxuser_bet = Math.min(_bet, bal, _b, 10);
         if (user_bet > maxuser_bet) {
-            user_bet = +Casino.Utils.toFixed(maxuser_bet, 4);
+            user_bet = Casino.Utils.toFixed(maxuser_bet, 4);
         }
         if (user_bet < 0.001) {
             user_bet = 0.001;
@@ -202,7 +207,7 @@ function Refresh() {
         $("#slider-dice-one").slider("option", "max", maxuser_bet * 1000);
         $("#amount-one").val(user_bet);
         $("#slider-dice-one").slider("value", user_bet * 1000);
-    }
+    
 };
 
 function addRow(res) {
@@ -231,7 +236,7 @@ function addRow(res) {
         '</td>',
         '<td class="state" aria-label="RESULT">' + state + '</td>',
         '<td  aria-label="BET">' + Casino.Utils.toFixed(res.user_bet, 3) + ' BET</td>',
-        '<td  aria-label="PROFIT">' + Casino.Utils.toFixed(res.profit / 10 ** 8, 3) + ' BET</td>',
+        '<td  aria-label="PROFIT">' + Casino.Utils.toFixed(res.profit / Math.pow(10,8), 3) + ' BET</td>',
         '<td  aria-label="ACTION"> UPDATE </td></tr>',
     ].join(''));
 };
