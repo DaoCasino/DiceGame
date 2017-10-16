@@ -80,7 +80,7 @@ function startGame() {
         return;
     }
 
-    if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll){
+    if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll || window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) < 0 ){
         return;
     }
 
