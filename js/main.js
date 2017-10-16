@@ -80,8 +80,9 @@ function startGame() {
         return;
     }
 
-    if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll || window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) < 0 ){
+    if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll){
         return;
+
     }
 
     $("#roll-dice").prop('disabled', true);
@@ -91,6 +92,7 @@ function startGame() {
     Casino.callChannelGameFunc(
         'roll', [send_bet, chance, Casino.getChannelGameRandom()],
         function (res) {
+            
             window.Game.roll(user_bet * 10 ** 8, chance, res.random_hash)
             var b = Casino.Utils.toFixed(window.Game.balance() / 10 ** 8, 8)
             $('#inChannel').html(b + " BET")
@@ -101,7 +103,7 @@ function startGame() {
             } else {
                 $('#inChannel').css('color', 'green')
             }
-            if(window.Game.balance() == 0 ){
+            if(window.Game.balance() < 0.001 * 10 ** 8 ){
                 closeChannel(); 
             }
             if(window.Game.balance() == bankroll){
