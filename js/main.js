@@ -7,7 +7,7 @@ deposit = 0.1;
 var maxuser_bet = 0.0001;
 var user_bet = 0.01;
 var chance = 32768;
-var bankroll = 1000;
+var bankroll;
 
 
 paids = 0;
@@ -58,9 +58,6 @@ const GameLogic = function (deposit) {
     }
 }
 
-$("#total-rolls").html(totalGames);
-$("#total-paid").html(paids + ' BET');
-
 
 function disabled(status) {
     $("#slider-dice-one").slider({
@@ -82,6 +79,11 @@ function startGame() {
     if($("#roll-dice").prop('disabled')){
         return;
     }
+
+    if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll){
+        return;
+    }
+
     $("#roll-dice").prop('disabled', true);
     var old = window.Game.balance()
     console.log(old)
@@ -99,8 +101,12 @@ function startGame() {
             } else {
                 $('#inChannel').css('color', 'green')
             }
-            if(window.Game.balance() == 0){
-                closeChannel(); }
+            if(window.Game.balance() == 0 ){
+                closeChannel(); 
+            }
+            if(window.Game.balance() == bankroll){
+                closeChannel(); 
+            }
             Refresh();
         },
         function (log) {
@@ -109,8 +115,9 @@ function startGame() {
     )
     totalGames++;
     paids += user_bet;
+
     $("#total-rolls").html(totalGames);
-    $("#total-paid").html(paids + ' BET');
+    $("#total-paid").html(Casino.Utils.toFixed(paids,3) + ' BET');
 
     setTimeout(function(){ $("#roll-dice").prop('disabled', false)},1000)
 }
@@ -140,7 +147,7 @@ function openChannel() {
             $('#loadlog').html(log)
         }
     )
-
+    bankroll = deposit * 10 ** 8 * 3;
     var t = setInterval(function () {
         Casino.getAllowance(channelContract, function (bets) {
             if (bets > 10 ** 8) {
@@ -180,7 +187,7 @@ function Refresh() {
         user_bet = 0;
     }
     if (bal != 0) {
-        var _bet = ((deposit * 2 + p)) / ((65536 - 1310) / chance);
+        var _bet = ((deposit * 3 + p)) / ((65536 - 1310) / chance);
         maxuser_bet = Math.min(_bet, bal, 10);
         if (user_bet > maxuser_bet) {
             user_bet = +Casino.Utils.toFixed(maxuser_bet, 4);
