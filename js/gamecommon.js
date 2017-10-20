@@ -21,7 +21,7 @@ function readyUI() {
         step: 0.5,
         value: 10,
         min: 1,
-        max: 2000,
+        max: 100000,
         slide: function (event, ui) {
             user_bet = ui.value / 1000;
             $("#amount-one").val(ui.value / 1000);

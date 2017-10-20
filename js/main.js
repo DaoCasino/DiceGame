@@ -1,14 +1,16 @@
 var channelContract = '0xd7aa363a70866e6cf1f82089e4e2ec9a83c51c6a';
+
 var GAME_CODE = 'dice_gamechannel'
+
 var deposit, lastTx, count, new_count,
     sends, paids, totalGames, password,
-    Timer, animate, RndGen, addressDice, socket;
-var maxuser_bet = 0.0001;
+    Timer, animate, RndGen;
+
+var maxuser_bet = 0.1;
 var deposit  = 0.1;
 var user_bet = 0.01;
 var chance = 32768;
 var bankroll;
-
 
 paids = 0;
 totalGames = 0;
@@ -58,7 +60,6 @@ const GameLogic = function (deposit) {
     }
 }
 
-
 function disabled(status) {
     $("#slider-dice-one").slider({
         disabled: status
@@ -76,41 +77,38 @@ function disabled(status) {
 };
 
 function startGame() {
-
-    if(window.Game.balance() < 0.001 * Math.pow(10,8) ){
-        closeChannel(); 
-    }
-
-    if($("#roll-dice").prop('disabled')){
-        return;
-    }
+    disabled(true);
 
     if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll){
         return;
 
     }
 
-    $("#roll-dice").prop('disabled', true);
     var old = window.Game.balance()
-    console.log(old)
+
     var send_bet = Math.floor(user_bet * Math.pow(10,8));
+    
     Casino.callChannelGameFunc(
         'roll', [send_bet, chance, Casino.getChannelGameRandom()],
         function (res) {
             
             window.Game.roll(user_bet * Math.pow(10,8), chance, res.random_hash)
             var b = Casino.Utils.toFixed(window.Game.balance() / Math.pow(10,8), 8)
+            
             $('#inChannel').html(b + " BET")
             $('#your-balance').val(b)
+            
             addRow(res)
+            
             if (old > window.Game.balance()) {
                 $('#inChannel').css('color', 'red')
             } else {
                 $('#inChannel').css('color', 'green')
             }
-            if(window.Game.balance() == bankroll || window.Game.balance() == 0 ){
+            
+            if(window.Game.balance() == bankroll || window.Game.balance() == 0 || window.Game.balance() < 0.001 * Math.pow(10,8)){
                 closeChannel(); 
-            }
+            }         
             Refresh();
         },
         function (log) {
@@ -119,11 +117,9 @@ function startGame() {
     )
     totalGames++;
     paids += user_bet;
-
     $("#total-rolls").html(totalGames);
     $("#total-paid").html(Casino.Utils.toFixed(paids,3) + ' BET');
-
-    setTimeout(function(){ $("#roll-dice").prop('disabled', false)},1000)
+    setTimeout(function(){disabled(false)},1000)
 }
 
 function openChannel() {
@@ -165,6 +161,7 @@ function openChannel() {
 }
 
 function closeChannel() {
+    console.log("Close channel");
     Casino.closeGameChannel(Game.balance(), function (result) {
         console.log('result', result);
         $('body').addClass("loading");
