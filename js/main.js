@@ -119,7 +119,7 @@ function startGame() {
     paids += user_bet;
     $("#total-rolls").html(totalGames);
     $("#total-paid").html(Casino.Utils.toFixed(paids,3) + ' BET');
-    setTimeout(function(){disabled(false)},1000)
+    setTimeout(function(){disabled(false)},3000)
 }
 
 function openChannel() {
