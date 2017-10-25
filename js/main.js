@@ -199,7 +199,7 @@ function Refresh() {
         if (user_bet < 0.001) {
             user_bet = 0.001;
         }
-        $("#profit-on-win").val(Casino.Utils.toFixed(user_bet * (65536 - 1310) / chance - user_bet,8));
+        $("#profit-on-win").val((Casino.Utils.toFixed(user_bet * (65536 - 1310) / chance - user_bet,8).toFixed(8)));
         $("#payout").val("x" + Casino.Utils.toFixed((65536 - 1310) / chance, 5));
         $("#slider-dice-one").slider("option", "max", maxuser_bet * 1000);
         $("#amount-one").val(user_bet);
@@ -232,7 +232,7 @@ function addRow(res) {
         '<div class="tooltip" style="left:' + res.random_num / 65536 * 100 + '%">' + res.random_num + '</div>',
         '</td>',
         '<td class="state" aria-label="RESULT">' + state + '</td>',
-        '<td  aria-label="BET">' + Casino.Utils.toFixed(res.user_bet, 3) + ' BET</td>',
+        '<td  aria-label="BET">' + Casino.Utils.toFixed(res.user_bet/100000000, 3) + ' BET</td>',
         '<td  aria-label="PROFIT">' + Casino.Utils.toFixed(res.profit / Math.pow(10,8), 3) + ' BET</td>',
         '<td  aria-label="ACTION"> UPDATE </td></tr>',
     ].join(''));
