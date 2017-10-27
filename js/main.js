@@ -8,10 +8,10 @@ var deposit, lastTx, count, new_count,
 
 var maxuser_bet = 0.1;
 var deposit  = 0.1;
-var user_bet = 0.01;
+var user_bet = 0.001;
 var chance = 32768;
 var bankroll;
-
+var game = false;
 paids = 0;
 totalGames = 0;
 
@@ -77,6 +77,10 @@ function disabled(status) {
 };
 
 function startGame() {
+    if(!game){
+        return;
+    }
+
     disabled(true);
 
     if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll){
@@ -132,16 +136,14 @@ function openChannel() {
     $('#inChannel').html(deposit + " BET")
     $('#your-balance').val(deposit)
 
-
     Casino.startChannelGame(
         GAME_CODE, deposit * Math.pow(10,8),
         function (result) {
             window.Game = new GameLogic(deposit * Math.pow(10,8))
-
             console.log('openGamechannel res:', result)
             $('#openingTx').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">Opening tx</a>')
             $('body').removeClass("loading");
-
+            game = true;
         },
         function (log) {
             $('#loadlog').html(log)
@@ -157,7 +159,6 @@ function openChannel() {
             }
         })
     }, 1000)
-
 }
 
 function closeChannel() {
