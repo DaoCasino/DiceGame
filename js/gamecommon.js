@@ -21,7 +21,7 @@ function readyUI() {
         step: 0.5,
         value: 10,
         min: 1,
-        max: 2000,
+        max: 100000,
         slide: function (event, ui) {
             user_bet = ui.value / 1000;
             $("#amount-one").val(ui.value / 1000);
@@ -42,7 +42,6 @@ function readyUI() {
     });
 
 
-
     $('#deposit-btn').click(function(){
         openChannel();
         console.log('selected deposit:', deposit);
@@ -55,14 +54,9 @@ function readyUI() {
         closeChannel();
     });
 
-
-
     $("#roll-dice").click(function () {
         startGame();
     });
-
-
-
 
     $(".toggle-bg").click(function () {
         start();
@@ -99,15 +93,30 @@ function readyUI() {
 
     });
 
-    $('input#less-than-wins').on('input keyup change', function () {
+    // $('input#less-than-wins').on('input keyup change', function () {
  
-        var value = this.value;
+    //     var value = this.value;
+    //     Refresh();
+    //     if (value < 1000 || value > 64224){
+    //         this.value = value.slice(0, -1);
+    //     }
+    //     else {Refresh();}
+
+    // });
+
+    $('input#less-than-wins').change(function () {
+        var value = +$("input#less-than-wins").val();
+
+        if (value < 1000) {
+            value = 1000;
+        };
+
+        if (value > 64224) {
+            value  = 64224;
+        };
+       
+        $("input#less-than-wins").val(value);
         Refresh();
-        if (value < 1 || value > 64224)
-            this.value = value.slice(0, -1);
-
-        else {Refresh();}
-
     });
 
     $('input#amount-one').change( function () {
@@ -141,7 +150,7 @@ function readyUI() {
         var value = $("#amount-one").val();
 
         if (value > maxuser_bet) {
-            value  = maxuser_bet;
+            value  =  Casino.Utils.toFixed(maxuser_bet, 4);
             user_bet = value;
         };
 
@@ -160,7 +169,7 @@ function readyUI() {
     $("#slider-dice-two").slider({
         range: "min",
         value: 32768,
-        min:   1,
+        min:   1000,
         max:   64224,
         slide: function (event, ui) {
             chance = ui.value;
@@ -171,7 +180,7 @@ function readyUI() {
     });
     
     $("#amount-two").val(($("#slider-dice-two").slider("value") / 65536 * 100).toFixed(2) + "%");
-    $("#amount-one").val($("#slider-dice-one").slider("value") / 1000);
+    $("#amount-one").val(user_bet);
     
 
 

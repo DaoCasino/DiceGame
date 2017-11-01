@@ -11,6 +11,7 @@ body{font-family:"ProximaNova-Regular", Arial;font-size:16px;min-width:320px;hei
 .wrapper_main{padding:0 0 0 0;min-width:320px;position:relative;overflow:hidden;min-height:100%;background:#2d2031 url(../img/main_bg-min.jpg);background-repeat:no-repeat;background-position:center 0;-webkit-background-size:cover;background-size:cover;background-attachment: fixed;}
 .hidden{display:none;}
 button{cursor:pointer;}
+button[disabled]{background:gray;}
 h1, h2, h3, h4, h5, h6{padding:0;margin:0;}
 .clearfix:before,
 .clearfix:after{content:" ";display:table;}
