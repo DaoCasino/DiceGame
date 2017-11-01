@@ -2,18 +2,16 @@ var channelContract = '0xd7aa363a70866e6cf1f82089e4e2ec9a83c51c6a';
 
 var GAME_CODE = 'dice_gamechannel'
 
-var deposit, lastTx, count, new_count,
-    sends, paids, totalGames, password,
-    Timer, animate, RndGen;
+var deposit, count, Timer, animate;
 
 var maxuser_bet = 0.1;
 var deposit  = 0.1;
-var user_bet = 0.001;
+var user_bet = 0.001;;
 var chance = 32768;
 var bankroll;
 var game = false;
-paids = 0;
-totalGames = 0;
+var paids = 0;
+var totalGames = 0;
 
 const GameLogic = function (deposit) {
     var balance = deposit * 1
@@ -144,6 +142,7 @@ function openChannel() {
             $('#openingTx').html('<a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">Opening tx</a>')
             $('body').removeClass("loading");
             game = true;
+            Refresh();
         },
         function (log) {
             $('#loadlog').html(log)
@@ -183,29 +182,24 @@ var b = setInterval(function () {
 }, 30000)
 
 function Refresh() {
-    var bal = window.Game.balance() / Math.pow(10,8);
-    var p = bal - deposit;
-    if (user_bet == NaN) {
-        user_bet = 0;
+    var balance = window.Game.balance();
+    var maxProfit = bankroll - balance;
+    var maxProfitBet = (bankroll - balance) / Math.pow(10,8) / ((65536-1310)/chance - 1); 
+    //var maxBet = ((bankroll - balance)/ * chance)/(65536 - 1310);
+    maxuser_bet = Math.min( balance/Math.pow(10,8) , 10, maxProfitBet);  
+    console.log("maxBet:", maxProfitBet)
+    if (user_bet > maxuser_bet) {
+        user_bet = Casino.Utils.toFixed(maxuser_bet, 4);
     }
-    if (bal == 0) {
-        return;
+    if (user_bet < 0.001 || user_bet == NaN) {
+        user_bet = 0.001;
     }
-        var _bet = ((deposit * 3 + p)) / ((65536 - 1310) / chance);
-        var _b = ((bankroll - bal) * chance)/(65536 - 1310);
-        maxuser_bet = Math.min(_bet, bal, _b, 10);
-        if (user_bet > maxuser_bet) {
-            user_bet = Casino.Utils.toFixed(maxuser_bet, 4);
-        }
-        if (user_bet < 0.001) {
-            user_bet = 0.001;
-        }
-        $("#profit-on-win").val((Casino.Utils.toFixed(user_bet * (65536 - 1310) / chance - user_bet,8).toFixed(8)));
-        $("#payout").val("x" + Casino.Utils.toFixed((65536 - 1310) / chance, 5));
-        $("#slider-dice-one").slider("option", "max", maxuser_bet * 1000);
-        $("#amount-one").val(user_bet);
-        $("#slider-dice-one").slider("value", user_bet * 1000);
-    
+
+    $("#profit-on-win").val((Casino.Utils.toFixed(user_bet * (65536 - 1310) / chance - user_bet, 8).toFixed(8)));
+    $("#payout").val("x" + Casino.Utils.toFixed((65536 - 1310) / chance, 5));
+    $("#slider-dice-one").slider("option", "max", maxuser_bet * 1000);
+    $("#amount-one").val(user_bet);
+    $("#slider-dice-one").slider("value", user_bet * 1000);
 };
 
 function addRow(res) {

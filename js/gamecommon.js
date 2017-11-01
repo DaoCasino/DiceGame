@@ -150,7 +150,7 @@ function readyUI() {
         var value = $("#amount-one").val();
 
         if (value > maxuser_bet) {
-            value  = maxuser_bet;
+            value  =  Casino.Utils.toFixed(maxuser_bet, 4);
             user_bet = value;
         };
 
