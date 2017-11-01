@@ -108,7 +108,7 @@ function startGame() {
                 $('#inChannel').css('color', 'green')
             }
             
-            if(window.Game.balance() == bankroll || window.Game.balance() == 0 || window.Game.balance() < 0.001 * Math.pow(10,8)){
+            if(window.Game.balance() >= bankroll*0.95 || window.Game.balance() == 0 || window.Game.balance() < 0.001 * Math.pow(10,8)){
                 closeChannel(); 
             }         
             Refresh();
@@ -187,7 +187,6 @@ function Refresh() {
     var maxProfitBet = (bankroll - balance) / Math.pow(10,8) / ((65536-1310)/chance - 1); 
     //var maxBet = ((bankroll - balance)/ * chance)/(65536 - 1310);
     maxuser_bet = Math.min( balance/Math.pow(10,8) , 10, maxProfitBet);  
-    console.log("maxBet:", maxProfitBet)
     if (user_bet > maxuser_bet) {
         user_bet = Casino.Utils.toFixed(maxuser_bet, 4);
     }
