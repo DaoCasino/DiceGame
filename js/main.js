@@ -81,13 +81,7 @@ function startGame() {
 
     disabled(true);
 
-    if(window.Game.balance() + (user_bet * (65536 - 1310) / chance - user_bet) > bankroll){
-        return;
-
-    }
-
     var old = window.Game.balance()
-
     var send_bet = Math.floor(user_bet * Math.pow(10,8));
     
     Casino.callChannelGameFunc(
