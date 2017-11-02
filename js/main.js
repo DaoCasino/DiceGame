@@ -154,19 +154,6 @@ function openChannel() {
     }, 1000)
 }
 
-<<<<<<< HEAD
-function closeChannel(){
-    $('body').addClass("loading");
-    Casino.closeGameChannel(Game.balance(), function (result) {
-        console.log('result', result);
-        $('#loadlog').html('Channel closed <a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">view tx</a>');
-        setTimeout(function(){
-            $('body').removeClass("loading");
-            setTimeout(function(){
-                window.location.reload()
-            }, 500)
-        }, 1000)
-=======
 function closeChannel() {
     console.log("Close channel");
     Casino.closeGameChannel(Game.balance(), function (result) {
@@ -174,7 +161,7 @@ function closeChannel() {
         $('body').addClass("loading");
         $('#loadlog').html('The channel was a closed. <a target="_blank" href="https://ropsten.etherscan.io/tx/' + result + '">transaction.</a>');
         setTimeout(function(){location.reload()},30000)
->>>>>>> develop
+
     })
 }
 
