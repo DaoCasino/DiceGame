@@ -1,4 +1,4 @@
-var channelContract = '0xd7aa363a70866e6cf1f82089e4e2ec9a83c51c6a';
+var channelContract = '0x91684b604873f059d087e7def483c3f63f80d967';
 
 var GAME_CODE = 'dice_gamechannel'
 
