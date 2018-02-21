@@ -1,0 +1,3 @@
+[submodule "packages/dclib"]
+	path = packages/dclib
+	url = git@github.com:DaoCasino/DCLib.git

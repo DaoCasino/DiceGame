@@ -1,0 +1,29 @@
+.game-info {
+    font: 16px/normal @prox_b;
+    color: #fff;
+    background-color: rgba(45, 32, 49, .9);
+    @media @netbook {
+        display: none;
+    }
+}
+
+.table {
+    padding: 10px;
+    text-transform: uppercase;
+    border: 2px solid @text_g;
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    &-capt {
+        font-family: @prox_b;
+    }
+
+    &-rowitem {
+        border-top: 2px solid #fff;
+    }
+
+    &-item {
+        text-align: center;
+        font-family: @prox_b;
+    }
+}

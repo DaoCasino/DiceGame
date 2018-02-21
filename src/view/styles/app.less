@@ -1,0 +1,69 @@
+@import 'base.less';
+
+@main_bg:         #2d2031;
+@text_color:      #ffffff;
+@text_g:          #d08c49;
+@prox_r:          'ProximaNova-Regular';
+@prox_b:          'ProximaNova-Bold';
+@laptop:          ~'(max-width: 1200px)';
+@netbook:         ~'(max-width: 900px)';
+@tablet:          ~'(max-width: 671px)';
+@phone:           ~'(max-width: 480px)';
+@smallPhone:      ~'(max-width: 360px)';
+@popup:           ~'(max-width: 415px)';
+
+a {
+	display: block;
+}
+
+html, body {
+	width: 100%;
+	min-height: 100%;
+	overflow-y: auto;
+	@media @smallPhone {
+		width: 360px;
+	}
+}
+
+input {
+	font-family: @prox_b;
+	color: @text_g;
+}
+
+body {
+	padding-bottom: 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: @prox_r;
+	background: #fff url('/static/img/main_bg-min.jpg') no-repeat;
+	background-size: cover;
+	background-position: top center;
+}
+
+.wrapper {
+	max-width: 1200px;
+	width: 100%;
+	@media @laptop {
+		padding: 0 20px;
+	}
+}
+
+#app {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+
+@import './fonts';
+@import './components/header';
+@import './components/gamepage';
+@import './components/caption';
+@import './components/input';
+@import './components/slider';
+@import './components/channel';
+@import './components/paid';
+@import './components/popup';
+@import './components/infoTable';

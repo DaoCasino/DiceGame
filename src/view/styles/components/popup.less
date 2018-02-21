@@ -1,0 +1,53 @@
+.popup {
+    background-color: rgba(0,0,0, .7);
+    &.anim {
+        transition: 3s;
+    }
+    
+    &-table {
+        background-color: @main_bg;
+        border: 1px solid @text_g;
+        border-radius: 5px;
+        transform: translate(-50%, -50%);
+        transition: all 1s;
+    }
+
+    &-but {
+      font-family: @prox_b;
+      font-size: 17px;
+      text-transform: uppercase;
+      color: #fff;
+      background-color: #d08c49;
+      transition: all .5s;
+      &:hover {
+          background-color: #000;
+      }
+    }
+
+    &-text {
+        font-family: @prox_b;
+        font-size: 21px;
+        color: #d08c49;
+    }
+
+    &-deposit {
+        font-family: @prox_b;
+        color: #fff;
+    }
+    @media @tablet {
+        padding: 0 20px;
+    }
+}
+
+.open-channel {
+    background-color: rgba(0,0,0, .7);
+    &.anim {
+        transition: 1.3s;
+    }
+}
+.open-capt {
+    font-family: @prox_b;
+    font-size: 16px;
+    color: #fff;
+    text-transform: uppercase;
+}
