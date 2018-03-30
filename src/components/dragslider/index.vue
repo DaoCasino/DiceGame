@@ -1,0 +1,93 @@
+<template lang="pug">
+  .drag-slider
+    .slider-capt {{capt}}
+    vue-slider(
+      v-model="value"
+      v-bind="options"
+    )
+</template>
+
+<script>
+import vueSlider from 'vue-slider-component'
+export default {
+  props: {
+    capt         : { type: String },
+    paid         : { type: Boolean },
+    popup        : { type: Boolean },
+    valueDefault : { type: Number },
+    max_amount   : { type: Number },
+    min_amount   : { type: Number }
+  },
+
+  data () {
+    return {
+      value: this.$props.valueDefault ? this.valueDefault : 0,
+      options: {
+        tooltip: false,
+        height: 25,
+        max: this.$props.paid ? 65535 : this.max_amount,
+        min: this.$props.min_amount,
+        speed: 0.1,
+        debug: false,
+        interval: this.$props.paid ? 1 : 0.1,
+        sliderStyle: {
+          'position': 'relative',
+          'top': '-2px',
+          'left': '-7px',
+          'width': '30px',
+          'height': '30px',
+          'background-color': '#d7a472'
+        },
+        bgStyle: {
+          'background-color': '#fff'
+        },
+        processStyle: {
+          'background-color': '#d08c49'
+        }
+      }
+    }
+  },
+
+  watch: {
+    max_amount   (val) { this.options.max = val },
+    valueDefault (val) { this.value = val }
+  },
+
+  updated () {
+    if (this.$props.popup) this.$store.commit('updateBalance', this.value)
+    if (!this.$props.paid && !this.$props.popup) {
+      this.$store.commit('updateAmount', this.value)
+      this.$store.commit('updatePayout')
+    }
+    if (this.$props.paid) {
+      const bankrollerBalance = Number(this.$store.state.balance.bankroller_balance)
+      const userBet = this.$store.state.balance.amount
+      const payout  = userBet * (65535 / this.value)
+
+      if (payout < bankrollerBalance) {
+        this.$store.commit('updatePayout')
+        this.$store.commit('updateNum', this.value)
+        this.$store.commit('updatePercent', this.value)
+      }
+    }
+  },
+
+  components: {
+    vueSlider
+  }
+}
+</script>
+
+<style lang="scss">
+@import './index.scss';
+
+.drag-slider {
+  margin-top: 10px;
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.slider-capt {
+  text-align: center;
+}
+</style>

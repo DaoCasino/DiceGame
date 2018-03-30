@@ -1,0 +1,27 @@
+.slider-overlay {
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.slider-capt {
+  color: #d08c49;
+}
+
+.input-inp {
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+
+.slider-but {
+  background-color: #d7a472;
+  border-radius: 50%;
+  &.anim {
+      transition: all .1s;
+  }
+
+  &:before {
+      background-color: #e1d0bd;
+      border-radius: 5px;
+  }
+}

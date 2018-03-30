@@ -1,0 +1,16 @@
+.wallet-address {
+  font-family: $prox_b;
+  color: #fff;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.wallet-balance {
+  font-family: $prox_b;
+  color: #fff;
+}
+
+.wallet-value {
+  color: $text_g;
+}

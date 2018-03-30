@@ -1,0 +1,37 @@
+.game-info {
+  font-family: $prox_b;
+  font-size: 16px;
+  font-weight: normal;
+  color: #fff;
+  background-color: rgba(45, 32, 49, .9);
+  @include netbook {
+      display: none;
+  }
+}
+
+.table {
+  padding: 10px 0;
+  text-transform: uppercase;
+  border: 2px solid $text_g;
+  border-radius: 6px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  &-capt {
+      font-family: $prox_b;
+  }
+
+  &-rowitem {
+      border-top: 2px solid #fff;
+  }
+
+  &-row {
+    &:nth-child(even) {
+        background-color: rgba(58, 42, 63, 0.9);;
+    }
+  }
+
+  &-item {
+      text-align: center;
+      font-family: $prox_b;
+  }
+}

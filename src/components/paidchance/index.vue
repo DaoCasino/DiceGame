@@ -1,0 +1,177 @@
+<template lang="pug">
+  section.section.money-paid
+    error-popup(
+      v-if="error"
+      :message="getErrorText"
+    )
+    finish-table(
+      v-if="finish_table"
+      :txlink="getTx"
+    )
+    transition(name="closeChannel")
+      .close-popup(v-if="close")
+        .close-popup__table
+          span.close-popup__log {{ log }}
+    .top-info
+      h2.caption total money paid
+      //- span.deposit-value .:.:.::. BET
+
+    .paid-change
+      label.input-label
+        span.input-text Less than wins
+        input.input-inp(type="text" name="your-int" :value="num" readonly)
+
+      label.input-label
+        span.input-text Win Chance
+        input.input-inp(type="text" name="your-percents" :value="percent + '%'" readonly)
+
+      label.input-label
+        span.input-text Payout
+        input.input-inp#payout(type="text" name="your-win" :value="payout" readonly)
+
+      drag-slider(
+        capt="Move slider to change chance to win",
+        paid=true
+        popup=false,
+        :valueDefault="num"
+        :max_amount="max_amount",
+        :min_amount=1
+      )
+
+    .close-channel
+      span.close-capt action:
+      a.close-but(href="#" @click="closeChannel") close channel
+</template>
+
+<script>
+import FinishTable from '../finishTable'
+import DragSlider  from '../dragslider'
+import DC          from '../../model/DCLib'
+export default {
+  data () {
+    return {
+      finish_table : false,
+      max_amount   : 65535,
+      error        : false,
+      close        : false,
+      log          : ''
+    }
+  },
+
+  computed: {
+    num          () { return this.$store.state.paid.num },
+    percent      () { return this.$store.state.paid.percent },
+    payout       () { return Number(this.$store.state.paid.payout).toFixed(2) },
+    getTx        () { return this.$store.state.tx },
+    getErrorText () { return this.$store.state.errorText }
+  },
+
+  methods: {
+    closeChannel () {
+      DC.Game.Status.on('error', err => {
+        if (err.text) this.$store.commit('updateError', err.text)
+        this.error = true
+      })
+
+      this.close = true
+      const totalAmount = this.$store.state.balance.totalAmount
+      const dotsI = setInterval(() => {
+        const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller open channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
+        this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
+      }, 1500)
+
+      DC.Game.disconnect({session: 1, totalAmount: totalAmount}, res => {
+        this.$store.commit('updateTx', `https://ropsten.etherscan.io/tx/${res.channel.receipt.transactionHash}`)
+        this.close        = false
+        this.finish_table = true
+        clearInterval(dotsI)
+      })
+    }
+  },
+
+  components: {
+    DragSlider,
+    FinishTable
+  }
+}
+</script>
+
+<style lang="scss">
+@import './index.scss';
+
+.close-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  &__table {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 400px;
+    height: 200px;
+    overflow: hidden;
+    // @media screen and (max-width: 671px) {
+    //     width: 300px;
+    // }
+  }
+  @media screen and (max-width: 495px) {
+    // width: 355px;
+    position: absolute;
+  }
+}
+
+.money-paid {
+  padding: 0 20px;
+  text-align: center;
+  @media screen and (max-width: 1000px) {
+    margin-top: 20px;
+  }
+}
+
+.deposit-value {
+  display: none;
+}
+
+.paid-change {
+  margin-top: 20px;
+  display: grid;
+  grid-column-gap: 10px;
+  grid-template-columns: 25% 25% 25%;
+  justify-content: center;
+}
+
+.input-text {
+  display: block;
+  height: 40px;
+  font-size: 14px;
+}
+
+.input-inp {
+  padding: 4px 8px;
+  width: 90%;
+  text-align: center;
+}
+
+.close-channel {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-but {
+  margin-top: 5px;
+  padding: 10px;
+  display: inline-table;
+}
+</style>

@@ -1,0 +1,79 @@
+$main_bg:         #2d2031;
+$text_color:      #ffffff;
+$text_g:          #d08c49;
+$prox_r:          'ProximaNova-Regular';
+$prox_b:          'ProximaNova-Bold';
+
+@import './layout/_mixins';
+@import './layout/_normalize';
+@import './layout/_fonts';
+
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; 
+}
+
+a {
+  text-decoration: none;
+}
+
+html, body {
+	min-width: 100%;
+	min-height: 100%;
+	overflow-y: auto;
+	@include smallPhone {
+		width: 480px;
+	}
+}
+
+body {
+  padding-bottom: 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: $prox_r;
+  background: url('/static/img/main_bg-min.jpg') no-repeat;
+  background-size: cover;
+  background-position:top center;
+  overflow-x: hidden;
+}
+
+#app {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.wrapper {
+  padding: 0 50px;
+	max-width: 1200px;
+	width: 100%;
+	@include netbook {
+		padding: 0 20px;
+	}
+}
+
+.game__window {
+  font-family: $prox_r;
+  font-size: 16px;
+  color: #fff;
+  background-color: rgba(45, 32, 49, .9);
+}
+
+.top-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.caption {
+  display: block;
+  text-transform: uppercase;
+}
+
+.deposit-value {
+  display: block;
+}
