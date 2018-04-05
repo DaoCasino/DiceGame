@@ -3,7 +3,7 @@ import DCLib from 'dclib'
 export default new class DC {
   constructor () {
     this.DCLib = DCLib
-    this.DCLib.Account.initAccount()
+    // this.DCLib.Account.initAccount()
     this.createDApp()
   }
 

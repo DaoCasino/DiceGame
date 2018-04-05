@@ -7,8 +7,8 @@ export const store = new Vuex.Store({
   namespaced: true,
   state: {
     balance: {
-      start              : 0,
-      ethBalance         : 0,
+      start              : '...',
+      ethBalance         : '...',
       deposit            : 0,
       player_balance     : 0,
       bankroller_balance : 0,

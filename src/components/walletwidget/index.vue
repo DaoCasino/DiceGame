@@ -21,14 +21,24 @@ export default {
     }
   },
 
-  async mounted () {
-    const acc = await DC.DCLib.Account.get()
-    this.$store.commit('updatePlayerAddress', acc.address)
+  async beforeCreate () {
+    await DC.DCLib.Account.initAccount()
+    if (DC.DCLib.Account.get().openkey) {
+      this.$store.commit('updatePlayerAddress', DC.DCLib.Account.get().openkey)
+
+      setTimeout(async () => {
+        const balance = await DC.DCLib.Eth.getBalances(DC.DCLib.Account.get().openkey)
+        if (balance) {
+          this.$store.commit('updateStart', parseInt(balance.bets))
+          this.$store.commit('updateEthBalance', Number(balance.eth).toFixed(2))
+        }
+      }, 2000)
+    }
   },
 
   computed: {
-    getAddress    () { return this.$store.state.address.player },
-    getBetBalance () { return this.$store.state.balance.start },
+    getAddress    () { return this.$store.state.address.player || 0 },
+    getBetBalance () { return this.$store.state.balance.start || 0 },
     getEthBalance () { return this.$store.state.balance.ethBalance },
     getLink       () { return `https://ropsten.etherscan.io/address/${this.$store.state.address.player}` }
   }

@@ -28,7 +28,6 @@
 
 <script>
 import DragSlider from '../dragslider'
-
 export default {
   computed: {
     getBalance           () { return Number(this.$store.state.balance.player_balance) },

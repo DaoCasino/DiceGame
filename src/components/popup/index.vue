@@ -40,11 +40,8 @@ export default {
     }
   },
   beforeCreate () {
-    DC.getBalance()
-      .then(res => {
-        this.$store.commit('updateStart', parseInt(res.bets))
-        this.$store.commit('updateEthBalance', Number(res.eth).toFixed(2))
-      })
+    this.$store.commit('updateStart', 0)
+    this.$store.commit('updateEthBalance', 0)
   },
   computed: {
     getStart           () { return this.$store.state.balance.start },

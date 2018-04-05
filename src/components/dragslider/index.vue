@@ -21,7 +21,7 @@ export default {
 
   data () {
     return {
-      value: this.$props.valueDefault ? this.valueDefault : 0,
+      value: (this.$props.valueDefault && this.$props.valueDefault !== 0) ? this.valueDefault : 0,
       options: {
         tooltip: false,
         height: 25,

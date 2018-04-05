@@ -3,14 +3,14 @@
     .logo
       a.logo-link(href="https://platform.dao.casino")
         img.logo-img(src="/static/img/logo.png" alt="Dao Casino")
-    wallet
+    wallet-widget
 </template>
 
 <script>
-import Wallet from '../wallet'
+import WalletWidget from '../walletwidget'
 export default {
   components: {
-    Wallet
+    WalletWidget
   }
 }
 </script>
