@@ -8,7 +8,7 @@
         )
         .openchannel-bankroller(v-if="open")
           span.caption Bankroller address
-          span.address {{ getBankrollAddress }}
+          a.address(:href="getBnkLink" target="blank") {{ getBankrollAddress }}
         span.openchannel-capt {{ log }}
       span.popup-text Please, select deposit
         .popup-deposit {{getDeposit}} BET
@@ -39,27 +39,37 @@ export default {
       max_deposit : this.$store.state.balance.start
     }
   },
+
   beforeCreate () {
-    this.$store.commit('updateStart', 0)
+    this.$store.commit('updateBetBalance', 0)
     this.$store.commit('updateEthBalance', 0)
   },
+
   computed: {
-    getStart           () { return this.$store.state.balance.start },
+    getStart           () { return this.$store.state.balance.betBalance },
     getDeposit         () { return this.$store.state.balance.deposit },
+    getBnkLink         () { return `https://${process.env.DC_NETWORK}.etherscan.io/address/${this.$store.state.address.bankroller}` },
     getBankrollAddress () { return this.$store.state.address.bankroller },
     getDefaultDeposit  () { return this.$store.state.balance.start },
     getErrorText       () { return this.$store.state.errorText }
   },
+
   methods: {
     openChannel () {
       if (this.$store.state.balance.deposit === 0) return
       let dotsI
-      const deposit = this.getDeposit
       this.isActive = true
 
       DC.Game.Status
         .on('connect::info', res => {
-          if (res.status === 'noBankroller') this.$store.commit('updateBankrollAddress', ' 🔎 Not bankroller with the same deposit, find continue')
+          if (res.status === 'transactionHash') {
+            this.$store.commit('updateTx', `https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
+          }
+
+          if (res.status === 'noBankroller') {
+            this.$store.commit('updateBankrollAddress', ' 🔎 Not bankroller with the same deposit, find continue')
+          }
+
           if (res.status === 'find_compleate') {
             this.$store.commit('updateBankrollAddress', res.data)
             dotsI = setInterval(() => {
@@ -68,15 +78,15 @@ export default {
             }, 1500)
           }
         })
-        .on('error', err => {
-          if (err.text) this.$store.commit('updateError', err.text)
+        .on('connect::error', err => {
+          if (err.msg) this.$store.commit('updateError', err.msg)
           this.open  = false
           this.error = true
         })
 
       DC.Game.connect({
         bankroller : 'auto',
-        paychannel : { deposit: deposit },
+        paychannel : { deposit: this.getDeposit },
         gamedata   : { type: 'uint', value: [1, 2, 3] }
       }, (res, info) => {
         this.popup = false
@@ -84,12 +94,13 @@ export default {
         const bankrollerBalance = DC.Game.logic.payChannel.getBankrollBalance()
         this.$store.commit('updatePlayerBalance', this.getDeposit)
         this.$store.commit('updateAmount', 0.1)
-        this.$store.commit('updateBankrollBalance', Number(bankrollerBalance).toFixed(1))
+        this.$store.commit('updateBankrollBalance', Number(bankrollerBalance).toFixed(2))
         this.$store.commit('updatePayout')
-        this.$store.commit('updateTx', `https://ropsten.etherscan.io/tx/${info.channel.receipt.transactionHash}`)
+        this.$store.commit('updatePaychannelContract', DC.Game.contract_address)
       })
     }
   },
+
   components: {
     DragSlider,
     ErrorPopup
@@ -101,18 +112,16 @@ export default {
 @import './index.scss';
 
 .popup {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: absolute;
   z-index: 100;
   display: flex;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 120%;
   &.anim {
-    top: -9999px
+    transform: translateY(-9999px)
   }
   &-table {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     padding: 20px;
@@ -120,12 +129,14 @@ export default {
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    width: 400px;
-    height: 200px;
+    max-width: 400px;
+    min-width: 290px;
+    max-height: 250px;
+    width: 100%;
     overflow: hidden;
-    // @media screen and (max-width: 671px) {
-    //     width: 300px;
-    // }
+    @media screen and (max-width: 480px) {
+      width: 90%;
+    }
   }
   &-but {
     margin-top: 20px;
@@ -134,10 +145,6 @@ export default {
   }
   &-deposit {
       margin-top: 10px;
-  }
-  @media screen and (max-width: 495px) {
-    // width: 355px;
-    position: absolute;
   }
 }
 .openchannel-log {

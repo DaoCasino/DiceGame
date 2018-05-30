@@ -1,45 +1,50 @@
+/**
+ * Define our DApp logic constructor,
+ * for use it in frontend and bankroller side
+ */
+
 /* global DCLib */
 DCLib.defineDAppLogic('dicetest_v32', function () {
   const _self = this
 
   const MAX_RAND_NUM = 65535
-  const HOUSEEDGE = 0.02 // 2%
+  const HOUSEEDGE    = 0.02 // 2%
 
   let history = []
 
-  var Roll = function (userBet, userNum, randomHash) {
+  var Roll = function (user_bet, user_num, random_hash) {
     // convert 1BET to 100000000
-    userBet = DCLib.Utils.bet2dec(userBet)
+    user_bet = DCLib.Utils.bet2dec(user_bet)
     // generate random number
-    const randomNum = DCLib.numFromHash(randomHash, 0, MAX_RAND_NUM)
+    const random_num = DCLib.numFromHash(random_hash, 0, MAX_RAND_NUM)
 
-    let profit = -userBet
+    let profit = -user_bet
     // if user win
-    if (userNum >= randomNum) {
-      profit = (userBet * (MAX_RAND_NUM - MAX_RAND_NUM * HOUSEEDGE) / userNum) - userBet
+    if (user_num >= random_num) {
+      profit = (user_bet * (MAX_RAND_NUM - MAX_RAND_NUM * HOUSEEDGE) / user_num) - user_bet
     }
+
     // add result to paychannel
-    _self.payChannel.addTX(DCLib.Utils.dec2bet(profit), true)
-    _self.payChannel.printLog()
+    _self.payChannel.addTX(profit)
 
     // push all data to our log
     // just for debug
-    const rollItem = {
-      timestamp: new Date().getTime(),
-      user_bet: userBet,
-      profit: profit,
-      user_num: userNum,
-      balance: _self.payChannel.getBalance(),
-      random_hash: randomHash,
-      random_num: randomNum
+    const roll_item = {
+      timestamp   : new Date().getTime(),
+      user_bet    : user_bet,
+      profit      : profit,
+      user_num    : user_num,
+      balance     : _self.payChannel.getBalance(),
+      random_hash : random_hash,
+      random_num  : random_num
     }
-    history.push(rollItem)
+    history.push(roll_item)
 
-    return rollItem
+    return roll_item
   }
 
   return {
-    roll: Roll,
-    history: history
+    Game    : Roll,
+    history : history
   }
 })

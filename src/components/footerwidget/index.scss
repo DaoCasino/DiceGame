@@ -1,0 +1,20 @@
+.copyrite {
+  font-family: $prox_b;
+  font-size: 18px;
+  line-height: 1.4;
+  color: #fff;
+  @media screen and (max-width: 500px) {
+    font-size: 14px;
+  }
+}
+
+.list-item {
+  &:hover .link-url {
+    color: #fcb46d;
+  }
+}
+
+.link-url {
+  font-family: $prox_b;
+  color: $text_g;
+}

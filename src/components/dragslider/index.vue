@@ -54,21 +54,23 @@ export default {
   },
 
   updated () {
-    if (this.$props.popup) this.$store.commit('updateBalance', this.value)
+    if (this.$props.popup) {
+      this.$store.commit('updateBalance', this.value)
+    }
+
     if (!this.$props.paid && !this.$props.popup) {
       this.$store.commit('updateAmount', this.value)
-      this.$store.commit('updatePayout')
+      this.$store.commit('updatePayout', this.$store.state.paid.num)
     }
-    if (this.$props.paid) {
-      const bankrollerBalance = Number(this.$store.state.balance.bankroller_balance)
-      const userBet = this.$store.state.balance.amount
-      const payout  = userBet * (65535 / this.value)
 
-      if (payout < bankrollerBalance) {
-        this.$store.commit('updatePayout')
+    if (this.$props.paid) {
+      this.$store.commit('updatePayout', this.value)
+
+      if (this.$store.state.paid.payout < this.$store.state.balance.bankroller_balance) {
         this.$store.commit('updateNum', this.value)
-        this.$store.commit('updatePercent', this.value)
       }
+
+      this.$store.commit('updatePercent', this.value)
     }
   },
 

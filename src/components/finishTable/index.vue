@@ -35,6 +35,7 @@ export default {
   },
 
   computed: {
+    getTx   () { return this.$store.state.tx },
     getInfo () { return this.$store.state.info_table }
   },
 

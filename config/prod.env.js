@@ -1,5 +1,5 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  DC_NETWORK: '"ropsten"'
+  DC_NETWORK: `"${process.env.DC_NETWORK}"` || '"local"'
 }

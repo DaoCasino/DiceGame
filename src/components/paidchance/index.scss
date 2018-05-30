@@ -1,10 +1,12 @@
 .close-capt {
   font-size: 16px;
+  line-height: 1.4;
 }
 
 .close-but {
   font-family: $prox_b;
   font-size: 17px;
+  line-height: 1.4;
   color: #fff;
   text-transform: uppercase;
   // border: 2px solid #bb5d00;
@@ -38,6 +40,11 @@
   @media tablet {
       padding: 0 20px;
   }
+}
+
+.input-text {
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .closeChannel-enter-active, .closeChannel-leave-active {

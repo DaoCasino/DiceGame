@@ -8,25 +8,28 @@
         game
         paid-chance
         info-table
+    footer-widget
 </template>
 
 <script>
-import HeaderPage from './components/headerpage'
-import Balance from './components/balance'
-import Game from './components/game'
-import PaidChance from './components/paidchance'
-import Popup from './components/popup'
-import InfoTable from './components/infoTable'
+import Game         from './components/game'
+import Popup        from './components/popup'
+import Balance      from './components/balance'
+import InfoTable    from './components/infoTable'
+import PaidChance   from './components/paidchance'
+import HeaderPage   from './components/headerpage'
+import FooterWidget from './components/footerwidget'
 
 export default {
   name: 'App',
   components: {
-    HeaderPage,
-    Balance,
     Game,
-    PaidChance,
     Popup,
-    InfoTable
+    Balance,
+    InfoTable,
+    PaidChance,
+    HeaderPage,
+    FooterWidget
   }
 }
 </script>
@@ -45,6 +48,7 @@ export default {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   justify-content: space-between;
+  transition: all .5s linear;
   @media screen and (max-width: 1200px) {
     padding: 20px 40px;
   }

@@ -18,7 +18,7 @@
 
     .paid-change
       label.input-label
-        span.input-text Less than wins
+        span.input-text Random num
         input.input-inp(type="text" name="your-int" :value="num" readonly)
 
       label.input-label
@@ -68,20 +68,27 @@ export default {
 
   methods: {
     closeChannel () {
-      DC.Game.Status.on('error', err => {
-        if (err.text) this.$store.commit('updateError', err.text)
-        this.error = true
-      })
+      DC.Game.Status
+        .on('disconnect::info', res => {
+          if (res.status === 'transactionHash') {
+            this.$store.commit('updateTx', `https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
+          }
+        })
+        .on('error', err => {
+          if (err.text) {
+            this.$store.commit('updateError', err.text)
+          }
+
+          this.error = true
+        })
 
       this.close = true
-      const totalAmount = this.$store.state.balance.totalAmount
       const dotsI = setInterval(() => {
         const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller open channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
         this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
       }, 1500)
 
-      DC.Game.disconnect({session: 1, totalAmount: totalAmount}, res => {
-        this.$store.commit('updateTx', `https://ropsten.etherscan.io/tx/${res.channel.receipt.transactionHash}`)
+      DC.Game.disconnect(res => {
         this.close        = false
         this.finish_table = true
         clearInterval(dotsI)
@@ -130,8 +137,11 @@ export default {
 }
 
 .money-paid {
-  padding: 0 20px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   @media screen and (max-width: 1000px) {
     margin-top: 20px;
   }
@@ -151,13 +161,14 @@ export default {
 
 .input-text {
   display: block;
-  height: 40px;
-  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .input-inp {
   padding: 4px 8px;
-  width: 90%;
+  width: 95%;
   text-align: center;
 }
 

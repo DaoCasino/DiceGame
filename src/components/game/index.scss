@@ -2,6 +2,7 @@
   margin-top: 10px;
   text-align: center;
   font-size: 12px;
+  line-height: 1.4;
   &.find {
       display: block;
       animation: animFind 1s infinite linear;
@@ -9,6 +10,7 @@
 }
 
 .roll-but {
+  cursor: pointer;
   background-color: #d08c49;
   transition: all .5s;
   &:hover {
@@ -29,6 +31,7 @@
 }
 
 .roll-text {
+  cursor: pointer;
   font-family: $prox_b;
   font-size: 17px;
   text-transform: uppercase;

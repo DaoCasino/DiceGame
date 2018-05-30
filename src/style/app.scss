@@ -10,26 +10,34 @@ $prox_b:          'ProximaNova-Bold';
 
 
 * {
+  cursor: default;
   padding: 0;
   margin: 0;
   box-sizing: border-box; 
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 a {
+  cursor: pointer;
   text-decoration: none;
 }
 
+li {
+  list-style: none;
+}
+
 html, body {
-	min-width: 100%;
-	min-height: 100%;
+  position: relative;
+	width: 100%;
+  height: 100%;
 	overflow-y: auto;
-	@include smallPhone {
-		width: 480px;
-	}
 }
 
 body {
-  padding-bottom: 50px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -41,10 +49,10 @@ body {
 }
 
 #app {
-	position: relative;
-	display: flex;
+	position: absolute;
+  // margin-bottom: 50px;
+  display: flex;
 	flex-direction: column;
-	min-height: 100vh;
 }
 
 .wrapper {
@@ -60,10 +68,24 @@ body {
   font-family: $prox_r;
   font-size: 16px;
   color: #fff;
-  background-color: rgba(45, 32, 49, .9);
+  background-color: rgba(45, 32, 49, .7);
+  @media screen and (max-width: 1000px) {
+    background-color: rgba(45, 32, 49, 0);
+  }
+}
+
+.section {
+  @media screen and (max-width: 1000px) {
+    padding: 20px;
+    border: 1px solid $text_g;
+    border-radius: 7px;
+    background-color: rgba(45, 32, 49, .7);
+  }
 }
 
 .top-info {
+  position: relative;
+  top: 0;
   display: flex;
   flex-direction: column;
   text-align: center;

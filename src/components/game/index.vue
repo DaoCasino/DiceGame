@@ -16,18 +16,18 @@
 
       .roll
         span.roll-capt Click Roll Dice to place your bet:
-        a.roll-but(href="#" @click="roll")
+        a.roll-but(href="#" @click="roll" @keydup.13="roll")
           span.roll-text roll dice
 
     .blockchain-info
       h3.blockchain-capt Channel info (in blockchain)
       .blockchain-but
         .blockchain-tx
-          a.blockchain-link(:href="getTx" target="_blank") Opening Tx
+          a.blockchain-link(:href="getTx" target="_blank") tx hash
 
         .blockchain-contract
-          a.blockchain-link(href="https://ropsten.etherscan.io/address/0x5D1E47F703729fc87FdB9bA5C20fE4c1b7c7bf57" target="_blank") Contract
-      span.blockchain-dispute Dispute: None
+          a.blockchain-link(:href="getContract" target="_blank") Contract
+      span.blockchain-dispute Dispute: True
 </template>
 
 <script>
@@ -43,17 +43,19 @@ export default {
       transaction : ''
     }
   },
+
   computed: {
     getTx                () { return this.$store.state.tx },
-    getBankrollerAddress () { return this.$store.state.address.bankroller },
+    getContract          () { return this.$store.state.paychannelContract },
     getErrorText         () { return this.$store.state.errorText },
-    getTotalAmount       () { return this.$store.state.balance.totalAmount }
+    getTotalAmount       () { return this.$store.state.balance.totalAmount },
+    getBankrollerAddress () { return this.$store.state.address.bankroller }
   },
+
   methods: {
     roll () {
       const amount = this.$store.state.balance.amount
       const random = this.$store.state.paid.num
-      const hash   = DC.DCLib.randomHash()
 
       if (amount === 0 || random === 0) {
         this.profit  = 'No bets, Please bet before playing'
@@ -61,54 +63,62 @@ export default {
         return
       }
 
+      const hash = DC.DCLib.randomHash({bet:amount, gamedata:[random]})
+
       this.isProcess = true
 
-      DC.Game.Status.on('error', err => {
-        if (err.text) this.$store.commit('updateError', err.text)
-        this.error = true
-      })
-
-      DC.Game.call('roll', [amount, random, hash], res => {
-        const newPlayerBalance   = DC.Game.logic.payChannel.getBalance()
-        const newBankrollBalance = DC.Game.logic.payChannel.getBankrollBalance()
-        let outcome = 'lose'
-
-        // this.transaction = 'https://ropsten.etherscan.io/tx/' + info.channel.receipt.transactionHash
-        this.isProcess = false
-        this.isError   = false
-        this.profit    = Number(DC.DCLib.Utils.dec2bet(res.profit.toFixed(0))).toFixed(2)
-
-        if (Math.sign(this.profit) === 1) outcome = 'win'
-
-        const date = new Date()
-        let hour, minute, sec
-
-        hour   = date.getHours()
-        minute = date.getMinutes()
-        sec    = date.getSeconds()
-
-        if (hour < 10)   hour   = `0${hour}`
-        if (minute < 10) minute = `0${minute}`
-        if (sec < 10)    sec    = `0${sec}`
-        const time = `${hour}:${minute}:${sec}`
-
-        const createResult = {
-          timestamp : time,
-          winchance : `${this.$store.state.paid.percent}%`,
-          outcome   : outcome,
-          user_bet  : DC.DCLib.Utils.dec2bet(res.user_bet),
-          profit    : this.profit,
-          action    : 'roll'
+      DC.Game.Status.on('game::error', err => {
+        if (err.msg) {
+          this.$store.commit('updateError', err.msg)
         }
 
-        this.$store.commit('updateTotalAmount',     createResult.user_bet)
-        this.$store.commit('updateInfoTable',       createResult)
-        this.$store.commit('updatePlayerBalance',   Number(newPlayerBalance).toFixed(1))
-        this.$store.commit('updateBankrollBalance', Number(newBankrollBalance).toFixed(1))
-        DC.Game.updateState(res => {
-          this.isProcess = true
-        })
+        this.profit    = 'The bankroll does not have the money to pay'
+        this.isError   = true
+        this.isProcess = false
+        throw new Error('The bankroll does not have the money to pay')
       })
+
+      DC.Game.Game(amount, random, hash)
+        .then(res => {
+          const result = res.bankroller.result
+          const newPlayerBalance   = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().player)
+          const newBankrollBalance = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().bankroller)
+          let outcome = 'lose'
+
+          this.isProcess = false
+          this.isError   = false
+          this.profit    = Number(DC.DCLib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
+
+          if (Math.sign(this.profit) === 1) {
+            outcome = 'win'
+          }
+
+          const date = new Date()
+          let hour, minute, sec
+
+          hour   = date.getHours()
+          minute = date.getMinutes()
+          sec    = date.getSeconds()
+
+          if (hour < 10)   hour   = `0${hour}`
+          if (minute < 10) minute = `0${minute}`
+          if (sec < 10)    sec    = `0${sec}`
+          const time = `${hour}:${minute}:${sec}`
+
+          const createResult = {
+            timestamp : time,
+            winchance : `${this.$store.state.paid.percent}%`,
+            outcome   : outcome,
+            user_bet  : DC.DCLib.Utils.dec2bet(result.user_bet),
+            profit    : this.profit,
+            action    : 'roll'
+          }
+
+          this.$store.commit('updateTotalAmount',     createResult.user_bet)
+          this.$store.commit('updateInfoTable',       createResult)
+          this.$store.commit('updatePlayerBalance',   Number(newPlayerBalance).toFixed(1))
+          this.$store.commit('updateBankrollBalance', Number(newBankrollBalance).toFixed(1))
+        })
     }
   },
   components: {

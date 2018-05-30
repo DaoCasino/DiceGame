@@ -9,19 +9,22 @@
     "start": "DC_NETWORK=ropsten npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e",
+    "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js",
-    "check_build": "serve --ssl ./dist"
+    "build": "DC_NETWORK=ropsten node build/build.js",
+    "bnk_restart": "pm2 stop dc_bankroller && pm2 start dc_bankroller",
+    "check_build": "serve -ssl -p=6060 ./dist"
   },
   "dependencies": {
-    "dclib": "github:DaoCasino/DCLib#dicegame",
+    "dclib": "github:DaoCasino/DCLib#develop",
     "normalize-scss": "^7.0.1",
     "vue": "^2.5.2",
     "vue-slider-component": "^2.6.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.15",
+    "async": "^2.6.0",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
@@ -32,6 +35,7 @@
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",
     "babel-preset-env": "^1.3.2",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.22.0",
     "chai": "^4.1.2",
@@ -56,6 +60,7 @@
     "html-webpack-plugin": "^2.30.1",
     "inject-loader": "^3.0.0",
     "karma": "^1.4.1",
+    "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-mocha": "^1.3.0",
     "karma-phantomjs-launcher": "^1.0.2",
@@ -94,7 +99,8 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "worker-loader": "^2.0.0"
   },
   "engines": {
     "node": ">= 6.0.0",

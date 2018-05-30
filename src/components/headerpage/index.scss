@@ -5,6 +5,10 @@
   }
 }
 
+.logo-img {
+  cursor: pointer;
+}
+
 .switch {
   &-label {
       cursor: pointer;
@@ -63,6 +67,7 @@
       padding: 10px;
       display: block;
       font-family: $prox_b;
+      line-height: 1.4;
       text-transform: uppercase;
       color: #fff;
       background-color: #d08c49;

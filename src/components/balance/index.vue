@@ -2,7 +2,6 @@
   section.section.game-balance
     .top-info
       h2.caption your channel balance
-      //- span.deposit-value Total amount {{ getTotalAmount }} BET
 
     .input-deposit
       label.input-label

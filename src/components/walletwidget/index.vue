@@ -1,7 +1,7 @@
 <template lang="pug">
   .game-wallet
     .wallet-table
-      a.wallet-address(:href="getLink" target="_blank") Address: {{ getAddress }}
+      a.wallet-address(:href="getLink" target="_blank") {{ getAddress }}
       .wallet-balance
         .wallet-balance
           span.wallet-capt Balance:
@@ -29,7 +29,7 @@ export default {
       setTimeout(async () => {
         const balance = await DC.DCLib.Eth.getBalances(DC.DCLib.Account.get().openkey)
         if (balance) {
-          this.$store.commit('updateStart', parseInt(balance.bets))
+          this.$store.commit('updateBetBalance', parseInt(balance.bets))
           this.$store.commit('updateEthBalance', Number(balance.eth).toFixed(2))
         }
       }, 2000)
@@ -38,7 +38,7 @@ export default {
 
   computed: {
     getAddress    () { return this.$store.state.address.player || 0 },
-    getBetBalance () { return this.$store.state.balance.start || 0 },
+    getBetBalance () { return this.$store.state.balance.betBalance || 0 },
     getEthBalance () { return this.$store.state.balance.ethBalance },
     getLink       () { return `https://ropsten.etherscan.io/address/${this.$store.state.address.player}` }
   }
@@ -49,10 +49,22 @@ export default {
 @import './index';
 .game-wallet {
   margin-left: 10px;
+  @media screen and (max-width: 650px) {
+    margin-left: inherit;
+    width: 100%;
+  }
 }
 
 .wallet-table {
   max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  @media screen and (max-width: 650px) {
+    max-width: 100%;
+
+    justify-content: center;
+    align-items: center;
+  }
 }
 .wallet-address {
   width: 100%;
@@ -60,6 +72,10 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  @media screen and (max-width: 650px) {
+    text-overflow: inherit;
+    overflow: inherit;
+  }
 }
 .wallet-value {
   margin-left: 5px;
