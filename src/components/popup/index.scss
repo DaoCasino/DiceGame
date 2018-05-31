@@ -1,12 +1,11 @@
 .popup {
   background-color: rgba(0,0,0, .7);
-  
   &-table {
-      background-color: $main_bg;
-      border: 1px solid $text_g;
-      border-radius: 5px;
-      transform: translate(-50%, -50%);
-      transition: all 1s;
+    background-color: $main_bg;
+    border: 1px solid $text_g;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    transition: all 1s;
   }
 
   &-but {
@@ -21,24 +20,23 @@
     outline: none;
     border: 2px solid #d08c49;
     &:hover {
-        background-color: #d08c49;
-        color: #000;
+      background-color: #d08c49;
+      color: #000;
     }
   }
-
   &-text {
-      font-family: $prox_b;
-      font-size: 21px;
-      line-height: 1.4;
-      color: #d08c49;
+    font-family: $prox_b;
+    font-size: 21px;
+    line-height: 1.4;
+    color: #d08c49;
   }
-
   &-deposit {
-      font-family: $prox_b;
-      color: #fff;
+    font-family: $prox_b;
+    line-height: 1.4;
+    color: #fff;
   }
   @media tablet {
-      padding: 0 20px;
+    padding: 0 20px;
   }
 }
 
@@ -46,28 +44,23 @@
   animation: close 1s forwards;
 }
 
-@keyframes close {
-  100% {
-    opacity: 0;
-  }
-}
-
 .openchannel-log {
-  background-color: $main_bg;
-  border-radius: 5px;
   font-family: $prox_b;
   font-size: 17px;
   line-height: 1.4;
   text-transform: uppercase;
   color: #fff;
+  background-color: $main_bg;
+  border-radius: 5px;
 }
 
 .open-channel {
   background-color: rgba(0,0,0, .7);
   &.anim {
-      transition: 1.3s;
+    transition: 1.3s;
   }
 }
+
 .open-capt {
   font-family: $prox_b;
   font-size: 16px;
@@ -84,5 +77,11 @@
   }
   @media screen and (max-width: 450px) {
     font-size: 10px;
+  }
+}
+
+@keyframes close {
+  100% {
+    opacity: 0;
   }
 }

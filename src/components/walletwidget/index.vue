@@ -61,22 +61,23 @@ export default {
   flex-direction: column;
   @media screen and (max-width: 650px) {
     max-width: 100%;
-
     justify-content: center;
     align-items: center;
   }
 }
+
 .wallet-address {
   width: 100%;
   display: block;
-  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: hidden;
   @media screen and (max-width: 650px) {
     text-overflow: inherit;
     overflow: inherit;
   }
 }
+
 .wallet-value {
   margin-left: 5px;
 }

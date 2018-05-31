@@ -103,7 +103,6 @@ export default {
 
 <style lang="scss">
 @import './index.scss';
-
 .close-popup {
   position: fixed;
   top: 0;

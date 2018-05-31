@@ -51,7 +51,6 @@ export default {
 
 <style lang="scss" scoped>
 @import './index';
-
 .show {
   @media screen and (max-width: 1000px) {
     display: none;
@@ -70,12 +69,11 @@ export default {
 
 .table-capt,
 .table-item {
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   @media screen and (max-width: 1000px) {
     width: 100%;
-    // display: none;
   }
 }
 

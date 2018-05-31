@@ -110,7 +110,6 @@ export default {
 
 <style lang="scss">
 @import './index.scss';
-
 .popup {
   position: absolute;
   z-index: 100;
@@ -144,7 +143,7 @@ export default {
     border-radius: 6px;
   }
   &-deposit {
-      margin-top: 10px;
+    margin-top: 10px;
   }
 }
 .openchannel-log {
@@ -165,10 +164,12 @@ export default {
     transition: 3s;
   }
 }
+
 .openchannel-bankroller {
   margin-bottom: 10px;
   text-align: center;
 }
+
 .address {
   color: #fff;
 }

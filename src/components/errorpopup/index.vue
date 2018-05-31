@@ -19,7 +19,6 @@ export default {
 
 <style lang="scss">
 @import './index';
-
 .error-popup {
   position: fixed;
   top: 0;
@@ -29,10 +28,10 @@ export default {
   width: 100%;
   height: 100%;
   @media screen and (max-width: 495px) {
-    // width: 355px;
     position: absolute;
   }
 }
+
 .error-table {
   position: absolute;
   top: 50%;
@@ -45,9 +44,6 @@ export default {
   width: 400px;
   height: 200px;
   overflow: hidden;
-  // @media screen and (max-width: 671px) {
-  //     width: 300px;
-  // }
 }
 
 .error-reloadbut {

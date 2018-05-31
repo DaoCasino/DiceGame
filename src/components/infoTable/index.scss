@@ -6,7 +6,7 @@
   color: #fff;
   background-color: rgba(45, 32, 49, .9);
   @include netbook {
-      display: none;
+    display: none;
   }
 }
 
@@ -18,21 +18,18 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   &-capt {
-      font-family: $prox_b;
+    font-family: $prox_b;
   }
-
   &-rowitem {
-      border-top: 2px solid #fff;
+    border-top: 2px solid #fff;
   }
-
   &-row {
     &:nth-child(even) {
-        background-color: rgba(58, 42, 63, 0.9);;
+      background-color: rgba(58, 42, 63, 0.9);;
     }
   }
-
   &-item {
-      text-align: center;
-      font-family: $prox_b;
+    text-align: center;
+    font-family: $prox_b;
   }
 }

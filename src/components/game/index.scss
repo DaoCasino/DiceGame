@@ -1,41 +1,19 @@
-.find-bankroller {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 12px;
-  line-height: 1.4;
-  &.find {
-      display: block;
-      animation: animFind 1s infinite linear;
-  }
-}
-
 .roll-but {
   cursor: pointer;
   background-color: #d08c49;
   transition: all .5s;
   &:hover {
-    animation: animRoll 1s infinite;
+    animation: animRoll 1s infinite
   }
-  // &:before {
-  //     background-color: #000;
-  //     border-top-left-radius: 6px;
-  //     border-bottom-left-radius: 6px;
-  //     transition: all .5s;
-  // }
-  // &:after {
-  //     background-color: #000;
-  //     border-top-right-radius: 6px;
-  //     border-bottom-right-radius: 6px;
-  //     transition: all .5s;
-  // }
 }
 
 .roll-text {
   cursor: pointer;
   font-family: $prox_b;
   font-size: 17px;
+  line-height: 1.4;
   text-transform: uppercase;
-  color: #fff;
+  color: #fff
 }
 
 input.game-inp {
@@ -46,12 +24,14 @@ input.game-inp {
 
 .roll-capt {
   font-size: 14px;
-  color: #d08c49;
+  line-height: 1.4;
+  color: #d08c49
 }
 
 .blockchain-capt {
   font-family: $prox_b;
   font-size: 1.5em;
+  line-height: 1.4
 }
 
 .blockchain-tx {
@@ -72,10 +52,10 @@ input.game-inp {
 .blockchain-link {
   font-family: $prox_b;
   color: #fff;
-  background: #337ab7;
+  background-color: #337ab7;
   border-radius: 6px;
   transform-style: preserve-3d;
-  transition: all .6s;
+  transition: all .6s
 }
 
 @keyframes animRoll {

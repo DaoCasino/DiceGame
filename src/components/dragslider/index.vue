@@ -90,7 +90,6 @@ export default {
 
 <style lang="scss">
 @import './index.scss';
-
 .drag-slider {
   margin-top: 10px;
   grid-column-start: 1;

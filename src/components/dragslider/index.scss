@@ -17,11 +17,10 @@
   background-color: #d7a472;
   border-radius: 50%;
   &.anim {
-      transition: all .1s;
+    transition: all .1s;
   }
-
   &:before {
-      background-color: #e1d0bd;
-      border-radius: 5px;
+    background-color: #e1d0bd;
+    border-radius: 5px;
   }
 }

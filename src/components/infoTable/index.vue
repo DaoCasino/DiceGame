@@ -26,7 +26,6 @@ export default {
 
 <style lang="scss">
 @import './index';
-
 .table {
   margin-top: 20px;
   width: 100%;

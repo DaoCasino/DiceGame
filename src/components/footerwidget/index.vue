@@ -27,11 +27,9 @@ export default {
 <style lang="scss">
 @import './index';
 .footer {
-  margin: auto 0 20px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin: 20px 0 20px 0;
+  display: block;
+  text-align: center
 }
 
 .link-list {

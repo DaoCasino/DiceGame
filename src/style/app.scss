@@ -46,13 +46,15 @@ body {
   background-size: cover;
   background-position:top center;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch
 }
 
 #app {
-	position: absolute;
-  // margin-bottom: 50px;
+  position: relative;
   display: flex;
-	flex-direction: column;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh
 }
 
 .wrapper {
@@ -77,9 +79,9 @@ body {
 .section {
   @media screen and (max-width: 1000px) {
     padding: 20px;
+    background-color: rgba(45, 32, 49, .7);
     border: 1px solid $text_g;
     border-radius: 7px;
-    background-color: rgba(45, 32, 49, .7);
   }
 }
 

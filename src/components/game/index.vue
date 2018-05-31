@@ -7,7 +7,6 @@
     .top-info
       h2.caption rolls made
       span.deposit-value Total amount {{ getTotalAmount }} BET
-      //- span.find-bankroller Bankroller {{ getBankrollerAddress }}
 
     .game
       label.input-label
@@ -66,15 +65,20 @@ export default {
       const hash = DC.DCLib.randomHash({bet:amount, gamedata:[random]})
 
       this.isProcess = true
+      
+      if (this.$store.state.paid.payout >= this.$store.state.balance.bankroller_balance) {
+        this.$store.commit('updateNum', this.$store.state.paid.num + 1000)
+        this.profit    = 'The bankroll does not have the money to pay'
+        this.isError   = true
+        this.isProcess = false
+        return
+      }
 
       DC.Game.Status.on('game::error', err => {
         if (err.msg) {
           this.$store.commit('updateError', err.msg)
         }
 
-        this.profit    = 'The bankroll does not have the money to pay'
-        this.isError   = true
-        this.isProcess = false
         throw new Error('The bankroll does not have the money to pay')
       })
 
@@ -129,12 +133,6 @@ export default {
 
 <style lang="scss">
 @import './index.scss';
-
-.find-bankroller {
-  margin-top: 10px;
-  display: block;
-}
-
 .channel {
   padding: 0 20px;
   text-align: center;

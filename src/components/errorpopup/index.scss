@@ -1,18 +1,16 @@
 .error-popup {
   background-color: rgba(0,0,0, .7);
-  
   &-text {
-      font-family: $prox_b;
-      font-size: 21px;
-      color: #d08c49;
+    font-family: $prox_b;
+    font-size: 21px;
+    color: #d08c49;
   }
-
   &-deposit {
-      font-family: $prox_b;
-      color: #fff;
+    font-family: $prox_b;
+    color: #fff;
   }
   @media tablet {
-      padding: 0 20px;
+    padding: 0 20px;
   }
 }
 
@@ -32,9 +30,9 @@
   text-transform: uppercase;
   color: #fff;
   background-color: transparent;
-  transition: all .5s;
   outline: none;
   border: 2px solid #d08c49;
+  transition: all .5s;
   &:hover {
     background-color: #d08c49;
   }

@@ -42,7 +42,6 @@ export default {
 
 <style lang="scss">
 @import './index.scss';
-
 .caption {
   margin-top: 5px;
   display: block;
@@ -79,5 +78,9 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.bankroller-balance {
+  margin-top: 10px;
 }
 </style>
