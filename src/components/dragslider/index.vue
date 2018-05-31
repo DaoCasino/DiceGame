@@ -39,9 +39,11 @@ export default {
           'background-color': '#d7a472'
         },
         bgStyle: {
+          'cursor': 'pointer',
           'background-color': '#fff'
         },
         processStyle: {
+          'cursor': 'default',
           'background-color': '#d08c49'
         }
       }
@@ -49,8 +51,8 @@ export default {
   },
 
   watch: {
-    max_amount   (val) { this.options.max = val },
-    valueDefault (val) { this.value = val }
+    valueDefault (val) { this.value       = val },
+    max_amount   (val) { this.options.max = val }
   },
 
   updated () {
@@ -68,6 +70,8 @@ export default {
 
       if (this.$store.state.paid.payout < this.$store.state.balance.bankroller_balance) {
         this.$store.commit('updateNum', this.value)
+      } else {
+        this.value = this.$store.state.paid.num
       }
 
       this.$store.commit('updatePercent', this.value)

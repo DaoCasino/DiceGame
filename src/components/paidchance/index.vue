@@ -14,7 +14,6 @@
           span.close-popup__log {{ log }}
     .top-info
       h2.caption total money paid
-      //- span.deposit-value .:.:.::. BET
 
     .paid-change
       label.input-label
@@ -77,9 +76,8 @@ export default {
         .on('error', err => {
           if (err.text) {
             this.$store.commit('updateError', err.text)
+            this.error = true
           }
-
-          this.error = true
         })
 
       this.close = true
@@ -126,12 +124,8 @@ export default {
     width: 400px;
     height: 200px;
     overflow: hidden;
-    // @media screen and (max-width: 671px) {
-    //     width: 300px;
-    // }
   }
   @media screen and (max-width: 495px) {
-    // width: 355px;
     position: absolute;
   }
 }

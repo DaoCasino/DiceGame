@@ -3,26 +3,26 @@
     .finish-table
       a.transaction-link(:href="txlink" target="_blank") Transaction
       a.close-link(href="#" @click="closeGame") Close game
+      h3 Show results
       table.result-table
         tr.table-row.finish-row
           th.table-capt.show timestamp
           th.table-capt.show win chance
           th.table-capt outcome
           th.table-capt bet amount
-          th.table-capt.show profit
-          th.table-capt action
+          th.table-capt profit
+          th.table-capt.show action
         tr.table-row(v-for="item in getInfo")
           td.table-item.show {{ item.timestamp }}
           td.table-item.show {{ item.winchance }}
           td.table-item {{ item.outcome }}
           td.table-item {{ item.user_bet }}
-          td.table-item.show {{ item.profit }}
-          td.table-item {{ item.action }}
+          td.table-item {{ item.profit }}
+          td.table-item.show {{ item.action }}
 </template>
 
 <script>
 import InfoTable from '../infoTable'
-
 export default {
   props: {
     txlink: { type: String }
@@ -70,6 +70,9 @@ export default {
 
 .table-capt,
 .table-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   @media screen and (max-width: 1000px) {
     width: 100%;
     // display: none;
@@ -87,14 +90,13 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
-  @media screen and (max-width: 495px) {
-    position: absolute;
-  }
 }
 
 .finish-table {
+  position: fixed;
   padding: 50px;
-  width: 100%;
+  min-width: 350px;
+  width: 90%;
 }
 
 .transaction-link {

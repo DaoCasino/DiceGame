@@ -170,7 +170,6 @@ export default {
   text-align: center;
 }
 .address {
-  font-size: 12px;
   color: #fff;
 }
 </style>
