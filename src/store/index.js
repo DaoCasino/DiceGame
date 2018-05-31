@@ -65,11 +65,11 @@ export const store = new Vuex.Store({
       if (value === undefined) value = 32356
 
       let payout  = (userBet * (MAX_NUM - MAX_NUM * 0.02) / value) - userBet
+
       if (payout < 0.00) payout = 0.00
       if (payout >= state.balance.bankroller_balance) {
         payout = state.balance.bankroller_balance
       }
-
       state.paid.payout = payout
     }
   }

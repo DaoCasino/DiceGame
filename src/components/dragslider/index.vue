@@ -2,6 +2,7 @@
   .drag-slider
     .slider-capt {{capt}}
     vue-slider(
+      ref="slider"
       v-model="value"
       v-bind="options"
     )
@@ -63,17 +64,20 @@ export default {
     if (!this.$props.paid && !this.$props.popup) {
       this.$store.commit('updateAmount', this.value)
       this.$store.commit('updatePayout', this.$store.state.paid.num)
+      if (this.$store.state.paid.payout >= this.$store.state.balance.bankroller_balance) {
+        this.$store.commit('updateNum', this.$store.state.paid.num + 1000)
+      }
     }
 
     if (this.$props.paid) {
-      this.$store.commit('updatePayout', this.value)
+      this.$store.commit('updatePayout', this.value);
 
-      if (this.$store.state.paid.payout < this.$store.state.balance.bankroller_balance) {
-        this.$store.commit('updateNum', this.value)
-      } else {
-        this.value = this.$store.state.paid.num
+      if (this.$store.state.paid.payout >= this.$store.state.balance.bankroller_balance
+      && this.$store.state.balance.amount > 0.1) {
+        this.$store.commit('updateAmount', Number(Math.round((this.$store.state.balance.amount - 0.1)+'e'+1)+'e-'+1))
       }
 
+      this.$store.commit('updateNum', this.value)
       this.$store.commit('updatePercent', this.value)
     }
   },
