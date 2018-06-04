@@ -5,11 +5,11 @@
 
     .input-deposit
       label.input-label
-        span.input-text Your Balance
-        input.input-inp(type="text" name="your-balance" :value="getBalance" readonly)
+        span.input-text Max amount
+        input.input-inp(type="text" name="your-balance" :value="getMaxAmount" readonly)
 
       label.input-label
-        span.input-text Bet amount
+        span.input-text Your amount
         input.input-inp.bet-amount(ref="bet_am" type="text" name="bet-ammount" :value="getAmount" readonly)
 
       drag-slider(
@@ -18,11 +18,13 @@
         popup=false
         :valueDefault="getAmount"
         :max_amount="getBalance"
+        :min_amount=0.1
       )
 
     .balance-info
-      span.player-balance Player balance {{getBalance}} BET
-      span.bankroller-balance Bankroller balance {{getBankrollerBalance}} BET
+      h2.channel-balance Channel balance
+      span.player-balance Player: {{getBalance}} BET
+      span.bankroller-balance Bankroller: {{getBankrollerBalance}} BET
 </template>
 
 <script>
@@ -30,8 +32,9 @@ import DragSlider from '../dragslider'
 export default {
   computed: {
     getBalance           () { return Number(this.$store.state.balance.player_balance) },
+    getMaxAmount         () { return Number(this.$store.state.game.maxAmount) },
     getBankrollerBalance () { return Number(this.$store.state.balance.bankroller_balance) },
-    getAmount            () { return this.$store.state.balance.amount }
+    getAmount            () { return this.$store.state.game.amount }
   },
 
   components: {
@@ -80,7 +83,7 @@ export default {
   width: 100%;
 }
 
-.bankroller-balance {
+.player-balance {
   margin-top: 10px;
 }
 </style>

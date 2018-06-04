@@ -26,7 +26,7 @@
 <script>
 import DragSlider from '../dragslider'
 import ErrorPopup from '../errorpopup'
-import DC         from '../../model/DCLib'
+import DC         from '../../lib/DCLib'
 export default {
   data () {
     return {
@@ -36,7 +36,7 @@ export default {
       error       : false,
       log         : '',
       errorText   : '',
-      max_deposit : this.$store.state.balance.start
+      max_deposit : this.$store.state.start
     }
   },
 
@@ -47,16 +47,16 @@ export default {
 
   computed: {
     getStart           () { return this.$store.state.balance.betBalance },
-    getDeposit         () { return this.$store.state.balance.deposit },
+    getDeposit         () { return this.$store.state.game.deposit },
     getBnkLink         () { return `https://${process.env.DC_NETWORK}.etherscan.io/address/${this.$store.state.address.bankroller}` },
     getBankrollAddress () { return this.$store.state.address.bankroller },
-    getDefaultDeposit  () { return this.$store.state.balance.start },
+    getDefaultDeposit  () { return this.$store.state.start },
     getErrorText       () { return this.$store.state.errorText }
   },
 
   methods: {
     openChannel () {
-      if (this.$store.state.balance.deposit === 0) return
+      if (this.getDeposit === 0) return
       let dotsI
       this.isActive = true
 
@@ -92,8 +92,9 @@ export default {
         this.popup = false
         clearInterval(dotsI)
         const bankrollerBalance = DC.Game.logic.payChannel.getBankrollBalance()
-        this.$store.commit('updatePlayerBalance', this.getDeposit)
-        this.$store.commit('updateAmount', 0.1)
+        this.$store.commit('updateMaxAmount',       this.getDeposit)
+        this.$store.commit('updatePlayerBalance',   this.getDeposit)
+        this.$store.commit('updateAmount',          0.1)
         this.$store.commit('updateBankrollBalance', Number(bankrollerBalance).toFixed(2))
         this.$store.commit('updatePayout')
         this.$store.commit('updatePaychannelContract', DC.Game.contract_address)
@@ -111,11 +112,11 @@ export default {
 <style lang="scss">
 @import './index.scss';
 .popup {
-  position: absolute;
+  position: fixed;
   z-index: 100;
   display: flex;
   width: 100vw;
-  height: 120%;
+  height: 100%;
   &.anim {
     transform: translateY(-9999px)
   }

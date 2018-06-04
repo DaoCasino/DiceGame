@@ -28,7 +28,7 @@ export default {
         height: 25,
         max: this.$props.paid ? 65535 : this.max_amount,
         min: this.$props.min_amount,
-        speed: 0.1,
+        speed: 0.2,
         debug: false,
         interval: this.$props.paid ? 1 : 0.1,
         sliderStyle: {
@@ -56,29 +56,45 @@ export default {
     max_amount   (val) { this.options.max = val }
   },
 
-  updated () {
+  computed: {
+    getNum               () { return this.$store.state.paid.num },
+    getPayout            () { return this.$store.state.paid.payout },
+    getAmount            () { return this.$store.state.game.amount },
+    getPrevNum           () { return this.$store.state.paid.prevNum },
+    getNewAmout          () { return Number(Math.round((this.$store.state.game.amount - 0.1) + 'e' + 1) + 'e-' + 1) },
+    getBankrollerBalance () { return this.$store.state.balance.bankroller_balance }
+  },
+
+  beforeUpdate () {
     if (this.$props.popup) {
-      this.$store.commit('updateBalance', this.value)
+      this.$store.commit('updateDeposit', this.value)
     }
 
     if (!this.$props.paid && !this.$props.popup) {
-      this.$store.commit('updateAmount', this.value)
-      this.$store.commit('updatePayout', this.$store.state.paid.num)
-      if (this.$store.state.paid.payout >= this.$store.state.balance.bankroller_balance) {
-        this.$store.commit('updateNum', this.$store.state.paid.num + 1000)
+      if (this.getPayout > this.getBankrollerBalance) {
+        this.$refs.slider.setValue(this.getAmount)
       }
+
+      this.$store.commit('updateAmount', this.value)
+      this.$store.commit('updatePayout', this.getNum)
+      this.$store.commit('updateMaxAmount')
     }
 
     if (this.$props.paid) {
-      this.$store.commit('updatePayout', this.value);
-
-      if (this.$store.state.paid.payout >= this.$store.state.balance.bankroller_balance
-      && this.$store.state.balance.amount > 0.1) {
-        this.$store.commit('updateAmount', Number(Math.round((this.$store.state.balance.amount - 0.1)+'e'+1)+'e-'+1))
+      if (this.getPayout > this.getBankrollerBalance) {
+        if (this.getAmount > 0.1) {
+          this.$store.commit('updateAmount', this.getNewAmout)
+        } else {
+          const num = (Number((this.getNum * 1.2).toFixed()) !== 1) ? Number((this.getNum * 1.2).toFixed()) : 300
+          this.$store.commit('updateNum', num)
+        }
+      } else {
+        this.$store.commit('updateNum',    this.value)
+        this.$store.commit('updatePayout', this.getNum)
       }
 
-      this.$store.commit('updateNum', this.value)
       this.$store.commit('updatePercent', this.value)
+      this.$store.commit('updateMaxAmount')
     }
   },
 

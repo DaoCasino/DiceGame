@@ -31,7 +31,7 @@
 
 <script>
 import ErrorPopup from '../errorpopup'
-import DC         from '../../model/DCLib'
+import DC         from '../../lib/DCLib'
 export default {
   data () {
     return {
@@ -45,16 +45,21 @@ export default {
 
   computed: {
     getTx                () { return this.$store.state.tx },
+    getNum               () { return this.$store.state.paid.num },
+    getAmount            () { return this.$store.state.game.amount },
+    getPayout            () { return this.$store.state.paid.payout },
+    getPercent           () { return this.$store.state.paid.percent },
     getContract          () { return this.$store.state.paychannelContract },
     getErrorText         () { return this.$store.state.errorText },
-    getTotalAmount       () { return this.$store.state.balance.totalAmount },
-    getBankrollerAddress () { return this.$store.state.address.bankroller }
+    getTotalAmount       () { return this.$store.state.game.totalAmount },
+    getBankrollerAddress () { return this.$store.state.address.bankroller },
+    getBankrollerBalance () { return this.$store.state.balance.bankroller_balance }
   },
 
   methods: {
     roll () {
-      const amount = this.$store.state.balance.amount
-      const random = this.$store.state.paid.num
+      const amount = this.getAmount
+      const random = this.getNum
 
       if (amount === 0 || random === 0) {
         this.profit  = 'No bets, Please bet before playing'
@@ -65,11 +70,9 @@ export default {
       const hash = DC.DCLib.randomHash({bet:amount, gamedata:[random]})
 
       this.isProcess = true
-      
-      if (this.$store.state.paid.payout >= this.$store.state.balance.bankroller_balance) {
-        this.$store.commit('updateNum', this.$store.state.paid.num + 1000)
+
+      if (this.getPayout > this.getBankrollerBalance) {
         this.profit    = 'The bankroll does not have the money to pay'
-        this.isError   = true
         this.isProcess = false
         return
       }
@@ -79,7 +82,10 @@ export default {
           this.$store.commit('updateError', err.msg)
         }
 
-        throw new Error('The bankroll does not have the money to pay')
+        this.isError   = true
+        this.isProcess = false
+
+        throw new Error(err.msg)
       })
 
       DC.Game.Game(amount, random, hash)
@@ -111,7 +117,7 @@ export default {
 
           const createResult = {
             timestamp : time,
-            winchance : `${this.$store.state.paid.percent}%`,
+            winchance : `${this.getPercent}%`,
             outcome   : outcome,
             user_bet  : DC.DCLib.Utils.dec2bet(result.user_bet),
             profit    : this.profit,
@@ -122,9 +128,11 @@ export default {
           this.$store.commit('updateInfoTable',       createResult)
           this.$store.commit('updatePlayerBalance',   Number(newPlayerBalance).toFixed(1))
           this.$store.commit('updateBankrollBalance', Number(newBankrollBalance).toFixed(1))
+          this.$store.commit('updateMaxAmount')
         })
     }
   },
+
   components: {
     ErrorPopup
   }

@@ -8,7 +8,7 @@ function getGameContract (callback) {
       address:localGameContract.address,
       abi: JSON.parse(localGameContract.abi)
     })
-  }).catch(function() {
+  }).catch(function () {
     callback(false)
   })
 }

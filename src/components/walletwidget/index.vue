@@ -12,13 +12,20 @@
 </template>
 
 <script>
-import DC from '../../model/DCLib'
+import DC from '../../lib/DCLib'
 export default {
   data () {
     return {
       eth: 0,
       player_address: '...'
     }
+  },
+
+  computed: {
+    getAddress    () { return this.$store.state.address.player || 0 },
+    getBetBalance () { return this.$store.state.balance.betBalance || 0 },
+    getEthBalance () { return this.$store.state.balance.ethBalance },
+    getLink       () { return `https://ropsten.etherscan.io/address/${this.$store.state.address.player}` }
   },
 
   async beforeCreate () {
@@ -34,13 +41,6 @@ export default {
         }
       }, 2000)
     }
-  },
-
-  computed: {
-    getAddress    () { return this.$store.state.address.player || 0 },
-    getBetBalance () { return this.$store.state.balance.betBalance || 0 },
-    getEthBalance () { return this.$store.state.balance.ethBalance },
-    getLink       () { return `https://ropsten.etherscan.io/address/${this.$store.state.address.player}` }
   }
 }
 </script>

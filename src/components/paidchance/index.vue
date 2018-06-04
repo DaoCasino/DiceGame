@@ -45,7 +45,7 @@
 <script>
 import FinishTable from '../finishTable'
 import DragSlider  from '../dragslider'
-import DC          from '../../model/DCLib'
+import DC          from '../../lib/DCLib'
 export default {
   data () {
     return {
@@ -60,7 +60,7 @@ export default {
   computed: {
     num          () { return this.$store.state.paid.num },
     percent      () { return this.$store.state.paid.percent },
-    payout       () { return Number(this.$store.state.paid.payout).toFixed(2) },
+    payout       () { return Number(this.$store.state.paid.payout.toFixed(2)) },
     getTx        () { return this.$store.state.tx },
     getErrorText () { return this.$store.state.errorText }
   },
