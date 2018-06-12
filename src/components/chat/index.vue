@@ -69,7 +69,6 @@ export default {
 @import './index';
 .chat {
   position: absolute;
-  z-index: 400;
   width: 100vw;
   height: 100vh;
   &.index {
@@ -77,12 +76,14 @@ export default {
   }
   &-bg {
     position: fixed;
+    z-index: 400;
     width: 100vw;
     height: 100vh;
   }
   &-module {
     position: fixed;
     padding: 20px 10px;
+    z-index: 400;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

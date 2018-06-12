@@ -1,19 +1,20 @@
 <template lang="pug">
-  table.table
-    tr.table-row
-      th.table-capt timestamp
-      th.table-capt win chance
-      th.table-capt outcome
-      th.table-capt bet amount
-      th.table-capt profit
-      th.table-capt action
-    tr.table-row(v-for="item in getInfo")
-      td.table-item {{ item.timestamp }}
-      td.table-item {{ item.winchance }}
-      td.table-item {{ item.outcome }}
-      td.table-item {{ item.user_bet }}
-      td.table-item {{ item.profit }}
-      td.table-item {{ item.action }}
+  .table
+    table.table-body
+      tr.table-row
+        th.table-capt timestamp
+        th.table-capt win chance
+        th.table-capt outcome
+        th.table-capt bet amount
+        th.table-capt profit
+        th.table-capt action
+      tr.table-row(v-for="item in getInfo")
+        td.table-item {{ item.timestamp }}
+        td.table-item {{ item.winchance }}
+        td.table-item {{ item.outcome }}
+        td.table-item {{ item.user_bet }}
+        td.table-item {{ item.profit }}
+        td.table-item {{ item.action }}
 </template>
 
 <script>
@@ -46,13 +47,16 @@ export default {
     margin-top: 10px;
   }
   &-capt {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     width: 16.666%;
   }
   &-item {
     width: 16.666%;
   }
   @media screen and (max-width: 1000px) {
-    display: none;
+    grid-column: inherit
   }
 }
 </style>

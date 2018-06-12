@@ -12,7 +12,7 @@
       button.game__but.game__but-infotable(
         @click="updateTrigger"
         data-name="table"
-        v-if="showTable"
+        v-if="table"
       ) T
     rules
     chat
@@ -43,28 +43,14 @@ export default {
   name: 'App',
   data () {
     return {
-      showTable: false,
       isNone: false
     }
-  },
-
-  mounted() {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', () => {
-        this.showTable = (this.opened && window.innerWidth < 1000) ? true : false
-      })
-    }
-  },
-
-  updated () {
-    this.showTable = (this.opened && window.innerWidth < 1000) ? true : false
   },
 
   computed: {
     chat    () { return this.$store.state.triggers.chat },
     table   () { return this.$store.state.triggers.table },
     rules   () { return this.$store.state.triggers.rules },
-    opened  () { return this.$store.state.triggers.channelopened },
     getIter () { return this.$store.state.iter }
   },
 

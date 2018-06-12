@@ -93,7 +93,6 @@ export default {
         this.popup = false
         clearInterval(dotsI)
         const bankrollerBalance = DC.Game.logic.payChannel.getBankrollBalance()
-        this.$store.commit('updateOpened', true)
         this.$store.commit('updateMaxAmount',       this.getDeposit)
         this.$store.commit('updatePlayerBalance',   this.getDeposit)
         this.$store.commit('updateAmount',          0.1)

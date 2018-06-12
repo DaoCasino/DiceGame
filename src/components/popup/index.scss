@@ -1,5 +1,6 @@
 .popup {
   background-color: rgba(0,0,0, .7);
+  transition: z-index .5s linear;
   &-table {
     background-color: $main_bg;
     border: 1px solid $text_g;

@@ -37,8 +37,7 @@ export const store = new Vuex.Store({
     triggers: {
       chat: false,
       table: false,
-      rules: true,
-      channelopened: false
+      rules: true
     },
     tx                 : '',
     flag               : true,
@@ -57,7 +56,6 @@ export const store = new Vuex.Store({
     updateError              (state, value) { state.errorText = value },
     updateStart              (state, value) { state.start = value },
     updateAmount             (state, value) { state.game.amount = value },
-    updateOpened             (state, value) { state.triggers.channelopened = value },
     updateDeposit            (state, value) { state.game.deposit = value },
     updateNextBut            (state, value) { state.rules.nextBut = value },
     updateShowSlide          (state, value) { state.showSlide = value },

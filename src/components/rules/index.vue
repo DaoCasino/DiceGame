@@ -76,12 +76,16 @@ export default {
 
   mounted () { 
     this.$nextTick(() => {
-      this.windowWidth = parseInt(getComputedStyle(this.$refs.rulesTable).width)
-      this.progressMove()
-
-      window.addEventListener('resize', () => {
+      if (typeof this.$refs.rulesTable !== 'undefined') {
         this.windowWidth = parseInt(getComputedStyle(this.$refs.rulesTable).width)
         this.progressMove()
+      }
+
+      window.addEventListener('resize', () => {
+        if (typeof this.$refs.rulesTable !== 'undefined') {
+          this.windowWidth = parseInt(getComputedStyle(this.$refs.rulesTable).width)
+          this.progressMove()
+        }
       })
     })
   },
@@ -113,10 +117,10 @@ export default {
 
   methods: {
     progressMove () {
-      const OneSlide     = this.windowWidth / this.rules.length
-      const currentWidth = OneSlide * (this.getIter + 1)
-
       if (typeof this.$refs.progress !== 'undefined') {
+        const OneSlide     = this.windowWidth / this.rules.length
+        const currentWidth = OneSlide * (this.getIter + 1)
+
         this.$refs.progress.style.width = currentWidth + 'px'
       }
     },
