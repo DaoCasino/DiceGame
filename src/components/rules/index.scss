@@ -1,0 +1,86 @@
+.rules {
+  color: #FFF;
+  background-color: rgba(0,0,0, .7);
+  &-table {
+    background-color: $main_bg;
+    border: 1px solid $text_g;
+    border-radius: $radius;
+    transition: all 1s linear;
+    transition-delay: 3s;
+  }
+  &-progress {
+    border: .5px solid $text_g;
+    border-right-color: transparent;
+    &__inner {
+      background-color: $text_g;
+      border-radius: $radius;
+      transition: all .3s linear
+    }
+  }
+  &-body {
+    transition: all .5s linear
+  }
+  &-list {
+    transition: all 1s linear
+  }
+  &-capt {
+    display: block;
+    font-family: $prox_b
+  }
+  &-img {
+    border: 1px solid $text_g;
+    border-radius: $radius 
+  }
+  &-text {
+    text-align: justify;
+    font-size: 16px;
+    line-height: 1.4;
+    transition: all .5s linear;
+    @media screen and (max-width: 580px) {
+      font-size: 12px;
+    }
+    @media screen and (max-width: 360px) {
+      font-size: 10px;
+    }
+  }
+  &-but {
+    cursor: pointer;
+    background-color: $text_g;
+    border: none;
+    outline: none;
+    border-radius: $radius;
+    transition: all .5s linear;
+    &:hover {
+      background-color: rgba(236, 167, 97, 1)
+    }
+  }
+}
+
+.next-slide-enter-active,
+.next-slide-leave-active {
+  transition: transform .5s;
+}
+
+.next-slide-enter {
+  transform: translateX(100%);
+  &.prev {
+    transform: translateX(-100%);
+  }
+}
+
+.next-slide-leave-to {
+  transform: translateX(-100%);
+  &.prev {
+    transform: translateX(100%);
+  }
+}
+
+.slider-enter-active,
+.slider-leave-active {
+  transition: opacity .5s;
+}
+
+.slider-enter,
+.slider-leave-to {
+  opacity: 0;
+}

@@ -15,8 +15,26 @@
 
       .roll
         span.roll-capt Click Roll Dice to place your bet:
-        a.roll-but(href="#" @click="roll" @keydup.13="roll")
-          span.roll-text roll dice
+        .roll-buttons
+          a.roll-but(href="#" @click="roll" @keydup.13="roll")
+            span.roll-text roll dice
+          a.roll-but(href="#" @click="isAutoRoll = !isAutoRoll" @keydup.13="roll")
+            span.roll-text Auto roll
+        .auto-roll
+          transition(name="auto-roll")
+            .auto-roll__settings(v-if="isAutoRoll")
+              label.input-lavel
+                span.input-text.auto-roll__min-amount Min amount
+                input.input-inp.auto-roll__inp(
+                  type="text"
+                  max="getMaxAmount"
+                  @keypress="isNumber"
+                  ref="min_autoroll"
+                )
+              .auto-roll__buttons
+                button.auto-roll__but.auto-roll__start(@click="autoRoll") start
+                button.auto-roll__but.auto-roll__stop(@click="stopAutoRoll = false" ref="stop") stop
+
 
     .blockchain-info
       h3.blockchain-capt Channel info (in blockchain)
@@ -31,15 +49,17 @@
 
 <script>
 import ErrorPopup from '../errorpopup'
-import DC         from '../../lib/DCLib'
+import DC         from '@/lib/DCLib'
 export default {
   data () {
     return {
-      profit      : '.:.:.',
-      isError     : false,
-      isProcess   : false,
-      error       : false,
-      transaction : ''
+      profit       : '.:.:.',
+      error        : false,
+      isError      : false,
+      isProcess    : false,
+      isAutoRoll   : false,
+      transaction  : '',
+      stopAutoRoll : true
     }
   },
 
@@ -51,85 +71,119 @@ export default {
     getPercent           () { return this.$store.state.paid.percent },
     getContract          () { return this.$store.state.paychannelContract },
     getErrorText         () { return this.$store.state.errorText },
+    getMaxAmount         () { return this.$store.state.game.maxAmount },
     getTotalAmount       () { return this.$store.state.game.totalAmount },
+    getPlayerBalance     () { return this.$store.state.balance.player_balance },
     getBankrollerAddress () { return this.$store.state.address.bankroller },
     getBankrollerBalance () { return this.$store.state.balance.bankroller_balance }
   },
 
   methods: {
+    isNumber (e) {
+      e = (e) || window.event
+      const charCode = (e.which) ? e.which : e.keyCode
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) 
+      && charCode !== 46) {
+        e.preventDefault()
+      } else {
+        return true
+      }
+    },
+
+    async autoRoll (e) {
+      const value = Number(this.$refs.min_autoroll.value)
+      if (value < 0.1 || value > this.getBankrollerBalance
+      ||  value >= this.getPlayerBalance) {
+        return
+      }
+
+      const roll = await this.roll()
+      
+      if (roll && this.stopAutoRoll) {
+        setTimeout(() => {
+          this.autoRoll(e)
+        }, 1111)
+      }
+      
+      this.stopAutoRoll = true
+    },
+
     roll () {
-      const amount = this.getAmount
-      const random = this.getNum
+      return new Promise ((resolve, reject) => {
+        const amount = this.getAmount
+        const random = this.getNum
 
-      if (amount === 0 || random === 0) {
-        this.profit  = 'No bets, Please bet before playing'
-        this.isError = true
-        return
-      }
-
-      const hash = DC.DCLib.randomHash({bet:amount, gamedata:[random]})
-
-      this.isProcess = true
-
-      if (this.getPayout > this.getBankrollerBalance) {
-        this.profit    = 'The bankroll does not have the money to pay'
-        this.isProcess = false
-        return
-      }
-
-      DC.Game.Status.on('game::error', err => {
-        if (err.msg) {
-          this.$store.commit('updateError', err.msg)
+        if (amount === 0 || random === 0) {
+          this.profit  = 'No bets, Please bet before playing'
+          this.isError = true
+          return
         }
 
-        this.isError   = true
-        this.isProcess = false
+        const hash = DC.DCLib.randomHash({bet:amount, gamedata:[random]})
 
-        throw new Error(err.msg)
-      })
+        this.isProcess = true
 
-      DC.Game.Game(amount, random, hash)
-        .then(res => {
-          const result = res.bankroller.result
-          const newPlayerBalance   = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().player)
-          const newBankrollBalance = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().bankroller)
-          let outcome = 'lose'
-
+        if (this.getPayout > this.getBankrollerBalance) {
+          this.profit    = 'The bankroll does not have the money to pay'
           this.isProcess = false
-          this.isError   = false
-          this.profit    = Number(DC.DCLib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
+          return
+        }
 
-          if (Math.sign(this.profit) === 1) {
-            outcome = 'win'
+        DC.Game.Status.on('game::error', err => {
+          if (err.msg) {
+            this.$store.commit('updateError', err.msg)
           }
 
-          const date = new Date()
-          let hour, minute, sec
+          this.isError   = true
+          this.isProcess = false
 
-          hour   = date.getHours()
-          minute = date.getMinutes()
-          sec    = date.getSeconds()
-
-          if (hour < 10)   hour   = `0${hour}`
-          if (minute < 10) minute = `0${minute}`
-          if (sec < 10)    sec    = `0${sec}`
-          const time = `${hour}:${minute}:${sec}`
-
-          const createResult = {
-            timestamp : time,
-            winchance : `${this.getPercent}%`,
-            outcome   : outcome,
-            user_bet  : DC.DCLib.Utils.dec2bet(result.user_bet),
-            profit    : this.profit,
-            action    : 'roll'
-          }
-
-          this.$store.commit('updateTotalAmount',     createResult.user_bet)
-          this.$store.commit('updateInfoTable',       createResult)
-          this.$store.commit('updatePlayerBalance',   Number(newPlayerBalance).toFixed(1))
-          this.$store.commit('updateBankrollBalance', Number(newBankrollBalance).toFixed(1))
-          this.$store.commit('updateMaxAmount')
+          reject(new Error(err.msg))
         })
+
+        DC.Game.Game(amount, random, hash)
+          .then(res => {
+            const result = res.bankroller.result
+            const newPlayerBalance   = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().player)
+            const newBankrollBalance = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().bankroller)
+            let outcome = 'lose'
+
+            this.isProcess = false
+            this.isError   = false
+            this.profit    = Number(DC.DCLib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
+
+            if (Math.sign(this.profit) === 1) {
+              outcome = 'win'
+            }
+
+            const date = new Date()
+            let hour, minute, sec
+
+            hour   = date.getHours()
+            minute = date.getMinutes()
+            sec    = date.getSeconds()
+
+            if (hour < 10)   hour   = `0${hour}`
+            if (minute < 10) minute = `0${minute}`
+            if (sec < 10)    sec    = `0${sec}`
+            const time = `${hour}:${minute}:${sec}`
+
+            const createResult = {
+              timestamp : time,
+              winchance : `${this.getPercent}%`,
+              outcome   : outcome,
+              user_bet  : DC.DCLib.Utils.dec2bet(result.user_bet),
+              profit    : this.profit,
+              action    : 'roll'
+            }
+
+            this.$store.commit('updateTotalAmount',     createResult.user_bet)
+            this.$store.commit('updateInfoTable',       createResult)
+            this.$store.commit('updatePlayerBalance',   Number(newPlayerBalance).toFixed(1))
+            this.$store.commit('updateBankrollBalance', Number(newBankrollBalance).toFixed(1))
+            this.$store.commit('updateMaxAmount')
+            resolve(createResult)
+          })
+      })
     }
   },
 
@@ -186,68 +240,92 @@ input.game-inp {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.roll-but {
-  position: relative;
-  margin-top: 5px;
-  padding: 6px 0 5px 0;
-  width: 100px;
-  border-radius: 6px;
-  &:hover {
+  &-buttons {
+    margin: 5px;
+  }
+  &-but {
+    position: relative;
+    margin-right: 6px;
+    padding: 6px 6px 5px 6px;
+    width: 100px;
+    border-radius: $radius;
+    &:last-child {
+      margin-right: 0;
+    }
     &:before {
-      width: 50%;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 0;
+      height: 100%;
     }
     &:after {
-      width: 50%;
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      width: 0;
+      height: 100%
     }
   }
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    width: 0;
-    height: 100%;
-  }
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: block;
-    width: 0;
-    height: 100%;
+  &-text {
+    position: relative;
+    z-index: 3
   }
 }
 
-.roll-text {
-  position: relative;
-  z-index: 3;
+.auto-roll {
+  width: 100%;
+  overflow: hidden;
+  &__settings {
+    margin-top: 15px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%
+  }
+  &__stop {
+    pointer-events: all
+  }
+  &__buttons {
+    margin-top: 15px;
+  }
+  &__but {
+    cursor: pointer;
+    padding: 6px 20px;
+    margin-right: 6px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .blockchain-info {
-  margin-top: 35px;
+  margin-top: 35px
 }
 
 .blockchain-but {
   margin-top: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: center
 }
 
 .blockchain-tx {
-  margin-right: 10px;
+  margin-right: 10px
 }
 
 .blockchain-link {
   padding: 10px;
-  display: block;
+  display: block
 }
 
 .blockchain-dispute {
   margin-top: 10px;
-  display: block;
+  display: block
 }
 </style>

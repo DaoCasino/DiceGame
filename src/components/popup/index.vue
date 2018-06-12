@@ -1,5 +1,5 @@
 <template lang="pug">
-  .popup(v-if="popup")
+  .popup(v-if="popup" v-bind:class="{ chat: !getChatTrigger }")
     .popup-table
       .openchannel-log(v-bind:class="{ active: isActive }")
         error-popup(
@@ -26,7 +26,7 @@
 <script>
 import DragSlider from '../dragslider'
 import ErrorPopup from '../errorpopup'
-import DC         from '../../lib/DCLib'
+import DC         from '@/lib/DCLib'
 export default {
   data () {
     return {
@@ -49,9 +49,10 @@ export default {
     getStart           () { return this.$store.state.balance.betBalance },
     getDeposit         () { return this.$store.state.game.deposit },
     getBnkLink         () { return `https://${process.env.DC_NETWORK}.etherscan.io/address/${this.$store.state.address.bankroller}` },
-    getBankrollAddress () { return this.$store.state.address.bankroller },
+    getErrorText       () { return this.$store.state.errorText },
+    getChatTrigger     () { return this.$store.state.triggers.chat },
     getDefaultDeposit  () { return this.$store.state.start },
-    getErrorText       () { return this.$store.state.errorText }
+    getBankrollAddress () { return this.$store.state.address.bankroller },
   },
 
   methods: {
@@ -92,6 +93,7 @@ export default {
         this.popup = false
         clearInterval(dotsI)
         const bankrollerBalance = DC.Game.logic.payChannel.getBankrollBalance()
+        this.$store.commit('updateOpened', true)
         this.$store.commit('updateMaxAmount',       this.getDeposit)
         this.$store.commit('updatePlayerBalance',   this.getDeposit)
         this.$store.commit('updateAmount',          0.1)
@@ -117,8 +119,8 @@ export default {
   display: flex;
   width: 100vw;
   height: 100%;
-  &.anim {
-    transform: translateY(-9999px)
+  &.chat {
+    z-index: 450;
   }
   &-table {
     position: fixed;

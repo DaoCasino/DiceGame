@@ -45,7 +45,7 @@
 <script>
 import FinishTable from '../finishTable'
 import DragSlider  from '../dragslider'
-import DC          from '../../lib/DCLib'
+import DC          from '@/lib/DCLib'
 export default {
   data () {
     return {
@@ -90,6 +90,7 @@ export default {
         this.close        = false
         this.finish_table = true
         clearInterval(dotsI)
+        this.$store.commit('updateOpened', false)
       })
     }
   },

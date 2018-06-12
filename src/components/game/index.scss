@@ -1,9 +1,8 @@
 .roll-but {
-  cursor: pointer;
   background-color: #d08c49;
-  transition: all .5s;
+  transition: background-color .5s linear;
   &:hover {
-    animation: animRoll 1s infinite
+    background-color: rgba(236, 167, 97, 1);
   }
 }
 
@@ -57,6 +56,41 @@ input.game-inp {
   transform-style: preserve-3d;
   transition: all .6s
 }
+
+.auto-roll {
+  &__but {
+    font-family: $prox_b;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #fff;
+    text-transform: uppercase;
+    border-color: transparent;
+    outline-color: transparent;
+    border-radius: $radius;
+  }
+  &__start {
+    background-color: #5cd65c;
+  }
+  &__stop {
+    background-color: #FF4040;
+  }
+  &-enter-active,
+  &-leave-active {
+    transition: transform .5s
+  }
+  &-enter,
+  &-leave-to {
+    transform: translateY(-130%)
+  }
+}
+
+.auto-roll__but {
+  transition: all .5s linear;
+  &:hover {
+    transform: scale(1.1)
+  }
+}
+
 
 @keyframes animRoll {
   0% {

@@ -12,6 +12,12 @@ export const store = new Vuex.Store({
       player_balance     : 0,
       bankroller_balance : 0
     },
+    rules: {
+      img     : '',
+      capt    : '',
+      text    : '',
+      nextBut : 'Next'
+    },
     game: {
       amount: 0,
       deposit: 0,
@@ -28,34 +34,61 @@ export const store = new Vuex.Store({
       player     : '...',
       bankroller : '...'
     },
+    triggers: {
+      chat: false,
+      table: false,
+      rules: true,
+      channelopened: false
+    },
     tx                 : '',
     flag               : true,
+    iter               : 0,
     start              : '...',
+    showSlide          : true,
     errorText          : '',
     info_table         : [],
     paychannelContract : ''
   },
+
   mutations: {
     updateTx                 (state, value) { state.tx = value },
     updateNum                (state, value) { state.paid.num = value },
+    updateIter               (state, value) { state.iter = value },
     updateError              (state, value) { state.errorText = value },
     updateStart              (state, value) { state.start = value },
     updateAmount             (state, value) { state.game.amount = value },
+    updateOpened             (state, value) { state.triggers.channelopened = value },
     updateDeposit            (state, value) { state.game.deposit = value },
+    updateNextBut            (state, value) { state.rules.nextBut = value },
+    updateShowSlide          (state, value) { state.showSlide = value },
     updateInfoTable          (state, value) { state.info_table.push(value) },
     updateEthBalance         (state, value) { state.balance.ethBalance = value },
     updateBetBalance         (state, value) { state.balance.betBalance = value },
+    updateChatTrigger        (state, value) { state.triggers.chat = value },
+    updateRulesTrigger       (state, value) { state.triggers.rules = value },
+    updateTableTrigger       (state, value) { state.triggers.table = value },
     updatePlayerBalance      (state, value) { state.balance.player_balance = value },
     updatePlayerAddress      (state, value) { state.address.player = value },
     updateBankrollBalance    (state, value) { state.balance.bankroller_balance = value },
     updateBankrollAddress    (state, value) { state.address.bankroller = value },
     updatePaychannelContract (state, value) { state.paychannelContract = `https://${process.env.DC_NETWORK}.etherscan.io/address/${value}` },
 
+    updateRules (state, value) {
+      state.rules.img  = value.img
+      state.rules.capt = value.capt
+      state.rules.text = value.text
+    },
+
     updateMaxAmount (state) {
       for (let i = state.game.amount; i <= state.balance.player_balance; i = Number(Math.round((i + 0.1) + 'e' + 1) + 'e-' + 1)) {
         const payout = (i * (65535 - 65535 * 0.02) / state.paid.num) - i
 
-        if (i === state.balance.player_balance) {
+        if (state.balance.player_balance >= state.balance.bankroller_balance) {
+          state.game.maxAmount = state.balance.bankroller_balance
+          return
+        }
+
+        if (i >= state.balance.player_balance) {
           state.game.maxAmount = state.balance.player_balance
           return
         }
@@ -68,8 +101,8 @@ export const store = new Vuex.Store({
     },
 
     updateTotalAmount (state, value) {
-      let newValue = state.game.totalAmount += value
-      state.game.totalAmount = newValue
+      let newValue = Number(Math.round((state.game.totalAmount - value) + 'e' + 1) + 'e-' + 1)
+      state.game.totalAmount = Math.abs(newValue)
     },
 
     updatePercent (state, value) {
