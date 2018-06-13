@@ -33,10 +33,6 @@ export default new class DC {
     })
   }
 
-  getRules () {
-    return this.Game.rules
-  }
-
   async getBalance () {
     const bets = await this.DCLib.Eth.getBalances(this.DCLib.Account.get().openkey)
     if (bets) return bets

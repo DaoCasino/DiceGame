@@ -18,6 +18,7 @@ export default {
 <style lang="scss">
 @import './index.scss';
 .header {
+  position: relative;
   margin: 30px 0 10px 0;
   display: flex;
   width: 100%;

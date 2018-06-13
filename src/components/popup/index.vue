@@ -114,13 +114,10 @@ export default {
 @import './index.scss';
 .popup {
   position: fixed;
-  z-index: 100;
+  z-index: 350;
   display: flex;
   width: 100vw;
   height: 100%;
-  &.chat {
-    z-index: 450;
-  }
   &-table {
     position: fixed;
     top: 50%;

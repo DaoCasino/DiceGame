@@ -39,6 +39,9 @@ export const store = new Vuex.Store({
       table: false,
       rules: true
     },
+    chat: {
+      allMess: []
+    },
     tx                 : '',
     flag               : true,
     iter               : 0,
@@ -70,6 +73,17 @@ export const store = new Vuex.Store({
     updateBankrollBalance    (state, value) { state.balance.bankroller_balance = value },
     updateBankrollAddress    (state, value) { state.address.bankroller = value },
     updatePaychannelContract (state, value) { state.paychannelContract = `https://${process.env.DC_NETWORK}.etherscan.io/address/${value}` },
+
+    updateAllMessage (state, value) {
+      if (state.chat.allMess.length > 50) {
+        state.chat.allMess.shift()
+      }
+
+      state.chat.allMess.push({
+        name: value.name,
+        mess: value.mess
+      })
+    },
 
     updateRules (state, value) {
       state.rules.img  = value.img

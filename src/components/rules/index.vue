@@ -127,10 +127,12 @@ export default {
 
     slideMove (e) {
       const target   = e.target
-      this.$store.commit('updateShowSlide', false)
 
-      if (target.classList.value === this.$refs.rulesBut.classList.value)
+      if (target.classList.value === 'rules-buttons') {
         return
+      }
+
+      this.$store.commit('updateShowSlide', false)
 
       if (target.getAttribute('data-move') === 'next' && this.close) {
         this.$store.commit('updateRulesTrigger', false)
@@ -149,7 +151,7 @@ export default {
         this.$store.commit('updateIter', this.getIter - 1)
       }
 
-      setTimeout(() => this.$store.commit('updateShowSlide', true), 1)
+      setTimeout(() => this.$store.commit('updateShowSlide', true), 0)
     },
 
     skipTutor (e) {

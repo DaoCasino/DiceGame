@@ -16,7 +16,9 @@
     "check_build": "serve -ssl -p=6060 ./dist"
   },
   "dependencies": {
+    "dc-messaging": "github:DaoCasino/dc-messaging",
     "dclib": "github:DaoCasino/DCLib#develop",
+    "font-awesome": "^4.7.0",
     "normalize-scss": "^7.0.1",
     "vue": "^2.5.2",
     "vue-slider-component": "^2.6.1",

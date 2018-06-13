@@ -1,19 +1,14 @@
 <template lang="pug">
   #app
     .game__buttons(v-bind:class="{ none: chat }")
-      button.game__but.game__but-rules(
+      button.fas.fa-book.game__but.game__but-rules(
         @click="updateTrigger"
         data-name="rules"
-      ) R
-      button.game__but.game__but-chat(
+      )
+      button.fas.fa-comments.game__but.game__but-chat(
         @click="updateTrigger"
         data-name="chat"
-      ) C
-      button.game__but.game__but-infotable(
-        @click="updateTrigger"
-        data-name="table"
-        v-if="table"
-      ) T
+      )
     rules
     chat
     popup
@@ -88,7 +83,7 @@ export default {
 .game__buttons {
   position: fixed;
   left: 0;
-  z-index: 500;
+  z-index: 400;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -104,7 +99,9 @@ export default {
 }
 
 .game__window {
+  position: relative;
   padding: 20px;
+  z-index: 300;
   display: grid;
   grid-template-columns: 33% 33% 33%;
   justify-content: space-between;

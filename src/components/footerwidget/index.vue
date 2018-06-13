@@ -27,6 +27,7 @@ export default {
 <style lang="scss">
 @import './index';
 .footer {
+  position: relative;
   margin: 20px 0 20px 0;
   display: block;
   text-align: center

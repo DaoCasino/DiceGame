@@ -3,36 +3,93 @@
     transition(name="chat-bg")
       .chat-bg(
         v-if="getChatTrigger"
-        @click="chatOver"
+        @click.prevent="chatOver"
       )
     transition(name="chat-tab")
       .chat-module(v-if="getChatTrigger")
         .chat-module__header
           h2.chat-module__capt chat
-          .chat-module__close(@click="chatOver")
+          .chat-module__close(@click.prevent="chatOver")
             a.chat-module__close-but(href="#")
         .chat-module__messages(ref="messages")
+          transition(name="username-anim")
+            .chat-module__username(v-if="usernameTrigger")
+              span.chat-module__username-error(v-if="isError") Name is longer than 10 characters
+              input.chat-module__username-inp(
+                ref="username"
+              )
+              button.chat-module__username-send(
+                @click.prevent="addUser"
+              ) Go chat
           ul.chat-module__messages-list(ref="messlist")
-            li.chat-module__messages-items(v-for="item in col")
+            li.chat-module__messages-items(
+              v-for="item in getMessages"
+              ref="messitem"
+            )
               .chat-module__messages-body
-                span.chat-module__messages-name fanyShu
-                p.chat-module__messages-text lorem asjfasdjka dsajdklasjdlas daslkjdlasjd adsaljs;djas;f as;dasj;dajs faksjfa fasj fasjd afsdj
+                span.chat-module__messages-name {{ item.name }}
+                span.chat-module__messages-text {{ item.mess }}
         form.chat-module__add-message
           textarea.chat-module__inp.chat-module__text(
             type="text"
             name="username"
             placeholder="Message"
+            @keydown.13.prevent="sendMess"
+            ref="messtext"
           )
-          button.chat-module__send(@click="sendMess") send
+          button.chat-module__send(@click.prevent="sendMess") send
 </template>
 
 <script>
+import DC from '@/lib/dclib'
+import * as messaging from 'dc-messaging'
 export default {
   data () {
     return {
       col: 14,
+      name: '',
       scroll: true,
+      isFlag: true,
+      isError: false,
+      usernameTrigger: true
     }
+  },
+
+  computed: {
+    getMessages    () { return this.$store.state.chat.allMess },
+    getChatTrigger () { return this.$store.state.triggers.chat }
+  },
+
+  beforeCreate () {
+    this.chatRoom = new messaging.RTC(DC.DCLib.Account.get().openkey, 'chatRoom')
+    const mess    = JSON.parse(localStorage.getItem('chatmess'))
+
+    if (typeof mess !== 'undefined' && mess !== null) {
+      for (let item of mess) {
+        this.$store.commit('updateAllMessage', {
+          name: item.name,
+          mess: item.mess
+        })
+      }
+    }
+  },
+
+  beforeMount () {
+    const name = localStorage.getItem('username')
+
+    if (typeof name !== 'undefined' && name !== null) {
+      this.name            = name
+      this.usernameTrigger = false
+    }
+  },
+
+  mounted () {
+    this.chatRoom.on('action::message', data => {
+      this.$store.commit('updateAllMessage', {
+        name: data.message.name,
+        mess: data.message.mess
+      })
+    })
   },
 
   updated () {
@@ -41,25 +98,59 @@ export default {
         this.scrollDown()
       }
     }
-  },
 
-  computed: {
-    getChatTrigger () { return this.$store.state.triggers.chat }
+    localStorage.setItem('chatmess', JSON.stringify(this.getMessages.slice(-15)))
   },
 
   methods: {
-    chatOver (e) {
-      e.preventDefault()
+    chatOver () {
       this.$store.commit('updateChatTrigger', false)
+      this.isFlag = true
     },
 
     scrollDown () {
+      if (!this.isFlag && typeof this.$refs.messitem !== 'undefined'
+      && this.$refs.messitem.length >= 3
+      && this.$refs.messitem[this.$refs.messitem.length - 3].getBoundingClientRect().bottom > 900) {
+        return
+      }
+
+      this.isFlag = false
       this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
     },
 
-    sendMess (e) {
-      e.preventDefault()
-      this.col++
+    addUser () {
+      this.isError = (this.$refs.username.value.length > 10) ? true : false;
+
+      if (this.$refs.username.value
+      && this.$refs.username.value !== ''
+      && !this.isError) {
+        this.name = this.$refs.username.value
+
+        localStorage.setItem('username', this.name)
+        this.usernameTrigger = false
+      }
+    },
+
+    sendMess () {
+      if (this.$refs.messtext.value 
+      && this.$refs.messtext.value !== ''
+      && !this.usernameTrigger) {
+        this.$store.commit('updateAllMessage', {
+          name: this.name,
+          mess: this.$refs.messtext.value
+        })
+  
+        this.chatRoom.sendMsg({
+          action: 'message',
+          message: {
+            name: this.name,
+            mess: this.$refs.messtext.value
+          }
+        })
+
+        this.$refs.messtext.value = ''
+      }
     }
   }
 }
@@ -119,13 +210,43 @@ export default {
         }
       }
     }
+    &__username {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: $radius;
+      &-inp {
+        margin-top: 20px;
+        padding: 10px;
+        height: 30px;
+        text-align: center;
+        border-radius: $radius
+      }
+      &-send {
+        cursor: pointer;
+        padding: 5px 10px;
+        margin-top: 20px;
+        border-radius: $radius
+      }
+    }
     &__messages {
+      position: relative;
       margin: 20px 10px;
       width: 100%;
       height: 100%;
       display: flex;
       border-radius: $radius;
       overflow-y: auto;
+      &:scrollbar {
+        width: 0;
+      }
       &-list {
         position: relative;
         padding-top: 10px;
@@ -141,8 +262,19 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        text-align: end;
+        min-width: 200px;
         border-radius: $radius;
+      }
+      &-text {
+        display: inline-block;
+        word-break: break-word;
+        word-wrap: break-word;
+        overflow-wrap: break-word;        
+        -moz-user-select: -moz-all;
+        -o-user-select: all;
+        -khtml-user-select: all;
+        -webkit-user-select: all;
+        user-select: all
       }
     }
     &__add-message {

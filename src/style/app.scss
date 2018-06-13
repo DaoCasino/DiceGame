@@ -1,3 +1,6 @@
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome.scss';
+
 $main_bg:         #2d2031;
 $text_color:      #ffffff;
 $text_g:          #d08c49;
@@ -68,6 +71,7 @@ body {
 }
 
 .game__buttons {
+  transition: z-index .5s linear;
   &.none {
     z-index: 300
   }
@@ -75,7 +79,7 @@ body {
 
 .game__but {
   cursor: pointer;
-  font-family: $prox_b;
+  font-family: 'FontAwesome';
   font-size: 16px;
   color: #fff;
   background-color: $main_bg;

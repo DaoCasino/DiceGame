@@ -4,6 +4,12 @@
       v-if="error"
       :message="getErrorText"
     )
+    transition(name="autoroll-popup")
+      .autoroll-over(v-if="autorollShow")
+        .autoroll-over__table
+          span.autoroll-over__text Auto roll over
+          button.autoroll-over__but(@click.prevent="autorollHide") Close
+
     .top-info
       h2.caption rolls made
       span.deposit-value Total amount {{ getTotalAmount }} BET
@@ -16,7 +22,7 @@
       .roll
         span.roll-capt Click Roll Dice to place your bet:
         .roll-buttons
-          a.roll-but(href="#" @click="roll" @keydup.13="roll")
+          a.roll-but(href="#" @click="roll")
             span.roll-text roll dice
           a.roll-but(href="#" @click="isAutoRoll = !isAutoRoll" @keydup.13="roll")
             span.roll-text Auto roll
@@ -59,6 +65,7 @@ export default {
       isProcess    : false,
       isAutoRoll   : false,
       transaction  : '',
+      autorollShow : false,
       stopAutoRoll : true
     }
   },
@@ -90,10 +97,13 @@ export default {
       }
     },
 
+    autorollHide () { this.autorollShow = false },
+
     async autoRoll (e) {
       const value = Number(this.$refs.min_autoroll.value)
       if (value < 0.1 || value > this.getBankrollerBalance
       ||  value >= this.getPlayerBalance) {
+        this.autorollShow = true
         return
       }
 
@@ -301,6 +311,44 @@ input.game-inp {
     margin-right: 6px;
     &:last-child {
       margin-right: 0;
+    }
+  }
+}
+
+.autoroll {
+  &-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    &__table {
+      position: fixed;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: center;
+      max-width: 400px;
+      min-width: 290px;
+      max-height: 250px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: $radius;
+      @media screen and (max-width: 480px) {
+        width: 90%;
+      }
+    }
+    &__but {
+      cursor: pointer;
+      padding: 5px 0;
+      margin: 20px auto 0 auto;
+      width: 40%;
+      border-radius: $radius
     }
   }
 }

@@ -91,6 +91,39 @@ input.game-inp {
   }
 }
 
+.autoroll {
+  &-over {
+    background-color: rgba(0,0,0, .7);
+    &__table {
+      font-family: $prox_b;
+      font-size: 16px;
+      color: #fff;
+      text-transform: uppercase;
+      background-color: $main_bg;
+      border: 1px solid $text_g;
+    }
+    &__but {
+      color: #fff;
+      background-color: $text_g;
+      border-color: transparent;
+      outline-color: transparent;
+      transition: background-color .2s linear;
+      &:hover {
+        background-color: rgba(236, 167, 97, 1);
+      }
+    }
+  }
+}
+
+.autoroll-popup-active,
+.autoroll-popup-leave-active {
+  transition: all .5s linear;
+}
+
+.autoroll-popup-enter,
+.autoroll-popup-leave-to {
+  opacity: 0;
+}
 
 @keyframes animRoll {
   0% {
