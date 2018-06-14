@@ -1,10 +1,12 @@
 import DCLib from 'dclib'
+import * as messaging from 'dc-messaging'
 
 export default new class DC {
   constructor () {
-    this.DCLib = DCLib
+    this.lib      = DCLib
+    this.chat     = messaging
 
-    this.DCLib.on('ready', () => {
+    this.lib.on('ready', () => {
       this.getGameContract(gameContract => {
         window.Game = new DCLib.DApp({
           slug: 'dicetest_v42',
@@ -17,6 +19,10 @@ export default new class DC {
         this.Game = window.Game
       })
     })
+  }
+
+  install (Vue) {
+    Object.defineProperty(Vue.prototype, '$DCLib', { value: this })
   }
 
   getGameContract (callback) {
@@ -34,7 +40,11 @@ export default new class DC {
   }
 
   async getBalance () {
-    const bets = await this.DCLib.Eth.getBalances(this.DCLib.Account.get().openkey)
+    const bets = await this.lib.Eth.getBalances(this.lib.Account.get().openkey)
     if (bets) return bets
+  }
+
+  chatInit () {
+    return new this.chat.RTC(this.lib.Account.get().openkey, `chatRoom__DICE`)
   }
 }()

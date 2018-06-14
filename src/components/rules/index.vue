@@ -32,6 +32,7 @@
 
 <script>
 import _rules from '@/model/rules'
+import { mapState, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -47,16 +48,15 @@ export default {
     }
   },
 
-  computed: {
-    getId           () { return this.$store.state.rules.id },
-    getIter         () { return this.$store.state.iter },
-    getButName      () { return this.$store.state.rules.nextBut },
-    getShowSlide    () { return this.$store.state.showSlide },
-    getCurrentImg   () { return this.$store.state.rules.img },
-    getCurrentCapt  () { return this.$store.state.rules.capt },
-    getCurrentText  () { return this.$store.state.rules.text },
-    getRulesTrigger () { return this.$store.state.triggers.rules }
-  }, 
+  computed: mapState({
+    getIter         : state => state.rules.iter,
+    getButName      : state => state.rules.nextBut,
+    getShowSlide    : state => state.rules.showSlide,
+    getCurrentImg   : state => state.rules.img,
+    getCurrentCapt  : state => state.rules.capt,
+    getCurrentText  : state => state.rules.text,
+    getRulesTrigger : state => state.rules.trigger
+  }),
 
   watch: {
     windowWidth (newWidth) {
@@ -65,9 +65,9 @@ export default {
   },
 
   beforeMount () {
-    (!localStorage.getItem('compleateTutor')) && this.$store.commit('updateRulesTrigger', true)
+    (!localStorage.getItem('compleateTutor')) && this.updateRulesTrigger(true)
 
-    this.$store.commit('updateRules', {
+    this.updateRules({
       img  : this.rules[this.getIter].img,
       capt : this.rules[this.getIter].capt,
       text : this.rules[this.getIter].text
@@ -91,7 +91,7 @@ export default {
   },
 
   beforeUpdate () {
-    this.$store.commit('updateRules', {
+    this.updateRules({
       img  : this.rules[this.getIter].img,
       capt : this.rules[this.getIter].capt,
       text : this.rules[this.getIter].text
@@ -100,11 +100,11 @@ export default {
 
   updated () {
     if (this.getIter === (this.rules.length - 1)) {
-      this.$store.commit('updateNextBut', 'Close')
+      this.updateNextBut('Close')
       this.close = true
       this.showSkip = false
     } else {
-      this.$store.commit('updateNextBut', 'Next') 
+      this.updateNextBut('Next') 
       this.close = false
       this.showSkip = true 
     }
@@ -116,6 +116,14 @@ export default {
   },
 
   methods: {
+    ...mapMutations('rules', [
+      'updateIter',
+      'updateRules',
+      'updateNextBut',
+      'updateShowSlide',
+      'updateRulesTrigger'
+    ]),
+
     progressMove () {
       if (typeof this.$refs.progress !== 'undefined') {
         const OneSlide     = this.windowWidth / this.rules.length
@@ -132,32 +140,32 @@ export default {
         return
       }
 
-      this.$store.commit('updateShowSlide', false)
+      this.updateShowSlide(false)
 
       if (target.getAttribute('data-move') === 'next' && this.close) {
-        this.$store.commit('updateRulesTrigger', false)
+        this.updateRulesTrigger(false)
         return
       }
 
       if (target.getAttribute('data-move') === 'next' 
       && this.getIter < this.rules.length - 1) {
         this.isPrev = false
-        this.$store.commit('updateIter', this.getIter + 1)
+        this.updateIter(this.getIter + 1)
       }
 
       if (target.getAttribute('data-move') === 'prev' 
       && this.getIter > 0) {
         this.isPrev = true
-        this.$store.commit('updateIter', this.getIter - 1)
+        this.updateIter(this.getIter - 1)
       }
 
-      setTimeout(() => this.$store.commit('updateShowSlide', true), 0)
+      setTimeout(() => this.updateShowSlide(true), 0)
     },
 
     skipTutor (e) {
       if (e.target.classList.contains('rules') 
       || e.target.classList.contains('rules-skip')) {
-        this.$store.commit('updateRulesTrigger', false)
+        this.updateRulesTrigger(false)
       }
     }
   }

@@ -29,13 +29,17 @@
 
 <script>
 import DragSlider from '../dragslider'
+import {
+  mapState
+} from 'vuex'
+
 export default {
-  computed: {
-    getBalance           () { return Number(this.$store.state.balance.player_balance) },
-    getMaxAmount         () { return Number(this.$store.state.game.maxAmount) },
-    getBankrollerBalance () { return Number(this.$store.state.balance.bankroller_balance) },
-    getAmount            () { return this.$store.state.game.amount }
-  },
+  computed: mapState({
+    getAmount            : state => state.game.betState.amount,
+    getBalance           : state => Number(state.userData.balance.player_balance),
+    getMaxAmount         : state => Number(state.game.betState.maxAmount),
+    getBankrollerBalance : state => Number(state.userData.balance.bankroller_balance),
+  }),
 
   components: {
     DragSlider

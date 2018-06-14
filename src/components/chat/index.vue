@@ -41,8 +41,7 @@
 </template>
 
 <script>
-import DC from '@/lib/dclib'
-import * as messaging from 'dc-messaging'
+import { mapState, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -55,18 +54,18 @@ export default {
     }
   },
 
-  computed: {
-    getMessages    () { return this.$store.state.chat.allMess },
-    getChatTrigger () { return this.$store.state.triggers.chat }
-  },
+  computed: mapState('chat', {
+    getMessages    : state => state.allMess,
+    getChatTrigger : state => state.trigger
+  }),
 
-  beforeCreate () {
-    this.chatRoom = new messaging.RTC(DC.DCLib.Account.get().openkey, 'chatRoom')
+  created () {
+    this.chatRoom = this.$DCLib.chatInit()
     const mess    = JSON.parse(localStorage.getItem('chatmess'))
 
     if (typeof mess !== 'undefined' && mess !== null) {
       for (let item of mess) {
-        this.$store.commit('updateAllMessage', {
+        this.updateAllMessage({
           name: item.name,
           mess: item.mess
         })
@@ -85,7 +84,7 @@ export default {
 
   mounted () {
     this.chatRoom.on('action::message', data => {
-      this.$store.commit('updateAllMessage', {
+      this.updateAllMessage({
         name: data.message.name,
         mess: data.message.mess
       })
@@ -103,8 +102,13 @@ export default {
   },
 
   methods: {
+    ...mapMutations('chat', [
+      'updateAllMessage',
+      'updateChatTrigger'
+    ]),
+
     chatOver () {
-      this.$store.commit('updateChatTrigger', false)
+      this.updateChatTrigger(false)
       this.isFlag = true
     },
 
@@ -136,7 +140,7 @@ export default {
       if (this.$refs.messtext.value 
       && this.$refs.messtext.value !== ''
       && !this.usernameTrigger) {
-        this.$store.commit('updateAllMessage', {
+        this.updateAllMessage({
           name: this.name,
           mess: this.$refs.messtext.value
         })

@@ -1,6 +1,3 @@
-$fa-font-path: "~font-awesome/fonts";
-@import '~font-awesome/scss/font-awesome.scss';
-
 $main_bg:         #2d2031;
 $text_color:      #ffffff;
 $text_g:          #d08c49;
@@ -98,6 +95,11 @@ body {
   &:hover {
     color: #000;
     background-color: $text_g;
+  }
+  &-img {
+    background-image: url('/static/img/chat.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 }
 

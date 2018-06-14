@@ -26,53 +26,71 @@
 <script>
 import DragSlider from '../dragslider'
 import ErrorPopup from '../errorpopup'
-import DC         from '@/lib/DCLib'
+import {
+  mapState,
+  mapMutations
+} from 'vuex'
+
 export default {
   data () {
     return {
-      popup       : true,
-      isActive    : false,
-      open        : true,
-      error       : false,
       log         : '',
+      open        : true,
+      popup       : true,
+      error       : false,
+      isActive    : false,
       errorText   : '',
       max_deposit : this.$store.state.start
     }
   },
 
-  beforeCreate () {
-    this.$store.commit('updateBetBalance', 0)
-    this.$store.commit('updateEthBalance', 0)
+  created () {
+    this.updateBetBalance(0)
+    this.updateEthBalance(0)
   },
 
-  computed: {
-    getStart           () { return this.$store.state.balance.betBalance },
-    getDeposit         () { return this.$store.state.game.deposit },
-    getBnkLink         () { return `https://${process.env.DC_NETWORK}.etherscan.io/address/${this.$store.state.address.bankroller}` },
-    getErrorText       () { return this.$store.state.errorText },
-    getChatTrigger     () { return this.$store.state.triggers.chat },
-    getDefaultDeposit  () { return this.$store.state.start },
-    getBankrollAddress () { return this.$store.state.address.bankroller },
-  },
+  computed: mapState({
+    getStart           : state => state.userData.balance.betBalance,
+    getDeposit         : state => state.game.betState.deposit,
+    getBnkLink         : state => `https://${process.env.DC_NETWORK}.etherscan.io/address/${state.userData.address.bankroller}`,
+    getErrorText       : state => state.game.errorText,
+    getChatTrigger     : state => state.chat.trigger,
+    getDefaultDeposit  : state => state.game.start,
+    getBankrollAddress : state => state.userData.address.bankroller,
+  }),
 
   methods: {
+    ...mapMutations({
+      updateTx                 : 'game/updateTx',
+      updateError              : 'game/updateError',
+      updateAmount             : 'game/updateAmount',
+      updatePayout             : 'game/updatePayout',
+      updateMaxAmount          : 'game/updateMaxAmount',
+      updateBetBalance         : 'userData/updateBetBalance',
+      updateEthBalance         : 'userData/updateEthBalance',
+      updatePlayerBalance      : 'userData/updatePlayerBalance',
+      updateBankrollBalance    : 'userData/updateBankrollBalance',
+      updateBankrollAddress    : 'userData/updateBankrollAddress',
+      updatePaychannelContract : 'game/updatePaychannelContract'
+    }),
+
     openChannel () {
       if (this.getDeposit === 0) return
       let dotsI
       this.isActive = true
 
-      DC.Game.Status
+      this.$DCLib.Game.Status
         .on('connect::info', res => {
           if (res.status === 'transactionHash') {
-            this.$store.commit('updateTx', `https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
+            this.updateTx(`https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
           }
 
           if (res.status === 'noBankroller') {
-            this.$store.commit('updateBankrollAddress', ' 🔎 Not bankroller with the same deposit, find continue')
+            this.updateBankrollAddress(' 🔎 Not bankroller with the same deposit, find continue')
           }
 
           if (res.status === 'find_compleate') {
-            this.$store.commit('updateBankrollAddress', res.data)
+            this.updateBankrollAddress(res.data)
             dotsI = setInterval(() => {
               const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller open channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
               this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
@@ -80,25 +98,25 @@ export default {
           }
         })
         .on('connect::error', err => {
-          if (err.msg) this.$store.commit('updateError', err.msg)
+          if (err.msg) this.updateError(err.msg)
           this.open  = false
           this.error = true
         })
 
-      DC.Game.connect({
+      this.$DCLib.Game.connect({
         bankroller : 'auto',
         paychannel : { deposit: this.getDeposit },
         gamedata   : { type: 'uint', value: [1, 2, 3] }
       }, (res, info) => {
         this.popup = false
         clearInterval(dotsI)
-        const bankrollerBalance = DC.Game.logic.payChannel.getBankrollBalance()
-        this.$store.commit('updateMaxAmount',       this.getDeposit)
-        this.$store.commit('updatePlayerBalance',   this.getDeposit)
-        this.$store.commit('updateAmount',          0.1)
-        this.$store.commit('updateBankrollBalance', Number(bankrollerBalance).toFixed(2))
-        this.$store.commit('updatePayout')
-        this.$store.commit('updatePaychannelContract', DC.Game.contract_address)
+        const bankrollerBalance = this.$DCLib.Game.logic.payChannel.getBankrollBalance()
+        this.updateMaxAmount(this.getDeposit)
+        this.updatePlayerBalance(this.getDeposit)
+        this.updateAmount(0.1)
+        this.updateBankrollBalance(Number(bankrollerBalance).toFixed(2))
+        this.updatePayout()
+        this.updatePaychannelContract(this.$DCLib.Game.contract_address)
       })
     }
   },

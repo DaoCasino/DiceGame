@@ -10,6 +10,11 @@
 
 <script>
 import vueSlider from 'vue-slider-component'
+import {
+  mapState,
+  mapMutations
+} from 'vuex'
+
 export default {
   props: {
     capt         : { type: String },
@@ -56,18 +61,18 @@ export default {
     max_amount   (val) { this.options.max = val }
   },
 
-  computed: {
-    getNum               () { return this.$store.state.paid.num },
-    getPayout            () { return this.$store.state.paid.payout },
-    getAmount            () { return this.$store.state.game.amount },
-    getPrevNum           () { return this.$store.state.paid.prevNum },
-    getNewAmout          () { return Number(Math.round((this.$store.state.game.amount - 0.1) + 'e' + 1) + 'e-' + 1) },
-    getBankrollerBalance () { return this.$store.state.balance.bankroller_balance }
-  },
+  computed: mapState({
+    getNum               : state => state.game.paid.num,
+    getPayout            : state => state.game.paid.payout,
+    getAmount            : state => state.game.betState.amount,
+    getPrevNum           : state => state.game.paid.prevNum,
+    getNewAmout          : state => Number(Math.round((state.game.betState.amount - 0.1) + 'e' + 1) + 'e-' + 1),
+    getBankrollerBalance : state => state.userData.balance.bankroller_balance
+  }),
 
   beforeUpdate () {
     if (this.$props.popup) {
-      this.$store.commit('updateDeposit', this.value)
+      this.updateDeposit(this.value)
     }
 
     if (!this.$props.paid && !this.$props.popup) {
@@ -75,27 +80,39 @@ export default {
         this.$refs.slider.setValue(this.getAmount)
       }
 
-      this.$store.commit('updateAmount', this.value)
-      this.$store.commit('updatePayout', this.getNum)
-      this.$store.commit('updateMaxAmount')
+      this.updateAmount(this.value)
+      this.updatePayout(this.getNum)
+      this.updateMaxAmount()
     }
 
     if (this.$props.paid) {
       if (this.getPayout > this.getBankrollerBalance) {
         if (this.getAmount > 0.1) {
-          this.$store.commit('updateAmount', this.getNewAmout)
+          this.updateAmount(this.getNewAmout)
         } else {
           const num = (Number((this.getNum * 1.2).toFixed()) !== 1) ? Number((this.getNum * 1.2).toFixed()) : 300
-          this.$store.commit('updateNum', num)
+          this.updateNum(num)
         }
       } else {
-        this.$store.commit('updateNum',    this.value)
-        this.$store.commit('updatePayout', this.getNum)
+        this.updateNum(this.value)
+        this.updatePayout(this.getNum)
       }
 
-      this.$store.commit('updatePercent', this.value)
-      this.$store.commit('updateMaxAmount')
+      this.updatePercent(this.value)
+      this.updateMaxAmount()
     }
+  },
+
+  methods: {
+    ...mapMutations({
+      updateNum       : 'game/updateNum',
+      updatePayout    : 'game/updatePayout',
+      updateAmount    : 'game/updateAmount',
+      updatePercent   : 'game/updatePercent',
+      updateDeposit   : 'game/updateDeposit',
+      updateMaxAmount : 'game/updateMaxAmount',
+      updateMaxAmount : 'game/updateMaxAmount'
+    })
   },
 
   components: {

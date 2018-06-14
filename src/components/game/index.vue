@@ -55,12 +55,16 @@
 
 <script>
 import ErrorPopup from '../errorpopup'
-import DC         from '@/lib/DCLib'
+import {
+  mapState,
+  mapMutations
+} from 'vuex'
+
 export default {
   data () {
     return {
-      profit       : '.:.:.',
       error        : false,
+      profit       : '.:.:.',
       isError      : false,
       isProcess    : false,
       isAutoRoll   : false,
@@ -70,22 +74,31 @@ export default {
     }
   },
 
-  computed: {
-    getTx                () { return this.$store.state.tx },
-    getNum               () { return this.$store.state.paid.num },
-    getAmount            () { return this.$store.state.game.amount },
-    getPayout            () { return this.$store.state.paid.payout },
-    getPercent           () { return this.$store.state.paid.percent },
-    getContract          () { return this.$store.state.paychannelContract },
-    getErrorText         () { return this.$store.state.errorText },
-    getMaxAmount         () { return this.$store.state.game.maxAmount },
-    getTotalAmount       () { return this.$store.state.game.totalAmount },
-    getPlayerBalance     () { return this.$store.state.balance.player_balance },
-    getBankrollerAddress () { return this.$store.state.address.bankroller },
-    getBankrollerBalance () { return this.$store.state.balance.bankroller_balance }
-  },
+  computed: mapState({
+    getTx                : state => state.game.tx,
+    getNum               : state => state.game.paid.num,
+    getAmount            : state => state.game.betState.amount,
+    getPayout            : state => state.game.paid.payout,
+    getPercent           : state => state.game.paid.percent,
+    getContract          : state => state.game.paychannelContract,
+    getErrorText         : state => state.game.errorText,
+    getMaxAmount         : state => state.game.betState.maxAmount,
+    getTotalAmount       : state => state.game.betState.totalAmount,
+    getPlayerBalance     : state => state.userData.balance.player_balance,
+    getBankrollerAddress : state => state.userData.address.bankroller,
+    getBankrollerBalance : state => state.userData.balance.bankroller_balance
+  }),
 
   methods: {
+    ...mapMutations({
+      updateError           : 'game/updateError',
+      updateInfoTable       : 'game/updateInfoTable',
+      updateMaxAmount       : 'game/updateMaxAmount',
+      updateTotalAmount     : 'game/updateTotalAmount',
+      updatePlayerBalance   : 'userData/updatePlayerBalance',
+      updateBankrollBalance : 'userData/updateBankrollBalance'
+    }),
+
     isNumber (e) {
       e = (e) || window.event
       const charCode = (e.which) ? e.which : e.keyCode
@@ -129,7 +142,7 @@ export default {
           return
         }
 
-        const hash = DC.DCLib.randomHash({bet:amount, gamedata:[random]})
+        const hash = this.$DCLib.lib.randomHash({bet:amount, gamedata:[random]})
 
         this.isProcess = true
 
@@ -139,9 +152,9 @@ export default {
           return
         }
 
-        DC.Game.Status.on('game::error', err => {
+        this.$DCLib.Game.Status.on('game::error', err => {
           if (err.msg) {
-            this.$store.commit('updateError', err.msg)
+            this.updateError(err.msg)
           }
 
           this.isError   = true
@@ -150,16 +163,16 @@ export default {
           reject(new Error(err.msg))
         })
 
-        DC.Game.Game(amount, random, hash)
+        this.$DCLib.Game.Game(amount, random, hash)
           .then(res => {
             const result = res.bankroller.result
-            const newPlayerBalance   = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().player)
-            const newBankrollBalance = DC.DCLib.Utils.dec2bet(DC.Game.logic.payChannel._getBalance().bankroller)
+            const newPlayerBalance   = this.$DCLib.lib.Utils.dec2bet(this.$DCLib.Game.logic.payChannel._getBalance().player)
+            const newBankrollBalance = this.$DCLib.lib.Utils.dec2bet(this.$DCLib.Game.logic.payChannel._getBalance().bankroller)
             let outcome = 'lose'
 
             this.isProcess = false
             this.isError   = false
-            this.profit    = Number(DC.DCLib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
+            this.profit    = Number(this.$DCLib.lib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
 
             if (Math.sign(this.profit) === 1) {
               outcome = 'win'
@@ -181,16 +194,16 @@ export default {
               timestamp : time,
               winchance : `${this.getPercent}%`,
               outcome   : outcome,
-              user_bet  : DC.DCLib.Utils.dec2bet(result.user_bet),
+              user_bet  : this.$DCLib.lib.Utils.dec2bet(result.user_bet),
               profit    : this.profit,
               action    : 'roll'
             }
 
-            this.$store.commit('updateTotalAmount',     createResult.user_bet)
-            this.$store.commit('updateInfoTable',       createResult)
-            this.$store.commit('updatePlayerBalance',   Number(newPlayerBalance).toFixed(1))
-            this.$store.commit('updateBankrollBalance', Number(newBankrollBalance).toFixed(1))
-            this.$store.commit('updateMaxAmount')
+            this.updateTotalAmount(createResult.user_bet)
+            this.updateInfoTable(createResult)
+            this.updatePlayerBalance(Number(newPlayerBalance).toFixed(1))
+            this.updateBankrollBalance(Number(newBankrollBalance).toFixed(1))
+            this.updateMaxAmount()
             resolve(createResult)
           })
       })

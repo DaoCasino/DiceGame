@@ -6,7 +6,7 @@ import { store } from './store'
 import DC        from './lib/DCLib'
 
 Vue.config.productionTip = false
-Vue.use(DC)
+Vue.use(DC, '$DCLib')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -22,7 +22,9 @@
 </template>
 
 <script>
-import InfoTable from '../infoTable'
+import InfoTable    from '../infoTable'
+import { mapState } from 'vuex'
+
 export default {
   props: {
     txlink: { type: String }
@@ -34,10 +36,10 @@ export default {
     }
   },
 
-  computed: {
-    getTx   () { return this.$store.state.tx },
-    getInfo () { return this.$store.state.info_table }
-  },
+  computed: mapState({
+    getTx   : state => state.game.tx,
+    getInfo : state => state.game.info_table
+  }),
 
   methods: {
     closeGame () { window.location.reload() }

@@ -45,37 +45,46 @@
 <script>
 import FinishTable from '../finishTable'
 import DragSlider  from '../dragslider'
-import DC          from '@/lib/DCLib'
+import {
+  mapState,
+  mapMutations
+} from 'vuex'
+
 export default {
   data () {
     return {
-      finish_table : false,
-      max_amount   : 65535,
+      log          : '',
       error        : false,
       close        : false,
-      log          : ''
+      max_amount   : 65535,
+      finish_table : false
     }
   },
 
-  computed: {
-    num          () { return this.$store.state.paid.num },
-    percent      () { return this.$store.state.paid.percent },
-    payout       () { return Number(this.$store.state.paid.payout.toFixed(2)) },
-    getTx        () { return this.$store.state.tx },
-    getErrorText () { return this.$store.state.errorText }
-  },
+  computed: mapState({
+    num          : state => state.game.paid.num,
+    getTx        : state => state.game.tx,
+    payout       : state => Number(state.game.paid.payout.toFixed(2)),
+    percent      : state => state.game.paid.percent,
+    getErrorText : state => state.game.errorText
+  }),
 
   methods: {
+    ...mapMutations({
+      updateTx     : 'game/updateTx',
+      updateError  : 'game/updateError'
+    }),
+
     closeChannel () {
-      DC.Game.Status
+      this.$DCLib.Game.Status
         .on('disconnect::info', res => {
           if (res.status === 'transactionHash') {
-            this.$store.commit('updateTx', `https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
+            this.updateTx(`https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
           }
         })
         .on('error', err => {
           if (err.text) {
-            this.$store.commit('updateError', err.text)
+            this.updateError(err.text)
             this.error = true
           }
         })
@@ -86,11 +95,10 @@ export default {
         this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
       }, 1500)
 
-      DC.Game.disconnect(res => {
+      this.$DCLib.Game.disconnect(res => {
         this.close        = false
         this.finish_table = true
         clearInterval(dotsI)
-        this.$store.commit('updateOpened', false)
       })
     }
   },

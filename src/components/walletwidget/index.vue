@@ -12,7 +12,11 @@
 </template>
 
 <script>
-import DC from '../../lib/DCLib'
+import {
+  mapState,
+  mapMutations
+} from 'vuex'
+
 export default {
   data () {
     return {
@@ -21,26 +25,34 @@ export default {
     }
   },
 
-  computed: {
-    getAddress    () { return this.$store.state.address.player || 0 },
-    getBetBalance () { return this.$store.state.balance.betBalance || 0 },
-    getEthBalance () { return this.$store.state.balance.ethBalance },
-    getLink       () { return `https://ropsten.etherscan.io/address/${this.$store.state.address.player}` }
-  },
+  computed: mapState({
+    getLink       : state => `https://ropsten.etherscan.io/address/${state.userData.address.player}`,
+    getAddress    : state => state.userData.address.player || 0,
+    getBetBalance : state => state.userData.balance.betBalance || 0,
+    getEthBalance : state => state.userData.balance.ethBalance
+  }),
 
   async beforeCreate () {
-    await DC.DCLib.Account.initAccount()
-    if (DC.DCLib.Account.get().openkey) {
-      this.$store.commit('updatePlayerAddress', DC.DCLib.Account.get().openkey)
+    await this.$DCLib.lib.Account.initAccount()
+    if (this.$DCLib.lib.Account.get().openkey) {
+      this.updatePlayerAddress(this.$DCLib.lib.Account.get().openkey)
 
       setTimeout(async () => {
-        const balance = await DC.DCLib.Eth.getBalances(DC.DCLib.Account.get().openkey)
+        const balance = await this.$DCLib.lib.Eth.getBalances(this.$DCLib.lib.Account.get().openkey)
         if (balance) {
-          this.$store.commit('updateBetBalance', parseInt(balance.bets))
-          this.$store.commit('updateEthBalance', Number(balance.eth).toFixed(2))
+          this.updateBetBalance(parseInt(balance.bets))
+          this.updateEthBalance(Number(balance.eth).toFixed(2))
         }
       }, 2000)
     }
+  },
+
+  methods: {
+    ...mapMutations({
+      updateBetBalance    : 'userData/updateBetBalance',
+      updateEthBalance    : 'userData/updateEthBalance',
+      updatePlayerAddress : 'userData/updatePlayerAddress'
+    })
   }
 }
 </script>

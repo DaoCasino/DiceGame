@@ -20,7 +20,7 @@
 <script>
 export default {
   computed: {
-    getInfo () { return this.$store.state.info_table }
+    getInfo () { return this.$store.state.game.info_table }
   }
 }
 </script>
