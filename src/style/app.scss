@@ -4,11 +4,14 @@ $text_g:          #d08c49;
 $prox_r:          'ProximaNova-Regular';
 $prox_b:          'ProximaNova-Bold';
 $radius:          6px;
+$animation-time:  7s;
+$roll-dice-time:  $animation-time/4;
 
 @import './layout/_mixins';
 @import './layout/_normalize';
 @import './layout/_fonts';
-
+@import './layout/_animations';
+@import './components/_preloader';
 
 * {
   cursor: default;
@@ -137,4 +140,14 @@ body {
 
 .deposit-value {
   display: block
+}
+
+.preloader-enter-active,
+.preloader-leave-active {
+  transition: opacity .5s;
+}
+
+.preloader-enter,
+.preloader-leave-to {
+  opacity: 0;
 }

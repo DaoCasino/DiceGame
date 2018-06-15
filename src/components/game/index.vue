@@ -142,7 +142,7 @@ export default {
           return
         }
 
-        const hash = this.$DCLib.lib.randomHash({bet:amount, gamedata:[random]})
+        const hash = this.$DC.lib.randomHash({bet:amount, gamedata:[random]})
 
         this.isProcess = true
 
@@ -152,7 +152,7 @@ export default {
           return
         }
 
-        this.$DCLib.Game.Status.on('game::error', err => {
+        this.$DC.Game.Status.on('game::error', err => {
           if (err.msg) {
             this.updateError(err.msg)
           }
@@ -163,16 +163,16 @@ export default {
           reject(new Error(err.msg))
         })
 
-        this.$DCLib.Game.Game(amount, random, hash)
+        this.$DC.Game.Game(amount, random, hash)
           .then(res => {
             const result = res.bankroller.result
-            const newPlayerBalance   = this.$DCLib.lib.Utils.dec2bet(this.$DCLib.Game.logic.payChannel._getBalance().player)
-            const newBankrollBalance = this.$DCLib.lib.Utils.dec2bet(this.$DCLib.Game.logic.payChannel._getBalance().bankroller)
+            const newPlayerBalance   = this.$DC.lib.Utils.dec2bet(this.$DC.Game.logic.payChannel._getBalance().player)
+            const newBankrollBalance = this.$DC.lib.Utils.dec2bet(this.$DC.Game.logic.payChannel._getBalance().bankroller)
             let outcome = 'lose'
 
             this.isProcess = false
             this.isError   = false
-            this.profit    = Number(this.$DCLib.lib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
+            this.profit    = Number(this.$DC.lib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
 
             if (Math.sign(this.profit) === 1) {
               outcome = 'win'
@@ -194,7 +194,7 @@ export default {
               timestamp : time,
               winchance : `${this.getPercent}%`,
               outcome   : outcome,
-              user_bet  : this.$DCLib.lib.Utils.dec2bet(result.user_bet),
+              user_bet  : this.$DC.lib.Utils.dec2bet(result.user_bet),
               profit    : this.profit,
               action    : 'roll'
             }

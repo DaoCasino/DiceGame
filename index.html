@@ -6,7 +6,26 @@
     <title>dice-game</title>
   </head>
   <body>
+    <div class="game__loader" v-if="preload">
+      <div class="game__loader-container game_loader-centered">
+        <div class="game__loader-square game__loader-one"></div>
+        <div class="game__loader-square game__loader-two"></div>
+        <div class="game__loader-square game__loader-three"></div>
+        <div class="game__loader-square game__loader-four"></div>
+        <div class="game__loader-square game__loader-five"></div>
+        <div class="game__loader-square game__loader-six"></div>
+        <div class="game__loader-square game__loader-seven"></div>
+        <div class="game__loader-square game__loader-eight"></div>
+        <div class="game__loader-square game__loader-nine"></div>
+      </div>
+    </div>
     <div id="app"></div>
+    <script>
+      const preload = document.querySelector('.game__loader')
+      document.addEventListener('DOMContentLoaded', e => {
+        preload.className = 'game__loader hide'
+      })
+    </script>
     <script src="./static/logic.js" defer></script>
     <!-- built files will be auto injected -->
   </body>

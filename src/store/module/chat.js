@@ -1,11 +1,13 @@
 export default {
   namespaced: true,
   state: {
+    online  : 1,
     allMess : [],
     trigger : false
   },
 
   mutations: {
+    updateOnline      (state, value) { state.online = value },
     updateChatTrigger (state, value) { state.trigger = value },
 
     updateAllMessage (state, value) {

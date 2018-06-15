@@ -19,6 +19,7 @@
     "dc-messaging": "github:DaoCasino/dc-messaging",
     "dclib": "github:DaoCasino/DCLib#develop",
     "font-awesome": "^4.7.0",
+    "nano-ipfs-store": "^0.1.3",
     "normalize-scss": "^7.0.1",
     "vue": "^2.5.2",
     "vue-slider-component": "^2.6.1",

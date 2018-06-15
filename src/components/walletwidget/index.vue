@@ -33,12 +33,12 @@ export default {
   }),
 
   async beforeCreate () {
-    await this.$DCLib.lib.Account.initAccount()
-    if (this.$DCLib.lib.Account.get().openkey) {
-      this.updatePlayerAddress(this.$DCLib.lib.Account.get().openkey)
+    await this.$DC.lib.Account.initAccount()
+    if (this.$DC.lib.Account.get().openkey) {
+      this.updatePlayerAddress(this.$DC.lib.Account.get().openkey)
 
       setTimeout(async () => {
-        const balance = await this.$DCLib.lib.Eth.getBalances(this.$DCLib.lib.Account.get().openkey)
+        const balance = await this.$DC.lib.Eth.getBalances(this.$DC.lib.Account.get().openkey)
         if (balance) {
           this.updateBetBalance(parseInt(balance.bets))
           this.updateEthBalance(Number(balance.eth).toFixed(2))

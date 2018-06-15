@@ -22,7 +22,7 @@ export default new class DC {
   }
 
   install (Vue) {
-    Object.defineProperty(Vue.prototype, '$DCLib', { value: this })
+    Object.defineProperty(Vue.prototype, '$DC', { value: this })
   }
 
   getGameContract (callback) {

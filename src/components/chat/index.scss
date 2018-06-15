@@ -4,6 +4,11 @@
   }
   &-module {
     background-color: $main_bg;
+    &__online {
+      font-family: $prox_b;
+      font-size: 16px;
+      color: #fff
+    }
     &__capt {
       font-family: $prox_b;
       font-size: 16px;

@@ -76,7 +76,7 @@ export default {
     }),
 
     closeChannel () {
-      this.$DCLib.Game.Status
+      this.$DC.Game.Status
         .on('disconnect::info', res => {
           if (res.status === 'transactionHash') {
             this.updateTx(`https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
@@ -95,7 +95,7 @@ export default {
         this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
       }, 1500)
 
-      this.$DCLib.Game.disconnect(res => {
+      this.$DC.Game.disconnect(res => {
         this.close        = false
         this.finish_table = true
         clearInterval(dotsI)

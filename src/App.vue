@@ -40,7 +40,7 @@ export default {
   name: 'App',
   data () {
     return {
-      isNone: false
+      isNone  : false,
     }
   },
 
@@ -103,7 +103,6 @@ export default {
   align-items: flex-start;
   height: 100%
 }
-
 .game__but {
   padding: 12px;
   @media screen and (max-width: 480px) {

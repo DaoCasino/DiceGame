@@ -79,7 +79,7 @@ export default {
       let dotsI
       this.isActive = true
 
-      this.$DCLib.Game.Status
+      this.$DC.Game.Status
         .on('connect::info', res => {
           if (res.status === 'transactionHash') {
             this.updateTx(`https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
@@ -103,20 +103,20 @@ export default {
           this.error = true
         })
 
-      this.$DCLib.Game.connect({
+      this.$DC.Game.connect({
         bankroller : 'auto',
         paychannel : { deposit: this.getDeposit },
         gamedata   : { type: 'uint', value: [1, 2, 3] }
       }, (res, info) => {
         this.popup = false
         clearInterval(dotsI)
-        const bankrollerBalance = this.$DCLib.Game.logic.payChannel.getBankrollBalance()
+        const bankrollerBalance = this.$DC.Game.logic.payChannel.getBankrollBalance()
         this.updateMaxAmount(this.getDeposit)
         this.updatePlayerBalance(this.getDeposit)
         this.updateAmount(0.1)
         this.updateBankrollBalance(Number(bankrollerBalance).toFixed(2))
         this.updatePayout()
-        this.updatePaychannelContract(this.$DCLib.Game.contract_address)
+        this.updatePaychannelContract(this.$DC.Game.contract_address)
       })
     }
   },

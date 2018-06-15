@@ -8,7 +8,8 @@
     transition(name="chat-tab")
       .chat-module(v-if="getChatTrigger")
         .chat-module__header
-          h2.chat-module__capt chat
+          span.chat-module__online Online: {{ getOnline }}
+          h2.chat-module__capt dice chat
           .chat-module__close(@click.prevent="chatOver")
             a.chat-module__close-but(href="#")
         .chat-module__messages(ref="messages")
@@ -50,27 +51,19 @@ export default {
       scroll: true,
       isFlag: true,
       isError: false,
+      isOnline: 1,
       usernameTrigger: true
     }
   },
 
   computed: mapState('chat', {
+    getOnline      : state => state.online,
     getMessages    : state => state.allMess,
     getChatTrigger : state => state.trigger
   }),
 
   created () {
-    this.chatRoom = this.$DCLib.chatInit()
-    const mess    = JSON.parse(localStorage.getItem('chatmess'))
-
-    if (typeof mess !== 'undefined' && mess !== null) {
-      for (let item of mess) {
-        this.updateAllMessage({
-          name: item.name,
-          mess: item.mess
-        })
-      }
-    }
+    this.chatRoom = this.$DC.chatInit()
   },
 
   beforeMount () {
@@ -80,9 +73,7 @@ export default {
       this.name            = name
       this.usernameTrigger = false
     }
-  },
 
-  mounted () {
     this.chatRoom.on('action::message', data => {
       this.updateAllMessage({
         name: data.message.name,
@@ -91,21 +82,41 @@ export default {
     })
   },
 
+  mounted () {
+    this.listenPeers()
+  },
+
   updated () {
     if (typeof this.$refs.messages !== 'undefined') {
       if (this.scroll) {
         this.scrollDown()
       }
     }
-
-    localStorage.setItem('chatmess', JSON.stringify(this.getMessages.slice(-15)))
   },
 
   methods: {
     ...mapMutations('chat', [
+      'updateOnline',
       'updateAllMessage',
       'updateChatTrigger'
     ]),
+
+    listenPeers () {
+      setTimeout(() => {
+        if (this.chatRoom.channel !== false) {
+          this.chatRoom.channel.on('peer joined', peer => {
+            this.updateOnline(++this.isOnline)
+          })
+          this.chatRoom.channel.on('peer left',   peer => {
+            this.updateOnline(--this.isOnline)
+          })
+
+          return
+        }
+
+        this.listenPeers()
+      }, 1111)
+    },
 
     chatOver () {
       this.updateChatTrigger(false)
@@ -193,6 +204,11 @@ export default {
       display: flex;
       justify-content: center;
       width: 100%;
+    }
+    &__online {
+      position: absolute;
+      top: 3px;
+      left: 10px;
     }
     &__close {
       position: absolute;
