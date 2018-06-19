@@ -10,10 +10,11 @@
             v-bind:class="{ prev: isPrev }"
           )
             h2.rules-capt {{ getCurrentCapt }}
-            img.rules-img(
-              v-if="imgShow"
-              :src="getCurrentImg"
-            )
+            .rules-img(v-bind:class="{ image: prevShow }")
+              img.rules-img__item(
+                v-if="imgShow"
+                :src="getCurrentImg"
+              )
             p.rules-text {{ getCurrentText }}
         .rules-buttons(@click="slideMove" ref="rulesBut")
           button.rules-but.rules-skip(
@@ -65,7 +66,7 @@ export default {
   },
 
   beforeMount () {
-    (!localStorage.getItem('compleateTutor')) && this.updateRulesTrigger(true)
+    (localStorage.getItem('compleateTutor')) && this.updateRulesTrigger(false)
 
     this.updateRules({
       img  : this.rules[this.getIter].img,
@@ -134,7 +135,7 @@ export default {
     },
 
     slideMove (e) {
-      const target   = e.target
+      const target = e.target
 
       if (target.classList.value === 'rules-buttons') {
         return
@@ -142,7 +143,9 @@ export default {
 
       this.updateShowSlide(false)
 
+      
       if (target.getAttribute('data-move') === 'next' && this.close) {
+        localStorage.setItem('compleateTutor', true)
         this.updateRulesTrigger(false)
         return
       }
@@ -165,6 +168,7 @@ export default {
     skipTutor (e) {
       if (e.target.classList.contains('rules') 
       || e.target.classList.contains('rules-skip')) {
+        localStorage.setItem('compleateTutor', true)
         this.updateRulesTrigger(false)
       }
     }
@@ -190,7 +194,9 @@ export default {
     justify-content: center;
     align-items: center;
     max-width: 1000px;
-    min-height: 400px;
+    min-height: 500px;
+    height: 50%;
+    min-width: 300px;
     width: 90%;
     overflow: hidden;
   }
@@ -211,16 +217,35 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100%;
   }
   &-capt {
     padding-bottom: 10px;
     display: block;
+    text-align: center;
     border-bottom: 2px solid $text_g;
   }
   &-img {
-    margin-top: 15px;
-    width: 50%;
-    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    &.image {
+      height: 100%;
+    }
+    &__item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      display: block;
+      max-width: 70%;
+      max-height: 100%;
+    }
   }
   &-text {
     margin: 15px 0;

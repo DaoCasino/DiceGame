@@ -2,19 +2,19 @@
   .table
     table.table-body
       tr.table-row
-        th.table-capt timestamp
+        th.table-capt.show timestamp
         th.table-capt win chance
         th.table-capt outcome
         th.table-capt bet amount
         th.table-capt profit
-        th.table-capt action
+        th.table-capt.show action
       tr.table-row(v-for="item in getInfo")
-        td.table-item {{ item.timestamp }}
+        td.table-item.show {{ item.timestamp }}
         td.table-item {{ item.winchance }}
         td.table-item {{ item.outcome }}
         td.table-item {{ item.user_bet }}
         td.table-item {{ item.profit }}
-        td.table-item {{ item.action }}
+        td.table-item.show {{ item.action }}
 </template>
 
 <script>
@@ -29,7 +29,7 @@ export default {
 @import './index';
 .table {
   margin-top: 20px;
-  width: 100%;
+  min-width: 300px;
   display: grid;
   grid-column: 1/12;
   flex-direction: column;
@@ -37,6 +37,7 @@ export default {
   &-row {
     margin-top: 10px;
     display: flex;
+    justify-content: center;
     &:first-child {
       margin-top: 0
     }
@@ -55,8 +56,20 @@ export default {
   &-item {
     width: 16.666%;
   }
+  @media screen and (max-width: 480px) {
+    &-capt,
+    &-item {
+      width: 30%;
+    }
+  }
   @media screen and (max-width: 1000px) {
     grid-column: inherit
+  }
+}
+
+.show {
+  @media screen and (max-width: 480px) {
+    display: none;
   }
 }
 </style>

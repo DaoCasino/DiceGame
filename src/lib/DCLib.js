@@ -12,8 +12,7 @@ export default new class DC {
           slug: 'dicetest_v42',
           contract: gameContract,
           rules: {
-            depositX:2,
-            maxBet:10
+            depositX:2
           }
         })
         this.Game = window.Game
@@ -26,6 +25,11 @@ export default new class DC {
   }
 
   getGameContract (callback) {
+    if (!process.env.DC_NETWORK || process.env.DC_NETWORK !== 'local') {
+      callback(false)
+      return
+    }
+
     fetch('http://127.0.0.1:8181/?get=contract&name=Dice').then(function (res) {
       return res.json()
     }).then(function (localGameContract) {
@@ -33,9 +37,6 @@ export default new class DC {
         address:localGameContract.address,
         abi: JSON.parse(localGameContract.abi)
       })
-    }).catch(function () {
-      console.clear()
-      callback(false)
     })
   }
 

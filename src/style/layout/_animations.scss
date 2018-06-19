@@ -21,11 +21,8 @@
 }
 
 @keyframes hide_preload {
-    75% {
-        opacity: 0;
-    }
     100% {
-        z-index: -1000
+        transform: translateY(-100%);
     }
 }
 

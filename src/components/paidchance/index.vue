@@ -121,7 +121,7 @@ export default {
   width: 100%;
   height: 100%;
   &__table {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     padding: 20px;
@@ -132,9 +132,6 @@ export default {
     width: 400px;
     height: 200px;
     overflow: hidden;
-  }
-  @media screen and (max-width: 495px) {
-    position: absolute;
   }
 }
 

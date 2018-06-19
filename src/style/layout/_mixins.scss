@@ -4,6 +4,7 @@ $netbook-width: 900px;
 $phone-width: 480px;
 $smallPhone-width: 495px;
 $popup-width: 415px;
+$min-width: 320px;
 
 @mixin placeholder {
   &::-webkit-input-placeholder { @content; }
@@ -44,6 +45,12 @@ $popup-width: 415px;
 
 @mixin popup {
   @media (min-width: #{$popup-width}) {
+    @content;
+  }
+}
+
+@mixin min {
+  @media (min-width: #{$min-width}) {
     @content;
   }
 }

@@ -53,8 +53,8 @@ export default {
     },
 
     updateTotalAmount (state, value) {
-      let newValue = Number(Math.round((state.betState.totalAmount - value) + 'e' + 1) + 'e-' + 1)
-      state.betState.totalAmount = Math.abs(newValue)
+      let newValue = Number(Math.round((state.betState.totalAmount + parseFloat(value)) + 'e' + 1) + 'e-' + 1)
+      state.betState.totalAmount = newValue
     },
 
     updatePercent (state, value) {

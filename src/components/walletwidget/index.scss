@@ -2,11 +2,12 @@
   font-family: $prox_b;
   color: #fff;
   line-height: 1.4;
+  transition: font-size .5s linear;
   &:hover {
     text-decoration: underline;
   }
-  @media screen and (max-width: 360px) {
-    font-size: 13px;
+  @media screen and (max-width: 420px) {
+    font-size: 10px;
   }
 }
 
