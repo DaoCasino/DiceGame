@@ -39,7 +39,7 @@
 
     .close-channel
       span.close-capt action:
-      a.close-but(href="#" @click="closeChannel") close channel
+      a.close-but(href="#" @click.prevent="closeChannel") close channel
 </template>
 
 <script>
@@ -91,7 +91,7 @@ export default {
 
       this.close = true
       const dotsI = setInterval(() => {
-        const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller open channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
+        const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller close channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
         this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
       }, 1500)
 

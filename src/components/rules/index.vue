@@ -1,21 +1,22 @@
 <template lang="pug">
   transition(name="slider")
-    .rules(v-if="getRulesTrigger" @click="skipTutor")
+    .rules(v-if="getRulesTrigger" @click.prevent="skipTutor")
       .rules-table(ref="rulesTable")
         .rules-progress
           .rules-progress__inner(ref="progress")
         transition(name="next-slide" mode="in-out")
           .rules-body(
-            v-if="getShowSlide" 
+            v-if="getShowSlide"
             v-bind:class="{ prev: isPrev }"
           )
-            h2.rules-capt {{ getCurrentCapt }}
-            .rules-img(v-bind:class="{ image: prevShow }")
-              img.rules-img__item(
-                v-if="imgShow"
-                :src="getCurrentImg"
-              )
-            p.rules-text {{ getCurrentText }}
+            .rules-body__container(v-bind:class="{ first: !prevShow }")
+              h2.rules-capt {{ getRule.capt }}
+              .rules-img(v-bind:class="{ image: prevShow }")
+                img.rules-img__item(
+                  v-if="imgShow"
+                  :src="getRule.img"
+                )
+              p.rules-text {{ getRule.text }}
         .rules-buttons(@click="slideMove" ref="rulesBut")
           button.rules-but.rules-skip(
             @click="skipTutor"
@@ -32,30 +33,33 @@
 </template>
 
 <script>
-import _rules from '@/model/rules'
-import { mapState, mapMutations, mapActions } from 'vuex'
+// eslint-disable-next-line
+import rules from '@/model/rules'
+import {
+  mapState,
+  mapMutations
+} from 'vuex'
+
 export default {
   data () {
     return {
       prev      : false,
       iter      : 0,
       width     : 0,
-      rules     : _rules,
+      rules     : rules,
       close     : false,
       isPrev    : false,
       imgShow   : false,
       showSkip  : true,
-      prevShow  : false,
+      prevShow  : false
     }
   },
 
   computed: mapState({
     getIter         : state => state.rules.iter,
+    getRule         : state => state.rules.rule,
     getButName      : state => state.rules.nextBut,
     getShowSlide    : state => state.rules.showSlide,
-    getCurrentImg   : state => state.rules.img,
-    getCurrentCapt  : state => state.rules.capt,
-    getCurrentText  : state => state.rules.text,
     getRulesTrigger : state => state.rules.trigger
   }),
 
@@ -66,16 +70,6 @@ export default {
   },
 
   beforeMount () {
-    (localStorage.getItem('compleateTutor')) && this.updateRulesTrigger(false)
-
-    this.updateRules({
-      img  : this.rules[this.getIter].img,
-      capt : this.rules[this.getIter].capt,
-      text : this.rules[this.getIter].text
-    })
-  },
-
-  mounted () { 
     this.$nextTick(() => {
       if (typeof this.$refs.rulesTable !== 'undefined') {
         this.windowWidth = parseInt(getComputedStyle(this.$refs.rulesTable).width)
@@ -91,6 +85,16 @@ export default {
     })
   },
 
+  mounted () {
+    (localStorage.getItem('compleateTutor')) && this.updateRulesTrigger(false)
+
+    this.updateRules({
+      img  : this.rules[this.getIter].img,
+      capt : this.rules[this.getIter].capt,
+      text : this.rules[this.getIter].text
+    })
+  },
+
   beforeUpdate () {
     this.updateRules({
       img  : this.rules[this.getIter].img,
@@ -102,12 +106,12 @@ export default {
   updated () {
     if (this.getIter === (this.rules.length - 1)) {
       this.updateNextBut('Close')
-      this.close = true
+      this.close    = true
       this.showSkip = false
     } else {
-      this.updateNextBut('Next') 
-      this.close = false
-      this.showSkip = true 
+      this.updateNextBut('Next')
+      this.close    = false
+      this.showSkip = true
     }
 
     this.prevShow = (this.getIter > 0) ? true : false
@@ -143,21 +147,19 @@ export default {
 
       this.updateShowSlide(false)
 
-      
       if (target.getAttribute('data-move') === 'next' && this.close) {
         localStorage.setItem('compleateTutor', true)
         this.updateRulesTrigger(false)
         return
       }
 
-      if (target.getAttribute('data-move') === 'next' 
-      && this.getIter < this.rules.length - 1) {
+      if (target.getAttribute('data-move') === 'next' &&
+      this.getIter < this.rules.length - 1) {
         this.isPrev = false
         this.updateIter(this.getIter + 1)
       }
 
-      if (target.getAttribute('data-move') === 'prev' 
-      && this.getIter > 0) {
+      if (target.getAttribute('data-move') === 'prev' && this.getIter > 0) {
         this.isPrev = true
         this.updateIter(this.getIter - 1)
       }
@@ -166,8 +168,8 @@ export default {
     },
 
     skipTutor (e) {
-      if (e.target.classList.contains('rules') 
-      || e.target.classList.contains('rules-skip')) {
+      if (e.target.classList.contains('rules') ||
+      e.target.classList.contains('rules-skip')) {
         localStorage.setItem('compleateTutor', true)
         this.updateRulesTrigger(false)
       }
@@ -194,11 +196,14 @@ export default {
     justify-content: center;
     align-items: center;
     max-width: 1000px;
-    min-height: 500px;
+    height: 60%;
     height: 50%;
     min-width: 300px;
     width: 90%;
     overflow: hidden;
+    @media screen and (max-height: 420px) {
+      height: 90%;
+    }
   }
   &-progress {
     position: absolute;
@@ -212,28 +217,35 @@ export default {
     }
   }
   &-body {
+    position: relative;
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 100%;
+    overflow-y: auto;
+    &__container {
+      height: 100%;
+      text-align: center;
+    }
   }
   &-capt {
     padding-bottom: 10px;
-    display: block;
+    display: inline-block;
     text-align: center;
     border-bottom: 2px solid $text_g;
   }
   &-img {
     position: relative;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     overflow: hidden;
     &.image {
-      height: 100%;
+      height: 50%;
     }
     &__item {
       position: absolute;
@@ -256,6 +268,7 @@ export default {
     margin-left: auto
   }
   &-but {
+    margin-top: 10px;
     margin-right: 10px;
     padding: 10px 20px;
     font-family: $prox_b;

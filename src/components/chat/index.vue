@@ -11,13 +11,15 @@
           span.chat-module__online Online: {{ getOnline }}
           h2.chat-module__capt dice chat
           .chat-module__close(@click.prevent="chatOver")
-            a.chat-module__close-but(href="#")
+            button.chat-module__close-but
         .chat-module__messages(ref="messages")
           transition(name="username-anim")
             .chat-module__username(v-if="usernameTrigger")
               span.chat-module__username-error(v-if="isError") Name is longer than 10 characters
               input.chat-module__username-inp(
                 ref="username"
+                v-model="name"
+                placeholder="input your name"
               )
               button.chat-module__username-send(
                 @click.prevent="addUser"
@@ -35,8 +37,10 @@
             type="text"
             name="username"
             placeholder="Message"
+            v-model="messtext"
             @keydown.13.prevent="sendMess"
-            ref="messtext"
+            @keyup.shift.13="newLine"
+            ref="messinp"
           )
           button.chat-module__send(@click.prevent="sendMess") send
 </template>
@@ -46,13 +50,13 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      col: 14,
-      name: '',
-      scroll: true,
-      isFlag: true,
-      isError: false,
-      isOnline: 1,
-      usernameTrigger: true
+      name            : '',
+      scroll          : true,
+      isFlag          : true,
+      isError         : false,
+      isOnline        : 1,
+      messtext        : '',
+      usernameTrigger : true
     }
   },
 
@@ -124,9 +128,9 @@ export default {
     },
 
     scrollDown () {
-      if (!this.isFlag && typeof this.$refs.messitem !== 'undefined'
-      && this.$refs.messitem.length >= 3
-      && this.$refs.messitem[this.$refs.messitem.length - 3].getBoundingClientRect().bottom > 900) {
+      if (!this.isFlag && typeof this.$refs.messitem !== 'undefined' &&
+      this.$refs.messitem.length >= 3 &&
+      this.$refs.messitem[this.$refs.messitem.length - 3].getBoundingClientRect().bottom > 900) {
         return
       }
 
@@ -135,36 +139,40 @@ export default {
     },
 
     addUser () {
-      this.isError = (this.$refs.username.value.length > 10) ? true : false;
+      this.isError = (this.name.length > 10)
+        ? true
+        : false
 
-      if (this.$refs.username.value
-      && this.$refs.username.value !== ''
-      && !this.isError) {
-        this.name = this.$refs.username.value
-
+      if (this.name &&
+      this.name !== '' && !this.isError) {
         localStorage.setItem('username', this.name)
         this.usernameTrigger = false
       }
     },
 
-    sendMess () {
-      if (this.$refs.messtext.value 
-      && this.$refs.messtext.value !== ''
-      && !this.usernameTrigger) {
+    newLine (e) {
+      this.messtext += '\n'
+      this.$refs.messinp.scrollTop = this.$refs.messinp.scrollHeight
+    },
+
+    sendMess (e) {
+      if (e.keyCode === 13 && e.shiftKey) return
+
+      if (this.messtext && this.messtext !== '' && !this.usernameTrigger) {
         this.updateAllMessage({
           name: this.name,
-          mess: this.$refs.messtext.value
+          mess: this.messtext
         })
-  
+
         this.chatRoom.sendMsg({
           action: 'message',
           message: {
             name: this.name,
-            mess: this.$refs.messtext.value
+            mess: this.messtext
           }
         })
 
-        this.$refs.messtext.value = ''
+        this.messtext = ''
       }
     }
   }
@@ -216,15 +224,19 @@ export default {
       width: 25px;
       height: 25px;
       &-but {
+        cursor: pointer;
         position: absolute;
         width: 25px;
         height: 5px;
+        border: none;
+        outline: none;
         border-radius: $radius;
         transform: translateY(7px) rotate(45deg);
         &:before {
           content: "";
           @extend .chat-module__close-but;
           position: absolute;
+          top: 0;
           right: 0;
           transform: rotate(-90deg);
         }
@@ -289,7 +301,7 @@ export default {
         display: inline-block;
         word-break: break-word;
         word-wrap: break-word;
-        overflow-wrap: break-word;        
+        overflow-wrap: break-word;
         -moz-user-select: -moz-all;
         -o-user-select: all;
         -khtml-user-select: all;

@@ -6,7 +6,7 @@
     border: 1px solid $text_g;
     border-radius: $radius;
     transition: all 1s linear;
-    transition-delay: 3s;
+    // transition-delay: 3s;
   }
   &-progress {
     border: .5px solid $text_g;
@@ -20,16 +20,9 @@
   &-body {
     transition: all .5s linear
   }
-  &-list {
-    transition: all 1s linear
-  }
   &-capt {
     display: block;
     font-family: $prox_b
-  }
-  &-img {
-    // border: 1px solid $text_g;
-    // border-radius: $radius 
   }
   &-text {
     text-align: justify;
@@ -77,7 +70,7 @@
 
 .slider-enter-active,
 .slider-leave-active {
-  transition: opacity .5s;
+  transition: opacity .1s;
 }
 
 .slider-enter,

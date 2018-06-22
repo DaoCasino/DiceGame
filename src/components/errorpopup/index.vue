@@ -2,7 +2,7 @@
   .error-popup
     .error-table
       span.error-message Error: {{ message }}
-      a.error-reloadbut(href="#", @click="reload") restart
+      button.error-reloadbut(@click="reload") restart
 </template>
 
 <script>
@@ -42,13 +42,14 @@ export default {
   text-align: center;
   justify-content: center;
   width: 400px;
-  height: 200px;
+  height: 300px;
   overflow: hidden;
 }
 
 .error-reloadbut {
-  margin-top: 20px;
+  margin: 20px auto 0 auto;
   padding: 10px;
+  width: 50%;
   border-radius: 6px;
   pointer-events: all;
 }

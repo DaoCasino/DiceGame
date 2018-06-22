@@ -3,8 +3,9 @@
   color: #fff;
   line-height: 1.4;
   transition: font-size .5s linear;
+  transition: color .2s linear;
   &:hover {
-    text-decoration: underline;
+    color: #3f85c2;
   }
   @media screen and (max-width: 420px) {
     font-size: 10px;

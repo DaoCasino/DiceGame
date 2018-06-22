@@ -1,14 +1,19 @@
 <template lang="pug">
-  section.section.channel(v-bind:class="{ process: isProcess }")
+  section.section.channel(
+    v-bind:class="{ process: isProcess, autoprocess: isAutorollProcess }"
+  )
     error-popup(
       v-if="error"
       :message="getErrorText"
     )
     transition(name="autoroll-popup")
-      .autoroll-over(v-if="autorollShow")
+      .autoroll-over(v-if="autopopupShow")
         .autoroll-over__table
-          span.autoroll-over__text Auto roll over
-          button.autoroll-over__but(@click.prevent="autorollHide") Close
+          span.autoroll-over__text {{ popupMessage }}
+          button.autoroll-over__but(
+            @focus="clearFocus"
+            @click.prevent="autopopupShow = false"
+          ) Close
 
     .top-info
       h2.caption rolls made
@@ -17,37 +22,52 @@
     .game
       label.input-label
         span.input-text.game-label Profit on Win
-        input.input-inp.game-inp(v-bind:class="{error: isError}" type="text" name="your-roll" :value="profit" readonly)
+        input.input-inp.game-inp(
+          v-bind:class="{error: isError}"
+          type="text"
+          name="your-roll"
+          :value="profit"
+          readonly
+        )
 
       .roll
         span.roll-capt Click Roll Dice to place your bet:
         .roll-buttons
-          a.roll-but(href="#" @click="roll")
+          a.roll-but.single-roll(
+            href="#"
+            @focus="clearFocus"
+            @click.prevent="roll"
+          )
             span.roll-text roll dice
-          a.roll-but(href="#" @click="isAutoRoll = !isAutoRoll" @keydup.13="roll")
+          a.roll-but(
+            href="#"
+            @focus="clearFocus"
+            @click.prevent="isAutoRoll = !isAutoRoll"
+          )
             span.roll-text Auto roll
         .auto-roll
           transition(name="auto-roll")
             .auto-roll__settings(v-if="isAutoRoll")
               label.input-lavel
-                span.input-text.auto-roll__min-amount Min amount
+                span.input-text.auto-roll__min-amount Number of rolls
                 input.input-inp.auto-roll__inp(
                   type="text"
-                  max="getMaxAmount"
+                  v-model="numberRolls"
                   @keypress="isNumber"
                   ref="min_autoroll"
                 )
               .auto-roll__buttons
-                button.auto-roll__but.auto-roll__start(@click="autoRoll") start
-                button.auto-roll__but.auto-roll__stop(@click="stopAutoRoll = false" ref="stop") stop
-
+                button.auto-roll__but.auto-roll__start(
+                  @click="autoRoll"
+                  v-bind:class="{ autoStart: isProcess }"
+                ) start
+                button.auto-roll__but.auto-roll__stop(@click="stopRoll" ref="stop") stop
 
     .blockchain-info
       h3.blockchain-capt Channel info (in blockchain)
       .blockchain-but
         .blockchain-tx
           a.blockchain-link(:href="getTx" target="_blank") tx hash
-
         .blockchain-contract
           a.blockchain-link(:href="getContract" target="_blank") Contract
       span.blockchain-dispute Dispute: True
@@ -63,14 +83,18 @@ import {
 export default {
   data () {
     return {
-      error        : false,
-      profit       : '.:.:.',
-      isError      : false,
-      isProcess    : false,
-      isAutoRoll   : false,
-      transaction  : '',
-      autorollShow : false,
-      stopAutoRoll : true
+      error             : false,
+      profit            : '.:.:.',
+      isError           : false,
+      isProcess         : false,
+      rollStart         : true,
+      isAutoRoll        : false,
+      numberRolls       : '',
+      transaction       : '',
+      popupMessage      : 'Autoroll over',
+      stopAutoRoll      : false,
+      autopopupShow     : false,
+      isAutorollProcess : false
     }
   },
 
@@ -84,10 +108,19 @@ export default {
     getErrorText         : state => state.game.errorText,
     getMaxAmount         : state => state.game.betState.maxAmount,
     getTotalAmount       : state => state.game.betState.totalAmount,
+    getModuleActive      : state => state.game.moduleActive,
+    getChannelOpened     : state => state.game.channelOpened,
     getPlayerBalance     : state => state.userData.balance.player_balance,
     getBankrollerAddress : state => state.userData.address.bankroller,
     getBankrollerBalance : state => state.userData.balance.bankroller_balance
   }),
+
+  mounted () {
+    document.addEventListener('keyup', e => {
+      if (e.key === 'Enter' && e.keyCode === 13 &&
+      this.getChannelOpened && !this.getModuleActive) this.keyEnter()
+    })
+  },
 
   methods: {
     ...mapMutations({
@@ -102,37 +135,72 @@ export default {
     isNumber (e) {
       e = (e) || window.event
       const charCode = (e.which) ? e.which : e.keyCode
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) 
-      && charCode !== 46) {
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
         e.preventDefault()
       } else {
         return true
       }
     },
 
-    autorollHide () { this.autorollShow = false },
+    clearFocus   (e) {
+      e.target.blur()
+    },
+
+    stopRoll () {
+      this.stopAutoRoll = true
+      setTimeout(() => {
+        this.isAutorollProcess = false
+      }, 2222)
+    },
+
+    keyEnter () {
+      if (!this.isProcess && !this.autopopupShow && !this.isAutorollProcess) this.roll()
+    },
 
     async autoRoll (e) {
-      const value = Number(this.$refs.min_autoroll.value)
-      if (value < 0.1 || value > this.getBankrollerBalance
-      ||  value >= this.getPlayerBalance) {
-        this.autorollShow = true
+      this.isAutorollProcess = true
+
+      if (this.numberRolls === '' ||
+      Number(this.numberRolls) === 0) {
+        this.popupMessage      = 'Autoroll number is 0, roll over'
+        this.autopopupShow     = true
+        this.isAutorollProcess = false
+        return
+      }
+
+      if (this.getPlayerBalance <= 0) {
+        this.popupMessage      = 'Player balance is 0, roll over'
+        this.autopopupShow     = true
+        this.isAutorollProcess = false
         return
       }
 
       const roll = await this.roll()
-      
-      if (roll && this.stopAutoRoll) {
+
+      if (roll && !this.stopAutoRoll) {
+        this.numberRolls = Number(this.numberRolls) - 1
+
         setTimeout(() => {
           this.autoRoll(e)
         }, 1111)
       }
-      
-      this.stopAutoRoll = true
+
+      this.stopAutoRoll = false
     },
 
     roll () {
-      return new Promise ((resolve, reject) => {
+      if (this.getPlayerBalance <= 0) {
+        this.profit  = 'Your balance is 0'
+        this.isError = true
+        return
+      }
+
+      if (!this.rollStart) return
+      this.rollStart = false
+
+      if (!this.isAutorollProcess) this.isProcess = true
+
+      return new Promise((resolve, reject) => {
         const amount = this.getAmount
         const random = this.getNum
 
@@ -144,11 +212,9 @@ export default {
 
         const hash = this.$DC.lib.randomHash({bet:amount, gamedata:[random]})
 
-        this.isProcess = true
-
         if (this.getPayout > this.getBankrollerBalance) {
           this.profit    = 'The bankroll does not have the money to pay'
-          this.isProcess = false
+          this.isProcess = true
           return
         }
 
@@ -170,7 +236,8 @@ export default {
             const newBankrollBalance = this.$DC.lib.Utils.dec2bet(this.$DC.Game.logic.payChannel._getBalance().bankroller)
             let outcome = 'lose'
 
-            this.isProcess = false
+            if (!this.isAutorollProcess) this.isProcess = false
+
             this.isError   = false
             this.profit    = Number(this.$DC.lib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
 
@@ -204,6 +271,8 @@ export default {
             this.updatePlayerBalance(Number(newPlayerBalance).toFixed(1))
             this.updateBankrollBalance(Number(newBankrollBalance).toFixed(1))
             this.updateMaxAmount()
+
+            this.rollStart = true
             resolve(createResult)
           })
       })

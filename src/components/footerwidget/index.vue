@@ -1,6 +1,6 @@
 <template lang="pug">
   footer.footer
-    span.copyrite © 2017 DAO.Casino. All Rights Reserved
+    span.copyrite © 2018 DAO.Casino. All Rights Reserved
     ul.link-list
       li.list-item(v-for="item in links")
         a.link-url(

@@ -2,7 +2,7 @@
   .finish-overlay
     .finish-table
       a.transaction-link(:href="txlink" target="_blank") Transaction
-      a.close-link(href="#" @click="closeGame") Close game
+      a.close-link(href="#" @click.prevent="closeGame") Close game
       h3 Show results
       table.result-table
         tr.table-row.finish-row

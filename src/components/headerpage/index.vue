@@ -22,7 +22,7 @@ export default {
   margin: 30px 0 10px 0;
   display: flex;
   width: 100%;
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: 740px) {
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -30,7 +30,7 @@ export default {
 }
 
 .logo {
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: 740px) {
     margin-bottom: 10px;
   }
 }

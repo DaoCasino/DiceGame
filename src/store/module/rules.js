@@ -1,9 +1,11 @@
 export default {
   namespaced: true,
   state: {
-    img       : '',
-    capt      : '',
-    text      : '',
+    rule: {
+      img       : '',
+      capt      : '',
+      text      : ''
+    },
     iter      : 0,
     nextBut   : 'Next',
     trigger   : true,
@@ -14,12 +16,16 @@ export default {
     updateIter         (state, value) { state.iter = value },
     updateNextBut      (state, value) { state.nextBut = value },
     updateShowSlide    (state, value) { state.showSlide = value },
-    updateRulesTrigger (state, value) { state.trigger = value },
+
+    updateRulesTrigger (state, value) {
+      state.trigger = value
+      this.state.game.moduleActive = value
+    },
 
     updateRules (state, value) {
-      state.img  = value.img
-      state.capt = value.capt
-      state.text = value.text
+      state.rule.img  = value.img
+      state.rule.capt = value.capt
+      state.rule.text = value.text
     }
   }
 }

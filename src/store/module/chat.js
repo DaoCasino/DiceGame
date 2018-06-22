@@ -8,7 +8,11 @@ export default {
 
   mutations: {
     updateOnline      (state, value) { state.online = value },
-    updateChatTrigger (state, value) { state.trigger = value },
+
+    updateChatTrigger (state, value) {
+      state.trigger = value
+      this.state.game.moduleActive = value
+    },
 
     updateAllMessage (state, value) {
       if (state.allMess.length > 50) {

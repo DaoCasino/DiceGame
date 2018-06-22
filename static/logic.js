@@ -1,50 +1,44 @@
-/**
- * Define our DApp logic constructor,
- * for use it in frontend and bankroller side
- */
-
 /* global DCLib */
-DCLib.defineDAppLogic('dicetest_v42', function () {
-  const _self = this
-
+DCLib.defineDAppLogic('dice_dev', function (payChannel) {
   const MAX_RAND_NUM = 65535
   const HOUSEEDGE    = 0.02 // 2%
 
   let history = []
 
-  var Roll = function (user_bet, user_num, random_hash) {
+  var Roll = function (userBet, userNum, random_hash) {
     // convert 1BET to 100000000
-    user_bet = DCLib.Utils.bet2dec(user_bet)
+    userBet = DCLib.Utils.bet2dec(userBet)
     // generate random number
-    const random_num = DCLib.numFromHash(random_hash, 0, MAX_RAND_NUM)
 
-    let profit = -user_bet
+    const randomNum = DCLib.numFromHash(random_hash, 0, MAX_RAND_NUM)
+
+    let profit = -userBet
     // if user win
-    if (user_num >= random_num) {
-      profit = (user_bet * (MAX_RAND_NUM - MAX_RAND_NUM * HOUSEEDGE) / user_num) - user_bet
+    if (userNum >= randomNum) {
+      profit = (userBet * (MAX_RAND_NUM - MAX_RAND_NUM * HOUSEEDGE) / userNum) - userBet
     }
-
     // add result to paychannel
-    _self.payChannel.addTX(profit)
+    payChannel.addTX(profit)
+    payChannel.printLog()
 
     // push all data to our log
     // just for debug
-    const roll_item = {
+    const rollItem = {
       timestamp   : new Date().getTime(),
-      user_bet    : user_bet,
+      user_bet    : userBet,
       profit      : profit,
-      user_num    : user_num,
-      balance     : _self.payChannel.getBalance(),
+      user_num    : userNum,
+      balance     : payChannel.getBalance(),
       random_hash : random_hash,
-      random_num  : random_num
+      random_num  : randomNum
     }
-    history.push(roll_item)
+    history.push(rollItem)
 
-    return roll_item
+    return rollItem
   }
 
   return {
-    Game    : Roll,
-    history : history
+    Game: Roll,
+    history: history
   }
 })

@@ -29,6 +29,7 @@ module.exports = {
     "key-spacing"                  : ["off"],
     "camelcase"                    : ["off"],
     "standard/no-callback-literal" : ["off"],
+    "no-unneeded-ternary"          : ["off"],
     "semi"                         : ["warn"],
     "no-tabs"                      : ["warn"],
     "no-irregular-whitespace"      : ["warn"],

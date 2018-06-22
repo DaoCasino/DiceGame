@@ -38,7 +38,7 @@ export default {
     getAmount            : state => state.game.betState.amount,
     getBalance           : state => Number(state.userData.balance.player_balance),
     getMaxAmount         : state => Number(state.game.betState.maxAmount),
-    getBankrollerBalance : state => Number(state.userData.balance.bankroller_balance),
+    getBankrollerBalance : state => Number(state.userData.balance.bankroller_balance)
   }),
 
   components: {

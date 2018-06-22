@@ -61,17 +61,18 @@ export default {
 @import './index';
 .game-wallet {
   margin-left: 10px;
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: 740px) {
     margin-left: inherit;
     width: 100%;
   }
 }
 
 .wallet-table {
-  max-width: 300px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 650px) {
+  align-items: flex-end;
+  @media screen and (max-width: 740px) {
     max-width: 100%;
     justify-content: center;
     align-items: center;
@@ -81,9 +82,9 @@ export default {
 .wallet-address {
   width: 100%;
   display: block;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
+  // overflow: hidden;
   @media screen and (max-width: 650px) {
     text-overflow: inherit;
     overflow: inherit;

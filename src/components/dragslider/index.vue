@@ -110,7 +110,6 @@ export default {
       updateAmount    : 'game/updateAmount',
       updatePercent   : 'game/updatePercent',
       updateDeposit   : 'game/updateDeposit',
-      updateMaxAmount : 'game/updateMaxAmount',
       updateMaxAmount : 'game/updateMaxAmount'
     })
   },

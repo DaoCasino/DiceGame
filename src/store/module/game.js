@@ -14,10 +14,11 @@ export default {
       percent : 50
     },
     tx                 : '',
-    flag               : true,
     start              : '...',
     errorText          : '',
     info_table         : [],
+    moduleActive       : false,
+    channelOpened      : false,
     paychannelContract : ''
   },
 
@@ -29,6 +30,8 @@ export default {
     updateAmount             (state, value) { state.betState.amount  = value },
     updateDeposit            (state, value) { state.betState.deposit = value },
     updateInfoTable          (state, value) { state.info_table.push(value) },
+    updateModuleActive       (state, value) { state.moduleActive = value },
+    updateChannelOpened      (state, value) { state.channelOpened = value },
     updatePaychannelContract (state, value) { state.paychannelContract = `https://${process.env.DC_NETWORK}.etherscan.io/address/${value}` },
 
     updateMaxAmount (state) {

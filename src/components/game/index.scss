@@ -1,5 +1,22 @@
+.channel {
+  &.process {
+    & a.roll-but {
+      background-color: rgba(190, 190, 190, 0.849);
+    }
+  }
+
+  &.autoprocess {
+    & a.roll-but,
+    & button.auto-roll__but.auto-roll__start {
+      pointer-events: none;
+      background-color: rgba(190, 190, 190, 0.849);
+    }
+  }
+}
+
 .roll-but {
   background-color: #d08c49;
+  will-change: contents;
   transition: background-color .5s linear;
   &:hover {
     background-color: rgba(236, 167, 97, 1);
@@ -67,6 +84,9 @@ input.game-inp {
     border-color: transparent;
     outline-color: transparent;
     border-radius: $radius;
+    &.autoStart {
+      background-color: rgba(190, 190, 190, 0.849);
+    }
   }
   &__start {
     background-color: #5cd65c;

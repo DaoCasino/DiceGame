@@ -7,6 +7,7 @@ import DC        from './lib/DCLib'
 
 Vue.config.productionTip = false
 Vue.use(DC, '$DC')
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

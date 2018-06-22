@@ -1,14 +1,18 @@
 <template lang="pug">
-  .popup(v-if="popup" v-bind:class="{ chat: !getChatTrigger }")
+  .popup(v-if="popup" @keydown.native="op" v-bind:class="{ chat: !getChatTrigger }")
     .popup-table
-      .openchannel-log(v-bind:class="{ active: isActive }")
+      .openchannel-log(v-bind:class="{ active: openChannelActive }")
         error-popup(
           v-if="error"
           :message="getErrorText"
         )
         .openchannel-bankroller(v-if="open")
           span.caption Bankroller address
-          a.address(:href="getBnkLink" target="blank") {{ getBankrollAddress }}
+          a.address(
+            target="blank"
+            :href="getBnkLink"
+            v-bind:class="{ nolink: noBankroller }"
+          ) {{ getBankrollAddress }}
         span.openchannel-capt {{ log }}
       span.popup-text Please, select deposit
         .popup-deposit {{getDeposit}} BET
@@ -19,7 +23,7 @@
           :max_amount="getStart"
         )
         button.popup-but(
-          @click="openChannel()"
+          @click.prevent="openChannel()"
         ) open channel
 </template>
 
@@ -34,13 +38,14 @@ import {
 export default {
   data () {
     return {
-      log         : '',
-      open        : true,
-      popup       : true,
-      error       : false,
-      isActive    : false,
-      errorText   : '',
-      max_deposit : this.$store.state.start
+      log               : '',
+      open              : true,
+      popup             : true,
+      error             : false,
+      errorText         : '',
+      max_deposit       : this.$store.state.start,
+      noBankroller      : false,
+      openChannelActive : false
     }
   },
 
@@ -49,14 +54,24 @@ export default {
     this.updateEthBalance(0)
   },
 
+  mounted () {
+    document.addEventListener('keyup', e => {
+      e.preventDefault()
+
+      if (e.key === 'Enter' && e.keyCode === 13 &&
+      !this.openChannelActive && !this.getModuleActive) this.openChannel()
+    })
+  },
+
   computed: mapState({
     getStart           : state => state.userData.balance.betBalance,
     getDeposit         : state => state.game.betState.deposit,
     getBnkLink         : state => `https://${process.env.DC_NETWORK}.etherscan.io/address/${state.userData.address.bankroller}`,
     getErrorText       : state => state.game.errorText,
     getChatTrigger     : state => state.chat.trigger,
+    getModuleActive    : state => state.game.moduleActive,
     getDefaultDeposit  : state => state.game.start,
-    getBankrollAddress : state => state.userData.address.bankroller,
+    getBankrollAddress : state => state.userData.address.bankroller
   }),
 
   methods: {
@@ -69,6 +84,7 @@ export default {
       updateBetBalance         : 'userData/updateBetBalance',
       updateEthBalance         : 'userData/updateEthBalance',
       updatePlayerBalance      : 'userData/updatePlayerBalance',
+      updateChannelOpened      : 'game/updateChannelOpened',
       updateBankrollBalance    : 'userData/updateBankrollBalance',
       updateBankrollAddress    : 'userData/updateBankrollAddress',
       updatePaychannelContract : 'game/updatePaychannelContract'
@@ -77,7 +93,7 @@ export default {
     openChannel () {
       if (this.getDeposit === 0) return
       let dotsI
-      this.isActive = true
+      this.openChannelActive = true
 
       this.$DC.Game.Status
         .on('connect::info', res => {
@@ -86,10 +102,12 @@ export default {
           }
 
           if (res.status === 'noBankroller') {
+            this.noBankroller = true
             this.updateBankrollAddress(' 🔎 Not bankroller with the same deposit, find continue')
           }
 
           if (res.status === 'find_compleate') {
+            this.noBankroller = false
             this.updateBankrollAddress(res.data)
             dotsI = setInterval(() => {
               const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller open channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
@@ -116,6 +134,7 @@ export default {
         this.updateAmount(0.1)
         this.updateBankrollBalance(Number(bankrollerBalance).toFixed(2))
         this.updatePayout()
+        this.updateChannelOpened(true)
         this.updatePaychannelContract(this.$DC.Game.contract_address)
       })
     }
@@ -189,5 +208,8 @@ export default {
 
 .address {
   color: #fff;
+  &.nolink {
+    pointer-events: none;
+  }
 }
 </style>

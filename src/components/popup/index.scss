@@ -79,6 +79,9 @@
   @media screen and (max-width: 450px) {
     font-size: 10px;
   }
+  &.nolink {
+    text-decoration: none
+  }
 }
 
 @keyframes close {
