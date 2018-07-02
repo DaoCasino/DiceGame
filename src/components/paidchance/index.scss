@@ -1,0 +1,70 @@
+.close-capt {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.close-but {
+  font-family: $prox_b;
+  font-size: 17px;
+  line-height: 1.4;
+  color: #fff;
+  text-transform: uppercase;
+  background-color: #bb5d00;
+  border-radius: 6px;
+  transition: all .6s;
+  &:hover {
+    transform: scale(1.06)
+  }
+}
+
+.close-popup {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0, .7);
+  &__table {
+    background-color: $main_bg;
+    border: 1px solid $text_g;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    transition: all 1s;
+  }
+  &__log {
+    font-family: $prox_b;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  @media tablet {
+    padding: 0 20px;
+  }
+}
+
+.input-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.closechannel {
+  &-capt {
+    font-family: $prox_b;
+    text-transform: uppercase;
+  }
+  &-text {
+    font-family: $prox_b;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #fff;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.closeChannel-enter-active, .closeChannel-leave-active {
+  transition: opacity .5s;
+}
+
+.closeChannel-enter, .closeChannel-leave-to {
+  opacity: 0;
+}

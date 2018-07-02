@@ -1,0 +1,120 @@
+.chat {
+  &-bg {    
+    background-color: rgba(0,0,0, .7);
+  }
+  &-module {
+    background-color: $main_bg;
+    &__online {
+      font-family: $prox_b;
+      font-size: 16px;
+      color: #fff
+    }
+    &__capt {
+      font-family: $prox_b;
+      font-size: 16px;
+      color: #fff;
+      line-height: 1.4;
+      text-transform: uppercase
+    }
+    &__close {
+      cursor: pointer;
+      &-but {
+        background-color: $text_g;
+        transition: background-color .2s linear
+      }
+      &:hover > &-but {
+        background-color: rgba(236, 167, 97, 1)
+      }
+    }
+    &__username {
+      background-color: #3d2d42;
+      &-error {
+        color: rgb(214, 90, 90)
+      }
+      &-inp {
+        outline: none;
+        border: none;
+        color: $text_g;
+        @include placeholder {
+          color: $text_g
+        }
+      }
+      &-send {
+        font-family: $prox_b;
+        font-size: 16px;
+        color: #fff;
+        background-color: $text_g;
+        outline: none;
+        border: none;
+        transition: background-color .2s linear;
+        &:hover {
+          background-color: rgba(236, 167, 97, 1);
+        }
+      }
+    }
+    &__messages {
+      border: 1px solid $text_g;
+      &-body {
+        font-family: $prox_r;
+        font-size: 16px;
+        line-height: 1.4;
+        color: #fff;
+        background-color: #3d2d42;
+      }
+      &-name {
+        font-family: $prox_b;
+        color: $text_g;
+      }
+    }
+    &__inp {
+      color: #fff;
+      background-color: $main_bg;
+      border: 1px solid $text_g;
+      outline: none;
+      @include placeholder {
+        color: #fff;
+      }
+    }
+    &__send {
+      font-family: $prox_b;
+      font-size: 16px;
+      line-height: 1.4;
+      color: #fff;
+      text-transform: uppercase;
+      background-color: $text_g;
+      border-color: transparent;
+      outline: none;
+      transition: background-color .2s linear;
+      &:hover {
+        background-color: rgba(236, 167, 97, 1)
+      }
+    }
+  }
+  &-bg-enter-active,
+  &-bg-leave-active {
+    transition: opacity .5s
+  }
+  &-bg-enter,
+  &-bg-leave-to {
+    opacity: 0
+  }
+  &-tab-enter-active,
+  &-tab-leave-active {
+    transition: transform .5s
+  }
+  &-tab-enter,
+  &-tab-leave-to {
+    transform: translate3d(-100%, 0, 0)
+  }
+}
+
+.username-anim-active,
+.username-anim-leave-active {
+  transition: all .5s linear;
+}
+
+.username-anim-enter,
+.username-anim-leave-to {
+  opacity: 0;
+  z-index: 0;
+}

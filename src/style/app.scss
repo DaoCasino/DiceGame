@@ -1,0 +1,153 @@
+$main_bg:         #2d2031;
+$text_color:      #ffffff;
+$text_g:          #d08c49;
+$prox_r:          'ProximaNova-Regular';
+$prox_b:          'ProximaNova-Bold';
+$radius:          6px;
+$animation-time:  7s;
+$roll-dice-time:  $animation-time/4;
+
+@import './layout/_mixins';
+@import './layout/_normalize';
+@import './layout/_fonts';
+@import './layout/_animations';
+@import './components/_preloader';
+
+* {
+  cursor: default;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; 
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none
+}
+
+li {
+  list-style: none
+}
+
+html, body {
+  position: relative;
+	width: 100%;
+  height: 100%;
+	overflow-y: auto
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: $prox_r;
+  background: url('/static/img/main_bg-min.jpg') no-repeat;
+  background-size: cover;
+  background-position: top center;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch
+}
+
+#app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%
+}
+
+.wrapper {
+  padding: 0 50px;
+	max-width: 1200px;
+	width: 100%;
+	@include netbook {
+		padding: 0 20px
+	}
+}
+
+.game__buttons {
+  transition: z-index .5s linear;
+  &.none {
+    z-index: 300
+  }
+}
+
+.game__but {
+  cursor: pointer;
+  font-family: 'FontAwesome';
+  font-size: 16px;
+  color: #fff;
+  background-color: $main_bg;
+  border: 1px solid $text_g;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  outline: none;
+  transition: all .2s linear;
+  &:first-child {
+    border-top-right-radius: $radius;
+    border-top-color: $text_g;
+  }
+  &:last-child {
+    border-bottom-right-radius: $radius
+  }
+  &:hover {
+    color: #000;
+    background-color: $text_g;
+  }
+  &-img {
+    background-image: url('/static/img/chat.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+}
+
+.game__window {
+  font-family: $prox_r;
+  font-size: 16px;
+  color: #fff;
+  background-color: rgba(45, 32, 49, .7);
+  @media screen and (max-width: 1000px) {
+    background-color: rgba(45, 32, 49, 0)
+  }
+}
+
+.section {
+  @media screen and (max-width: 1000px) {
+    padding: 20px;
+    background-color: rgba(45, 32, 49, .7);
+    border: 1px solid $text_g;
+    border-radius: $radius
+  }
+}
+
+.top-info {
+  position: relative;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: center
+}
+
+.caption {
+  display: block;
+  text-transform: uppercase
+}
+
+.deposit-value {
+  display: block
+}
+
+.preloader-enter-active,
+.preloader-leave-active {
+  transition: opacity .5s;
+}
+
+.preloader-enter,
+.preloader-leave-to {
+  opacity: 0;
+}

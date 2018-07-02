@@ -1,0 +1,39 @@
+.error-popup {
+  background-color: rgba(0,0,0, .7);
+  &-text {
+    font-family: $prox_b;
+    font-size: 21px;
+    color: #d08c49;
+  }
+  &-deposit {
+    font-family: $prox_b;
+    color: #fff;
+  }
+  @media tablet {
+    padding: 0 20px;
+  }
+}
+
+.error-table {
+  background-color: $main_bg;
+  border: 1px solid $text_g;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  transition: all 1s;
+}
+
+.error-reloadbut {
+  cursor: pointer;
+  font-family: $prox_b;
+  font-size: 17px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: transparent;
+  outline: none;
+  border: 2px solid #d08c49;
+  transition: all .5s;
+  &:hover {
+    background-color: #d08c49;
+  }
+}

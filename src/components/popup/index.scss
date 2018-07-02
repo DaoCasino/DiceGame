@@ -1,0 +1,104 @@
+.popup {
+  background-color: rgba(0,0,0, .7);
+  // transition: z-index .5s linear;
+  &-table {
+    background-color: $main_bg;
+    border: 1px solid $text_g;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    transition: all 1s;
+  }
+
+  &-but {
+    cursor: pointer;
+    font-family: $prox_b;
+    font-size: 17px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: transparent;
+    transition: all .5s;
+    outline: none;
+    border: 2px solid #d08c49;
+    &:hover {
+      background-color: #d08c49;
+      color: #000;
+    }
+  }
+  &-text {
+    font-family: $prox_b;
+    font-size: 21px;
+    line-height: 1.4;
+    color: #d08c49;
+  }
+  &-deposit {
+    font-family: $prox_b;
+    line-height: 1.4;
+    color: #fff;
+  }
+  @media tablet {
+    padding: 0 20px;
+  }
+}
+
+.fade-enter-active, .fade-leave-active {
+  animation: close 1s forwards;
+}
+
+.openchannel-log {
+  font-family: $prox_b;
+  font-size: 17px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: $main_bg;
+  border-radius: 5px;
+}
+
+.open-channel {
+  background-color: rgba(0,0,0, .7);
+  &.anim {
+    transition: 1.3s;
+  }
+}
+
+.open-capt {
+  font-family: $prox_b;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.address {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #fff;
+  &:hover {
+    text-decoration: underline;
+  }
+  @media screen and (max-width: 450px) {
+    font-size: 10px;
+  }
+  &.nolink {
+    text-decoration: none
+  }
+}
+
+.info-capt {
+  font-size: 14px;
+}
+
+.info-text {
+  font-size: 11px;
+  color: #fff;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@keyframes close {
+  100% {
+    opacity: 0;
+  }
+}

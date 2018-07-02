@@ -1,0 +1,22 @@
+.wallet-address {
+  font-family: $prox_b;
+  color: #fff;
+  line-height: 1.4;
+  transition: font-size .5s linear;
+  transition: color .2s linear;
+  &:hover {
+    color: #3f85c2;
+  }
+  @media screen and (max-width: 420px) {
+    font-size: 10px;
+  }
+}
+
+.wallet-balance {
+  font-family: $prox_b;
+  color: #fff;
+}
+
+.wallet-value {
+  color: $text_g;
+}

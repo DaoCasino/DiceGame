@@ -1,0 +1,59 @@
+.game__loader {
+    position: fixed;
+    z-index: 8888;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(45, 32, 49, 1);
+    transform-style: preserve-3d;
+    &.hide {
+      animation: hide_preload 3s forwards ease-out;
+    }
+    &-container {
+      width: 100px;
+      height: 100px;
+      z-index: 9000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      animation: roll_dice $roll-dice-time infinite ease-in;
+      will-change: opacity z-index;
+    }
+    &-square {
+      margin: 5px;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      will-change: transform;
+    }
+    &-one {
+      animation: square_one $animation-time infinite;
+    }
+    &-two {
+      animation: square_two $animation-time infinite;
+    }
+    &-three {
+      animation: square_three $animation-time infinite;
+    }
+    &-four {
+      animation: square_four $animation-time infinite;
+    }
+    &-five {
+      animation: square_five $animation-time infinite;
+    }
+    &-six {
+      animation: square_six $animation-time infinite;
+    }
+    &-seven {
+      animation: square_seven $animation-time infinite;
+    }
+    &-eight {
+      animation: square_eight $animation-time infinite;
+    }
+    &-nine {
+      animation: square_nine $animation-time infinite;
+    }
+  }

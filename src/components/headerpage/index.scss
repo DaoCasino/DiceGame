@@ -1,0 +1,74 @@
+.header {
+  justify-content: space-between;
+  @include netbook {
+    margin-bottom: 30px
+  }
+}
+
+.logo-img {
+  cursor: pointer
+}
+
+.switch {
+  &-label {
+    cursor: pointer
+  }
+  &-text {
+    font-family: $prox_b;
+    line-height: 1.4;
+    color: #564f53;
+    text-transform: uppercase;
+    @include tablet {
+      font-size: 14px
+    }
+  }
+
+  &-input {
+    &:checked + span {
+      color: #d08c49
+    }
+  }
+  &-shadow {
+    cursor: pointer;
+    background-color: #544d51;
+    border-radius: 10px;
+    &:before {
+      background-color: #7f7b7e;
+      transform: translate(-50%, -50%);
+    }
+    &:after {
+      content: '';
+      background-color: #fff;
+      border: 10px solid #d08c49;
+      border-radius: 50%;
+      transition: all .6s;
+    }
+    &.mainnet {
+      &:after {
+        transform: translateX(17px)
+      }
+    }
+  }
+}
+
+.account {
+  position: relative;
+  right: 0;
+  &-page {
+    padding: 10px;
+    display: block;
+    font-family: $prox_b;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #d08c49;
+    border-radius: 6px;
+    transition: all .5s;
+    &:hover {
+      background-color: #000;
+    }
+  }
+  @include netbook {
+      position: absolute;
+  }
+}

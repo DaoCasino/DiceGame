@@ -1,0 +1,158 @@
+.channel {
+  &.process {
+    & a.roll-but {
+      background-color: rgba(190, 190, 190, 0.849);
+    }
+  }
+
+  &.autoprocess {
+    & a.roll-but,
+    & button.auto-roll__but.auto-roll__start {
+      pointer-events: none;
+      background-color: rgba(190, 190, 190, 0.849);
+    }
+  }
+}
+
+.roll-but {
+  background-color: #d08c49;
+  will-change: contents;
+  transition: background-color .5s linear;
+  &:hover {
+    background-color: rgba(236, 167, 97, 1);
+  }
+}
+
+.roll-text {
+  cursor: pointer;
+  font-family: $prox_b;
+  font-size: 17px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #fff
+}
+
+input.game-inp {
+  &.error {
+    color: red;
+  }
+}
+
+.roll-capt {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #d08c49
+}
+
+.blockchain-capt {
+  font-family: $prox_b;
+  font-size: 1.5em;
+  line-height: 1.4
+}
+
+.blockchain-tx {
+  cursor: pointer;
+  &:hover > .blockchain-link {
+    transform: scale(1.1)
+  }
+}
+
+.blockchain-contract {
+  cursor: pointer;
+  transition: all .6s;
+  &:hover > .blockchain-link {
+    transform: scale(1.1)
+  }
+}
+
+.blockchain-link {
+  font-family: $prox_b;
+  color: #fff;
+  background-color: #337ab7;
+  border-radius: 6px;
+  transform-style: preserve-3d;
+  transition: all .6s
+}
+
+.auto-roll {
+  &__but {
+    font-family: $prox_b;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #fff;
+    text-transform: uppercase;
+    border-color: transparent;
+    outline-color: transparent;
+    border-radius: $radius;
+    &.autoStart {
+      background-color: rgba(190, 190, 190, 0.849);
+    }
+  }
+  &__start {
+    background-color: #5cd65c;
+  }
+  &__stop {
+    background-color: #FF4040;
+  }
+  &-enter-active,
+  &-leave-active {
+    transition: transform .5s
+  }
+  &-enter,
+  &-leave-to {
+    transform: translateY(-130%)
+  }
+}
+
+.auto-roll__but {
+  transition: all .5s linear;
+  &:hover {
+    transform: scale(1.1)
+  }
+}
+
+.autoroll {
+  &-over {
+    background-color: rgba(0,0,0, .7);
+    &__table {
+      font-family: $prox_b;
+      font-size: 16px;
+      color: #fff;
+      text-transform: uppercase;
+      background-color: $main_bg;
+      border: 1px solid $text_g;
+    }
+    &__but {
+      color: #fff;
+      background-color: $text_g;
+      border-color: transparent;
+      outline-color: transparent;
+      transition: background-color .2s linear;
+      &:hover {
+        background-color: rgba(236, 167, 97, 1);
+      }
+    }
+  }
+}
+
+.autoroll-popup-active,
+.autoroll-popup-leave-active {
+  transition: all .5s linear;
+}
+
+.autoroll-popup-enter,
+.autoroll-popup-leave-to {
+  opacity: 0;
+}
+
+@keyframes animRoll {
+  0% {
+    transform: scale(1)
+  }
+  50% {
+    transform: scale(1.1)
+  }
+  100% {
+    transform: scale(1)
+  }
+}

@@ -1,0 +1,29 @@
+.finish-overlay {
+  background-color: rgba(0,0,0, .7);
+}
+
+.finish-table {
+  background-color: rgba(45, 32, 49, 1);
+  border: 2px solid $text-g;
+}
+
+.transaction-link, .close-link {
+  font-family: $prox_b;
+  color: #fff;
+  background-color: #337ab7;
+  border-radius: 6px;
+  transform-style: preserve-3d;
+  transition: all .6s;
+}
+
+.close-link {
+  &:hover {
+    background-color: #FF4040;
+  }
+}
+
+.transaction-link {
+  &:hover {
+    transform: scale(1.1)
+  }
+}
