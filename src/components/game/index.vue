@@ -125,6 +125,7 @@ export default {
   methods: {
     ...mapMutations({
       updateError           : 'game/updateError',
+      updateAmount          : 'game/updateAmount',
       updateInfoTable       : 'game/updateInfoTable',
       updateMaxAmount       : 'game/updateMaxAmount',
       updateTotalAmount     : 'game/updateTotalAmount',
@@ -160,8 +161,10 @@ export default {
     async autoRoll (e) {
       this.isAutorollProcess = true
 
-      if (this.numberRolls === '' ||
-      Number(this.numberRolls) === 0) {
+      if (
+        this.numberRolls === '' ||
+        Number(this.numberRolls) === 0
+      ) {
         this.popupMessage      = 'Autoroll number is 0, roll over'
         this.autopopupShow     = true
         this.isAutorollProcess = false
@@ -188,10 +191,27 @@ export default {
       this.stopAutoRoll = false
     },
 
-    roll () {
-      if (this.getPlayerBalance <= 0) {
+    roll () {     
+      const amount = this.getAmount
+      const random = this.getNum
+      const hash   = this.$DC.lib.randomHash({bet:amount, gamedata:[random]})
+
+      if (this.getPlayerBalance * 1 <= 0) {
         this.profit  = 'Your balance is 0'
         this.isError = true
+        return
+      }
+
+      if (amount === 0 || random === 0) {
+        this.profit  = 'No bets, Please bet before playing'
+        this.isError = true
+        return
+      }
+
+      if (this.getPayout > this.getBankrollerBalance) {
+        this.profit    = 'The bankroll does not have the money to pay'
+        this.isError   = true
+        this.isProcess = false
         return
       }
 
@@ -201,32 +221,17 @@ export default {
       if (!this.isAutorollProcess) this.isProcess = true
 
       return new Promise((resolve, reject) => {
-        const amount = this.getAmount
-        const random = this.getNum
-
-        if (amount === 0 || random === 0) {
-          this.profit  = 'No bets, Please bet before playing'
-          this.isError = true
-          return
-        }
-
-        const hash = this.$DC.lib.randomHash({bet:amount, gamedata:[random]})
-
-        if (this.getPayout > this.getBankrollerBalance) {
-          this.profit    = 'The bankroll does not have the money to pay'
-          this.isProcess = true
-          return
-        }
-
         this.$DC.Game.Status.on('game::error', err => {
           if (err.msg) {
             this.updateError(err.msg)
+            this.profit = err.msg
           }
 
+          this.error     = true
           this.isError   = true
           this.isProcess = false
-
-          reject(new Error(err.msg))
+          this.rollStart = true
+          reject(false)
         })
 
         this.$DC.Game.Game(amount, random, hash)
@@ -269,8 +274,11 @@ export default {
             this.updateTotalAmount(createResult.user_bet)
             this.updateInfoTable(createResult)
             this.updatePlayerBalance(Number(newPlayerBalance).toFixed(1))
-            this.updateBankrollBalance(Number(newBankrollBalance).toFixed(1))
-            this.updateMaxAmount()
+            this.updateBankrollBalance(Number(newBankrollBalance).toFixed(1));
+
+            (this.getAmount > this.getPlayerBalance)
+              ? this.updateMaxAmount(this.getPlayerBalance)
+              : this.updateMaxAmount()
 
             this.rollStart = true
             resolve(createResult)

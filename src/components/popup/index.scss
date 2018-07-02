@@ -73,6 +73,7 @@
 .address {
   font-size: 14px;
   line-height: 1.4;
+  color: #fff;
   &:hover {
     text-decoration: underline;
   }
@@ -81,6 +82,18 @@
   }
   &.nolink {
     text-decoration: none
+  }
+}
+
+.info-capt {
+  font-size: 14px;
+}
+
+.info-text {
+  font-size: 11px;
+  color: #fff;
+  &:hover {
+    text-decoration: underline;
   }
 }
 

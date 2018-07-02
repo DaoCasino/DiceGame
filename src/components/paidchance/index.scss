@@ -45,6 +45,22 @@
   line-height: 1.4;
 }
 
+.closechannel {
+  &-capt {
+    font-family: $prox_b;
+    text-transform: uppercase;
+  }
+  &-text {
+    font-family: $prox_b;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #fff;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .closeChannel-enter-active, .closeChannel-leave-active {
   transition: opacity .5s;
 }

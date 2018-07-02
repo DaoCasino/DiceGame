@@ -27,7 +27,7 @@ export default {
 
   data () {
     return {
-      value: (this.$props.valueDefault && this.$props.valueDefault !== 0) ? this.valueDefault : 0,
+      value: (this.$props.valueDefault && this.$props.valueDefault !== 0) ? this.valueDefault: 0,
       options: {
         tooltip: false,
         height: 25,
@@ -57,7 +57,7 @@ export default {
   },
 
   watch: {
-    valueDefault (val) { this.value       = val },
+    valueDefault (val) { this.value       = val * 1 },
     max_amount   (val) { this.options.max = val }
   },
 
@@ -66,7 +66,9 @@ export default {
     getPayout            : state => state.game.paid.payout,
     getAmount            : state => state.game.betState.amount,
     getPrevNum           : state => state.game.paid.prevNum,
-    getNewAmout          : state => Number(Math.round((state.game.betState.amount - 0.1) + 'e' + 1) + 'e-' + 1),
+    getNewAmount         : state => Number(Math.round((state.game.betState.amount - 0.1) + 'e' + 1) + 'e-' + 1),
+    getMaxAmount         : state => state.game.betState.maxAmount,
+    getPlayerBalance     : state => state.userData.balance.player_balance,
     getBankrollerBalance : state => state.userData.balance.bankroller_balance
   }),
 
@@ -76,10 +78,6 @@ export default {
     }
 
     if (!this.$props.paid && !this.$props.popup) {
-      if (this.getPayout > this.getBankrollerBalance) {
-        this.$refs.slider.setValue(this.getAmount)
-      }
-
       this.updateAmount(this.value)
       this.updatePayout(this.getNum)
       this.updateMaxAmount()
@@ -88,7 +86,7 @@ export default {
     if (this.$props.paid) {
       if (this.getPayout > this.getBankrollerBalance) {
         if (this.getAmount > 0.1) {
-          this.updateAmount(this.getNewAmout)
+          this.updateAmount(this.getNewAmount)
         } else {
           const num = (Number((this.getNum * 1.2).toFixed()) !== 1) ? Number((this.getNum * 1.2).toFixed()) : 300
           this.updateNum(num)
@@ -97,6 +95,14 @@ export default {
         this.updateNum(this.value)
         this.updatePayout(this.getNum)
       }
+
+      if (this.getPayout.toFixed(2) * 1 === 0.03) {
+        this.maxNum = this.getNum
+      }
+
+      (this.getPayout.toFixed(2) * 1 < 0.03 && this.maxNum)
+        ? this.options.max = this.maxNum * 1
+        : this.options.max = 65535
 
       this.updatePercent(this.value)
       this.updateMaxAmount()

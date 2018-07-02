@@ -11,6 +11,12 @@
     transition(name="closeChannel")
       .close-popup(v-if="close")
         .close-popup__table
+          .closechannel-info
+            span.closechannel-capt {{ closeInfo.capt }}
+            a.closechannel-text(
+              target="blank"
+              :href="closeInfo.link"
+            ) {{ closeInfo.text }}
           span.close-popup__log {{ log }}
     .top-info
       h2.caption total money paid
@@ -57,6 +63,11 @@ export default {
       error        : false,
       close        : false,
       max_amount   : 65535,
+      closeInfo    : {
+        capt: 'Close channel',
+        link: '#',
+        text: ''
+      },
       finish_table : false
     }
   },
@@ -79,7 +90,13 @@ export default {
       this.$DC.Game.Status
         .on('disconnect::info', res => {
           if (res.status === 'transactionHash') {
-            this.updateTx(`https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
+            const txLink = `https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`
+            this.updateTx(txLink)
+            this.closeInfo = {
+              capt: 'Close transacction',
+              link: txLink,
+              text: res.data.transactionHash
+            }
           }
         })
         .on('error', err => {
@@ -183,5 +200,22 @@ export default {
   margin-top: 5px;
   padding: 10px;
   display: inline-table;
+}
+
+.closechannel {
+  &-info {
+    margin-bottom: 10px;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  &-text {
+    margin-top: 5px;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 </style>

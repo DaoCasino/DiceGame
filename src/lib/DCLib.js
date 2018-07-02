@@ -9,7 +9,7 @@ export default new class DC {
     this.lib.on('ready', () => {
       this.getGameContract(gameContract => {
         window.Game = new DCLib.DApp({
-          slug: 'dice_dev',
+          slug: 'dicetest_v42',
           contract: gameContract,
           rules: {
             depositX:2

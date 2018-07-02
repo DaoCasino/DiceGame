@@ -6,16 +6,23 @@
           v-if="error"
           :message="getErrorText"
         )
-        .openchannel-bankroller(v-if="open")
-          span.caption Bankroller address
+        .openchannel-bankroller
+          span.caption {{ findBankroller.capt }}
           a.address(
             target="blank"
-            :href="getBnkLink"
+            :href="findBankroller.link"
             v-bind:class="{ nolink: noBankroller }"
-          ) {{ getBankrollAddress }}
+          ) {{ findBankroller.text }}
+        .openchannel-info(v-if="openChannelActive")
+          span.info-capt {{ openInfo.capt }}
+          a.info-text(
+            target="blank"
+            :href="openInfo.link"
+            v-bind:class="{ nolink: noBankroller }"
+          ) {{ openInfo.text }}
         span.openchannel-capt {{ log }}
       span.popup-text Please, select deposit
-        .popup-deposit {{getDeposit}} BET
+        .popup-deposit {{ getDeposit }} BET
         drag-slider(
           paid=false
           popup=true,
@@ -42,9 +49,19 @@ export default {
       open              : true,
       popup             : true,
       error             : false,
+      openInfo          : {
+        capt: '',
+        link: '',
+        text: ''
+      },
       errorText         : '',
       max_deposit       : this.$store.state.start,
       noBankroller      : false,
+      findBankroller    : {
+        capt: 'Bankroller address',
+        link: '#',
+        text: 'find ...'
+      },
       openChannelActive : false
     }
   },
@@ -66,7 +83,6 @@ export default {
   computed: mapState({
     getStart           : state => state.userData.balance.betBalance,
     getDeposit         : state => state.game.betState.deposit,
-    getBnkLink         : state => `https://${process.env.DC_NETWORK}.etherscan.io/address/${state.userData.address.bankroller}`,
     getErrorText       : state => state.game.errorText,
     getChatTrigger     : state => state.chat.trigger,
     getModuleActive    : state => state.game.moduleActive,
@@ -98,17 +114,35 @@ export default {
       this.$DC.Game.Status
         .on('connect::info', res => {
           if (res.status === 'transactionHash') {
-            this.updateTx(`https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`)
+            const txLink = `https://${process.env.DC_NETWORK}.etherscan.io/tx/${res.data.transactionHash}`
+            this.updateTx(txLink)
+            this.openInfo = {
+              capt: 'Transaction hash',
+              link: txLink,
+              text: res.data.transactionHash
+            }
           }
 
           if (res.status === 'noBankroller') {
             this.noBankroller = true
-            this.updateBankrollAddress(' 🔎 Not bankroller with the same deposit, find continue')
+            this.findBankroller = {
+              capt: 'Bankroller address',
+              link: '#',
+              text: ' 🔎 Not bankroller with the same deposit, find continue'
+            }
           }
 
           if (res.status === 'find_compleate') {
             this.noBankroller = false
             this.updateBankrollAddress(res.data)
+            this.findBankroller = {
+              capt: 'Bankroller address',
+              link: `https://${process.env.DC_NETWORK}.etherscan.io/address/${res.data}`,
+              text: res.data,
+            }
+
+            this.openInfo.capt = 'Start ERC20 Approve'
+
             dotsI = setInterval(() => {
               const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller open channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
               this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
@@ -201,15 +235,30 @@ export default {
   }
 }
 
-.openchannel-bankroller {
+.openchannel-bankroller,
+.openchannel-info {
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  width: 100%;
 }
 
 .address {
-  color: #fff;
+  display: block;
+  max-width: 100%;
   &.nolink {
     pointer-events: none;
   }
+}
+
+.info-text {
+  display: block;
+  width: 80%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>

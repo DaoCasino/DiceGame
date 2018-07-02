@@ -17,7 +17,7 @@
         paid=false
         popup=false
         :valueDefault="getAmount"
-        :max_amount="getBalance"
+        :max_amount="getMaxAmount"
         :min_amount=0.1
       )
 
@@ -35,7 +35,7 @@ import {
 
 export default {
   computed: mapState({
-    getAmount            : state => state.game.betState.amount,
+    getAmount            : state => Number(state.game.betState.amount),
     getBalance           : state => Number(state.userData.balance.player_balance),
     getMaxAmount         : state => Number(state.game.betState.maxAmount),
     getBankrollerBalance : state => Number(state.userData.balance.bankroller_balance)
