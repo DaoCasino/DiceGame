@@ -17,8 +17,8 @@
     "check_build": "serve -ssl -p=6060 ./dist"
   },
   "dependencies": {
-    "dc-messaging": "github:DaoCasino/dc-messaging#develop",
-    "dclib": "github:DaoCasino/DCLib#dev-latest",
+    "dc-messaging": "github:DaoCasino/dc-messaging#master",
+    "dclib": "github:DaoCasino/DCLib#master",
     "font-awesome": "^4.7.0",
     "nano-ipfs-store": "^0.1.3",
     "normalize-scss": "^7.0.1",
