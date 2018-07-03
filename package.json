@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "dc-messaging": "github:DaoCasino/dc-messaging#develop",
-    "dclib": "github:DaoCasino/DCLib#dev-latest",
+    "dclib": "github:DaoCasino/DCLib#develop",
     "font-awesome": "^4.7.0",
     "nano-ipfs-store": "^0.1.3",
     "normalize-scss": "^7.0.1",
