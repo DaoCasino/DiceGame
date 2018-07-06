@@ -1,5 +1,4 @@
 DCLib.on('ready', e => {
-  console.log(1)
   window.Game = new DCLib.DApp({
     slug: 'dicetest_v42',
     contract: {

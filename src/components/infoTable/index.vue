@@ -1,6 +1,9 @@
 <template lang="pug">
   .table
     table.table-body
+      tr.table-row.total
+        td.table-item Total proffit
+        td.table-item {{ getTotalRoll }}
       tr.table-row
         th.table-capt.show timestamp
         th.table-capt win chance
@@ -20,7 +23,8 @@
 <script>
 export default {
   computed: {
-    getInfo () { return this.$store.state.game.info_table }
+    getInfo      () { return this.$store.state.game.info_table },
+    getTotalRoll () { return this.$store.state.game.total_roll.toFixed(2) }
   }
 }
 </script>
@@ -38,6 +42,11 @@ export default {
     margin-top: 10px;
     display: flex;
     justify-content: center;
+    &.total {
+      padding-bottom: 10px;
+      justify-content: space-between;
+      align-items: center;
+    }
     &:first-child {
       margin-top: 0
     }

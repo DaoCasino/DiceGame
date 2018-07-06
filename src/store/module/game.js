@@ -22,6 +22,7 @@ export default {
     start              : '...',
     errorText          : '',
     info_table         : [],
+    total_roll         : 0,
     moduleActive       : false,
     channelOpened      : false,
     paychannelContract : ''
@@ -36,6 +37,7 @@ export default {
     updateAmount             (state, value) { state.betState.amount  = value },
     updateDeposit            (state, value) { state.betState.deposit = value },
     updateInfoTable          (state, value) { state.info_table.push(value) },
+    updateTotalRoll          (state, value) { state.total_roll += value },
     updateModuleActive       (state, value) { state.moduleActive = value },
     updateChannelOpened      (state, value) { state.channelOpened = value },
     updatePaychannelContract (state, value) { state.paychannelContract = `https://${process.env.DC_NETWORK}.etherscan.io/address/${value}` },

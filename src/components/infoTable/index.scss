@@ -18,9 +18,6 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   transition: all .5s linear;
-  &-body {
-    padding: 0 10px;
-  }
   &-capt {
     font-family: $prox_b;
   }
@@ -28,6 +25,9 @@
     border-top: 2px solid #fff;
   }
   &-row {
+    &.total {
+      border-bottom: 2px solid $text_g
+    }
     &:nth-child(even) {
       background-color: rgba(58, 42, 63, 0.9);;
     }

@@ -2,6 +2,18 @@
   font-family: $prox_b;
   font-size: 1.2em;
   line-height: 1.4;
+  border: 2px solid $text_g
+}
+
+.channel-balance {
+  font-size: 26px;
+  text-transform: uppercase;
+}
+
+.balance-table {
+  &__value {
+    color: #4f98d8
+  }
 }
 
 .input-inp {

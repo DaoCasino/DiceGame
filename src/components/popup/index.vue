@@ -138,7 +138,7 @@ export default {
             this.findBankroller = {
               capt: 'Bankroller address',
               link: `https://${process.env.DC_NETWORK}.etherscan.io/address/${res.data}`,
-              text: res.data,
+              text: res.data
             }
 
             this.openInfo.capt = 'Start ERC20 Approve'
@@ -163,6 +163,14 @@ export default {
         this.popup = false
         clearInterval(dotsI)
         const bankrollerBalance = this.$DC.Game.logic.payChannel.getBankrollBalance()
+
+        this.$DC.getBalance().then(res => {
+          if (res) {
+            this.updateBetBalance(res.bets * 1)
+            this.updateEthBalance(Number(res.eth).toFixed(2))
+          }
+        })
+
         this.updateMaxAmount(this.getDeposit)
         this.updatePlayerBalance(this.getDeposit)
         this.updateAmount(0.1)

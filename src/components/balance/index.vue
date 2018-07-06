@@ -23,8 +23,15 @@
 
     .balance-info
       h2.channel-balance Channel balance
-      span.player-balance Player: {{getBalance}} BET
-      span.bankroller-balance Bankroller: {{getBankrollerBalance}} BET
+      table.balance-table
+        tr.balance-table__row
+          td.balance-table__name Player:
+          td.balance-table__value {{ getBalance }}
+          td.balance-table__curr BET
+        tr.balance-table__row
+          td.balance-table__name Bankroller:
+          td.balance-table__value {{ getBankrollerBalance }}
+          td.balance-table__curr BET
 </template>
 
 <script>
@@ -79,15 +86,17 @@ export default {
   text-align: center;
 }
 
+.balance-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 .balance-info {
   margin-top: 40px;
-  padding: 0 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.player-balance {
-  margin-top: 10px;
 }
 </style>

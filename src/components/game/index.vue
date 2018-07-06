@@ -21,12 +21,12 @@
 
     .game
       label.input-label
-        span.input-text.game-label Profit on Win
+        span.input-text.game-label Random number
         input.input-inp.game-inp(
           v-bind:class="{error: isError}"
           type="text"
           name="your-roll"
-          :value="profit"
+          :value="randomNum"
           readonly
         )
 
@@ -88,6 +88,7 @@ export default {
       isError           : false,
       isProcess         : false,
       rollStart         : true,
+      randomNum         : 0,
       isAutoRoll        : false,
       numberRolls       : '',
       transaction       : '',
@@ -127,6 +128,7 @@ export default {
       updateError           : 'game/updateError',
       updateAmount          : 'game/updateAmount',
       updateInfoTable       : 'game/updateInfoTable',
+      updateTotalRoll       : 'game/updateTotalRoll',
       updateMaxAmount       : 'game/updateMaxAmount',
       updateTotalAmount     : 'game/updateTotalAmount',
       updatePlayerBalance   : 'userData/updatePlayerBalance',
@@ -191,25 +193,25 @@ export default {
       this.stopAutoRoll = false
     },
 
-    roll () {     
+    roll () {
       const amount = this.getAmount
       const random = this.getNum
       const hash   = this.$DC.lib.randomHash({bet:amount, gamedata:[random]})
 
       if (this.getPlayerBalance * 1 <= 0) {
-        this.profit  = 'Your balance is 0'
+        this.randomNum  = 'Your balance is 0'
         this.isError = true
         return
       }
 
       if (amount === 0 || random === 0) {
-        this.profit  = 'No bets, Please bet before playing'
+        this.randomNum  = 'No bets, Please bet before playing'
         this.isError = true
         return
       }
 
       if (this.getPayout > this.getBankrollerBalance) {
-        this.profit    = 'The bankroll does not have the money to pay'
+        this.randomNum    = 'The bankroll does not have the money to pay'
         this.isError   = true
         this.isProcess = false
         return
@@ -231,7 +233,7 @@ export default {
           this.isError   = true
           this.isProcess = false
           this.rollStart = true
-          reject(false)
+          reject(new Error(err.msg))
         })
 
         this.$DC.Game.Game(amount, random, hash)
@@ -245,6 +247,7 @@ export default {
 
             this.isError   = false
             this.profit    = Number(this.$DC.lib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
+            this.randomNum = result.random_num
 
             if (Math.sign(this.profit) === 1) {
               outcome = 'win'
@@ -273,6 +276,7 @@ export default {
 
             this.updateTotalAmount(createResult.user_bet)
             this.updateInfoTable(createResult)
+            this.updateTotalRoll(createResult.profit * 1)
             this.updatePlayerBalance(Number(newPlayerBalance).toFixed(1))
             this.updateBankrollBalance(Number(newBankrollBalance).toFixed(1));
 
