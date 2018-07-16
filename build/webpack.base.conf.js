@@ -35,8 +35,7 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      'img': resolve('static/img'),
-      'fonts': resolve('static/fonts'),
+      '#': resolve('static'),
       '@': resolve('src'),
     }
   },
