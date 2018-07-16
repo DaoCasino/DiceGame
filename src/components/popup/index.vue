@@ -26,7 +26,7 @@
         drag-slider(
           paid=false
           popup=true,
-          :valueDefault="getStart / 2"
+          :valueDefault="(getStart < 5) ? getStart / 2 : 5"
           :max_amount="getStart"
         )
         button.popup-but(
