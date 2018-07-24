@@ -14,7 +14,7 @@
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "DC_NETWORK=ropsten node build/build.js",
     "bnk_restart": "pm2 stop dc_bankroller && pm2 start dc_bankroller",
-    "check_build": "serve -ssl -p=6060 ./dist"
+    "check_build": "serve -p=6060 ./dist"
   },
   "dependencies": {
     "dc-messaging": "github:DaoCasino/dc-messaging#develop",

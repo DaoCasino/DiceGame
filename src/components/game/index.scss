@@ -33,6 +33,7 @@
 }
 
 input.game-inp {
+  text-transform: uppercase;
   &.error {
     color: red;
   }

@@ -48,9 +48,9 @@
         .auto-roll
           transition(name="auto-roll")
             .auto-roll__settings(v-if="isAutoRoll")
-              label.input-lavel
+              label.input-lavel(for="autoroll-input")
                 span.input-text.auto-roll__min-amount Number of rolls
-                input.input-inp.auto-roll__inp(
+                input.input-inp.auto-roll__inp#autoroll-input(
                   type="text"
                   v-model="numberRolls"
                   @keypress="isNumber"
@@ -70,7 +70,6 @@
           a.blockchain-link(:href="getTx" target="_blank") tx hash
         .blockchain-contract
           a.blockchain-link(:href="getContract" target="_blank") Contract
-      span.blockchain-dispute Dispute: True
 </template>
 
 <script>
@@ -247,11 +246,12 @@ export default {
 
             this.isError   = false
             this.profit    = Number(this.$DC.lib.Utils.dec2bet(result.profit.toFixed(0))).toFixed(2)
-            this.randomNum = result.random_num
 
             if (Math.sign(this.profit) === 1) {
               outcome = 'win'
             }
+
+            this.randomNum = `you ${outcome}: ${result.random_num}`
 
             const date = new Date()
             let hour, minute, sec
@@ -345,6 +345,7 @@ input.game-inp {
   flex-direction: column;
   align-items: center;
   &-buttons {
+    width: 100%;
     margin: 5px;
   }
   &-but {

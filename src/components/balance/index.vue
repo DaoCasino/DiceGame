@@ -86,6 +86,10 @@ export default {
   text-align: center;
 }
 
+.balance-table {
+  width: 100%;
+}
+
 .balance-body {
   display: flex;
   flex-direction: column;
