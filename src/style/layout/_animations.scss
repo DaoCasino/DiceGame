@@ -133,3 +133,15 @@
     87.5% {transform: scale(1.4); }
     100% {transform: scale(0.8); }
 }
+
+@keyframes bar {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+@keyframes close {
+    100% {
+        opacity: 0;
+    }
+}

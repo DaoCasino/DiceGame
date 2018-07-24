@@ -21,13 +21,17 @@
             v-bind:class="{ nolink: noBankroller }"
           ) {{ openInfo.text }}
         span.openchannel-capt {{ log }}
+      transition(name="balance-load")
+        .popup-loading(v-if="balanceLoaded")
+          .popup-loading__mess Loading max deposit
+          .popup-loading__bar
       span.popup-text Please, select deposit
         .popup-deposit {{ getDeposit }} BET
         drag-slider(
           paid=false
           popup=true,
-          :valueDefault="(getStart < 5) ? getStart / 2 : 5"
-          :max_amount="getStart"
+          :valueDefault="(getPlayerBalance < 5 && max !== 0) ? getPlayerBalance / 2 : 5"
+          :max_amount="(max > getPlayerBalance) ? getPlayerBalance : max"
         )
         button.popup-but(
           @click.prevent="openChannel()"
@@ -48,7 +52,9 @@ export default {
       log               : '',
       open              : true,
       popup             : true,
+      max               : 0,
       error             : false,
+      balanceLoaded     : true,
       openInfo          : {
         capt: '',
         link: '',
@@ -78,10 +84,11 @@ export default {
       if (e.key === 'Enter' && e.keyCode === 13 &&
       !this.openChannelActive && !this.getModuleActive) this.openChannel()
     })
+    this.checkMax()
   },
 
   computed: mapState({
-    getStart           : state => state.userData.balance.betBalance,
+    getPlayerBalance   : state => state.userData.balance.betBalance,
     getDeposit         : state => state.game.betState.deposit,
     getErrorText       : state => state.game.errorText,
     getChatTrigger     : state => state.chat.trigger,
@@ -105,6 +112,17 @@ export default {
       updateBankrollAddress    : 'userData/updateBankrollAddress',
       updatePaychannelContract : 'game/updatePaychannelContract'
     }),
+
+    checkMax() {
+      if (typeof this.$DC.Game !== 'undefined' &&
+      this.$DC.Game.maxDeposit !== 0) {
+        this.max = 1 * this.$DC.lib.Utils.dec2bet(this.$DC.Game.maxDeposit)
+        this.balanceLoaded = false
+        return
+      }
+
+      setTimeout(this.checkMax, 1000)
+    },
 
     openChannel () {
       if (this.getDeposit === 0) return
@@ -222,6 +240,24 @@ export default {
   }
   &-deposit {
     margin-top: 10px;
+  }
+  &-loading {
+    position: absolute;
+    z-index: 900;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    &__bar {
+      height: 4px;
+      width: 70%;
+      background-size: 200%;
+      animation: bar 1.5s 0.2s linear infinite;
+    }
   }
 }
 .openchannel-log {

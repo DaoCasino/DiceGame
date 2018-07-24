@@ -1,6 +1,17 @@
 .popup {
   background-color: rgba(0,0,0, .7);
   // transition: z-index .5s linear;
+  &-loading {
+    background-color: $main_bg;
+    font-family: $prox_b;
+    font-size: 17px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: #fff;
+    &__bar {
+      background: linear-gradient(90deg, $text_g, $main_bg, $text_g);
+    }
+  }
   &-table {
     background-color: $main_bg;
     border: 1px solid $text_g;
@@ -97,8 +108,12 @@
   }
 }
 
-@keyframes close {
-  100% {
-    opacity: 0;
-  }
+.balance-load-enter-active,
+.balance-load-leave-active {
+  transition: opacity .5s;
+}
+
+.balance-load-enter,
+.balance-load-leave-to {
+  opacity: 0;
 }
