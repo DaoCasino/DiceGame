@@ -113,7 +113,7 @@ export default {
       updatePaychannelContract : 'game/updatePaychannelContract'
     }),
 
-    checkMax() {
+    checkMax () {
       if (typeof this.$DC.Game !== 'undefined' &&
       this.$DC.Game.maxDeposit !== 0) {
         this.max = 1 * this.$DC.lib.Utils.dec2bet(this.$DC.Game.maxDeposit)

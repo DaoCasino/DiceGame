@@ -1,4 +1,5 @@
 'use strict'
+const fs = require('fs')
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -9,6 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
@@ -35,15 +37,39 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    // new UglifyJsPlugin({
-    //   uglifyOptions: {
-    //     compress: {
-    //       warnings: false
-    //     }
-    //   },
-    //   sourceMap: config.build.productionSourceMap,
-    //   parallel: true
-    // }),
+    new webpack.optimize.DedupePlugin(),
+    new UglifyJsPlugin({
+      parallel: true,
+      cache: true,
+      uglifyOptions: {
+        ecma: 8,
+        warnings: false,
+        parse: {},
+        output: {
+          comments: false,
+          beautify: false
+        },
+        toplevel: false,
+        nameCache: null,
+        ie8: false,
+        keep_classnames: undefined,
+        keep_fnames: false,
+        safari10: false
+      }
+    }),
+    new SWPrecacheWebpackPlugin({
+      cacheId: 'dice',
+      filename: 'service-worker.js',
+      staticFileGlobs: [
+        'dist/**/*.{js,worker.js,css,html}',
+        'dist/static/**/*.*'
+      ],
+      maximumFileSizeToCacheInBytes: 30000000,
+      staticFileGlobsIgnorePatterns: [/\.map$/, /mix-manifest\.json$/, /manifest\.json$/, /service-worker\.js$/],
+      handleFetch: true,
+      minify: true,
+      stripPrefix: 'dist/'
+    }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
@@ -56,6 +82,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
+      // cssProcessor: require('cssnano'),
       cssProcessorOptions: config.build.productionSourceMap
         ? { safe: true, map: { inline: false } }
         : { safe: true }
@@ -69,6 +96,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         : config.build.index,
       template: 'index.html',
       inject: true,
+      serviceWorkerLoader: `<script>${fs.readFileSync(path.join(__dirname,
+        './service-worker.js'), 'utf-8')}</script>`,
       minify: {
         removeComments: true,
         collapseWhitespace: true,

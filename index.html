@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Dice game</title>
+    <link rel="preload" href="./static/fonts/ProximaNova-Bold/ProximaNova-Bold.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="./static/fonts/ProximaNova-Regular/ProximaNova-Regular.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="./static/img/rules/openchannel.jpg" as="image">
+    <link rel="preload" href="./static/img/rules/popup.jpg" as="image">
+    <link rel="preload" href="./static/fonts.css" as="style">
+    <link rel="stylesheet" href="./static/fonts.css" media="none" onload="if(media!='all')media='all'">
+    <!-- <script src="./service-worker.js" defer></script> -->
   </head>
   <body>
     <div class="game__loader">
@@ -20,6 +27,7 @@
       </div>
     </div>
     <div id="app"></div>
+    <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
     <script>
       const preload = document.querySelector('.game__loader')
       document.addEventListener('DOMContentLoaded', e => {
