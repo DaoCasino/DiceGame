@@ -1,17 +1,19 @@
-const _config = require('./config.electron')
+const _config = require('./config.electron.json')
 const {
   app,
   BrowserWindow
 } = require('electron')
 
+require('./server.electron')
+
+// const conf = JSON.parse(_config)
 let mainWindow
 
 function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 768,
-    resizable: false,
-    icon: _config.icon
+    resizable: false
   })
 
   // and load the index.html of the app.

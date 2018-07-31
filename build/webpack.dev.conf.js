@@ -8,6 +8,7 @@ const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
@@ -59,6 +60,19 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       inject: true,
       serviceWorkerLoader: `<script>${fs.readFileSync(path.join(__dirname,
         './service-worker.js'), 'utf-8')}</script>`
+    }),
+    new SWPrecacheWebpackPlugin({
+      cacheId: 'dice',
+      filename: 'service-worker.js',
+      staticFileGlobs: [
+        'dist/**/*.{js,worker.js,css,html}',
+        'dist/static/**/*.*'
+      ],
+      maximumFileSizeToCacheInBytes: 30000000,
+      staticFileGlobsIgnorePatterns: [/\.map$/, /mix-manifest\.json$/, /manifest\.json$/, /service-worker\.js$/],
+      handleFetch: true,
+      minify: true,
+      stripPrefix: 'dist/'
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
