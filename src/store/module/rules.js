@@ -23,7 +23,9 @@ export default {
     },
 
     updateRules (state, value) {
-      state.rule.img  =  'dist' + value.img
+      state.rule.img  = (process.env.NODE_ENV !== 'production')
+        ? value.img
+        : `dist${value.img}`
       state.rule.capt = value.capt
       state.rule.text = value.text
     }
