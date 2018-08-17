@@ -2,13 +2,19 @@
   header.header
     .logo
       a.logo-link(href="https://platform.dao.casino" target="blank")
-        img.logo-img(src="/static/img/logo.png" alt="Dao Casino")
+        img.logo-img(:src="logo" alt="Dao Casino")
     wallet-widget
 </template>
 
 <script>
 import WalletWidget from '../walletwidget'
 export default {
+  data () {
+    return {
+      logo: require('../../assets/img/logo.png')
+    }
+  },
+
   components: {
     WalletWidget
   }

@@ -82,7 +82,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
-      // cssProcessor: require('cssnano'),
       cssProcessorOptions: config.build.productionSourceMap
         ? { safe: true, map: { inline: false } }
         : { safe: true }
@@ -96,8 +95,9 @@ const webpackConfig = merge(baseWebpackConfig, {
         : config.build.index,
       template: 'index.html',
       inject: true,
-      serviceWorkerLoader: `<script>${fs.readFileSync(path.join(__dirname,
-        './service-worker.js'), 'utf-8')}</script>`,
+      serviceWorkerLoader: `
+        <script type="text/javascript" src="./service-worker.js"></script>
+      `,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -114,7 +114,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.ModuleConcatenationPlugin(),
     // Favicon generate
     new FaviconsWebpackPlugin({
-      logo: path.resolve(__dirname, '../static/img/favicon.png')
+      logo: path.resolve(__dirname, '../src/assets/img/favicon.png')
     }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({

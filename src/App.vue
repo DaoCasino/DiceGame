@@ -105,9 +105,10 @@ export default {
 
 <style lang="scss">
 body {
-  background: url(~/static/img/main_bg-min.jpg) no-repeat;
+  background-image: url('./assets/img/main_bg-min.jpg');
+  background-repeat: no-repeat;
   background-size: cover;
-  background-position: top center;
+  background-position: top center
 }
 .game__buttons {
   position: fixed;

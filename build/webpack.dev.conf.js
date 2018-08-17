@@ -91,6 +91,7 @@ module.exports = new Promise((resolve, reject) => {
     if (err) {
       reject(err)
     } else {
+      console.log(121)
       // publish the new Port, necessary for e2e tests
       process.env.PORT = port
       // add port to devServer config

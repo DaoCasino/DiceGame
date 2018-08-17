@@ -23,7 +23,7 @@ export default {
     },
 
     updateRules (state, value) {
-      state.rule.img  = value.img
+      state.rule.img  =  'dist' + value.img
       state.rule.capt = value.capt
       state.rule.text = value.text
     }
