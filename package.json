@@ -11,9 +11,6 @@
     "start:ropsten": "DC_NETWORK=ropsten npm run dev",
     "start:electron": "DC_NETWORK=local node build/build.js; npm run cp_electron; electron ./dist/index.electron.js",
     "start:electron_ropsten": "DC_NETWORK=ropsten node build/build.js; npm run cp_electron; electron ./dist/index.electron.js",
-    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
-    "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "cp_electron": "cp -R ./src/electron/ ./dist",
     "build": "rm -rf ./dist; DC_NETWORK=ropsten node build/build.js",
@@ -28,7 +25,7 @@
   "dependencies": {
     "abortcontroller-polyfill": "^1.1.9",
     "dc-messaging": "github:DaoCasino/dc-messaging",
-    "dclib": "github:daocasino/dclib#f_dev_old",
+    "dclib": "github:daocasino/dclib",
     "express": "^4.16.3",
     "font-awesome": "^4.7.0",
     "nano-ipfs-store": "^0.1.3",

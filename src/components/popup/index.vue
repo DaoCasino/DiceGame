@@ -45,6 +45,7 @@ import {
   mapState,
   mapMutations
 } from 'vuex'
+import { clearTimeout } from 'timers';
 
 export default {
   data () {
@@ -83,7 +84,7 @@ export default {
 
       if (e.key === 'Enter' && e.keyCode === 13 &&
       !this.openChannelActive && !this.getModuleActive) this.openChannel()
-    })
+    }, {once: true})
     this.checkMax()
   },
 
@@ -114,19 +115,17 @@ export default {
     }),
 
     checkMax () {
-      if (typeof this.$DC.Game !== 'undefined' &&
-      this.$DC.Game.maxDeposit !== 0) {
+      if (typeof this.$DC.Game !== 'undefined' && this.$DC.Game.maxDeposit !== 0) {
         this.max = 1 * this.$DC.lib.Utils.dec2bet(this.$DC.Game.maxDeposit)
         this.balanceLoaded = false
         return
       }
 
-      setTimeout(this.checkMax, 1000)
+      setTimeout(this.checkMax, 3000)
     },
 
     openChannel () {
       if (this.getDeposit === 0) return
-      let dotsI
       this.openChannelActive = true
 
       this.$DC.Game.Status
@@ -159,12 +158,7 @@ export default {
               text: res.data
             }
 
-            this.openInfo.capt = 'Start ERC20 Approve'
-
-            dotsI = setInterval(() => {
-              const items = ['wait', 'just moment', 'bankroller work, wait ))', '..', '...', 'wait when bankroller open channel', 'yes its not so fast', 'this is Blockchain 👶', 'TX mine...']
-              this.log    = '⏳ ' + items[Math.floor(Math.random() * items.length)]
-            }, 1500)
+            this.openInfo.capt = 'ERC20 Approve'
           }
         })
         .on('connect::error', err => {
@@ -176,18 +170,16 @@ export default {
       this.$DC.Game.connect({
         bankroller : 'auto',
         paychannel : { deposit: this.getDeposit },
-        gamedata   : { type: 'uint', value: [1, 2, 3] }
-      }, (res, info) => {
+        gamedata   : { type: 'uint', value: [] }
+      }, async (res, info) => {
         this.popup = false
-        clearInterval(dotsI)
+        this.openInfo.capt = 'Open channel please wait...'
         const bankrollerBalance = this.$DC.Game.logic.payChannel.getBankrollBalance()
-
-        this.$DC.getBalance().then(res => {
-          if (res) {
-            this.updateBetBalance(res.bets * 1)
-            this.updateEthBalance(Number(res.eth).toFixed(2))
-          }
-        })
+        const balances = await this.$DC.getBalance()
+        if (balances) {
+          this.updateBetBalance(res.bets * 1)
+          this.updateEthBalance(Number(res.eth).toFixed(2))
+        }
 
         this.updateMaxAmount(this.getDeposit)
         this.updatePlayerBalance(this.getDeposit)
